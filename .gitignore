@@ -1,0 +1,23 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Build
+node_modules
+dist
+dist-ssr
+*.local
+/build
+/coverage
+
+# Mac
+.DS_Store
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# json-server db
+db.json

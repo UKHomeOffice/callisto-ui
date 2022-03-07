@@ -1,0 +1,25 @@
+{
+  "name": "ui",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "start": "run-p start:jsonserver serve:mocks",
+    "start:dev": "vite",
+    "prestart:jsonserver": "node mocks/createMockDb.js",
+    "start:jsonserver": "node mocks/apiServer.js",
+    "serve:mocks": "vite --mode mock",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "json-server": "^0.17.0",
+    "npm-run-all": "^4.1.5",
+    "vite": "^2.8.0"
+  }
+}
