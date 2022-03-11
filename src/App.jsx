@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import useGetExample from "./api/getExample";
+import Header from "./components/layout/header/Header";
+import Home from "./pages/Home";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -9,9 +12,12 @@ function App() {
 
   return (
     <div className='App'>
-      <header className='App-header'>
-        <p>Hello World</p>
-      </header>
+      <Header />
+      <div className='govuk-main-wrapper'>
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </div>
     </div>
   );
 }
