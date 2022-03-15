@@ -13,15 +13,20 @@ function App() {
 
   return (
     <div className='App'>
+      <a
+        href='#main-content'
+        class='govuk-skip-link'
+        data-module='govuk-skip-link'
+      >
+        Skip to main content
+      </a>
       <Header />
-      <div id='main-content' className='govuk-main-wrapper'>
-        <div className='govuk-width-container '>
-          <main className='govuk-main-wrapper ' id='main-content' role='main'>
-            <Routes>
-              <Route path='/' element={<Home />} />
-            </Routes>
-          </main>
-        </div>
+      <div className='govuk-width-container '>
+        <main className='govuk-main-wrapper ' id='main-content' role='main'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+          </Routes>
+        </main>
       </div>
       <Footer />
     </div>
