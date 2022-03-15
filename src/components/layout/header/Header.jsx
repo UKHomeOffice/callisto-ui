@@ -9,7 +9,6 @@ const Header = () => {
         style={{
           backgroundColor: "#FFF",
           color: "#000",
-          borderBottom: "1px solid #ccc",
         }}
         role='banner'
       >
@@ -28,7 +27,11 @@ const Header = () => {
             >
               Callisto
             </a>
-            <nav aria-label='Menu' className='govuk-header__navigation '>
+            <nav
+              aria-label='Menu'
+              className='govuk-header__navigation '
+              style={{ marginBottom: "0" }}
+            >
               <button
                 type='button'
                 className='govuk-header__menu-button govuk-js-header-toggle'
