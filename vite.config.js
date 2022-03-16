@@ -23,6 +23,13 @@ export default defineConfig((config) => {
       dedupe: ["react", "react-dom"],
     },
     esbuild: {},
+    css: {
+      preprocessorOptions: {
+        scss: {
+          quietDeps: true,
+        },
+      },
+    },
     server: {
       proxy: {
         "/api": {

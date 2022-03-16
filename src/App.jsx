@@ -1,7 +1,9 @@
 import { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import useGetExample from "./api/getExample";
+import Footer from "./components/layout/footer/Footer";
+import Header from "./components/layout/header/Header";
+import Home from "./pages/Home";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,38 +13,22 @@ function App() {
 
   return (
     <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>Hello Vite + React!</p>
-
-        <p>
-          <button type='button' onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates...{test}
-        </p>
-        <p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <a
+        href='#main-content'
+        className='govuk-skip-link'
+        data-module='govuk-skip-link'
+      >
+        Skip to main content
+      </a>
+      <Header />
+      <div className='govuk-width-container '>
+        <main className='govuk-main-wrapper ' id='main-content' role='main'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+          </Routes>
+        </main>
+      </div>
+      <Footer />
     </div>
   );
 }
