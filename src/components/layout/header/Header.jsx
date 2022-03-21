@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
 import HomeOfficeLogo from "./HomeOfficeLogo";
 import PhaseBanner from "../phase-banner/PhaseBanner";
+import React, { useState } from "react";
 
 const Header = () => {
+  const [toggleMenu, setToggleMenu] = useState(false);
+
   return (
     <>
       <header
@@ -21,6 +23,20 @@ const Header = () => {
             <HomeOfficeLogo />
           </div>
           <div className="govuk-header__content">
+            <button
+              type="button"
+              className={`govuk-header__menu-button govuk-js-header-toggle ${
+                toggleMenu && "govuk-header__menu-button--open"
+              }`}
+              aria-controls="navigation"
+              aria-label="Show or hide menu"
+              style={{ color: "black" }}
+              onClick={() => {
+                setToggleMenu(!toggleMenu);
+              }}
+            >
+              Menu
+            </button>
             <a
               href="#"
               className="govuk-header__link govuk-header__link--service-name"
@@ -37,21 +53,17 @@ const Header = () => {
           <PhaseBanner />
 
           <nav aria-label="Menu" className="govuk-header__navigation ">
-            <button
-              type="button"
-              className="govuk-header__menu-button govuk-js-header-toggle"
-              aria-controls="navigation"
-              aria-label="Show or hide menu"
+            <ul
+              id="navigation"
+              className={`govuk-header__navigation-list govuk-!-margin-top-2 ${
+                toggleMenu && "govuk-header__navigation-list--open"
+              }`}
             >
-              Menu
-            </button>
-
-            <ul id="navigation" className="govuk-header__navigation-list">
               <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
                 <a
                   className="govuk-header__link"
                   href="#1"
-                  style={{ color: "#000" }}
+                  style={{ color: "black" }}
                 >
                   Home
                 </a>
