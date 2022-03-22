@@ -7,7 +7,6 @@ import Home from "./pages/Home";
 
 function App() {
   const [count, setCount] = useState(0);
-  const test = import.meta.env.VITE_LOCAL_API_URL;
 
   const { data, error, loading } = useGetExample();
 
