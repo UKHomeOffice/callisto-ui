@@ -14,7 +14,7 @@ describe("DateInput", () => {
     expect(heading).toBeTruthy();
   });
 
-  it("should render a date input component with the correct heading", () => {
+  it("should render a date input component with the correct hint", () => {
     render(
       <DateInput
         name="test"
