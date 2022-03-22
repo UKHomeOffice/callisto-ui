@@ -62,7 +62,7 @@ const Header = () => {
               <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
                 <a
                   className="govuk-header__link"
-                  href="#1"
+                  href="/home"
                   style={{ color: "black" }}
                 >
                   Home
@@ -71,7 +71,7 @@ const Header = () => {
               <li className="govuk-header__navigation-item govuk-header__navigation-item">
                 <a
                   className="govuk-header__link"
-                  href="#1"
+                  href="/timecard"
                   style={{ color: "#000" }}
                 >
                   Timecard
