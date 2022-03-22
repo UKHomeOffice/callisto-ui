@@ -55,7 +55,7 @@ const Header = () => {
           <nav aria-label="Menu" className="govuk-header__navigation ">
             <ul
               id="navigation"
-              className={`govuk-header__navigation-list govuk-!-margin-top-2 ${
+              className={`govuk-header__navigation-list govuk-!-margin-top-1 ${
                 toggleMenu && "govuk-header__navigation-list--open"
               }`}
             >
