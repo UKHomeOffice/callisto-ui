@@ -22,7 +22,11 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
           </div>
           {errors &&
             errors.map((error) => (
-              <p id={`${name}-error`} className="govuk-error-message">
+              <p
+                id={`${name}-error`}
+                key={error.inputName}
+                className="govuk-error-message"
+              >
                 <span className="govuk-visually-hidden">Error:</span>{" "}
                 {error.message}
               </p>
@@ -50,6 +54,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
+                  data-testid="day-error-message"
                 />
               </div>
             </div>
@@ -75,6 +80,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
+                  data-testid="month-error-message"
                 />
               </div>
             </div>
@@ -100,6 +106,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
+                  data-testid="year-error-message"
                 />
               </div>
             </div>
