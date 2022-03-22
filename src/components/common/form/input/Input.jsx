@@ -6,10 +6,10 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
     <>
       <div
         className={`govuk-form-group ${
-          errorMessage ? "govuk-form-group--error" : ""
+          errorMessage && "govuk-form-group--error"
         }`}
       >
-        <h1 class="govuk-label-wrapper">
+        <h1 className="govuk-label-wrapper">
           <label
             className={`govuk-label govuk-label--${headingSize}`}
             htmlFor={name}
@@ -30,11 +30,12 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
         )}
         <input
           className={`govuk-input ${
-            errorMessage ? "govuk-input--error" : ""
+            errorMessage && "govuk-input--error"
           } govuk-input--width-${inputWidth}`}
           id={`${name}`}
           name={`${name}`}
           type="text"
+          data-testid="input-box"
         />
       </div>
     </>
