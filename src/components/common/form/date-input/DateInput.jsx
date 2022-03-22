@@ -21,12 +21,8 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
             {hint}
           </div>
           {errors &&
-            errors.map((error) => (
-              <p
-                id={`${name}-error`}
-                key={error.inputName}
-                className="govuk-error-message"
-              >
+            errors.map((error, i) => (
+              <p id={`${name}-error`} key={i} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>{" "}
                 {error.message}
               </p>
