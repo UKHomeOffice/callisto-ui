@@ -15,7 +15,7 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm config ls -l
-      - npm install
+      - npm install || cat /home/node/.npm/_logs/*
       - npm run lint
       - npm run test
       - npm run build
