@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 
 const Radios = ({
   name,
@@ -12,7 +12,7 @@ const Radios = ({
     <>
       <div
         className={`govuk-form-group ${
-          errorMessage && "govuk-form-group--error"
+          errorMessage && 'govuk-form-group--error'
         }`}
         data-testid="radio-buttons"
       >
@@ -27,7 +27,7 @@ const Radios = ({
           </div>
           {errorMessage && (
             <p id={`${name}-error`} className="govuk-error-message">
-              <span className="govuk-visually-hidden">Error:</span>{" "}
+              <span className="govuk-visually-hidden">Error:</span>{' '}
               {errorMessage}
             </p>
           )}
@@ -53,9 +53,9 @@ const Radios = ({
         </fieldset>
       </div>
     </>
-  );
-};
-export default Radios;
+  )
+}
+export default Radios
 
 Radios.propTypes = {
   name: PropTypes.string.isRequired,
@@ -64,4 +64,4 @@ Radios.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   hint: PropTypes.string,
   errorMessage: PropTypes.string,
-};
+}
