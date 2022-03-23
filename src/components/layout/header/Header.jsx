@@ -1,17 +1,17 @@
-import HomeOfficeLogo from "./HomeOfficeLogo";
-import PhaseBanner from "../phase-banner/PhaseBanner";
-import React, { useState } from "react";
+import HomeOfficeLogo from './HomeOfficeLogo'
+import PhaseBanner from '../phase-banner/PhaseBanner'
+import React, { useState } from 'react'
 
 const Header = () => {
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const [toggleMenu, setToggleMenu] = useState(false)
 
   return (
     <>
       <header
         className="govuk-header"
         style={{
-          backgroundColor: "#FFF",
-          color: "#000",
+          backgroundColor: '#FFF',
+          color: '#000',
         }}
         role="banner"
       >
@@ -26,13 +26,13 @@ const Header = () => {
             <button
               type="button"
               className={`govuk-header__menu-button govuk-js-header-toggle ${
-                toggleMenu && "govuk-header__menu-button--open"
+                toggleMenu && 'govuk-header__menu-button--open'
               }`}
               aria-controls="navigation"
               aria-label="Show or hide menu"
-              style={{ color: "black" }}
+              style={{ color: 'black' }}
               onClick={() => {
-                setToggleMenu(!toggleMenu);
+                setToggleMenu(!toggleMenu)
               }}
             >
               Menu
@@ -40,7 +40,7 @@ const Header = () => {
             <a
               href="#"
               className="govuk-header__link govuk-header__link--service-name"
-              style={{ color: "#000" }}
+              style={{ color: '#000' }}
             >
               Callisto
             </a>
@@ -56,14 +56,14 @@ const Header = () => {
             <ul
               id="navigation"
               className={`govuk-header__navigation-list govuk-!-margin-top-1 ${
-                toggleMenu && "govuk-header__navigation-list--open"
+                toggleMenu && 'govuk-header__navigation-list--open'
               }`}
             >
               <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
                 <a
                   className="govuk-header__link"
                   href="/home"
-                  style={{ color: "black" }}
+                  style={{ color: 'black' }}
                 >
                   Home
                 </a>
@@ -72,7 +72,7 @@ const Header = () => {
                 <a
                   className="govuk-header__link"
                   href="/timecard"
-                  style={{ color: "#000" }}
+                  style={{ color: '#000' }}
                 >
                   Timecard
                 </a>
@@ -82,7 +82,7 @@ const Header = () => {
         </div>
       </header>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

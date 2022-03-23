@@ -1,11 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 
 function DateInput({ name, heading, headingSize, hint, errors }) {
   return (
     <>
       <div
-        className={`govuk-form-group ${errors && "govuk-form-group--error"}`}
+        className={`govuk-form-group ${errors && 'govuk-form-group--error'}`}
       >
         <fieldset
           className="govuk-fieldset"
@@ -23,7 +22,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
           {errors &&
             errors.map((error, i) => (
               <p id={`${name}-error`} key={i} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span>{" "}
+                <span className="govuk-visually-hidden">Error:</span>{' '}
                 {error.message}
               </p>
             ))}
@@ -41,9 +40,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + "-day";
+                      return error.inputName === name + '-day'
                     }) &&
-                    "govuk-input--error"
+                    'govuk-input--error'
                   }`}
                   id={`${name}-day`}
                   name={`${name}-day`}
@@ -67,9 +66,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + "-month";
+                      return error.inputName === name + '-month'
                     }) &&
-                    "govuk-input--error"
+                    'govuk-input--error'
                   }`}
                   id={`${name}-month`}
                   name={`${name}-month`}
@@ -93,9 +92,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + "-year";
+                      return error.inputName === name + '-year'
                     }) &&
-                    "govuk-input--error"
+                    'govuk-input--error'
                   }`}
                   id={`${name}-year`}
                   name={`${name}-year`}
@@ -110,10 +109,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
         </fieldset>
       </div>
     </>
-  );
+  )
 }
 
-export default DateInput;
+export default DateInput
 
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
@@ -126,4 +125,4 @@ DateInput.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
-};
+}
