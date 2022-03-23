@@ -66,7 +66,7 @@ describe("DateInput", () => {
         />
       );
 
-      const dayInputBox = screen.getByTestId("day-error-message");
+      const dayInputBox = screen.getByTestId("day-input");
       expect(dayInputBox.className).toContain("govuk-input--error");
     });
 
@@ -80,7 +80,7 @@ describe("DateInput", () => {
         />
       );
 
-      const monthInputBox = screen.getByTestId("month-error-message");
+      const monthInputBox = screen.getByTestId("month-input");
       expect(monthInputBox.className).toContain("govuk-input--error");
     });
 
@@ -94,7 +94,7 @@ describe("DateInput", () => {
         />
       );
 
-      const yearInputBox = screen.getByTestId("year-error-message");
+      const yearInputBox = screen.getByTestId("year-input");
       expect(yearInputBox.className).toContain("govuk-input--error");
     });
   });
