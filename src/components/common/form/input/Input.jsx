@@ -1,12 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 
 function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
   return (
     <>
       <div
         className={`govuk-form-group ${
-          errorMessage && "govuk-form-group--error"
+          errorMessage && 'govuk-form-group--error'
         }`}
       >
         <h1 className="govuk-label-wrapper">
@@ -30,7 +29,7 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
         )}
         <input
           className={`govuk-input ${
-            errorMessage && "govuk-input--error"
+            errorMessage && 'govuk-input--error'
           } govuk-input--width-${inputWidth}`}
           id={`${name}`}
           name={`${name}`}
@@ -39,10 +38,10 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
         />
       </div>
     </>
-  );
+  )
 }
 
-export default Input;
+export default Input
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
@@ -51,4 +50,4 @@ Input.propTypes = {
   inputWidth: PropTypes.string.isRequired,
   hint: PropTypes.string,
   errorMessage: PropTypes.string,
-};
+}
