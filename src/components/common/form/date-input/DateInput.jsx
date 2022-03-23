@@ -50,7 +50,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
-                  data-testid="day-error-message"
+                  data-testid="day-input"
                 />
               </div>
             </div>
@@ -76,7 +76,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
-                  data-testid="month-error-message"
+                  data-testid="month-input"
                 />
               </div>
             </div>
@@ -102,7 +102,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"
-                  data-testid="year-error-message"
+                  data-testid="year-input"
                 />
               </div>
             </div>
