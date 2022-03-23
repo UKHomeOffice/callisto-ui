@@ -21,8 +21,8 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
             {hint}
           </div>
           {errors &&
-            errors.map((error) => (
-              <p id={`${name}-error`} className="govuk-error-message">
+            errors.map((error, i) => (
+              <p id={`${name}-error`} key={i} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>{" "}
                 {error.message}
               </p>
@@ -39,15 +39,18 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                 </label>
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                    errors &&
                     errors.find((error) => {
                       return error.inputName === name + "-day";
-                    }) && "govuk-input--error"
+                    }) &&
+                    "govuk-input--error"
                   }`}
                   id={`${name}-day`}
                   name={`${name}-day`}
                   type="text"
                   pattern="[0-9]*"
-                  inputmode="numeric"
+                  inputMode="numeric"
+                  data-testid="day-input"
                 />
               </div>
             </div>
@@ -62,15 +65,18 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                 </label>
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+                    errors &&
                     errors.find((error) => {
                       return error.inputName === name + "-month";
-                    }) && "govuk-input--error"
+                    }) &&
+                    "govuk-input--error"
                   }`}
                   id={`${name}-month`}
                   name={`${name}-month`}
                   type="text"
                   pattern="[0-9]*"
-                  inputmode="numeric"
+                  inputMode="numeric"
+                  data-testid="month-input"
                 />
               </div>
             </div>
@@ -85,15 +91,18 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                 </label>
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
+                    errors &&
                     errors.find((error) => {
                       return error.inputName === name + "-year";
-                    }) && "govuk-input--error"
+                    }) &&
+                    "govuk-input--error"
                   }`}
                   id={`${name}-year`}
                   name={`${name}-year`}
                   type="text"
                   pattern="[0-9]*"
-                  inputmode="numeric"
+                  inputMode="numeric"
+                  data-testid="year-input"
                 />
               </div>
             </div>
