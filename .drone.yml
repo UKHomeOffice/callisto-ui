@@ -14,6 +14,7 @@ steps:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
     commands:
+      - npm npm config get registry
       - npm install
       - npm run lint
       - npm run test
