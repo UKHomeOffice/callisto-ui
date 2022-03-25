@@ -1,6 +1,6 @@
 import HomeOfficeLogo from './HomeOfficeLogo';
 import PhaseBanner from '../phase-banner/PhaseBanner';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -38,7 +38,7 @@ const Header = () => {
               Menu
             </button>
             <a
-              href="#"
+              href="/"
               className="govuk-header__link govuk-header__link--service-name"
               style={{ color: '#000' }}
             >
