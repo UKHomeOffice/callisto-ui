@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 function DateInput({ name, heading, headingSize, hint, errors }) {
   return (
@@ -40,7 +40,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-day'
+                      return error.inputName === name + '-day';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -66,7 +66,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-month'
+                      return error.inputName === name + '-month';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -92,7 +92,7 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-year'
+                      return error.inputName === name + '-year';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -109,10 +109,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
         </fieldset>
       </div>
     </>
-  )
+  );
 }
 
-export default DateInput
+export default DateInput;
 
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
@@ -125,4 +125,4 @@ DateInput.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
-}
+};

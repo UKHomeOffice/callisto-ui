@@ -1,9 +1,9 @@
-import HomeOfficeLogo from './HomeOfficeLogo'
-import PhaseBanner from '../phase-banner/PhaseBanner'
-import React, { useState } from 'react'
+import HomeOfficeLogo from './HomeOfficeLogo';
+import PhaseBanner from '../phase-banner/PhaseBanner';
+import React, { useState } from 'react';
 
 const Header = () => {
-  const [toggleMenu, setToggleMenu] = useState(false)
+  const [toggleMenu, setToggleMenu] = useState(false);
 
   return (
     <>
@@ -32,7 +32,7 @@ const Header = () => {
               aria-label="Show or hide menu"
               style={{ color: 'black' }}
               onClick={() => {
-                setToggleMenu(!toggleMenu)
+                setToggleMenu(!toggleMenu);
               }}
             >
               Menu
@@ -62,7 +62,7 @@ const Header = () => {
               <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
                 <a
                   className="govuk-header__link"
-                  href="/home"
+                  href="/"
                   style={{ color: 'black' }}
                 >
                   Home
@@ -82,7 +82,7 @@ const Header = () => {
         </div>
       </header>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
