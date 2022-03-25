@@ -10,46 +10,51 @@ const FormsExample = () => {
   const [day, setDay] = useState('')
   const [month, setMonth] = useState('')
   const [year, setYear] = useState('')
+
+  const [form, setForm] = useState({ name: '', whereDoYouLive: '' })
   const [errors, setErrors] = useState([])
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true)
-    validateInput()
+    await validateInput()
+    console.log(form)
   }
 
   const handleFormChange = (event) => {
-    setName(event.target.value)
-  }
-
-  const handleRadiosChange = (event) => {
-    setLocation(event.target.value)
+    setForm({ ...form, [event.target.name]: event.target.value })
   }
 
   const handleDayChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+
     setDay(event.target.value)
   }
 
   const handleMonthChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+
     setMonth(event.target.value)
   }
 
   const handleYearChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+
     setYear(event.target.value)
   }
 
   const validateInput = async () => {
     const errorsArray = []
-    if (location === '') {
-      errorsArray.push({
-        inputName: 'whereDoYouLive',
-        message: 'Select a location',
-      })
-    }
-    if (name === '') {
+    if (form.name === '') {
       errorsArray.push({
         inputName: 'name',
         message: 'Enter a name',
+      })
+    }
+    if (form.whereDoYouLive === '') {
+      errorsArray.push({
+        inputName: 'whereDoYouLive',
+        message: 'Select a location',
       })
     }
     if (day === '') {
@@ -85,7 +90,7 @@ const FormsExample = () => {
         inputWidth="20"
         hint="eg. Joanna"
         errors={errors}
-        value={name}
+        value={form.name}
         handleFormChange={(event) => handleFormChange(event)}
       />
 
@@ -96,8 +101,8 @@ const FormsExample = () => {
         options={['England', 'Ireland', 'Scotland', 'Wales']}
         hint="eg. England"
         errors={errors}
-        value={location}
-        handleRadiosChange={(event) => handleRadiosChange(event)}
+        value={form.whereDoYouLive}
+        handleFormChange={(event) => handleFormChange(event)}
       />
 
       <DateInput

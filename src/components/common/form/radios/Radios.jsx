@@ -9,7 +9,7 @@ const Radios = ({
   hint,
   errors,
   value,
-  handleRadiosChange,
+  handleFormChange,
 }) => {
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -55,7 +55,7 @@ const Radios = ({
                 type="radio"
                 value={options[0]}
                 onChange={(event) => {
-                  handleRadiosChange(event)
+                  handleFormChange(event)
                 }}
                 checked={value === options[0] && 'checked'}
               />
@@ -73,7 +73,7 @@ const Radios = ({
                   type="radio"
                   value={radioLabel}
                   onChange={(event) => {
-                    handleRadiosChange(event)
+                    handleFormChange(event)
                   }}
                   checked={value === radioLabel && 'checked'}
                 />
@@ -106,5 +106,5 @@ Radios.propTypes = {
     })
   ),
   value: PropTypes.string,
-  handleRadiosChange: PropTypes.func,
+  handleFormChange: PropTypes.func,
 }
