@@ -1,10 +1,41 @@
 import PropTypes from 'prop-types'
+import { useState, useEffect } from 'react'
 
-function DateInput({ name, heading, headingSize, hint, errors }) {
+function DateInput({
+  name,
+  heading,
+  headingSize,
+  hint,
+  errors,
+  handleDayChange,
+  handleMonthChange,
+  handleYearChange,
+}) {
+  const [errorMessages, setErrorMessages] = useState([])
+
+  useEffect(() => {
+    updateErrorMessages()
+  }, [errors])
+
+  const updateErrorMessages = () => {
+    const findErrors = errors?.filter((error) => error.inputName.includes(name))
+    let relevantErrorMessages
+    if (findErrors) {
+      relevantErrorMessages = findErrors.map((error) => {
+        return error.message
+      })
+      setErrorMessages(relevantErrorMessages)
+    } else {
+      setErrorMessages([])
+    }
+  }
+
   return (
     <>
       <div
-        className={`govuk-form-group ${errors && 'govuk-form-group--error'}`}
+        className={`govuk-form-group ${
+          errorMessages.length > 0 && 'govuk-form-group--error'
+        }`}
       >
         <fieldset
           className="govuk-fieldset"
@@ -19,11 +50,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
           <div id={`${name}-hint`} className="govuk-hint">
             {hint}
           </div>
-          {errors &&
-            errors.map((error, i) => (
+          {errorMessages &&
+            errorMessages.map((error, i) => (
               <p id={`${name}-error`} key={i} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span>{' '}
-                {error.message}
+                <span className="govuk-visually-hidden">Error:</span> {error}
               </p>
             ))}
 
@@ -50,6 +80,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="day-input"
+                  onChange={(event) => {
+                    handleDayChange(event)
+                  }}
                 />
               </div>
             </div>
@@ -76,6 +109,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="month-input"
+                  onChange={(event) => {
+                    handleMonthChange(event)
+                  }}
                 />
               </div>
             </div>
@@ -102,6 +138,9 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="year-input"
+                  onChange={(event) => {
+                    handleYearChange(event)
+                  }}
                 />
               </div>
             </div>
