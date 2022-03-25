@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react'
 
 import Input from './Input'
 
@@ -31,6 +31,41 @@ describe('Input', () => {
     const hint = screen.getByText('eg. John')
 
     expect(hint).toBeTruthy()
+  })
+
+  it('should update the input value on change', () => {
+    const handleFormChangeMock = jest.fn()
+    render(
+      <Input
+        name="test"
+        heading="What is your name?"
+        headingSize="l"
+        inputWidth="10"
+        hint="eg. John"
+        handleFormChange={(event) => handleFormChangeMock(event)}
+      />
+    )
+
+    const input = screen.getByTestId('input-box')
+    fireEvent.change(input, { target: { value: 'John' } })
+    expect(input.value).toBe('John')
+  })
+
+  it('should pre-fill the input if value is passed in', () => {
+    render(
+      <Input
+        name="test"
+        heading="What is your name?"
+        headingSize="l"
+        inputWidth="10"
+        hint="eg. John"
+        value="Bob"
+        handleFormChange={(event) => handleFormChangeMock(event)}
+      />
+    )
+
+    const input = screen.getByTestId('input-box')
+    expect(input.value).toBe('Bob')
   })
 
   it('should display an error message when there is an error', () => {

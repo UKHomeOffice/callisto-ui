@@ -49,6 +49,22 @@ describe('Radios', () => {
     expect(hint).toBeTruthy()
   })
 
+  it('should preselect the radio button if value is passed in', () => {
+    render(
+      <Radios
+        name="radios"
+        heading="Where do you live?"
+        headingSize="l"
+        options={['England', 'Ireland', 'Scotland', 'Wales']}
+        hint="eg. England"
+        value="England"
+      />
+    )
+
+    const radioButton = screen.getByLabelText('England')
+    expect(radioButton).toBeChecked()
+  })
+
   it('should display an error message when there is an error', () => {
     render(
       <Radios

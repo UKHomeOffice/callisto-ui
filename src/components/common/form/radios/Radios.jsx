@@ -59,10 +59,7 @@ const Radios = ({
                 }}
                 checked={value === options[0] && 'checked'}
               />
-              <label
-                className="govuk-label govuk-radios__label"
-                htmlFor={`${name}-0`}
-              >
+              <label className="govuk-label govuk-radios__label" htmlFor={name}>
                 {options[0]}
               </label>
             </div>
