@@ -106,6 +106,9 @@ const FormsExample = () => {
         headingSize="m"
         hint="eg. 01/01/1990"
         errors={errors}
+        dayValue={day}
+        monthValue={month}
+        yearValue={year}
         handleDayChange={(event) => handleDayChange(event)}
         handleMonthChange={(event) => handleMonthChange(event)}
         handleYearChange={(event) => handleYearChange(event)}

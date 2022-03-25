@@ -59,6 +59,31 @@ describe('DateInput', () => {
     expect(yearInput.value).toBe('2022')
   })
 
+  it('should pre-fill the inputs if values are passed in', () => {
+    render(
+      <DateInput
+        name="test"
+        heading="What is the date?"
+        headingSize="l"
+        hint="eg. 01/01/2022"
+        dayValue={'01'}
+        monthValue={'01'}
+        yearValue={'2022'}
+        handleDayChange={(event) => handleDayChangeMock(event)}
+        handleMonthChange={(event) => handleMonthChangeMock(event)}
+        handleYearChange={(event) => handleYearChangeMock(event)}
+      />
+    )
+
+    const dayInput = screen.getByTestId('day-input')
+    const monthInput = screen.getByTestId('month-input')
+    const yearInput = screen.getByTestId('year-input')
+
+    expect(dayInput.value).toBe('01')
+    expect(monthInput.value).toBe('01')
+    expect(yearInput.value).toBe('2022')
+  })
+
   describe('Error messages', () => {
     it('should display all error messages', () => {
       render(

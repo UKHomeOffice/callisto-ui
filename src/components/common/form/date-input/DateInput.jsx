@@ -7,6 +7,9 @@ function DateInput({
   headingSize,
   hint,
   errors,
+  dayValue,
+  monthValue,
+  yearValue,
   handleDayChange,
   handleMonthChange,
   handleYearChange,
@@ -80,6 +83,7 @@ function DateInput({
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="day-input"
+                  value={dayValue}
                   onChange={(event) => {
                     handleDayChange(event)
                   }}
@@ -109,6 +113,7 @@ function DateInput({
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="month-input"
+                  value={monthValue}
                   onChange={(event) => {
                     handleMonthChange(event)
                   }}
@@ -138,6 +143,7 @@ function DateInput({
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="year-input"
+                  value={yearValue}
                   onChange={(event) => {
                     handleYearChange(event)
                   }}
@@ -164,4 +170,10 @@ DateInput.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
+  dayValue: PropTypes.string,
+  monthValue: PropTypes.string,
+  yearValue: PropTypes.string,
+  handleDayChange: PropTypes.func,
+  handleMonthChange: PropTypes.func,
+  handleYearChange: PropTypes.func,
 }
