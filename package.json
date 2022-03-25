@@ -10,7 +10,8 @@
     "serve:mocks": "vite --mode mock",
     "test": "jest --coverage",
     "monitor": "jest --watchAll",
-    "lint": "eslint --ext .js,.jsx src --fix",
+    "lint:fix": "eslint --ext .js,.jsx src --fix",
+    "lint": "eslint --ext .js,.jsx src",
     "build": "vite build",
     "preview": "vite preview"
   },

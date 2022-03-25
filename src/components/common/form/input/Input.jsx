@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
   return (
@@ -38,10 +38,10 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
         />
       </div>
     </>
-  )
+  );
 }
 
-export default Input
+export default Input;
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
@@ -50,4 +50,4 @@ Input.propTypes = {
   inputWidth: PropTypes.string.isRequired,
   hint: PropTypes.string,
   errorMessage: PropTypes.string,
-}
+};

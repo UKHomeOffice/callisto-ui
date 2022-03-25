@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const ErrorSummary = ({ errors }) => {
   return (
@@ -21,10 +21,10 @@ const ErrorSummary = ({ errors }) => {
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ErrorSummary
+export default ErrorSummary;
 
 ErrorSummary.propTypes = {
   errors: PropTypes.arrayOf(
@@ -33,4 +33,4 @@ ErrorSummary.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
-}
+};
