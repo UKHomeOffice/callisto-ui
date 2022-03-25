@@ -48,11 +48,31 @@ const Radios = ({
             </p>
           )}
           <div className="govuk-radios" data-module="govuk-radios">
-            {options.map((radioLabel, index) => (
-              <div key={index} className="govuk-radios__item">
+            <div key="0" className="govuk-radios__item">
+              <input
+                className="govuk-radios__input"
+                id={name}
+                name={name}
+                type="radio"
+                value={options[0]}
+                onChange={(event) => {
+                  handleRadiosChange(event)
+                }}
+                checked={value === options[0] && 'checked'}
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor={`${name}-0`}
+              >
+                {options[0]}
+              </label>
+            </div>
+
+            {options.slice(1).map((radioLabel, index) => (
+              <div key={index + 1} className="govuk-radios__item">
                 <input
                   className="govuk-radios__input"
-                  id={`${name}`}
+                  id={`${name}-${index}`}
                   name={name}
                   type="radio"
                   value={radioLabel}
