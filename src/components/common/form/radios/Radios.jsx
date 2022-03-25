@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { useState, useEffect } from 'react'
 
 const Radios = ({
   name,
@@ -6,8 +7,23 @@ const Radios = ({
   headingSize,
   options,
   hint,
-  errorMessage,
+  errors,
+  value,
+  handleRadiosChange,
 }) => {
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    updateErrorMessage()
+  }, [errors])
+
+  const updateErrorMessage = () => {
+    const findError = errors?.find((error) => error.inputName === name)
+    if (findError) {
+      setErrorMessage(findError.message)
+    }
+  }
+
   return (
     <>
       <div
@@ -36,10 +52,14 @@ const Radios = ({
               <div key={index} className="govuk-radios__item">
                 <input
                   className="govuk-radios__input"
-                  id={`${name}-${index}`}
-                  name={`${name}-${index}`}
+                  id={`${name}`}
+                  name={name}
                   type="radio"
                   value={radioLabel}
+                  onChange={(event) => {
+                    handleRadiosChange(event)
+                  }}
+                  checked={value === radioLabel && 'checked'}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
@@ -63,5 +83,12 @@ Radios.propTypes = {
   headingSize: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   hint: PropTypes.string,
-  errorMessage: PropTypes.string,
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      inputName: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    })
+  ),
+  value: PropTypes.string,
+  handleRadiosChange: PropTypes.func,
 }

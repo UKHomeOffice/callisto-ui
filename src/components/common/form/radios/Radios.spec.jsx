@@ -1,4 +1,3 @@
-import React from 'react'
 import { screen, render } from '@testing-library/react'
 
 import Radios from './Radios'
@@ -57,7 +56,12 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errorMessage="Select a radio button"
+        errors={[
+          {
+            inputName: 'radios',
+            message: 'Select a radio button',
+          },
+        ]}
       />
     )
 
@@ -72,7 +76,12 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errorMessage="Select a radio button"
+        errors={[
+          {
+            inputName: 'radios',
+            message: 'Select a radio button',
+          },
+        ]}
       />
     )
 
