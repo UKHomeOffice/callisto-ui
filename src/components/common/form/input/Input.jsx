@@ -19,9 +19,8 @@ function Input({
 
   const updateErrorMessage = () => {
     const findError = errors?.find((error) => error.inputName === name)
-    if (findError) {
-      setErrorMessage(findError.message)
-    }
+    const newErrorMessage = findError ? findError.message : ''
+    setErrorMessage(newErrorMessage)
   }
 
   return (
@@ -82,5 +81,6 @@ Input.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
+  value: PropTypes.string,
   handleFormChange: PropTypes.func,
 }

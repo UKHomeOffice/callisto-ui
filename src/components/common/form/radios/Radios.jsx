@@ -19,9 +19,8 @@ const Radios = ({
 
   const updateErrorMessage = () => {
     const findError = errors?.find((error) => error.inputName === name)
-    if (findError) {
-      setErrorMessage(findError.message)
-    }
+    const newErrorMessage = findError ? findError.message : ''
+    setErrorMessage(newErrorMessage)
   }
 
   return (
