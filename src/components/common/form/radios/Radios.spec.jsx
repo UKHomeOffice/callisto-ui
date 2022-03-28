@@ -122,7 +122,7 @@ describe('Radios', () => {
     expect(inputBox.className).toContain('govuk-form-group--error');
   });
 
-  it('should add error styling to radios when there is an error', () => {
+  it('should not add error styling to radios when there is not an error', () => {
     render(
       <Radios
         name="radios"

@@ -55,6 +55,8 @@ describe('DateInput', () => {
   });
 
   it('should pre-fill the inputs if values are passed in', () => {
+    const handleFormChangeMock = jest.fn();
+
     render(
       <DateInput
         name="test"
@@ -64,9 +66,7 @@ describe('DateInput', () => {
         dayValue={'01'}
         monthValue={'01'}
         yearValue={'2022'}
-        handleDayChange={(event) => handleDayChangeMock(event)}
-        handleMonthChange={(event) => handleMonthChangeMock(event)}
-        handleYearChange={(event) => handleYearChangeMock(event)}
+        handleFormChange={(event) => handleFormChangeMock(event)}
       />
     );
 
