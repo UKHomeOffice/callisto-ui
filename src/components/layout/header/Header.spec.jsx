@@ -7,7 +7,7 @@ describe('Header component', () => {
     render(<Header />);
 
     const homeButton = screen.getByRole('link', { name: 'Home' });
-    expect(homeButton.getAttribute('href')).toBe('/home');
+    expect(homeButton.getAttribute('href')).toBe('/');
   });
 
   it('should link to /timecard when pressing the Timecard button', () => {
