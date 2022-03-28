@@ -1,5 +1,7 @@
 # Callisto UI
 
+[![Build Status](https://drone-gl.acp.homeoffice.gov.uk/api/badges/callisto/ui/status.svg)](https://drone-gl.acp.homeoffice.gov.uk/callisto/ui)
+
 ## Prerequisites
 
 Install [Node](https://nodejs.org) and validate with `node -v` (Todo: mention node version and node version manager)
