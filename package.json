@@ -3,11 +3,6 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-<<<<<<< Updated upstream
-=======
-    "lint": "eslint",
-    "test": "jest",
->>>>>>> Stashed changes
     "start": "run-p start:jsonserver serve:mocks",
     "start:dev": "vite",
     "prestart:jsonserver": "node mocks/createMockDb.js",
