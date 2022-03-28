@@ -1,6 +1,6 @@
-import { screen, render } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react';
 
-import Radios from './Radios'
+import Radios from './Radios';
 
 describe('Radios', () => {
   it('should render a radios component with the correct heading', () => {
@@ -11,14 +11,14 @@ describe('Radios', () => {
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
       />
-    )
+    );
 
-    const heading = screen.getByText('Where do you live?')
-    expect(heading).toBeTruthy()
-  })
+    const heading = screen.getByText('Where do you live?');
+    expect(heading).toBeTruthy();
+  });
 
   it('should render a radios component with the correct radio options', () => {
-    const options = ['England', 'Ireland', 'Scotland', 'Wales']
+    const options = ['England', 'Ireland', 'Scotland', 'Wales'];
 
     render(
       <Radios
@@ -27,12 +27,12 @@ describe('Radios', () => {
         headingSize="l"
         options={options}
       />
-    )
+    );
 
     options.map((option) => {
-      expect(screen.getByText(option)).toBeTruthy()
-    })
-  })
+      expect(screen.getByText(option)).toBeTruthy();
+    });
+  });
 
   it('should render a radios component with the correct hint', () => {
     render(
@@ -43,11 +43,28 @@ describe('Radios', () => {
         options={['England', 'Ireland', 'Scotland', 'Wales']}
         hint="eg. England"
       />
-    )
+    );
 
-    const hint = screen.getByText('eg. England')
-    expect(hint).toBeTruthy()
-  })
+    const hint = screen.getByText('eg. England');
+    expect(hint).toBeTruthy();
+  });
+
+  // it('should set the radio button to checked when it is selected', () => {
+  //   render(
+  //     <Radios
+  //       name="radios"
+  //       heading="Where do you live?"
+  //       headingSize="l"
+  //       options={['England', 'Ireland', 'Scotland', 'Wales']}
+  //       hint="eg. England"
+  //     />
+  //   );
+
+  //   const radioButton = screen.getByLabelText('England');
+  //   fireEvent.click(radioButton);
+
+  //   expect(radioButton).toBeChecked();
+  // });
 
   it('should preselect the radio button if value is passed in', () => {
     render(
@@ -59,11 +76,11 @@ describe('Radios', () => {
         hint="eg. England"
         value="England"
       />
-    )
+    );
 
-    const radioButton = screen.getByLabelText('England')
-    expect(radioButton).toBeChecked()
-  })
+    const radioButton = screen.getByLabelText('England');
+    expect(radioButton).toBeChecked();
+  });
 
   it('should display an error message when there is an error', () => {
     render(
@@ -79,11 +96,11 @@ describe('Radios', () => {
           },
         ]}
       />
-    )
+    );
 
-    const errorMessage = screen.getByText('Select a radio button')
-    expect(errorMessage).toBeTruthy()
-  })
+    const errorMessage = screen.getByText('Select a radio button');
+    expect(errorMessage).toBeTruthy();
+  });
 
   it('should add error styling to radios when there is an error', () => {
     render(
@@ -99,11 +116,11 @@ describe('Radios', () => {
           },
         ]}
       />
-    )
+    );
 
-    const inputBox = screen.getByTestId('radio-buttons')
-    expect(inputBox.className).toContain('govuk-form-group--error')
-  })
+    const inputBox = screen.getByTestId('radio-buttons');
+    expect(inputBox.className).toContain('govuk-form-group--error');
+  });
 
   it('should add error styling to radios when there is an error', () => {
     render(
@@ -113,9 +130,9 @@ describe('Radios', () => {
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
       />
-    )
+    );
 
-    const inputBox = screen.getByTestId('radio-buttons')
-    expect(inputBox.className).not.toContain('govuk-form-group--error')
-  })
-})
+    const inputBox = screen.getByTestId('radio-buttons');
+    expect(inputBox.className).not.toContain('govuk-form-group--error');
+  });
+});

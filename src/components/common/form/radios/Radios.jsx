@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 const Radios = ({
   name,
@@ -11,17 +11,17 @@ const Radios = ({
   value,
   handleFormChange,
 }) => {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    updateErrorMessage()
-  }, [errors])
+    updateErrorMessage();
+  }, [errors]);
 
   const updateErrorMessage = () => {
-    const findError = errors?.find((error) => error.inputName === name)
-    const newErrorMessage = findError ? findError.message : ''
-    setErrorMessage(newErrorMessage)
-  }
+    const findError = errors?.find((error) => error.inputName === name);
+    const newErrorMessage = findError ? findError.message : '';
+    setErrorMessage(newErrorMessage);
+  };
 
   return (
     <>
@@ -55,9 +55,9 @@ const Radios = ({
                 type="radio"
                 value={options[0]}
                 onChange={(event) => {
-                  handleFormChange(event)
+                  handleFormChange(event);
                 }}
-                checked={value === options[0] && 'checked'}
+                checked={value === options[0]}
               />
               <label className="govuk-label govuk-radios__label" htmlFor={name}>
                 {options[0]}
@@ -73,9 +73,9 @@ const Radios = ({
                   type="radio"
                   value={radioLabel}
                   onChange={(event) => {
-                    handleFormChange(event)
+                    handleFormChange(event);
                   }}
-                  checked={value === radioLabel && 'checked'}
+                  checked={value === radioLabel}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
@@ -89,9 +89,9 @@ const Radios = ({
         </fieldset>
       </div>
     </>
-  )
-}
-export default Radios
+  );
+};
+export default Radios;
 
 Radios.propTypes = {
   name: PropTypes.string.isRequired,
@@ -107,4 +107,4 @@ Radios.propTypes = {
   ),
   value: PropTypes.string,
   handleFormChange: PropTypes.func,
-}
+};

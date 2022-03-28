@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import DateInput from '../components/common/form/date-input/DateInput'
-import ErrorSummary from '../components/common/form/error-summary/ErrorSummary'
-import Input from '../components/common/form/input/Input'
-import Radios from '../components/common/form/radios/Radios'
+import React, { useState } from 'react';
+import DateInput from '../components/common/form/date-input/DateInput';
+import ErrorSummary from '../components/common/form/error-summary/ErrorSummary';
+import Input from '../components/common/form/input/Input';
+import Radios from '../components/common/form/radios/Radios';
 
 const FormsExample = () => {
   const [form, setForm] = useState({
@@ -11,54 +11,54 @@ const FormsExample = () => {
     'dateOfBirth-day': '',
     'dateOfBirth-month': '',
     'dateOfBirth-year': '',
-  })
-  const [errors, setErrors] = useState([])
-  const [submitted, setSubmitted] = useState(false)
+  });
+  const [errors, setErrors] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async () => {
-    setSubmitted(true)
-    await validateInput()
-    console.log(form)
-  }
+    setSubmitted(true);
+    await validateInput();
+    console.log(form);
+  };
 
   const handleFormChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-  }
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
 
   const validateInput = async () => {
-    const errorsArray = []
+    const errorsArray = [];
     if (form.name === '') {
       errorsArray.push({
         inputName: 'name',
         message: 'Enter a name',
-      })
+      });
     }
     if (form.whereDoYouLive === '') {
       errorsArray.push({
         inputName: 'whereDoYouLive',
         message: 'Select a location',
-      })
+      });
     }
     if (form['dateOfBirth-day'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-day',
         message: 'Day cannot be blank',
-      })
+      });
     }
     if (form['dateOfBirth-month'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-month',
         message: 'Month cannot be blank',
-      })
+      });
     }
     if (form['dateOfBirth-year'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-year',
         message: 'Year cannot be blank',
-      })
+      });
     }
-    setErrors(errorsArray)
-  }
+    setErrors(errorsArray);
+  };
 
   return (
     <>
@@ -103,13 +103,13 @@ const FormsExample = () => {
         className="govuk-button"
         data-module="govuk-button"
         onClick={() => {
-          handleSubmit()
+          handleSubmit();
         }}
       >
         Save and continue
       </button>
     </>
-  )
-}
+  );
+};
 
-export default FormsExample
+export default FormsExample;
