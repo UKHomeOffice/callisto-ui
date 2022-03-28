@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
 import Home from './pages/Home';
+import Notes from './components/common/form/text-area/Notes';
 
 function App() {
   return (
@@ -14,9 +15,11 @@ function App() {
         Skip to main content
       </a>
       <Header />
-      <Notes />
+  
       <div className="govuk-width-container ">
+
         <main className="govuk-main-wrapper " id="main-content" role="main">
+        <Notes />
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
