@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const BackLink = ({ text }) => {
   return (
@@ -10,7 +9,7 @@ const BackLink = ({ text }) => {
 };
 
 BackLink.propTypes = {
-  text: PropTypes.string,
+  text: PropTypes.string.isRequired,
 };
 
 export default BackLink;

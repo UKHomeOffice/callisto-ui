@@ -14,6 +14,7 @@ function App() {
         Skip to main content
       </a>
       <Header />
+      <Notes />
       <div className="govuk-width-container ">
         <main className="govuk-main-wrapper " id="main-content" role="main">
           <Routes>
