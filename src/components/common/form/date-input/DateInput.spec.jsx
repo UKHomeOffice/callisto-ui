@@ -30,9 +30,7 @@ describe('DateInput', () => {
   })
 
   it('should update the input value on change', () => {
-    const handleDayChangeMock = jest.fn()
-    const handleMonthChangeMock = jest.fn()
-    const handleYearChangeMock = jest.fn()
+    const handleFormChangeMock = jest.fn()
 
     render(
       <DateInput
@@ -40,9 +38,7 @@ describe('DateInput', () => {
         heading="What is the date?"
         headingSize="l"
         hint="eg. 01/01/2022"
-        handleDayChange={(event) => handleDayChangeMock(event)}
-        handleMonthChange={(event) => handleMonthChangeMock(event)}
-        handleYearChange={(event) => handleYearChangeMock(event)}
+        handleFormChange={(event) => handleFormChangeMock(event)}
       />
     )
 

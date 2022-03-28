@@ -10,9 +10,7 @@ function DateInput({
   dayValue,
   monthValue,
   yearValue,
-  handleDayChange,
-  handleMonthChange,
-  handleYearChange,
+  handleFormChange,
 }) {
   const [errorMessages, setErrorMessages] = useState([])
 
@@ -22,15 +20,13 @@ function DateInput({
 
   const updateErrorMessages = () => {
     const findErrors = errors?.filter((error) => error.inputName.includes(name))
-    let relevantErrorMessages
+    let relevantErrorMessages = []
     if (findErrors) {
       relevantErrorMessages = findErrors.map((error) => {
         return error.message
       })
-      setErrorMessages(relevantErrorMessages)
-    } else {
-      setErrorMessages([])
     }
+    setErrorMessages(relevantErrorMessages)
   }
 
   return (
@@ -85,7 +81,7 @@ function DateInput({
                   data-testid="day-input"
                   value={dayValue}
                   onChange={(event) => {
-                    handleDayChange(event)
+                    handleFormChange(event)
                   }}
                 />
               </div>
@@ -115,7 +111,7 @@ function DateInput({
                   data-testid="month-input"
                   value={monthValue}
                   onChange={(event) => {
-                    handleMonthChange(event)
+                    handleFormChange(event)
                   }}
                 />
               </div>
@@ -145,7 +141,7 @@ function DateInput({
                   data-testid="year-input"
                   value={yearValue}
                   onChange={(event) => {
-                    handleYearChange(event)
+                    handleFormChange(event)
                   }}
                 />
               </div>
@@ -173,7 +169,5 @@ DateInput.propTypes = {
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
-  handleDayChange: PropTypes.func,
-  handleMonthChange: PropTypes.func,
-  handleYearChange: PropTypes.func,
+  handleFormChange: PropTypes.func,
 }

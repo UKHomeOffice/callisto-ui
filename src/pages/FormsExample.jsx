@@ -5,13 +5,13 @@ import Input from '../components/common/form/input/Input'
 import Radios from '../components/common/form/radios/Radios'
 
 const FormsExample = () => {
-  const [name, setName] = useState('')
-  const [location, setLocation] = useState('')
-  const [day, setDay] = useState('')
-  const [month, setMonth] = useState('')
-  const [year, setYear] = useState('')
-
-  const [form, setForm] = useState({ name: '', whereDoYouLive: '' })
+  const [form, setForm] = useState({
+    name: '',
+    whereDoYouLive: '',
+    'dateOfBirth-day': '',
+    'dateOfBirth-month': '',
+    'dateOfBirth-year': '',
+  })
   const [errors, setErrors] = useState([])
   const [submitted, setSubmitted] = useState(false)
 
@@ -23,24 +23,6 @@ const FormsExample = () => {
 
   const handleFormChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value })
-  }
-
-  const handleDayChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-
-    setDay(event.target.value)
-  }
-
-  const handleMonthChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-
-    setMonth(event.target.value)
-  }
-
-  const handleYearChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-
-    setYear(event.target.value)
   }
 
   const validateInput = async () => {
@@ -57,19 +39,19 @@ const FormsExample = () => {
         message: 'Select a location',
       })
     }
-    if (day === '') {
+    if (form['dateOfBirth-day'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-day',
         message: 'Day cannot be blank',
       })
     }
-    if (month === '') {
+    if (form['dateOfBirth-month'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-month',
         message: 'Month cannot be blank',
       })
     }
-    if (year === '') {
+    if (form['dateOfBirth-year'] === '') {
       errorsArray.push({
         inputName: 'dateOfBirth-year',
         message: 'Year cannot be blank',
@@ -111,12 +93,10 @@ const FormsExample = () => {
         headingSize="m"
         hint="eg. 01/01/1990"
         errors={errors}
-        dayValue={day}
-        monthValue={month}
-        yearValue={year}
-        handleDayChange={(event) => handleDayChange(event)}
-        handleMonthChange={(event) => handleMonthChange(event)}
-        handleYearChange={(event) => handleYearChange(event)}
+        dayValue={form['dateOfBirth-day']}
+        monthValue={form['dateOfBirth-month']}
+        yearValue={form['dateOfBirth-year']}
+        handleFormChange={(event) => handleFormChange(event)}
       />
 
       <button
