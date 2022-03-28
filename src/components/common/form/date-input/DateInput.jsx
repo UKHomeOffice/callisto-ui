@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 function DateInput({
   name,
@@ -15,18 +15,18 @@ function DateInput({
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => {
-    updateErrorMessages()
+    updateErrorMessages();
   }, [errors])
 
   const updateErrorMessages = () => {
-    const findErrors = errors?.filter((error) => error.inputName.includes(name))
-    let relevantErrorMessages = []
+    const findErrors = errors?.filter((error) => error.inputName.includes(name));
+    let relevantErrorMessages = [];
     if (findErrors) {
       relevantErrorMessages = findErrors.map((error) => {
-        return error.message
+        return error.message;
       })
     }
-    setErrorMessages(relevantErrorMessages)
+    setErrorMessages(relevantErrorMessages);
   }
 
   return (
@@ -69,7 +69,7 @@ function DateInput({
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-day'
+                      return error.inputName === name + '-day';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -99,7 +99,7 @@ function DateInput({
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-month'
+                      return error.inputName === name + '-month';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -129,7 +129,7 @@ function DateInput({
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
                     errors &&
                     errors.find((error) => {
-                      return error.inputName === name + '-year'
+                      return error.inputName === name + '-year';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -150,10 +150,10 @@ function DateInput({
         </fieldset>
       </div>
     </>
-  )
+  );
 }
 
-export default DateInput
+export default DateInput;
 
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
@@ -170,4 +170,4 @@ DateInput.propTypes = {
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
   handleFormChange: PropTypes.func,
-}
+};

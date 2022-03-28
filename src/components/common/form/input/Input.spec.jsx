@@ -1,6 +1,6 @@
-import { screen, render, fireEvent } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react';
 
-import Input from './Input'
+import Input from './Input';
 
 describe('Input', () => {
   it('should render an input component with the correct heading', () => {
@@ -11,11 +11,11 @@ describe('Input', () => {
         headingSize="l"
         inputWidth="10"
       />
-    )
+    );
 
-    const heading = screen.getByText('What is your name?')
-    expect(heading).toBeTruthy()
-  })
+    const heading = screen.getByText('What is your name?');
+    expect(heading).toBeTruthy();
+  });
 
   it('should render an input component with the correct hint', () => {
     render(
@@ -26,15 +26,15 @@ describe('Input', () => {
         inputWidth="10"
         hint="eg. John"
       />
-    )
+    );
 
-    const hint = screen.getByText('eg. John')
+    const hint = screen.getByText('eg. John');
 
-    expect(hint).toBeTruthy()
-  })
+    expect(hint).toBeTruthy();
+  });
 
   it('should update the input value on change', () => {
-    const handleFormChangeMock = jest.fn()
+    const handleFormChangeMock = jest.fn();
     render(
       <Input
         name="test"
@@ -44,14 +44,16 @@ describe('Input', () => {
         hint="eg. John"
         handleFormChange={(event) => handleFormChangeMock(event)}
       />
-    )
+    );
 
-    const input = screen.getByTestId('input-box')
-    fireEvent.change(input, { target: { value: 'John' } })
-    expect(input.value).toBe('John')
-  })
+    const input = screen.getByTestId('input-box');
+    fireEvent.change(input, { target: { value: 'John' } });
+    expect(input.value).toBe('John');
+  });
 
   it('should pre-fill the input if value is passed in', () => {
+    const handleFormChangeMock = jest.fn();
+
     render(
       <Input
         name="test"
@@ -62,11 +64,11 @@ describe('Input', () => {
         value="Bob"
         handleFormChange={(event) => handleFormChangeMock(event)}
       />
-    )
+    );
 
-    const input = screen.getByTestId('input-box')
-    expect(input.value).toBe('Bob')
-  })
+    const input = screen.getByTestId('input-box');
+    expect(input.value).toBe('Bob');
+  });
 
   it('should display an error message when there is an error', () => {
     render(
@@ -82,11 +84,11 @@ describe('Input', () => {
           },
         ]}
       />
-    )
+    );
 
-    const errorMessage = screen.getByText('Enter a name')
-    expect(errorMessage).toBeTruthy()
-  })
+    const errorMessage = screen.getByText('Enter a name');
+    expect(errorMessage).toBeTruthy();
+  });
 
   it('should add error styling to input box when there is an error', () => {
     render(
@@ -102,11 +104,11 @@ describe('Input', () => {
           },
         ]}
       />
-    )
+    );
 
-    const inputBox = screen.getByTestId('input-box')
-    expect(inputBox.className).toContain('govuk-input--error')
-  })
+    const inputBox = screen.getByTestId('input-box');
+    expect(inputBox.className).toContain('govuk-input--error');
+  });
 
   it('should not add error styling to input box when there is not an error', () => {
     render(
@@ -117,9 +119,9 @@ describe('Input', () => {
         inputWidth="10"
         errors={[]}
       />
-    )
+    );
 
-    const inputBox = screen.getByTestId('input-box')
-    expect(inputBox.className).not.toContain('govuk-input--error')
-  })
-})
+    const inputBox = screen.getByTestId('input-box');
+    expect(inputBox.className).not.toContain('govuk-input--error');
+  });
+});

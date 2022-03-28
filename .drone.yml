@@ -1,0 +1,20 @@
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
+      - npm install
+      - npm run lint
+      - npm run test
+      - npm run build

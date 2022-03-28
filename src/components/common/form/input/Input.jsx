@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 function Input({
   name,
@@ -11,17 +11,17 @@ function Input({
   value,
   handleFormChange,
 }) {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    updateErrorMessage()
-  }, [errors])
+    updateErrorMessage();
+  }, [errors]);
 
   const updateErrorMessage = () => {
-    const findError = errors?.find((error) => error.inputName === name)
-    const newErrorMessage = findError ? findError.message : ''
-    setErrorMessage(newErrorMessage)
-  }
+    const findError = errors?.find((error) => error.inputName === name);
+    const newErrorMessage = findError ? findError.message : '';
+    setErrorMessage(newErrorMessage);
+  };
 
   return (
     <>
@@ -58,16 +58,16 @@ function Input({
           value={value}
           type="text"
           onChange={(event) => {
-            handleFormChange(event)
+            handleFormChange(event);
           }}
           data-testid="input-box"
         />
       </div>
     </>
-  )
+  );
 }
 
-export default Input
+export default Input;
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
@@ -83,4 +83,4 @@ Input.propTypes = {
   ),
   value: PropTypes.string,
   handleFormChange: PropTypes.func,
-}
+};

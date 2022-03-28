@@ -65,6 +65,6 @@ const HomeOfficeLogo = () => (
       </g>
     </g>
   </svg>
-)
+);
 
-export default HomeOfficeLogo
+export default HomeOfficeLogo;

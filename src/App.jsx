@@ -1,8 +1,8 @@
-import { Routes, Route } from 'react-router-dom'
-import Footer from './components/layout/footer/Footer'
-import Header from './components/layout/header/Header'
-import FormsExample from './pages/FormsExample'
-import Home from './pages/Home'
+import { Routes, Route } from 'react-router-dom';
+import Footer from './components/layout/footer/Footer';
+import Header from './components/layout/header/Header';
+import FormsExample from './pages/FormsExample';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
