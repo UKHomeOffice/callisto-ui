@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DateInput from '../components/common/form/date-input/DateInput';
 import ErrorSummary from '../components/common/form/error-summary/ErrorSummary';
 import Input from '../components/common/form/input/Input';

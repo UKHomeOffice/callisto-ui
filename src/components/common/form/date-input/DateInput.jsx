@@ -12,22 +12,24 @@ function DateInput({
   yearValue,
   handleFormChange,
 }) {
-  const [errorMessages, setErrorMessages] = useState([])
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     updateErrorMessages();
-  }, [errors])
+  }, [errors]);
 
   const updateErrorMessages = () => {
-    const findErrors = errors?.filter((error) => error.inputName.includes(name));
+    const findErrors = errors?.filter((error) =>
+      error.inputName.includes(name)
+    );
     let relevantErrorMessages = [];
     if (findErrors) {
       relevantErrorMessages = findErrors.map((error) => {
         return error.message;
-      })
+      });
     }
     setErrorMessages(relevantErrorMessages);
-  }
+  };
 
   return (
     <>
@@ -81,7 +83,7 @@ function DateInput({
                   data-testid="day-input"
                   value={dayValue}
                   onChange={(event) => {
-                    handleFormChange(event)
+                    handleFormChange(event);
                   }}
                 />
               </div>
@@ -111,7 +113,7 @@ function DateInput({
                   data-testid="month-input"
                   value={monthValue}
                   onChange={(event) => {
-                    handleFormChange(event)
+                    handleFormChange(event);
                   }}
                 />
               </div>
@@ -141,7 +143,7 @@ function DateInput({
                   data-testid="year-input"
                   value={yearValue}
                   onChange={(event) => {
-                    handleFormChange(event)
+                    handleFormChange(event);
                   }}
                 />
               </div>
