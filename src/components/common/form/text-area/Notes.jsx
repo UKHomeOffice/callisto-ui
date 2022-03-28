@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import ButtonGroup from '../navigation/ButtonGroup'
+
 
 const Notes = () => {
   return (
@@ -24,10 +24,6 @@ const Notes = () => {
   </div>
 
 </div>
-<ButtonGroup
-buttonText1='Save'
-buttonText2='Cancel'
- />
 </>
   )
 }
