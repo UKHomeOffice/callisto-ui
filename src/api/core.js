@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const headers = { 'Content-Type': 'application/json' }
+const headers = { 'Content-Type': 'application/json' };
 
 const instance = axios.create({
   headers,
-})
+});
 
 export default {
   get: (endpoint, token) =>
@@ -27,4 +27,4 @@ export default {
       url: endpoint,
       data,
     }),
-}
+};
