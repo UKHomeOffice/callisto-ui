@@ -1,10 +1,42 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
-function DateInput({ name, heading, headingSize, hint, errors }) {
+function DateInput({
+  name,
+  heading,
+  headingSize,
+  hint,
+  errors,
+  dayValue,
+  monthValue,
+  yearValue,
+  handleFormChange,
+}) {
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  useEffect(() => {
+    updateErrorMessages();
+  }, [errors]);
+
+  const updateErrorMessages = () => {
+    const findErrors = errors?.filter((error) =>
+      error.inputName.includes(name)
+    );
+    let relevantErrorMessages = [];
+    if (findErrors) {
+      relevantErrorMessages = findErrors.map((error) => {
+        return error.message;
+      });
+    }
+    setErrorMessages(relevantErrorMessages);
+  };
+
   return (
     <>
       <div
-        className={`govuk-form-group ${errors && 'govuk-form-group--error'}`}
+        className={`govuk-form-group ${
+          errorMessages.length > 0 && 'govuk-form-group--error'
+        }`}
       >
         <fieldset
           className="govuk-fieldset"
@@ -19,11 +51,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
           <div id={`${name}-hint`} className="govuk-hint">
             {hint}
           </div>
-          {errors &&
-            errors.map((error, i) => (
+          {errorMessages &&
+            errorMessages.map((error, i) => (
               <p id={`${name}-error`} key={i} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span>{' '}
-                {error.message}
+                <span className="govuk-visually-hidden">Error:</span> {error}
               </p>
             ))}
 
@@ -50,6 +81,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="day-input"
+                  value={dayValue}
+                  onChange={(event) => {
+                    handleFormChange(event);
+                  }}
                 />
               </div>
             </div>
@@ -76,6 +111,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="month-input"
+                  value={monthValue}
+                  onChange={(event) => {
+                    handleFormChange(event);
+                  }}
                 />
               </div>
             </div>
@@ -102,6 +141,10 @@ function DateInput({ name, heading, headingSize, hint, errors }) {
                   pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="year-input"
+                  value={yearValue}
+                  onChange={(event) => {
+                    handleFormChange(event);
+                  }}
                 />
               </div>
             </div>
@@ -125,4 +168,8 @@ DateInput.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
+  dayValue: PropTypes.string,
+  monthValue: PropTypes.string,
+  yearValue: PropTypes.string,
+  handleFormChange: PropTypes.func,
 };

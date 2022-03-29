@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 
 import DateInput from './DateInput';
 
@@ -26,6 +26,57 @@ describe('DateInput', () => {
     const hint = screen.getByText('eg. 01/01/2022');
 
     expect(hint).toBeTruthy();
+  });
+
+  it('should update the input value on change', () => {
+    const handleFormChangeMock = jest.fn();
+
+    render(
+      <DateInput
+        name="test"
+        heading="What is the date?"
+        headingSize="l"
+        hint="eg. 01/01/2022"
+        handleFormChange={(event) => handleFormChangeMock(event)}
+      />
+    );
+
+    const dayInput = screen.getByTestId('day-input');
+    const monthInput = screen.getByTestId('month-input');
+    const yearInput = screen.getByTestId('year-input');
+
+    fireEvent.change(dayInput, { target: { value: '01' } });
+    fireEvent.change(monthInput, { target: { value: '03' } });
+    fireEvent.change(yearInput, { target: { value: '2022' } });
+
+    expect(dayInput.value).toBe('01');
+    expect(monthInput.value).toBe('03');
+    expect(yearInput.value).toBe('2022');
+  });
+
+  it('should pre-fill the inputs if values are passed in', () => {
+    const handleFormChangeMock = jest.fn();
+
+    render(
+      <DateInput
+        name="test"
+        heading="What is the date?"
+        headingSize="l"
+        hint="eg. 01/01/2022"
+        dayValue={'01'}
+        monthValue={'01'}
+        yearValue={'2022'}
+        handleFormChange={(event) => handleFormChangeMock(event)}
+      />
+    );
+
+    const dayInput = screen.getByTestId('day-input');
+    const monthInput = screen.getByTestId('month-input');
+    const yearInput = screen.getByTestId('year-input');
+
+    expect(dayInput.value).toBe('01');
+    expect(monthInput.value).toBe('01');
+    expect(yearInput.value).toBe('2022');
   });
 
   describe('Error messages', () => {
