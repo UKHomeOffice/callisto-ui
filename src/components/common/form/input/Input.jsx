@@ -1,6 +1,28 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
+function Input({
+  name,
+  heading,
+  headingSize,
+  inputWidth,
+  hint,
+  errors,
+  value,
+  handleFormChange,
+}) {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    updateErrorMessage();
+  }, [errors]);
+
+  const updateErrorMessage = () => {
+    const findError = errors?.find((error) => error.inputName === name);
+    const newErrorMessage = findError ? findError.message : '';
+    setErrorMessage(newErrorMessage);
+  };
+
   return (
     <>
       <div
@@ -33,7 +55,11 @@ function Input({ name, heading, headingSize, inputWidth, hint, errorMessage }) {
           } govuk-input--width-${inputWidth}`}
           id={`${name}`}
           name={`${name}`}
+          value={value}
           type="text"
+          onChange={(event) => {
+            handleFormChange(event);
+          }}
           data-testid="input-box"
         />
       </div>
@@ -49,5 +75,12 @@ Input.propTypes = {
   headingSize: PropTypes.string.isRequired,
   inputWidth: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errorMessage: PropTypes.string,
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      inputName: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    })
+  ),
+  value: PropTypes.string,
+  handleFormChange: PropTypes.func,
 };

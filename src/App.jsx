@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
+import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Notes from './components/common/form/text-area/Notes';
 
@@ -21,6 +22,7 @@ function App() {
         <main className="govuk-main-wrapper " id="main-content" role="main">
         <Notes />
           <Routes>
+            <Route path="/forms" element={<FormsExample />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </main>
