@@ -3,7 +3,7 @@ import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
-import Notes from './components/common/form/text-area/Notes';
+import NotesSummaryList from './components/common/form/text-area/NotesSummaryList';
 
 function App() {
   return (
@@ -16,11 +16,10 @@ function App() {
         Skip to main content
       </a>
       <Header />
-  
-      <div className="govuk-width-container ">
 
+      <div className="govuk-width-container ">
         <main className="govuk-main-wrapper " id="main-content" role="main">
-        <Notes />
+          <NotesSummaryList />
           <Routes>
             <Route path="/forms" element={<FormsExample />} />
             <Route path="/" element={<Home />} />
