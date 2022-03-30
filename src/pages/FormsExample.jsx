@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import DateInput from '../components/common/form/date-input/DateInput';
 import ErrorSummary from '../components/common/form/error-summary/ErrorSummary';
@@ -7,6 +8,8 @@ import Input from '../components/common/form/input/Input';
 import Radios from '../components/common/form/radios/Radios';
 
 const FormsExample = () => {
+  const navigate = useNavigate();
+
   // const [form, setForm] = useState({
   //   name: '',
   //   whereDoYouLive: '',
@@ -83,6 +86,7 @@ const FormsExample = () => {
       <form
         onSubmit={handleSubmit((data) => {
           console.log(data);
+          navigate('/');
         })}
       >
         <Input
@@ -92,32 +96,34 @@ const FormsExample = () => {
           inputWidth="20"
           hint="eg. Joanna"
           errors={errors}
-          // value={form.name}
           {...register('name', {
             required: {
               value: true,
-              message: 'You must enter your name',
+              message: 'Enter your name',
             },
             minLength: {
               value: 2,
-              message: 'Your name must be at least 2 characters',
+              message: 'Name must be at least 2 characters',
             },
           })}
-          // handleFormChange={(event) => console.log(event)}
         />
 
-        {/* <Radios
-        name="whereDoYouLive"
-        heading="Where do you live?"
-        headingSize="m"
-        options={['England', 'Ireland', 'Scotland', 'Wales']}
-        hint="eg. England"
-        errors={errors}
-        value={form.whereDoYouLive}
-        handleFormChange={(event) => handleFormChange(event)}
-      />
+        <Radios
+          name="whereDoYouLive"
+          heading="Where do you live?"
+          headingSize="m"
+          options={['England', 'Ireland', 'Scotland', 'Wales']}
+          hint="eg. England"
+          errors={errors}
+          {...register('whereDoYouLive', {
+            required: {
+              value: true,
+              message: 'Select a location',
+            },
+          })}
+        />
 
-      <DateInput
+        {/* <DateInput
         name="dateOfBirth"
         heading="What is your date of birth?"
         headingSize="m"

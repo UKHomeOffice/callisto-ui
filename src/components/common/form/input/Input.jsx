@@ -1,33 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Input = React.forwardRef(
-  (
-    {
-      name,
-      heading,
-      headingSize,
-      inputWidth,
-      hint,
-      errors,
-      value,
-      onChange,
-      // register,
-    },
-    ref
-  ) => {
-    // const [errorMessage, setErrorMessage] = useState('');
-
-    // useEffect(() => {
-    //   updateErrorMessage();
-    // }, [errors]);
-
-    // const updateErrorMessage = () => {
-    //   const findError = errors?.find((error) => error.inputName === name);
-    //   const newErrorMessage = findError ? findError.message : '';
-    //   setErrorMessage(newErrorMessage);
-    // };
-
+  ({ name, heading, headingSize, inputWidth, hint, errors, onChange }, ref) => {
     return (
       <>
         <div
@@ -60,7 +35,6 @@ const Input = React.forwardRef(
             } govuk-input--width-${inputWidth}`}
             id={`${name}`}
             name={`${name}`}
-            // value={value}
             type="text"
             onChange={onChange}
             data-testid="input-box"
@@ -87,7 +61,4 @@ Input.propTypes = {
       message: PropTypes.string.isRequired,
     })
   ),
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  // register: PropTypes.any,
 };
