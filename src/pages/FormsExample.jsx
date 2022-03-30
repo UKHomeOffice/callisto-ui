@@ -93,8 +93,17 @@ const FormsExample = () => {
           hint="eg. Joanna"
           errors={errors}
           // value={form.name}
-          // handleFormChange={(event) => handleFormChange(event)}
-          register={register}
+          {...register('name', {
+            required: {
+              value: true,
+              message: 'You must enter your name',
+            },
+            minLength: {
+              value: 2,
+              message: 'Your name must be at least 2 characters',
+            },
+          })}
+          // handleFormChange={(event) => console.log(event)}
         />
 
         {/* <Radios
