@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const BackLink = ({ text }) => {
   return (
-    <a href="#" className="govuk-link--no-visited-state">
+    <a href="/" className="govuk-link--no-visited-state">
       {text}
     </a>
   );
