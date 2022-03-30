@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 
 import Radios from './Radios';
 
@@ -49,22 +49,22 @@ describe('Radios', () => {
     expect(hint).toBeTruthy();
   });
 
-  // it('should set the radio button to checked when it is selected', () => {
-  //   render(
-  //     <Radios
-  //       name="radios"
-  //       heading="Where do you live?"
-  //       headingSize="l"
-  //       options={['England', 'Ireland', 'Scotland', 'Wales']}
-  //       hint="eg. England"
-  //     />
-  //   );
+  it('should set the radio button to checked when it is selected', () => {
+    render(
+      <Radios
+        name="radios"
+        heading="Where do you live?"
+        headingSize="l"
+        options={['England', 'Ireland', 'Scotland', 'Wales']}
+        hint="eg. England"
+      />
+    );
 
-  //   const radioButton = screen.getByLabelText('England');
-  //   fireEvent.click(radioButton);
+    const radioButton = screen.getByLabelText('England');
+    fireEvent.click(radioButton, { target: { checked: true } });
 
-  //   expect(radioButton).toBeChecked();
-  // });
+    expect(radioButton).toBeChecked();
+  });
 
   it('should preselect the radio button if value is passed in', () => {
     render(
