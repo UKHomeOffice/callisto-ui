@@ -5,7 +5,6 @@ import Header from './components/layout/header/Header';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 
-
 function App() {
   return (
     <div className="App">
@@ -20,9 +19,10 @@ function App() {
       <div className="govuk-width-container ">
         <main className="govuk-main-wrapper " id="main-content" role="main">
           <SummaryList
-          shiftType='Early shift'
-          hours='08:00 to 16:00'
-          mealBreak='30 minutes taken' />
+            shiftType="Early shift"
+            hours="08:00 to 16:00"
+            mealBreak="30 minutes taken"
+          />
           <Routes>
             <Route path="/forms" element={<FormsExample />} />
             <Route path="/" element={<Home />} />
