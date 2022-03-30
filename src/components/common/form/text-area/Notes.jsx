@@ -2,6 +2,9 @@ import PropTypes from 'prop-types'
 
 
 const Notes = () => {
+
+
+  
   return (
 <>
 <div className="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
@@ -16,7 +19,7 @@ const Notes = () => {
     <p id="exceeding-characters-error" className="govuk-error-message">
       <span className="govuk-visually-hidden">Error:</span> Notes must be 200 characters or fewer
     </p>
-    <textarea className="govuk-textarea govuk-!-width-one-half govuk-js-character-count" id="with-hint" name="with-hint" rows="5" aria-describedby="with-hint-info with-hint-hint"></textarea>
+    <textarea className="govuk-textarea govuk-!-width-two-thirds govuk-js-character-count" id="with-hint" name="with-hint" rows="5" aria-describedby="with-hint-info with-hint-hint"></textarea>
   </div>
 
   <div id="with-hint-info" className="govuk-hint govuk-character-count__message" aria-live="polite">
