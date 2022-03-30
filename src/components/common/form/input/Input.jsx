@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-function Input({
+const Input = ({
   name,
   heading,
   headingSize,
@@ -10,24 +10,25 @@ function Input({
   errors,
   value,
   handleFormChange,
-}) {
-  const [errorMessage, setErrorMessage] = useState('');
+  register,
+}) => {
+  // const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    updateErrorMessage();
-  }, [errors]);
+  // useEffect(() => {
+  //   updateErrorMessage();
+  // }, [errors]);
 
-  const updateErrorMessage = () => {
-    const findError = errors?.find((error) => error.inputName === name);
-    const newErrorMessage = findError ? findError.message : '';
-    setErrorMessage(newErrorMessage);
-  };
+  // const updateErrorMessage = () => {
+  //   const findError = errors?.find((error) => error.inputName === name);
+  //   const newErrorMessage = findError ? findError.message : '';
+  //   setErrorMessage(newErrorMessage);
+  // };
 
   return (
     <>
       <div
         className={`govuk-form-group ${
-          errorMessage && 'govuk-form-group--error'
+          errors[name] && 'govuk-form-group--error'
         }`}
       >
         <h1 className="govuk-label-wrapper">
@@ -43,15 +44,15 @@ function Input({
             {hint}
           </div>
         )}
-        {errorMessage && (
+        {errors[name] && (
           <p id={`${name}-error`} className="govuk-error-message">
             <span className="govuk-visually-hidden">Error:</span>
-            {errorMessage}
+            {errors[name].message}
           </p>
         )}
         <input
           className={`govuk-input ${
-            errorMessage && 'govuk-input--error'
+            errors[name] && 'govuk-input--error'
           } govuk-input--width-${inputWidth}`}
           id={`${name}`}
           name={`${name}`}
@@ -61,11 +62,21 @@ function Input({
             handleFormChange(event);
           }}
           data-testid="input-box"
+          {...register(name, {
+            required: {
+              value: true,
+              message: 'You must enter your name',
+            },
+            minLength: {
+              value: 2,
+              message: 'Your name must be at least 2 characters',
+            },
+          })}
         />
       </div>
     </>
   );
-}
+};
 
 export default Input;
 
@@ -83,4 +94,5 @@ Input.propTypes = {
   ),
   value: PropTypes.string,
   handleFormChange: PropTypes.func,
+  register: PropTypes.any,
 };
