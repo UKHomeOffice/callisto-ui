@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Input = React.forwardRef(
-  ({ name, heading, headingSize, inputWidth, hint, errors, onChange }, ref) => {
+  (
+    { name, heading, headingSize, inputWidth, hint, errors, value, onChange },
+    ref
+  ) => {
     return (
       <>
         <div
@@ -37,6 +40,7 @@ const Input = React.forwardRef(
             name={`${name}`}
             type="text"
             onChange={onChange}
+            value={value}
             data-testid="input-box"
             ref={ref}
           />
@@ -55,10 +59,7 @@ Input.propTypes = {
   headingSize: PropTypes.string.isRequired,
   inputWidth: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      inputName: PropTypes.string.isRequired,
-      message: PropTypes.string.isRequired,
-    })
-  ),
+  errors: PropTypes.object,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };

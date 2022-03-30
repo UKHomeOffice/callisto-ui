@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
-function DateInput({
+const DateInput = ({
   name,
   heading,
   headingSize,
@@ -10,8 +10,8 @@ function DateInput({
   dayValue,
   monthValue,
   yearValue,
-  handleFormChange,
-}) {
+  register,
+}) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
@@ -19,13 +19,13 @@ function DateInput({
   }, [errors]);
 
   const updateErrorMessages = () => {
-    const findErrors = errors?.filter((error) =>
-      error.inputName.includes(name)
+    const findErrors = Object.keys(errors)?.filter((inputName) =>
+      inputName.includes(name)
     );
     let relevantErrorMessages = [];
     if (findErrors) {
-      relevantErrorMessages = findErrors.map((error) => {
-        return error.message;
+      relevantErrorMessages = findErrors.map((inputName) => {
+        return errors[inputName].message;
       });
     }
     setErrorMessages(relevantErrorMessages);
@@ -70,8 +70,8 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-day';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-day';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -82,9 +82,12 @@ function DateInput({
                   inputMode="numeric"
                   data-testid="day-input"
                   value={dayValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  {...register(name + '-day', {
+                    required: {
+                      value: true,
+                      message: 'Enter a day',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -100,8 +103,8 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-month';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-month';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -112,9 +115,12 @@ function DateInput({
                   inputMode="numeric"
                   data-testid="month-input"
                   value={monthValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  {...register(name + '-month', {
+                    required: {
+                      value: true,
+                      message: 'Enter a month',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -130,8 +136,8 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-year';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-year';
                     }) &&
                     'govuk-input--error'
                   }`}
@@ -142,9 +148,12 @@ function DateInput({
                   inputMode="numeric"
                   data-testid="year-input"
                   value={yearValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  {...register(name + '-year', {
+                    required: {
+                      value: true,
+                      message: 'Enter a year',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -153,23 +162,19 @@ function DateInput({
       </div>
     </>
   );
-}
+};
 
 export default DateInput;
 
+DateInput.displayName = 'DateInput';
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
   headingSize: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      inputName: PropTypes.string.isRequired,
-      message: PropTypes.string.isRequired,
-    })
-  ),
+  errors: PropTypes.any,
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
-  handleFormChange: PropTypes.func,
+  register: PropTypes.any,
 };

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,71 +9,11 @@ import Radios from '../components/common/form/radios/Radios';
 const FormsExample = () => {
   const navigate = useNavigate();
 
-  // const [form, setForm] = useState({
-  //   name: '',
-  //   whereDoYouLive: '',
-  //   'dateOfBirth-day': '',
-  //   'dateOfBirth-month': '',
-  //   'dateOfBirth-year': '',
-  // });
-  // const [errors, setErrors] = useState([]);
-  // const [submitted, setSubmitted] = useState(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ reValidateMode: 'onSubmit' });
-
-  useEffect(() => {
-    // call api or anything
-    console.log(errors);
-  });
-
-  // const handleSubmit = async () => {
-  //   setSubmitted(true);
-  //   await validateInput();
-  //   console.log(form);
-  // };
-
-  // const handleFormChange = (event) => {
-  //   setForm({ ...form, [event.target.name]: event.target.value });
-  // };
-
-  // const validateInput = async () => {
-  //   const errorsArray = [];
-  //   if (form.name === '') {
-  //     errorsArray.push({
-  //       inputName: 'name',
-  //       message: 'Enter a name',
-  //     });
-  //   }
-  //   if (form.whereDoYouLive === '') {
-  //     errorsArray.push({
-  //       inputName: 'whereDoYouLive',
-  //       message: 'Select a location',
-  //     });
-  //   }
-  //   if (form['dateOfBirth-day'] === '') {
-  //     errorsArray.push({
-  //       inputName: 'dateOfBirth-day',
-  //       message: 'Day cannot be blank',
-  //     });
-  //   }
-  //   if (form['dateOfBirth-month'] === '') {
-  //     errorsArray.push({
-  //       inputName: 'dateOfBirth-month',
-  //       message: 'Month cannot be blank',
-  //     });
-  //   }
-  //   if (form['dateOfBirth-year'] === '') {
-  //     errorsArray.push({
-  //       inputName: 'dateOfBirth-year',
-  //       message: 'Year cannot be blank',
-  //     });
-  //   }
-  //   setErrors(errorsArray);
-  // };
 
   return (
     <>
@@ -123,27 +62,19 @@ const FormsExample = () => {
           })}
         />
 
-        {/* <DateInput
-        name="dateOfBirth"
-        heading="What is your date of birth?"
-        headingSize="m"
-        hint="eg. 01/01/1990"
-        errors={errors}
-        dayValue={form['dateOfBirth-day']}
-        monthValue={form['dateOfBirth-month']}
-        yearValue={form['dateOfBirth-year']}
-        handleFormChange={(event) => handleFormChange(event)}
-      /> */}
+        <DateInput
+          name="dateOfBirth"
+          heading="What is your date of birth?"
+          headingSize="m"
+          hint="eg. 01/01/1990"
+          errors={errors}
+          register={register}
+        />
 
         <button
           className="govuk-button"
           data-module="govuk-button"
           type="submit"
-          // onClick={() => {
-          //   handleSubmit((data) => {
-          //     console.log(data);
-          //   });
-          // }}
         >
           Save and continue
         </button>
