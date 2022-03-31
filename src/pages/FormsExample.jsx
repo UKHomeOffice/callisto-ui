@@ -12,8 +12,11 @@ const FormsExample = () => {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
-  } = useForm({ reValidateMode: 'onSubmit' });
+  } = useForm({
+    reValidateMode: 'onSubmit',
+  });
 
   return (
     <>
@@ -69,6 +72,7 @@ const FormsExample = () => {
           hint="eg. 01/01/1990"
           errors={errors}
           register={register}
+          formState={formState}
         />
 
         <button

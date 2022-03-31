@@ -11,12 +11,13 @@ const DateInput = ({
   monthValue,
   yearValue,
   register,
+  formState,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     updateErrorMessages();
-  }, [errors]);
+  }, [formState]);
 
   const updateErrorMessages = () => {
     const findErrors = Object.keys(errors)?.filter((inputName) =>
@@ -78,7 +79,6 @@ const DateInput = ({
                   id={`${name}-day`}
                   name={`${name}-day`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="day-input"
                   value={dayValue}
@@ -87,6 +87,11 @@ const DateInput = ({
                       value: true,
                       message: 'Enter a day',
                     },
+                    // min: { value: 1, message: 'Day must be at least 1' },
+                    // max: {
+                    //   value: 31,
+                    //   message: 'Day must be less than 31',
+                    // },
                   })}
                 />
               </div>
@@ -111,7 +116,6 @@ const DateInput = ({
                   id={`${name}-month`}
                   name={`${name}-month`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="month-input"
                   value={monthValue}
@@ -144,7 +148,6 @@ const DateInput = ({
                   id={`${name}-year`}
                   name={`${name}-year`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="year-input"
                   value={yearValue}
@@ -176,5 +179,6 @@ DateInput.propTypes = {
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
-  register: PropTypes.any,
+  register: PropTypes.any.isRequired,
+  formState: PropTypes.any,
 };
