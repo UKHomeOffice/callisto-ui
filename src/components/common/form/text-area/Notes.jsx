@@ -9,12 +9,12 @@ const Notes = () => {
         data-maxlength="250"
         id="text-area"
       >
-        {/* add --error to class when javascript is working */}
+        {/* add --error to form class when javascript is working and implement error for when charcter count in exceeded  */}
         <div className="govuk-form-group">
-          <p id="exceeding-characters-error" className="govuk-error-message">
+          {/* <p id="exceeding-characters-error" className="govuk-error-message">
             <span className="govuk-visually-hidden">Error:</span> Notes must be
             250 characters or fewer
-          </p>
+          </p> */}
           <textarea
             className="govuk-textarea govuk-!-width-two-thirds govuk-js-character-count"
             id="with-hint"
