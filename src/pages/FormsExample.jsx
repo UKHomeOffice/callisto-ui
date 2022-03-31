@@ -47,6 +47,10 @@ const FormsExample = () => {
               value: 2,
               message: 'Name must be at least 2 characters',
             },
+            maxLength: {
+              value: 40,
+              message: 'Name must not exceed 40 characters',
+            },
           })}
         />
 

@@ -42,7 +42,7 @@ const Radios = React.forwardRef(
                   value={options[0]}
                   onChange={onChange}
                   ref={ref}
-                  checked={value === options[0]}
+                  defaultChecked={value === options[0]}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
@@ -62,7 +62,7 @@ const Radios = React.forwardRef(
                     value={radioLabel}
                     onChange={onChange}
                     ref={ref}
-                    checked={value === radioLabel}
+                    defaultChecked={value === radioLabel}
                   />
                   <label
                     className="govuk-label govuk-radios__label"

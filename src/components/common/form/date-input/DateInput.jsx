@@ -81,17 +81,16 @@ const DateInput = ({
                   type="text"
                   inputMode="numeric"
                   data-testid="day-input"
-                  value={dayValue}
+                  defaultValue={dayValue}
                   {...register(name + '-day', {
                     required: {
                       value: true,
                       message: 'Enter a day',
                     },
-                    // min: { value: 1, message: 'Day must be at least 1' },
-                    // max: {
-                    //   value: 31,
-                    //   message: 'Day must be less than 31',
-                    // },
+                    pattern: {
+                      value: /^([1-9]|0[1-9]|[12][\d]|3[01])$/,
+                      message: 'Enter a valid day',
+                    },
                   })}
                 />
               </div>
@@ -118,11 +117,15 @@ const DateInput = ({
                   type="text"
                   inputMode="numeric"
                   data-testid="month-input"
-                  value={monthValue}
+                  defaultValue={monthValue}
                   {...register(name + '-month', {
                     required: {
                       value: true,
                       message: 'Enter a month',
+                    },
+                    pattern: {
+                      value: /^([1-9]|[0][1-9]|1[012])$/,
+                      message: 'Enter a valid month',
                     },
                   })}
                 />
@@ -150,11 +153,15 @@ const DateInput = ({
                   type="text"
                   inputMode="numeric"
                   data-testid="year-input"
-                  value={yearValue}
+                  defaultValue={yearValue}
                   {...register(name + '-year', {
                     required: {
                       value: true,
                       message: 'Enter a year',
+                    },
+                    pattern: {
+                      value: /^\d{4}$/,
+                      message: 'Enter a valid year',
                     },
                   })}
                 />
