@@ -20,9 +20,9 @@ const DateInput = ({
   }, [formState]);
 
   const updateErrorMessages = () => {
-    const findErrors = Object.keys(errors)?.filter((inputName) =>
-      inputName.includes(name)
-    );
+    const findErrors =
+      errors &&
+      Object.keys(errors).filter((inputName) => inputName.includes(name));
     let relevantErrorMessages = [];
     if (findErrors) {
       relevantErrorMessages = findErrors.map((inputName) => {

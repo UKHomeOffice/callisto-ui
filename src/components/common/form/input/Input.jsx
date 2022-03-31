@@ -10,7 +10,7 @@ const Input = React.forwardRef(
       <>
         <div
           className={`govuk-form-group ${
-            errors[name] && 'govuk-form-group--error'
+            errors && errors[name] && 'govuk-form-group--error'
           }`}
         >
           <h1 className="govuk-label-wrapper">
@@ -26,7 +26,7 @@ const Input = React.forwardRef(
               {hint}
             </div>
           )}
-          {errors[name] && (
+          {errors && errors[name] && (
             <p id={`${name}-error`} className="govuk-error-message">
               <span className="govuk-visually-hidden">Error:</span>
               {errors[name].message}
@@ -34,7 +34,7 @@ const Input = React.forwardRef(
           )}
           <input
             className={`govuk-input ${
-              errors[name] && 'govuk-input--error'
+              errors && errors[name] && 'govuk-input--error'
             } govuk-input--width-${inputWidth}`}
             id={`${name}`}
             name={`${name}`}

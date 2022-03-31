@@ -2,12 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Radios = React.forwardRef(
-  ({ name, heading, headingSize, options, hint, errors, onChange }, ref) => {
+  (
+    { name, heading, headingSize, options, hint, value, errors, onChange },
+    ref
+  ) => {
     return (
       <>
         <div
           className={`govuk-form-group ${
-            errors[name] && 'govuk-form-group--error'
+            errors && errors[name] && 'govuk-form-group--error'
           }`}
           data-testid="radio-buttons"
         >
@@ -23,7 +26,7 @@ const Radios = React.forwardRef(
             <div id="contact-hint" className="govuk-hint">
               {hint}
             </div>
-            {errors[name] && (
+            {errors && errors[name] && (
               <p id={`${name}-error`} className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span>{' '}
                 {errors[name].message}
@@ -39,7 +42,7 @@ const Radios = React.forwardRef(
                   value={options[0]}
                   onChange={onChange}
                   ref={ref}
-                  // checked={value === options[0]}
+                  checked={value === options[0]}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
@@ -59,7 +62,7 @@ const Radios = React.forwardRef(
                     value={radioLabel}
                     onChange={onChange}
                     ref={ref}
-                    // checked={value === radioLabel}
+                    checked={value === radioLabel}
                   />
                   <label
                     className="govuk-label govuk-radios__label"
@@ -85,5 +88,7 @@ Radios.propTypes = {
   headingSize: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   hint: PropTypes.string,
+  value: PropTypes.string,
   errors: PropTypes.any,
+  onChange: PropTypes.func,
 };

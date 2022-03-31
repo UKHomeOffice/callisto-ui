@@ -82,6 +82,22 @@ describe('Radios', () => {
     expect(radioButton).toBeChecked();
   });
 
+  it('should preselect the radio button if value is passed in and is not the first option', () => {
+    render(
+      <Radios
+        name="radios"
+        heading="Where do you live?"
+        headingSize="l"
+        options={['England', 'Ireland', 'Scotland', 'Wales']}
+        hint="eg. England"
+        value="Scotland"
+      />
+    );
+
+    const radioButton = screen.getByLabelText('Scotland');
+    expect(radioButton).toBeChecked();
+  });
+
   it('should display an error message when there is an error', () => {
     render(
       <Radios
@@ -89,12 +105,11 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errors={[
-          {
-            inputName: 'radios',
+        errors={{
+          radios: {
             message: 'Select a radio button',
           },
-        ]}
+        }}
       />
     );
 
@@ -109,12 +124,11 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errors={[
-          {
-            inputName: 'radios',
+        errors={{
+          radios: {
             message: 'Select a radio button',
           },
-        ]}
+        }}
       />
     );
 
