@@ -40,7 +40,7 @@ const Input = React.forwardRef(
             name={`${name}`}
             type="text"
             onChange={onChange}
-            value={value}
+            defaultValue={value}
             data-testid="input-box"
             ref={ref}
           />
