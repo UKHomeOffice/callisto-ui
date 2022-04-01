@@ -1,44 +1,45 @@
 import PropTypes from 'prop-types';
 
-const SummaryList = ({ shiftType, hours, mealBreak }) => {
+const SummaryList = ({ rows }) => {
   return (
-    <dl className="govuk-summary-list">
-      <div className="govuk-summary-list__row">
-        <dt className="govuk-summary-list__key">Shift</dt>
-        <dd className="govuk-summary-list__value">{shiftType}</dd>
-        <dd className="govuk-summary-list__actions">
-          <a className="govuk-link" href="/">
-            Remove<span className="govuk-visually-hidden"> shift</span>
-          </a>
-        </dd>
-      </div>
-      <div className="govuk-summary-list__row">
-        <dt className="govuk-summary-list__key">Hours</dt>
-        <dd className="govuk-summary-list__value">{hours}</dd>
-        <dd className="govuk-summary-list__actions">
-          <a className="govuk-link" href="/">
-            Change<span className="govuk-visually-hidden"> hours</span>
-          </a>
-        </dd>
-      </div>
-      <div className="govuk-summary-list__row">
-        <dt className="govuk-summary-list__key">Meal Break</dt>
-        <dd className="govuk-summary-list__value">{mealBreak}</dd>
-        <dd className="govuk-summary-list__actions">
-          <a className="govuk-link" href="/">
-            Change
-            <span className="govuk-visually-hidden"> contact details</span>
-          </a>
-        </dd>
-      </div>
-    </dl>
+    <>
+      <dl className="govuk-summary-list">
+        {rows.map((row, index) => {
+          return (
+            <div className="govuk-summary-list__row" key={index}>
+              <dt className="govuk-summary-list__key">{row.title}</dt>
+              <dd className="govuk-summary-list__value">{row.value}</dd>
+              {row.action && (
+                <dd
+                  className="govuk-summary-list__actions"
+                  data-testid="summary-actions"
+                >
+                  <a className="govuk-link" href={row.link}>
+                    {row.action}
+                    <span className="govuk-visually-hidden">
+                      {' '}
+                      {row.title.toLowerCase()}
+                    </span>
+                  </a>
+                </dd>
+              )}
+            </div>
+          );
+        })}
+      </dl>
+    </>
   );
 };
 
 SummaryList.propTypes = {
-  shiftType: PropTypes.string.isRequired,
-  hours: PropTypes.string.isRequired,
-  mealBreak: PropTypes.string.isRequired,
+  rows: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      value: PropTypes.any.isRequired,
+      action: PropTypes.string,
+      link: PropTypes.string,
+    })
+  ),
 };
 
 export default SummaryList;
