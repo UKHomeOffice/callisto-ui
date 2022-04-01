@@ -3,9 +3,19 @@ import { screen, render, fireEvent } from '@testing-library/react';
 import DateInput from './DateInput';
 
 describe('DateInput', () => {
+  let registerMock;
+  beforeEach(() => {
+    registerMock = jest.fn();
+  });
+
   it('should render a date input component with the correct heading', () => {
     render(
-      <DateInput name="test" heading="What is the date?" headingSize="l" />
+      <DateInput
+        name="test"
+        heading="What is the date?"
+        headingSize="l"
+        register={registerMock}
+      />
     );
 
     const heading = screen.getByText('What is the date?');
@@ -20,6 +30,7 @@ describe('DateInput', () => {
         heading="What is the date?"
         headingSize="l"
         hint="eg. 01/01/2022"
+        register={registerMock}
       />
     );
 
@@ -29,15 +40,13 @@ describe('DateInput', () => {
   });
 
   it('should update the input value on change', () => {
-    const handleFormChangeMock = jest.fn();
-
     render(
       <DateInput
         name="test"
         heading="What is the date?"
         headingSize="l"
         hint="eg. 01/01/2022"
-        handleFormChange={(event) => handleFormChangeMock(event)}
+        register={registerMock}
       />
     );
 
@@ -55,8 +64,6 @@ describe('DateInput', () => {
   });
 
   it('should pre-fill the inputs if values are passed in', () => {
-    const handleFormChangeMock = jest.fn();
-
     render(
       <DateInput
         name="test"
@@ -66,7 +73,7 @@ describe('DateInput', () => {
         dayValue={'01'}
         monthValue={'01'}
         yearValue={'2022'}
-        handleFormChange={(event) => handleFormChangeMock(event)}
+        register={registerMock}
       />
     );
 
@@ -86,12 +93,13 @@ describe('DateInput', () => {
           name="test"
           heading="What is the date?"
           headingSize="l"
-          errors={[
-            { inputName: 'test', message: 'Date cannot be blank' },
-            { inputName: 'test-day', message: 'Enter a day' },
-            { inputName: 'test-month', message: 'Enter a month' },
-            { inputName: 'test-year', message: 'Enter a year' },
-          ]}
+          errors={{
+            test: { message: 'Date cannot be blank' },
+            'test-day': { message: 'Enter a day' },
+            'test-month': { message: 'Enter a month' },
+            'test-year': { message: 'Enter a year' },
+          }}
+          register={registerMock}
         />
       );
 
@@ -112,7 +120,8 @@ describe('DateInput', () => {
           name="test"
           heading="What is the date?"
           headingSize="l"
-          errors={[{ inputName: 'test-day', message: 'Enter a day' }]}
+          errors={{ 'test-day': { message: 'Enter a day' } }}
+          register={registerMock}
         />
       );
 
@@ -126,7 +135,8 @@ describe('DateInput', () => {
           name="test"
           heading="What is the date?"
           headingSize="l"
-          errors={[{ inputName: 'test-month', message: 'Enter a month' }]}
+          errors={{ 'test-month': { message: 'Enter a month' } }}
+          register={registerMock}
         />
       );
 
@@ -140,7 +150,8 @@ describe('DateInput', () => {
           name="test"
           heading="What is the date?"
           headingSize="l"
-          errors={[{ inputName: 'test-year', message: 'Enter a year' }]}
+          errors={{ 'test-year': { message: 'Enter a year' } }}
+          register={registerMock}
         />
       );
 
