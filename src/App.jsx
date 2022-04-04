@@ -18,7 +18,6 @@ function App() {
       <Header />
       <div className="govuk-width-container ">
         <main className="govuk-main-wrapper " id="main-content" role="main">
-          <Checkbox text={'Shift longer than 24 hours'} />
           <Routes>
             <Route path="/forms" element={<FormsExample />} />
             <Route path="/" element={<Home />} />
