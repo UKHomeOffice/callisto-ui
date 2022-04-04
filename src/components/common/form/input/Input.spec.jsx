@@ -34,7 +34,6 @@ describe('Input', () => {
   });
 
   it('should update the input value on change', () => {
-    const handleFormChangeMock = jest.fn();
     render(
       <Input
         name="test"
@@ -42,7 +41,6 @@ describe('Input', () => {
         headingSize="l"
         inputWidth="10"
         hint="eg. John"
-        handleFormChange={(event) => handleFormChangeMock(event)}
       />
     );
 
@@ -52,8 +50,6 @@ describe('Input', () => {
   });
 
   it('should pre-fill the input if value is passed in', () => {
-    const handleFormChangeMock = jest.fn();
-
     render(
       <Input
         name="test"
@@ -62,7 +58,6 @@ describe('Input', () => {
         inputWidth="10"
         hint="eg. John"
         value="Bob"
-        handleFormChange={(event) => handleFormChangeMock(event)}
       />
     );
 
@@ -77,12 +72,7 @@ describe('Input', () => {
         heading="What is your name?"
         headingSize="l"
         inputWidth="10"
-        errors={[
-          {
-            inputName: 'test',
-            message: 'Enter a name',
-          },
-        ]}
+        errors={{ test: { message: 'Enter a name' } }}
       />
     );
 
@@ -97,12 +87,7 @@ describe('Input', () => {
         heading="What is your name?"
         headingSize="l"
         inputWidth="10"
-        errors={[
-          {
-            inputName: 'test',
-            message: 'Enter a name',
-          },
-        ]}
+        errors={{ test: 'Enter a name' }}
       />
     );
 
@@ -117,7 +102,7 @@ describe('Input', () => {
         heading="What is your name?"
         headingSize="l"
         inputWidth="10"
-        errors={[]}
+        errors={{}}
       />
     );
 

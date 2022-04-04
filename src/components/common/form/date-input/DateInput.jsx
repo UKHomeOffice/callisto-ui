@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
-function DateInput({
+const DateInput = ({
   name,
   heading,
   headingSize,
@@ -10,22 +10,23 @@ function DateInput({
   dayValue,
   monthValue,
   yearValue,
-  handleFormChange,
-}) {
+  register,
+  formState,
+}) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     updateErrorMessages();
-  }, [errors]);
+  }, [formState]);
 
   const updateErrorMessages = () => {
-    const findErrors = errors?.filter((error) =>
-      error.inputName.includes(name)
-    );
+    const findErrors =
+      errors &&
+      Object.keys(errors).filter((inputName) => inputName.includes(name));
     let relevantErrorMessages = [];
     if (findErrors) {
-      relevantErrorMessages = findErrors.map((error) => {
-        return error.message;
+      relevantErrorMessages = findErrors.map((inputName) => {
+        return errors[inputName].message;
       });
     }
     setErrorMessages(relevantErrorMessages);
@@ -70,21 +71,27 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-day';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-day';
                     }) &&
                     'govuk-input--error'
                   }`}
                   id={`${name}-day`}
                   name={`${name}-day`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="day-input"
-                  value={dayValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  defaultValue={dayValue}
+                  {...register(name + '-day', {
+                    required: {
+                      value: true,
+                      message: 'Enter a day',
+                    },
+                    pattern: {
+                      value: /^([1-9]|0[1-9]|[12][\d]|3[01])$/,
+                      message: 'Enter a valid day',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -100,21 +107,27 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-month';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-month';
                     }) &&
                     'govuk-input--error'
                   }`}
                   id={`${name}-month`}
                   name={`${name}-month`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="month-input"
-                  value={monthValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  defaultValue={monthValue}
+                  {...register(name + '-month', {
+                    required: {
+                      value: true,
+                      message: 'Enter a month',
+                    },
+                    pattern: {
+                      value: /^([1-9]|[0][1-9]|1[012])$/,
+                      message: 'Enter a valid month',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -130,21 +143,27 @@ function DateInput({
                 <input
                   className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
                     errors &&
-                    errors.find((error) => {
-                      return error.inputName === name + '-year';
+                    Object.keys(errors).find((error) => {
+                      return error === name + '-year';
                     }) &&
                     'govuk-input--error'
                   }`}
                   id={`${name}-year`}
                   name={`${name}-year`}
                   type="text"
-                  pattern="[0-9]*"
                   inputMode="numeric"
                   data-testid="year-input"
-                  value={yearValue}
-                  onChange={(event) => {
-                    handleFormChange(event);
-                  }}
+                  defaultValue={yearValue}
+                  {...register(name + '-year', {
+                    required: {
+                      value: true,
+                      message: 'Enter a year',
+                    },
+                    pattern: {
+                      value: /^\d{4}$/,
+                      message: 'Enter a valid year',
+                    },
+                  })}
                 />
               </div>
             </div>
@@ -153,23 +172,20 @@ function DateInput({
       </div>
     </>
   );
-}
+};
 
 export default DateInput;
 
+DateInput.displayName = 'DateInput';
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
   headingSize: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      inputName: PropTypes.string.isRequired,
-      message: PropTypes.string.isRequired,
-    })
-  ),
+  errors: PropTypes.any,
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
-  handleFormChange: PropTypes.func,
+  register: PropTypes.any.isRequired,
+  formState: PropTypes.any,
 };

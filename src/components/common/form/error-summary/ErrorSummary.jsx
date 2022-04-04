@@ -13,9 +13,9 @@ const ErrorSummary = ({ errors }) => {
       </h2>
       <div className="govuk-error-summary__body">
         <ul className="govuk-list govuk-error-summary__list">
-          {errors.map((error, i) => (
+          {Object.keys(errors).map((key, i) => (
             <li key={i}>
-              <a href={`#${error.inputName}`}>{error.message}</a>
+              <a href={`#${key}`}>{errors[key].message}</a>
             </li>
           ))}
         </ul>
@@ -27,10 +27,5 @@ const ErrorSummary = ({ errors }) => {
 export default ErrorSummary;
 
 ErrorSummary.propTypes = {
-  errors: PropTypes.arrayOf(
-    PropTypes.shape({
-      inputName: PropTypes.string.isRequired,
-      message: PropTypes.string.isRequired,
-    })
-  ),
+  errors: PropTypes.any,
 };
