@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import Checkbox from './components/common/form/checkbox/Checkbox';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
 import FormsExample from './pages/FormsExample';
