@@ -28,7 +28,7 @@ describe('SummaryList', () => {
     expect(action.getAttribute('href')).toBe('/remove-shift');
   });
 
-  it('should render summary list with correct first row', () => {
+  it('should render summary list with correct second row', () => {
     render(
       <SummaryList
         rows={[
