@@ -1,7 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Checkbox from './Checkbox';
-import userEvent from '@testing-library/user-event';
 
 test('text is showing on page', () => {
   render(<Checkbox text="Shift longer than 24 hours" />);
@@ -14,5 +13,6 @@ test('should set the checkbox to checked when it is selected', () => {
   render(<Checkbox text="Shift longer than 24 hours" />);
 
   const checkbox = screen.getByRole('checkbox');
-  userEvent.click(checkbox, { target: { checked: true } });
+  fireEvent.click(checkbox);
+  expect(checkbox.checked).toEqual(true);
 });
