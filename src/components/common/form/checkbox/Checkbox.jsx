@@ -1,26 +1,23 @@
 import PropTypes from 'prop-types';
 
-const Checkbox = ({ text }) => {
+const Checkbox = ({ text, name }) => {
   return (
     <div className="govuk-form-group">
-      <fieldset
-        className="govuk-fieldset"
-        aria-describedby="shift-longer-than-24hours"
-      >
+      <fieldset className="govuk-fieldset" aria-describedby={name}>
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l"></legend>
 
         <div className="govuk-checkboxes" data-module="govuk-checkboxes">
           <div className="govuk-checkboxes__item">
             <input
-              className="govuk-checkboxes__input"
-              id="shiftlongerthan24hours"
-              name="shiftlongerthan24hours"
+              className={'govuk-checkboxes__input'}
+              id={name}
+              name={name}
               type="checkbox"
-              value="shiftlongerthan24hours"
+              value={name}
             />
             <label
               className="govuk-label govuk-checkboxes__label"
-              htmlFor="shiftlongerthan24hours"
+              htmlFor={name}
             >
               {text}
             </label>
@@ -33,6 +30,7 @@ const Checkbox = ({ text }) => {
 
 Checkbox.propTypes = {
   text: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default Checkbox;
