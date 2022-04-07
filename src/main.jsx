@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.scss';
 import App from './App';
 import { initAll } from 'govuk-frontend';
+import './i18n/config';
 
 ReactDOM.render(
   <React.StrictMode>
