@@ -60,119 +60,70 @@ const DateInput = ({
             ))}
 
           <div className="govuk-date-input" id={name}>
-            <div className="govuk-date-input__item">
-              <div className="govuk-form-group">
-                <label
-                  className="govuk-label govuk-date-input__label"
-                  htmlFor={`${name}-day`}
-                >
-                  Day
-                </label>
-                <input
-                  className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
-                    errors &&
-                    Object.keys(errors).find((error) => {
-                      return error === name + '-day';
-                    }) &&
-                    'govuk-input--error'
-                  }`}
-                  id={`${name}-day`}
-                  name={`${name}-day`}
-                  type="text"
-                  inputMode="numeric"
-                  data-testid="day-input"
-                  defaultValue={dayValue}
-                  {...register(name + '-day', {
-                    required: {
-                      value: true,
-                      message: 'Enter a day',
-                    },
-                    pattern: {
-                      value: /^([1-9]|0[1-9]|[12][\d]|3[01])$/,
-                      message: 'Enter a valid day',
-                    },
-                  })}
-                />
-              </div>
-            </div>
+            {dayValue &&
+              <DateInputItem name={name} dateType="day" errors={errors} defaultValue={dayValue} pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
+              register={register}/>
+            }
 
-            <div className="govuk-date-input__item">
-              <div className="govuk-form-group">
-                <label
-                  className="govuk-label govuk-date-input__label"
-                  htmlFor={`${name}-month`}
-                >
-                  Month
-                </label>
-                <input
-                  className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
-                    errors &&
-                    Object.keys(errors).find((error) => {
-                      return error === name + '-month';
-                    }) &&
-                    'govuk-input--error'
-                  }`}
-                  id={`${name}-month`}
-                  name={`${name}-month`}
-                  type="text"
-                  inputMode="numeric"
-                  data-testid="month-input"
-                  defaultValue={monthValue}
-                  {...register(name + '-month', {
-                    required: {
-                      value: true,
-                      message: 'Enter a month',
-                    },
-                    pattern: {
-                      value: /^([1-9]|[0][1-9]|1[012])$/,
-                      message: 'Enter a valid month',
-                    },
-                  })}
-                />
-              </div>
-            </div>
+            {monthValue &&
+              <DateInputItem name={name} dateType="month" errors={errors} defaultValue={monthValue} pattern={/^([1-9]|[0][1-9]|1[012])$/}
+              register={register}/>
+            }
 
-            <div className="govuk-date-input__item">
-              <div className="govuk-form-group">
-                <label
-                  className="govuk-label govuk-date-input__label"
-                  htmlFor={`${name}-year`}
-                >
-                  Year
-                </label>
-                <input
-                  className={`govuk-input govuk-date-input__input govuk-input--width-4 ${
-                    errors &&
-                    Object.keys(errors).find((error) => {
-                      return error === name + '-year';
-                    }) &&
-                    'govuk-input--error'
-                  }`}
-                  id={`${name}-year`}
-                  name={`${name}-year`}
-                  type="text"
-                  inputMode="numeric"
-                  data-testid="year-input"
-                  defaultValue={yearValue}
-                  {...register(name + '-year', {
-                    required: {
-                      value: true,
-                      message: 'Enter a year',
-                    },
-                    pattern: {
-                      value: /^\d{4}$/,
-                      message: 'Enter a valid year',
-                    },
-                  })}
-                />
-              </div>
-            </div>
+            {yearValue &&
+              <DateInputItem name={name} dateType="year" errors={errors} defaultValue={yearValue} pattern={/^\d{4}$/} 
+              register={register}/>
+            }
           </div>
         </fieldset>
       </div>
     </>
   );
 };
+
+const DateInputItem = ({name, dateType, errors, defaultValue, pattern, register}) => {
+
+  const capitilisedName = dateType[0].toUpperCase() + dateType.substring(1);
+
+  return (
+    <div className="govuk-date-input__item">
+      <div className="govuk-form-group">
+        <label
+          className="govuk-label govuk-date-input__label"
+          htmlFor={`${name}-${dateType}`}
+        >
+          {capitilisedName}
+        </label>
+        <input
+          className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+            errors &&
+            Object.keys(errors).find((error) => {
+              return error === name + '-' + dateType;
+            }) &&
+            'govuk-input--error'
+          }`}
+          id={`${name}-${dateType}`}
+          name={`${name}-${dateType}`}
+          type="text"
+          inputMode="numeric"
+          data-testid="${dateType}-input"
+          defaultValue={defaultValue}
+          {...register(name + '-' + dateType, {
+            required: {
+              value: true,
+              message: 'Enter a ' + dateType,
+            },
+            pattern: {
+              value: pattern,
+              message: 'Enter a valid ' + dateType,
+            },
+          })}
+        />
+      </div>
+    </div>
+  )
+
+}
 
 export default DateInput;
 

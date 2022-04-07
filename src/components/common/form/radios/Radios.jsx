@@ -1,84 +1,89 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Radios = React.forwardRef(
-  (
-    { name, heading, headingSize, options, hint, value, errors, onChange },
-    ref
-  ) => {
-    return (
-      <>
-        <div
-          className={`govuk-form-group ${
-            errors && errors[name] && 'govuk-form-group--error'
-          }`}
-          data-testid="radio-buttons"
+const Radios = React.forwardRef(({
+  name,
+  heading,
+  headingSize,
+  options,
+  hint,
+  value,
+  errors,
+  onChange,
+  defaultValue = options[0]
+}, ref) => {
+  return (
+    <>
+      <div
+        className={`govuk-form-group ${
+          errors && errors[name] && 'govuk-form-group--error'
+        }`}
+        data-testid="radio-buttons"
+      >
+        <fieldset
+          className="govuk-fieldset"
+          aria-describedby={`${name}-error`}
         >
-          <fieldset
-            className="govuk-fieldset"
-            aria-describedby={`${name}-error`}
+          <legend
+            className={`govuk-fieldset__legend govuk-fieldset__legend--${headingSize}`}
           >
-            <legend
-              className={`govuk-fieldset__legend govuk-fieldset__legend--${headingSize}`}
-            >
-              <h1 className="govuk-fieldset__heading">{heading}</h1>
-            </legend>
-            <div id="contact-hint" className="govuk-hint">
-              {hint}
+            <h1 className="govuk-fieldset__heading">{heading}</h1>
+          </legend>
+          <div id="contact-hint" className="govuk-hint">
+            {hint}
+          </div>
+          {errors && errors[name] && (
+            <p id={`${name}-error`} className="govuk-error-message">
+              <span className="govuk-visually-hidden">Error:</span>{' '}
+              {errors[name].message}
+            </p>
+          )}
+          <div className="govuk-radios" data-module="govuk-radios">
+            <div key="0" className="govuk-radios__item">
+              <input
+                className="govuk-radios__input"
+                id={name}
+                name={name}
+                type="radio"
+                value={options[0]}
+                onChange={onChange}
+                ref={ref}
+                defaultChecked={value === defaultValue}
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor={name}
+              >
+                {options[0]}
+              </label>
             </div>
-            {errors && errors[name] && (
-              <p id={`${name}-error`} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span>{' '}
-                {errors[name].message}
-              </p>
-            )}
-            <div className="govuk-radios" data-module="govuk-radios">
-              <div key="0" className="govuk-radios__item">
+
+            {options.slice(1).map((radioLabel, index) => (
+              <div key={index + 1} className="govuk-radios__item">
                 <input
                   className="govuk-radios__input"
-                  id={name}
+                  id={`${name}-${index}`}
                   name={name}
                   type="radio"
-                  value={options[0]}
+                  value={radioLabel}
                   onChange={onChange}
                   ref={ref}
-                  defaultChecked={value === options[0]}
+                  defaultChecked={value === radioLabel}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
-                  htmlFor={name}
+                  htmlFor={`${name}-${index}`}
                 >
-                  {options[0]}
+                  {radioLabel}
                 </label>
               </div>
-
-              {options.slice(1).map((radioLabel, index) => (
-                <div key={index + 1} className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id={`${name}-${index}`}
-                    name={name}
-                    type="radio"
-                    value={radioLabel}
-                    onChange={onChange}
-                    ref={ref}
-                    defaultChecked={value === radioLabel}
-                  />
-                  <label
-                    className="govuk-label govuk-radios__label"
-                    htmlFor={`${name}-${index}`}
-                  >
-                    {radioLabel}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </fieldset>
-        </div>
-      </>
-    );
-  }
-);
+            ))}
+          </div>
+        </fieldset>
+      </div>
+    </>
+  );
+});
 export default Radios;
 
 Radios.displayName = 'Radios';
