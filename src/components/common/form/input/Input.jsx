@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Input = React.forwardRef(
-  (
-    { name, heading, headingSize, inputWidth, hint, errors, value, onChange },
-    ref
-  ) => {
+const Input = React.forwardRef(({
+  name,
+  heading,
+  headingSize,
+  inputWidth,
+  hint,
+  errors,
+  value,
+  onChange
+}, ref) => {
     return (
       <>
         <div
