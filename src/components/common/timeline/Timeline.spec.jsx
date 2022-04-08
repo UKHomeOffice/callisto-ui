@@ -1,6 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-
 import Timeline from './Timeline';
 
 describe('Timeline', () => {
