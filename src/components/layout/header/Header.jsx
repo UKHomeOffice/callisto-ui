@@ -1,6 +1,7 @@
 import HomeOfficeLogo from './HomeOfficeLogo';
 import PhaseBanner from '../phase-banner/PhaseBanner';
 import { useState } from 'react';
+import SignIn from './SignIn';
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -44,6 +45,7 @@ const Header = () => {
             >
               Callisto
             </a>
+            <SignIn />
           </div>
         </div>
         <div
