@@ -15,7 +15,12 @@ const Timeline = ({ items }) => {
               </time>
             </p>
             {item.description && (
-              <p className="hods-timeline__description">{item.description}</p>
+              <p
+                className="hods-timeline__description"
+                data-testid="description"
+              >
+                {item.description}
+              </p>
             )}
           </div>
         );
