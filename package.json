@@ -44,8 +44,10 @@
     ]
   },
   "dependencies": {
+    "@react-keycloak/web": "^3.4.0",
     "axios": "^0.26.0",
     "govuk-frontend": "^4.0.1",
+    "keycloak-js": "^17.0.1",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
