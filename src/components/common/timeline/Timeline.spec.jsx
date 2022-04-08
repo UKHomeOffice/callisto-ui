@@ -11,7 +11,7 @@ describe('Timeline', () => {
           {
             title: 'New note added',
             updatedBy: 'John Smith',
-            dateTime: new Date('2022-04-08T15:45:00.000Z'),
+            dateTime: '2022-04-08T15:45:00.000Z',
             description: 'This is my new note',
           },
         ]}
@@ -36,13 +36,13 @@ describe('Timeline', () => {
           {
             title: 'New note added',
             updatedBy: 'John Smith',
-            dateTime: new Date('2022-04-08T15:45:00.000Z'),
+            dateTime: '2022-04-08T15:45:00.000Z',
             description: 'This is my new note',
           },
           {
             title: 'Second note added',
             updatedBy: 'Jane Doe',
-            dateTime: new Date('2022-04-10T15:45:00.000Z'),
+            dateTime: '2022-04-10T15:45:00.000Z',
             description: 'Adding another note',
           },
         ]}
@@ -67,7 +67,7 @@ describe('Timeline', () => {
           {
             title: 'Created',
             updatedBy: 'John Smith',
-            dateTime: new Date('2022-04-01T15:45:00.000Z'),
+            dateTime: '2022-04-01T15:45:00.000Z',
           },
         ]}
       />
