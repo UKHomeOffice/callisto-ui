@@ -36,7 +36,7 @@ Timeline.propTypes = {
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       updatedBy: PropTypes.string.isRequired,
-      dateTime: PropTypes.instanceOf(Date).isRequired,
+      dateTime: PropTypes.string.isRequired,
       description: PropTypes.string,
     })
   ),
