@@ -1,0 +1,57 @@
+.hods-timeline {
+  overflow: hidden;
+  position: relative;
+
+  &__item {
+    margin-bottom: 2em;
+    padding-left: 22px;
+    position: relative;
+
+    &:before {
+      /* styling for lines in margin */
+      background-color: govuk-colour('blue');
+      content: '';
+      padding-top: 0.3em;
+      padding-right: 1em;
+      left: 0;
+      position: absolute;
+      margin-top: 0.55em;
+      z-index: 1;
+    }
+  }
+
+  &:before {
+    /* styling for lines in margin */
+    background-color: govuk-colour('blue');
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    margin-top: 0.55em;
+    padding-left: 0.3em;
+    z-index: 1;
+  }
+
+  &__title {
+    @include govuk-font(19, 'bold');
+    display: inline;
+    margin-right: 5px;
+  }
+
+  &__by {
+    @include govuk-font(16);
+    color: govuk-colour('dark-grey');
+    display: inline;
+  }
+
+  &__date {
+    @include govuk-font(16);
+    color: govuk-colour('dark-grey');
+    margin-top: 0em;
+  }
+
+  &__description {
+    @include govuk-font(16);
+    margin-top: 1.5em;
+  }
+}
