@@ -3,7 +3,7 @@
   position: relative;
 
   &__item {
-    @include govuk-responsive-padding(2, 'bottom');
+    margin-bottom: 2em;
     padding-left: 22px;
     position: relative;
 
@@ -12,7 +12,7 @@
       background-color: govuk-colour('blue');
       content: '';
       padding-top: 0.3em;
-      @include govuk-responsive-padding(3, 'right');
+      padding-right: 1em;
       left: 0;
       position: absolute;
       margin-top: 0.55em;
@@ -47,11 +47,11 @@
   &__date {
     @include govuk-font(16);
     color: govuk-colour('dark-grey');
-    @include govuk-responsive-margin(0, 'top');
+    margin-top: 0em;
   }
 
   &__description {
     @include govuk-font(16);
-    @include govuk-responsive-margin(5, 'top');
+    margin-top: 1.5em;
   }
 }
