@@ -1,4 +1,4 @@
-import ButtonGroup from '../navigation/buttonGroup';
+import ButtonGroup from '../navigation/ButtonGroup';
 
 const Notes = () => {
   return (
