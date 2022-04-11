@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { initAll } from 'govuk-frontend';
+import { useState, useEffect } from 'react';
 import Notes from './Notes';
 
 const NotesSummaryList = () => {
@@ -8,6 +9,10 @@ const NotesSummaryList = () => {
     event.preventDefault();
     setAddNote(!addNote);
   };
+
+  useEffect(() => {
+    initAll();
+  });
 
   return (
     <>
