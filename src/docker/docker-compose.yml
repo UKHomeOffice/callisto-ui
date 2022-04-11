@@ -1,0 +1,24 @@
+version: "2.4"
+
+services:
+  keycloak:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      start_period: 1m
+    image: jboss/keycloak:latest
+    restart: always
+    ports:
+      - 9990:9990
+      - 9081:8080
+    networks:
+      - callisto-network
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password1
+      KEYCLOAK_IMPORT: /tmp/local-realm.json
+      DB_VENDOR: h2
+    volumes:
+      - ${PWD}/keycloak:/tmp
+
+networks:
+  callisto-network:
