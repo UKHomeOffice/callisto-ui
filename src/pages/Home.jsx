@@ -1,12 +1,11 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { useState, useEffect } from "react";
+import { useEffect } from 'react';
 
 const Home = () => {
-
   const { initialized, keycloak } = useKeycloak();
 
   useEffect(() => {
-    if (initialized && !keycloak.authenticated){
+    if (initialized && !keycloak.authenticated) {
       keycloak.login();
     }
   });
