@@ -1,9 +1,19 @@
 import { Outlet } from 'react-router-dom';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
+import { useKeycloak } from '@react-keycloak/web';
+import { useEffect } from 'react';
 
-function App() {
-  return (
+const App = () => {
+  const { initialized, keycloak } = useKeycloak();
+
+  useEffect(() => {
+    if (initialized && !keycloak.authenticated) {
+      keycloak.login();
+    }
+  });
+
+  return keycloak.authenticated ? (
     <div className="App">
       <a
         href="#main-content"
@@ -20,7 +30,9 @@ function App() {
       </div>
       <Footer />
     </div>
+  ) : (
+    <div></div>
   );
-}
+};
 
 export default App;
