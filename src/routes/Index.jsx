@@ -8,10 +8,14 @@ import LoginPage from '../pages/Login';
 import { PrivateRoute } from './utils';
 
 export const AppRouter = () => {
-  const { initialized } = useKeycloak();
+  const { initialized, keycloak } = useKeycloak();
 
   if (!initialized) {
     return <div>Loading...</div>;
+  }
+
+  if(!keycloak.authenticated){
+    keycloak.login();
   }
 
   return (
