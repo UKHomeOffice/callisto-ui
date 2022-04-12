@@ -1,13 +1,12 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { useState, useEffect } from "react";
+import { useEffect } from 'react';
 
 const Home = () => {
-
   const { initialized, keycloak } = useKeycloak();
 
   useEffect(() => {
-    console.log("running on render");
-    if (!keycloak.authenticated){
+    console.log('running on render');
+    if (initialized && !keycloak.authenticated) {
       keycloak.login();
     }
   });
