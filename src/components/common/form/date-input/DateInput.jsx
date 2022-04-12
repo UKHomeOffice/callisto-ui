@@ -60,20 +60,38 @@ const DateInput = ({
             ))}
 
           <div className="govuk-date-input" id={name}>
-            {dayValue &&
-              <DateInputItem name={name} dateType="day" errors={errors} defaultValue={dayValue} pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
-              register={register}/>
-            }
+            {dayValue && (
+              <DateInputItem
+                name={name}
+                dateType="day"
+                errors={errors}
+                defaultValue={dayValue}
+                pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
+                register={register}
+              />
+            )}
 
-            {monthValue &&
-              <DateInputItem name={name} dateType="month" errors={errors} defaultValue={monthValue} pattern={/^([1-9]|[0][1-9]|1[012])$/}
-              register={register}/>
-            }
+            {monthValue && (
+              <DateInputItem
+                name={name}
+                dateType="month"
+                errors={errors}
+                defaultValue={monthValue}
+                pattern={/^([1-9]|[0][1-9]|1[012])$/}
+                register={register}
+              />
+            )}
 
-            {yearValue &&
-              <DateInputItem name={name} dateType="year" errors={errors} defaultValue={yearValue} pattern={/^\d{4}$/} 
-              register={register}/>
-            }
+            {yearValue && (
+              <DateInputItem
+                name={name}
+                dateType="year"
+                errors={errors}
+                defaultValue={yearValue}
+                pattern={/^\d{4}$/}
+                register={register}
+              />
+            )}
           </div>
         </fieldset>
       </div>
@@ -81,8 +99,14 @@ const DateInput = ({
   );
 };
 
-const DateInputItem = ({name, dateType, errors, defaultValue, pattern, register}) => {
-
+const DateInputItem = ({
+  name,
+  dateType,
+  errors,
+  defaultValue,
+  pattern,
+  register,
+}) => {
   const capitilisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
   return (
@@ -121,9 +145,8 @@ const DateInputItem = ({name, dateType, errors, defaultValue, pattern, register}
         />
       </div>
     </div>
-  )
-
-}
+  );
+};
 
 export default DateInput;
 
@@ -139,4 +162,13 @@ DateInput.propTypes = {
   yearValue: PropTypes.string,
   register: PropTypes.any.isRequired,
   formState: PropTypes.any,
+};
+
+DateInputItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  dateType: PropTypes.string,
+  errors: PropTypes.any,
+  defaultValue: PropTypes.string,
+  pattern: PropTypes.any,
+  register: PropTypes.any.isRequired,
 };
