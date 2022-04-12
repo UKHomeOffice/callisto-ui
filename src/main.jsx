@@ -6,7 +6,6 @@ import App from './App';
 import { initAll } from 'govuk-frontend';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak from './keycloak';
-import PrivateRoute from './helpers/PrivateRoute';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 
@@ -17,14 +16,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
-            <Route
-              path="/forms"
-              element={
-                <PrivateRoute>
-                  <FormsExample />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"
               element={
