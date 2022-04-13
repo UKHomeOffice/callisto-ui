@@ -30,7 +30,7 @@ const SignIn = () => {
                 className="govuk-header__navigation-link"
                 href={keycloak.createLoginUrl()}
               >
-                Login
+                Sign In
               </a>
             </li>
           )}
