@@ -16,40 +16,26 @@ const SignIn = () => {
                 {keycloak.tokenParsed.preferred_username}
               </li>
               <li className="govuk-header__navigation-item">
-                <a className="govuk-header__navigation-link" href="#1">
+                <a
+                  className="govuk-header__navigation-link"
+                  href={keycloak.createLogoutUrl()}
+                >
                   Sign Out
                 </a>
               </li>
             </>
           ) : (
             <li className="govuk-header__navigation-item">
-              <a className="govuk-header__navigation-link" href="#1">
-                Login
+              <a
+                className="govuk-header__navigation-link"
+                href={keycloak.createLoginUrl()}
+              >
+                Sign In
               </a>
             </li>
           )}
         </ul>
       </nav>
-
-      {!keycloak.authenticated && (
-        <button
-          type="button"
-          className="text-blue-800"
-          onClick={() => keycloak.login()}
-        >
-          Login
-        </button>
-      )}
-
-      {!!keycloak.authenticated && (
-        <button
-          type="button"
-          className="text-blue-800"
-          onClick={() => keycloak.logout()}
-        >
-          Logout ({keycloak.tokenParsed.preferred_username})
-        </button>
-      )}
     </div>
   );
 };

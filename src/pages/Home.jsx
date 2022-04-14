@@ -1,6 +1,3 @@
-import { useKeycloak } from '@react-keycloak/web';
-import { useState, useEffect } from "react";
-
 const Home = () => {
 
   const { initialized, keycloak } = useKeycloak();
