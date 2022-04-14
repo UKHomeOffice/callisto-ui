@@ -6,7 +6,6 @@ const Home = () => {
   const { initialized, keycloak } = useKeycloak();
 
   useEffect(() => {
-    console.log(keycloak.authenticated);
     if (initialized && !keycloak.authenticated){
       keycloak.login();
     }
