@@ -6,8 +6,8 @@ const Home = () => {
   const { initialized, keycloak } = useKeycloak();
 
   useEffect(() => {
-    console.log("running on render");
-    if (!keycloak.authenticated){
+    console.log(keycloak.authenticated);
+    if (initialized && !keycloak.authenticated){
       keycloak.login();
     }
   });
