@@ -19,9 +19,6 @@ const NotesSummaryList = () => {
       <dl className="govuk-summary-list govuk-summary-list--no-border">
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Notes</dt>
-          {/* <dd className="govuk-summary-list__value"> */}
-
-          {/* </dd> */}
           <dd className="govuk-summary-list__actions">
             <a className="govuk-link" href="/" onClick={handleClick}>
               Add<span className="govuk-visually-hidden"> notes</span>
@@ -37,7 +34,5 @@ const NotesSummaryList = () => {
     </>
   );
 };
-
-NotesSummaryList.propTypes = {};
 
 export default NotesSummaryList;
