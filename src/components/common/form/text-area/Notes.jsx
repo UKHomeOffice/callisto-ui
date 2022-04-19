@@ -9,6 +9,8 @@ const Notes = () => {
   useEffect(() => {
     if (characters.length > maxLength) {
       setError(true);
+    } else {
+      setError(false);
     }
   }, [characters]);
 
