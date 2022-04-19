@@ -1,6 +1,21 @@
 import ButtonGroup from '../navigation/ButtonGroup';
+import { useEffect, useState } from 'react';
 
 const Notes = () => {
+  const [error, setError] = useState(null);
+  const [characters, setCharacters] = useState('');
+  const maxLength = 250;
+
+  useEffect(() => {
+    if (characters.length > maxLength) {
+      setError(true);
+    }
+  }, [characters]);
+
+  const handleChange = (e) => {
+    setCharacters(e.target.value);
+  };
+
   return (
     <>
       <div
@@ -9,23 +24,33 @@ const Notes = () => {
         data-maxlength="250"
         id="text-area"
       >
-        {/* add --error to form class when javascript is working and implement error for when charcter count in exceeded  */}
-        <div className="govuk-form-group">
-          {/* <p id="exceeding-characters-error" className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> Notes must be
-            250 characters or fewer
-          </p> */}
+        <div
+          className={`govuk-form-group ${error && 'govuk-form-group--error'}`}
+        >
+          {error && (
+            <p id="exceeding-characters-error" className="govuk-error-message">
+              <span className="govuk-visually-hidden">Error:</span> Notes must
+              be 250 characters or fewer
+            </p>
+          )}
+
           <textarea
-            className="govuk-textarea govuk-!-width-two-thirds govuk-js-character-count"
-            id="with-hint"
-            name="with-hint"
+            className={`govuk-textarea ${
+              error && 'govuk-textarea--error'
+            } govuk-!-width-two-thirds govuk-js-character-count ${
+              error && 'govuk-textarea--error'
+            }`}
+            id="exceeding-characters"
+            name="exceeding"
             rows="5"
-            aria-describedby="with-hint-info with-hint-hint"
+            aria-describedby={`exceeding-characters-info ${'exceeding-characters-error'}`}
+            onChange={handleChange}
+            value={characters}
           ></textarea>
         </div>
 
         <div
-          id="with-hint-info"
+          id="exceeding-characters-info"
           className="govuk-hint govuk-character-count__message govuk-!-padding-bottom-4"
           aria-live="polite"
         >

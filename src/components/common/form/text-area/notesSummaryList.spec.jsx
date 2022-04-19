@@ -24,3 +24,5 @@ test('should show notes component when add is clicked', () => {
   fireEvent.click(link);
   expect(document.getElementById('text-area')).toBeInTheDocument();
 });
+
+test('error message appears when characters are exceeded', () => {});
