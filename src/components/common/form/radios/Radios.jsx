@@ -9,7 +9,9 @@ const Radios = React.forwardRef(
     return (
       <>
         <div
-          className={`govuk-form-group ${errors && errors[name] && 'govuk-form-group--error'}`}
+          className={`govuk-form-group ${
+            errors && errors[name] && 'govuk-form-group--error'
+          }`}
           data-testid="radio-buttons"
         >
           <fieldset
