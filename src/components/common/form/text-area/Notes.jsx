@@ -28,9 +28,14 @@ const Notes = () => {
       >
         <div
           className={`govuk-form-group ${error && 'govuk-form-group--error'}`}
+          data-testid="text-area"
         >
           {error && (
-            <p id="exceeding-characters-error" className="govuk-error-message">
+            <p
+              id="exceeding-characters-error"
+              data-testid="exceeding-characters-error"
+              className="govuk-error-message"
+            >
               <span className="govuk-visually-hidden">Error:</span> Notes must
               be 250 characters or fewer
             </p>
@@ -43,6 +48,7 @@ const Notes = () => {
               error && 'govuk-textarea--error'
             }`}
             id="exceeding-characters"
+            data-testid="exceeding-characters"
             name="exceeding"
             rows="5"
             aria-describedby={`exceeding-characters-info ${'exceeding-characters-error'}`}
