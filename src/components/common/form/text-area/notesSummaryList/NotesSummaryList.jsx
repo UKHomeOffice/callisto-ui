@@ -1,6 +1,6 @@
 import { initAll } from 'govuk-frontend';
 import { useState, useEffect } from 'react';
-import Notes from './Notes';
+import Notes from '../notes/Notes';
 
 const NotesSummaryList = () => {
   const [addNote, setAddNote] = useState(false);
