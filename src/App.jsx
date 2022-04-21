@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import NotesSummaryList from './components/common/form/text-area/NotesSummaryList';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
 import FormsExample from './pages/FormsExample';
@@ -22,7 +21,6 @@ function App() {
             <Route path="/forms" element={<FormsExample />} />
             <Route path="/" element={<Home />} />
           </Routes>
-          <NotesSummaryList />
         </main>
       </div>
       <Footer />
