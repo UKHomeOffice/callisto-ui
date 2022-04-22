@@ -3,7 +3,14 @@ import React from 'react';
 
 const Input = React.forwardRef(
   (
-    { name, heading, headingSize, inputWidth, hint, errors, value, onChange },
+    { name,
+      heading,
+      headingSize,
+      inputWidth,
+      hint,
+      errors,
+      value,
+      onChange },
     ref
   ) => {
     return (
