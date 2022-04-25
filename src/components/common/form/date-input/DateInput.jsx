@@ -60,32 +60,32 @@ const DateInput = ({
             ))}
 
           <div className="govuk-date-input" id={name}>
-              <DateInputItem
-                name={name}
-                dateType="day"
-                errors={errors}
-                defaultValue={dayValue}
-                pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
-                register={register}
-              />
+            <DateInputItem
+              name={name}
+              dateType="day"
+              errors={errors}
+              defaultValue={dayValue}
+              pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
+              register={register}
+            />
 
-              <DateInputItem
-                name={name}
-                dateType="month"
-                errors={errors}
-                defaultValue={monthValue}
-                pattern={/^([1-9]|[0][1-9]|1[012])$/}
-                register={register}
-              />
+            <DateInputItem
+              name={name}
+              dateType="month"
+              errors={errors}
+              defaultValue={monthValue}
+              pattern={/^([1-9]|[0][1-9]|1[012])$/}
+              register={register}
+            />
 
-              <DateInputItem
-                name={name}
-                dateType="year"
-                errors={errors}
-                defaultValue={yearValue}
-                pattern={/^\d{4}$/}
-                register={register}
-              />
+            <DateInputItem
+              name={name}
+              dateType="year"
+              errors={errors}
+              defaultValue={yearValue}
+              pattern={/^\d{4}$/}
+              register={register}
+            />
           </div>
         </fieldset>
       </div>
