@@ -60,7 +60,6 @@ const DateInput = ({
             ))}
 
           <div className="govuk-date-input" id={name}>
-            {dayValue && (
               <DateInputItem
                 name={name}
                 dateType="day"
@@ -69,9 +68,7 @@ const DateInput = ({
                 pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
                 register={register}
               />
-            )}
 
-            {monthValue && (
               <DateInputItem
                 name={name}
                 dateType="month"
@@ -80,9 +77,7 @@ const DateInput = ({
                 pattern={/^([1-9]|[0][1-9]|1[012])$/}
                 register={register}
               />
-            )}
 
-            {yearValue && (
               <DateInputItem
                 name={name}
                 dateType="year"
@@ -91,7 +86,6 @@ const DateInput = ({
                 pattern={/^\d{4}$/}
                 register={register}
               />
-            )}
           </div>
         </fieldset>
       </div>
