@@ -16,5 +16,6 @@ steps:
     commands:
       - npm install
       - npm run lint
+      - npx stylelint "**/*.scss"
       - npm run test
       - npm run build
