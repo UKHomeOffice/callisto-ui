@@ -1,4 +1,4 @@
-import ButtonGroup from '../../navigation/ButtonGroup';
+import ButtonGroup from '../../navigation/button-group/ButtonGroup';
 import { useEffect, useState } from 'react';
 
 const Notes = () => {
