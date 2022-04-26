@@ -37,7 +37,7 @@ const Notes = ({ maxLength }) => {
               className="govuk-error-message"
             >
               <span className="govuk-visually-hidden">Error:</span> Notes must
-              be 250 characters or fewer
+              be {maxLength} characters or fewer
             </p>
           )}
 
@@ -62,7 +62,7 @@ const Notes = ({ maxLength }) => {
           className="govuk-hint govuk-character-count__message govuk-!-padding-bottom-4"
           aria-live="polite"
         >
-          You can enter up to 250 characters
+          You can enter up to {maxLength} characters
         </div>
         <ButtonGroup buttonText1="Save" buttonText2="Cancel" />
       </div>
