@@ -3,7 +3,17 @@ import React from 'react';
 
 const Radios = React.forwardRef(
   (
-    { name, heading, headingSize, options, hint, value, errors, onChange },
+    {
+      name,
+      heading,
+      headingSize,
+      options,
+      hint,
+      value,
+      errors,
+      onChange,
+      defaultValue = options[0],
+    },
     ref
   ) => {
     return (
@@ -42,7 +52,7 @@ const Radios = React.forwardRef(
                   value={options[0]}
                   onChange={onChange}
                   ref={ref}
-                  defaultChecked={value === options[0]}
+                  defaultChecked={value === defaultValue}
                 />
                 <label
                   className="govuk-label govuk-radios__label"
@@ -91,4 +101,5 @@ Radios.propTypes = {
   value: PropTypes.string,
   errors: PropTypes.any,
   onChange: PropTypes.func,
+  defaultValue: PropTypes.string,
 };
