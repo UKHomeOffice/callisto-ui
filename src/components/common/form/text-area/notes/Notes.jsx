@@ -1,10 +1,10 @@
+import PropTypes from 'prop-types';
 import ButtonGroup from '../../navigation/button-group/ButtonGroup';
 import { useEffect, useState } from 'react';
 
-const Notes = () => {
+const Notes = ({ maxLength }) => {
   const [error, setError] = useState(null);
   const [characters, setCharacters] = useState('');
-  const maxLength = 250;
 
   useEffect(() => {
     if (characters.length > maxLength) {
@@ -23,7 +23,7 @@ const Notes = () => {
       <div
         className="govuk-character-count"
         data-module="govuk-character-count"
-        data-maxlength="250"
+        data-maxlength={maxLength}
         id="text-area"
       >
         <div
@@ -70,6 +70,8 @@ const Notes = () => {
   );
 };
 
-Notes.propTypes = {};
+Notes.propTypes = {
+  maxLength: PropTypes.number.isRequired,
+};
 
 export default Notes;

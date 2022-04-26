@@ -30,7 +30,7 @@ const NotesSummaryList = () => {
           unplanned absences. This will be added to the timecard timeline.
         </div>
       </dl>
-      {addNote ? <Notes /> : null}
+      {addNote ? <Notes maxLength={250} /> : null}
     </>
   );
 };
