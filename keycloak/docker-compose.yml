@@ -1,0 +1,22 @@
+version: '2.4' # v3 doesn't support depends_on condition
+
+services:
+  keycloak:
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/health']
+      start_period: 60s
+    image: quay.io/keycloak/keycloak:18.0.0
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: y
+    volumes:
+      - ./config:/config
+    command:
+      - '-Dkeycloak.migration.action=import'
+      - '-Dkeycloak.migration.provider=dir'
+      - '-Dkeycloak.migration.dir=/config'
+      - 'start-dev'
+    restart: unless-stopped
