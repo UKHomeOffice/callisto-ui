@@ -4,7 +4,9 @@
 
 ## Prerequisites
 
-Install [Node](https://nodejs.org) and validate with `node -v` (Todo: mention node version and node version manager)
+Install [Node](https://nodejs.org) and validate with `node -v`
+
+Install Docker, validate with `docker -v` to ensure the docker service is running
 
 ## Getting started
 
@@ -20,13 +22,13 @@ Navigate to http://localhost:3000
 
 ### Run the application using local (or remote) services
 
-`npm run serve:dev`
+`npm run start:dev`
 
 Note: To override the default url http://localhost:5000, create an .env.local file and add the following:
 `VITE_LOCAL_API_URL="http://{url:port}"`
 
 Then run:
-`npm run serve:dev`
+`npm run start:dev`
 
 ### Build the application for Production
 
@@ -52,7 +54,6 @@ Then run:
    `brew install --cask google-chrome`
 
    - [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-   - [Redux Dev Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
    - [axe Dev Tools (Web Accessibility Testing)](https://chrome.google.com/webstore/detail/axe-devtools-web-accessib/lhdoppojpmngadmnindnejefpokejbdd)
 
 ### Development Dependencies
