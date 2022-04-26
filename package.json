@@ -3,8 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "start": "run-p start:jsonserver serve:mocks",
+    "start": "run-p docker start:jsonserver serve:mocks",
     "start:dev": "vite",
+    "docker": "cd keycloak && docker compose up",
     "prestart:jsonserver": "node mocks/createMockDb.js",
     "start:jsonserver": "node mocks/apiServer.js",
     "serve:mocks": "vite --mode mock",
