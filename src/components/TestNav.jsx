@@ -11,6 +11,7 @@ const Test = () => {
 
   return (
     <>
+      <div className="date">{t('date', { date: new Date() })}</div>
       <select name="language" onChange={handleChange}>
         <option value="en">English</option>
         <option value="fr">French</option>

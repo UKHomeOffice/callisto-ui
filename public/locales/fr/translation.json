@@ -1,0 +1,5 @@
+{
+  "welcome": "Bienvenue à Callisto",
+  "other": "Autre",
+  "date": "{{date, DATE_HUGE}}"
+}

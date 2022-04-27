@@ -1,27 +1,29 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { translation_en } from './locales/en/translations';
-import { translation_fr } from './locales/fr/translations';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-http-backend';
+//import { DateTime } from 'luxon';
 
 i18n
-  .use(initReactI18next)
+  .use(Backend)
   .use(LanguageDetector)
+  .use(initReactI18next)
+
   .init({
+    debug: true,
     fallbackLng: 'en',
-    lng: 'en',
-    resources: {
-      en: {
-        translations: translation_en,
-      },
-      fr: {
-        translations: translation_fr,
-      },
+    interpolation: {
+      escapeValue: false,
     },
-    ns: ['translations'],
-    defaultNS: 'translations',
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
   });
 
-i18n.languages = ['en', 'fr'];
-
+//i18n.languages = ['en', 'fr'];
+// i18n.services.formatter.add('DATE_HUGE', (value, lng, options) => {
+//   return DateTime.fromJSDate(value)
+//     .setLocale(lng)
+//     .toLocaleString(DateTime.DATE_HUGE);
+// });
 export default i18n;
