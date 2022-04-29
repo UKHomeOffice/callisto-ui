@@ -6,6 +6,7 @@ import Header from './components/layout/header/Header';
 import Test from './components/TestNav';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
+import Date from './components/common/form/date/Date';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         <Header />
         <div className="govuk-width-container ">
           <main className="govuk-main-wrapper " id="main-content" role="main">
-            <Test />
+            {/* <Date /> */}
+            <Test text="work" />
             <LangTest />
             <Routes>
               <Route path="/forms" element={<FormsExample />} />
