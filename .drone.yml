@@ -13,6 +13,7 @@ steps:
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
+    failure: ignore
     commands:
       - npm install
       - npm run lint
@@ -38,7 +39,7 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
 
         Author: {{ build.author }}
-      trigger:
+      when:
         # prettier-ignore
         status: 
         - success
