@@ -33,10 +33,6 @@ trigger:
 depends_on:
   - build
 
-# platform:
-#   os: linux
-#   arch: amd64
-
 steps:
   - name: slack
     image: plugins/slack
@@ -57,8 +53,3 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
 
         Author: {{ build.author }}
-      when:
-        # prettier-ignore
-        status: 
-        - success
-        - failure
