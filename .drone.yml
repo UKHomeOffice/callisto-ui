@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: kubernetes
-name: callisto-ui
+name: build
 
 platform:
   os: linux
@@ -13,13 +13,31 @@ steps:
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-    failure: ignore
     commands:
       - npm install
       - npm run lint
       - npx stylelint "**/*.scss"
       - npm run test
       - npm run build
+
+---
+kind: pipeline
+type: kubernetes
+name: build notification
+
+trigger:
+  status:
+    - success
+    - failure
+
+depends_on:
+  - build
+
+# platform:
+#   os: linux
+#   arch: amd64
+
+steps:
   - name: slack
     image: plugins/slack
     settings:
