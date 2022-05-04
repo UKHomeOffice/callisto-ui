@@ -14,6 +14,6 @@ describe('Header component', () => {
     render(<Header />);
 
     const timecardButton = screen.getByRole('link', { name: 'Timecard' });
-    expect(timecardButton.getAttribute('href')).toBe('/timecard');
+    expect(timecardButton.getAttribute('href')).toBe('/timeard');
   });
 });
