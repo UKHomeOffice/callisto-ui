@@ -33,7 +33,7 @@ steps:
           Build #{{ build.number }} failed
         {{/success}}
 
-        Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ build.message }}>
+        Commit: {{ build.message }} (<${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>)
 
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
 
