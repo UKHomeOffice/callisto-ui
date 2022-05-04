@@ -39,6 +39,5 @@ steps:
 
         Author: {{ build.author }}
       when:
-        status:
-          - success
-          - failure
+        # prettier-ignore
+        status: [ success, failure ]
