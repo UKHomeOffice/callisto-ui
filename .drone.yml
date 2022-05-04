@@ -51,6 +51,7 @@ steps:
         {{/success}}
 
         Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{ build.message }}
+        Repo: {{ repo.name }}
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
 
         Author: {{ build.author }}
