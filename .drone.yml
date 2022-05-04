@@ -29,6 +29,8 @@ trigger:
   status:
     - success
     - failure
+  event:
+    - push
 
 depends_on:
   - build
