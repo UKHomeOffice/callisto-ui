@@ -19,3 +19,27 @@ steps:
       - npx stylelint "**/*.scss"
       - npm run test
       - npm run build
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
+      channel: callisto-tech-notifications
+      username: drone
+      template: >
+        test
+      # template: >
+      #   {{#success build.success}}
+      #     build {{build.number}} succeeded
+      #   {{else}}
+      #     build {{build.number}} failed
+      #   {{/success}}
+      #   Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+
+      #   Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+
+      #   Author: {{ build.author }}
+      # when:
+      #   status:
+      #     - success
+      #     - failure
