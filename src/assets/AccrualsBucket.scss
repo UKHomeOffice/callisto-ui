@@ -2,19 +2,57 @@
     position: relative;
 
     &__container {
+        border-color: rgb(235, 235, 235);
+        border-style: groove;
+        width: 200px;
+        height: fit-content;
+        padding: 10px;
+        background-color: white;
+        
+    }
 
-        &__title {
+    &__title {
+        margin-bottom: 0;
+    }
 
+    &__value {
+    }
+
+    &__info-container{
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    &__hide-detailed-view {
+        width: 20px;
+    }
+
+    &__show-detailed-view {
+        width: 20px;
+    }
+
+    &__title-container {
+    
+    }
+
+    &__row {
+        display: flex;
+        border-color: rgb(235, 235, 235);
+        border-style: groove;
+        padding: 5px;
+        margin: 0;
+
+        &-name-column {
+            width: 50%;
+            margin-bottom: 0;
         }
 
-        &__info-container{
-
-            &__row {
-
-                &__name-column {
-                    
-                }
-            }
+        &-value-column {
+            width: 50%;
+            margin-bottom: 0;
+            text-align: end;
         }
     }
+    
 }
