@@ -25,20 +25,19 @@ steps:
       webhook:
         from_secret: SLACK_WEBHOOK_URL
       channel: callisto-tech-notifications
-      username: drone
+      username: Drone
       template: >
-        test
-      # template: >
-      #   {{#success build.success}}
-      #     build {{build.number}} succeeded
-      #   {{else}}
-      #     build {{build.number}} failed
-      #   {{/success}}
-      #   Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        {{#success build.success}}
+          Build {{build.number}} succeeded
+        {{else}}
+          Build {{build.number}} failed
+        {{/success}}
+        Repo link: ${DRONE_REPO_LINK}
+        Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
 
-      #   Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
 
-      #   Author: {{ build.author }}
+        Author: {{ build.author }}
       # when:
       #   status:
       #     - success
