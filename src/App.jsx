@@ -1,12 +1,9 @@
 import { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import LangTest from './components/LangTest';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
-import Test from './components/LangTest1';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
-import Date from './components/common/form/date/TodaysDate';
 
 function App() {
   return (
