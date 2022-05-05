@@ -1,6 +1,5 @@
 {
   "welcome": "Welcome to Callisto",
-  "other": "Other",
   "todaysDate": "{{ date, long }}",
   "key": "it's a test"
 }
