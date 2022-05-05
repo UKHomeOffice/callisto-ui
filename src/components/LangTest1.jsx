@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+// test files for translation using diff  logic
+
 const LangTest1 = () => {
   const { t, i18n } = useTranslation();
 

@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+//test files for translation using diff logic
+
 const languages = {
   en: { nativeName: 'English' },
   fr: { nativeName: 'French' },

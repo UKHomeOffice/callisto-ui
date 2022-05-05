@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TodaysDate from './TodaysDate';
-import i18n from '../../../../i18n/config';
-import { I18nextProvider } from 'react-i18next';
+// import i18n from '../../../../i18n/config';
+// import { I18nextProvider } from 'react-i18next';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key) => key }),
