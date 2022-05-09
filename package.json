@@ -45,10 +45,7 @@
     ]
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@react-keycloak/web": "^3.4.0",
-=======
->>>>>>> 7e7f048 (Remove hods package)
+    "@react-keycloak/web": "^3.4.0",    
     "axios": "^0.26.0",
     "govuk-frontend": "^4.0.1",
     "keycloak-js": "15.0.2",
