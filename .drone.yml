@@ -9,7 +9,9 @@ platform:
 
 steps:
   - name: install dependencies
-    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    image: &node-version
+      # The version we're targeting for production
+      node:14.15.4-alpine
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
