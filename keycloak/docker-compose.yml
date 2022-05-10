@@ -5,7 +5,6 @@ services:
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth']
       start_period: 60s
-    #image: wizzn/keycloak:14
     image: jboss/keycloak:15.0.2
     ports:
       - 8080:8080
