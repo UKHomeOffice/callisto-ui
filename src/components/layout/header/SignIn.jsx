@@ -17,7 +17,8 @@ const SignIn = () => {
               </li>
               <li className="govuk-header__navigation-item">
                 <a
-                  className="govuk-header__navigation-link"
+                  className="govuk-header__navigation-link govuk-header__link"
+                  style={{ color: '#000' }}
                   href={keycloak.createLogoutUrl()}
                 >
                   Sign Out
