@@ -8,14 +8,41 @@ platform:
   arch: amd64
 
 steps:
-  - name: build
+  - name: install dependencies
+    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands: 
+     - npm install
+
+  - name: lint project
+    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands: 
+      - npm run lint
+      - npx stylelint "**/*.scss"
+    depends_on: 
+      - install dependencies
+
+  - name: test project
     image: quay.io/ukhomeofficedigital/node-artifactory:14
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
     commands:
-      - npm install
-      - npm run lint
-      - npx stylelint "**/*.scss"
       - npm run test
+    depends_on:
+      - install dependencies
+
+  - name: build project
+    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
       - npm run build
+    depends_on:
+      - install dependencies
