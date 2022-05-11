@@ -9,9 +9,9 @@ platform:
 
 steps:
   - name: install dependencies
-    image: &node-version
+    image: &node_image
       # The version we're targeting for production
-      node:14.15.4-alpine
+      node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
@@ -19,7 +19,7 @@ steps:
      - npm install
 
   - name: lint project
-    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    image: *node_image
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
@@ -30,7 +30,7 @@ steps:
       - install dependencies
 
   - name: test project
-    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    image: *node_image
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
@@ -40,7 +40,7 @@ steps:
       - install dependencies
 
   - name: build project
-    image: quay.io/ukhomeofficedigital/node-artifactory:14
+    image: *node_image
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
