@@ -1,0 +1,19 @@
+version: '2.4' # v3 doesn't support depends_on condition
+
+services:
+  keycloak:
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth']
+      start_period: 60s
+    image: jboss/keycloak:15.0.2
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    volumes:
+      - ${PWD}/config:/opt/jboss/keycloak/config
+    command:
+      - '-Dkeycloak.migration.action=import'
+      - '-Dkeycloak.migration.provider=dir'
+      - '-Dkeycloak.migration.dir=/opt/jboss/keycloak/config'
