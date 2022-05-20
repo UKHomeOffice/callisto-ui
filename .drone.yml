@@ -49,6 +49,18 @@ steps:
     depends_on:
       - install dependencies
 
+  - name: upload to S3
+    image: plugins/s3
+    settings:
+      bucket: ho-callisto-dev
+      region: eu-west-2
+      access_key:
+        from_secret: s3_aws_access_key_id
+      secret_key:
+        from_secret: s3_aws_secret_access_key
+      source: dist/**/*
+      target: /dev/${DRONE_BUILD_NUMBER}
+
 ---
 kind: pipeline
 type: kubernetes
