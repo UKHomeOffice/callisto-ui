@@ -58,6 +58,7 @@ steps:
       secret_key:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
+      strip_prefix: dist/
       target: /dev/${DRONE_BUILD_NUMBER}
     depends_on:
       - build project
