@@ -9,24 +9,23 @@ platform:
 
 steps:
   - name: install dependencies
-    image: &node_image
-      # The version we're targeting for production
+    image: &node_image # The version we're targeting for production
       node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-    commands: 
-     - npm install
+    commands:
+      - npm install
 
   - name: lint project
     image: *node_image
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-    commands: 
+    commands:
       - npm run lint
       - npx stylelint "**/*.scss"
-    depends_on: 
+    depends_on:
       - install dependencies
 
   - name: test project
@@ -58,7 +57,7 @@ steps:
         from_secret: s3_aws_access_key_id
       secret_key:
         from_secret: s3_aws_secret_access_key
-      source: dist/**/*
+      source: test.txt
       target: /dev/${DRONE_BUILD_NUMBER}
 
 ---
