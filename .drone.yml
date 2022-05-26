@@ -71,8 +71,8 @@ steps:
       - n=0; while [ "$n" -lt 60 ] && [ ! "$(docker stats --no-stream)" ]; do n=$(( n + 1 )); sleep 1; done
       - docker build -t callisto:${DRONE_COMMIT_SHA} . # target?
     when:
-      branch:
-        - main
+      # branch:
+      #   - main
       event:
         - push
 
@@ -92,8 +92,8 @@ steps:
       #   - latest
       #   - ${DRONE_COMMIT_SHA}
     when:
-      branch:
-        - main
+      # branch:
+      #   - main
       event:
         - push
 
