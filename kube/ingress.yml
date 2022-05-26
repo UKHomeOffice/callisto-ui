@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: callisto-ingress # must be a valid DNS subdomain name
+  labels:
+    cert-manager.io/solver: route53
+  annotations:
+    cert-manager.io/enabled: 'true'
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    kubernetes.io/ingress.class: 'nginx-internal'
+spec:
+  tls:
+    - hosts:
+        - callisto.dev.homeoffice.gov.uk # ??
+      secretName: callisto
+  rules:
+    - host: callisto.dev.homeoffice.gov.uk
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: callisto
+              servicePort: 80

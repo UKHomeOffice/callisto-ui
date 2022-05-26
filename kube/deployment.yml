@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: callisto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: callisto
+      service: callisto
+  template:
+    metadata:
+      labels:
+        name: callisto
+        service: callisto
+    spec:
+      containers:
+        - name: nginx
+          image: {{ .IMAGE_URL }}
+          imagePullPolicy: IfNotPresent
+           securityContext:
+              runAsNonRoot: true
+          ports:
+            - containerPort: 4000
+          env:
+          - name: MYSUPERSECRET
+            valueFrom:
+              secretKeyRef:
+                name: callisto-secret
+                key: mysupersecret

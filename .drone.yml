@@ -9,24 +9,23 @@ platform:
 
 steps:
   - name: install dependencies
-    image: &node_image
-      # The version we're targeting for production
+    image: &node_image # The version we're targeting for production
       node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-    commands: 
-     - npm install
+    commands:
+      - npm install
 
   - name: lint project
     image: *node_image
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-    commands: 
+    commands:
       - npm run lint
       - npx stylelint "**/*.scss"
-    depends_on: 
+    depends_on:
       - install dependencies
 
   - name: test project
@@ -52,6 +51,68 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
+name: deploy
+
+trigger:
+  status:
+    - success
+
+depends_on:
+  - callisto-ui
+
+steps:
+  - name: build_image
+    pull: if-not-exists
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+    environment:
+      DOCKER_HOST: tcp://docker:2375 # tcp Socket
+    commands:
+      # wait for docker service to be up before running docker build
+      - n=0; while [ "$n" -lt 60 ] && [ ! "$(docker stats --no-stream)" ]; do n=$(( n + 1 )); sleep 1; done
+      - docker build -t callisto:${DRONE_COMMIT_SHA} . # target?
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+  - name: build_push_ecr
+    pull: if-not-exists
+    image: plugins/ecr
+    environment:
+      AWS_REGION: eu-west-2
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      repo: # repository name for the image
+      registry: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
+      # tags:
+      #   - latest
+      #   - ${DRONE_COMMIT_SHA}
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+  - name: deploy-to-kube
+    pull: if-not-exists
+    image: quay.io/ukhomeofficedigital/kd:v1.18.0
+    commands:
+      - bin/deploy.sh
+    environment:
+      IMAGE_URL: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/<repo>
+      # KUBE_TOKEN_ACP_NOTPROD:
+      #   from_secret: kube_token_acp_notprod
+    when:
+      event:
+        - promote
+
+---
+kind: pipeline
+type: kubernetes
 name: build notifications
 
 trigger:
@@ -63,6 +124,7 @@ trigger:
 
 depends_on:
   - callisto-ui
+  - deploy
 
 steps:
   - name: slack
