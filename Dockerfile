@@ -9,9 +9,9 @@ WORKDIR /usr/src/app
 # Switch to the user we created
 USER 1001
 # Copy files to current path
-COPY . .
-# Use node package manager to build app and run tests 
-RUN npm install --quiet && npm test
+COPY --chown=1001 . .
+# Use node package manager to build app 
+RUN npm install
 # Open up a port
 EXPOSE 4000
 # Use node package manager to run app
