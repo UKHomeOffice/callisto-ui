@@ -1,5 +1,5 @@
 # Select a base image
-FROM node:6-alpine
+FROM node:16.15.0-alpine
 # Add an unprivileged user
 RUN adduser -D -u 1001 app 
 # Create a working directory and change its permissions 

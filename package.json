@@ -44,6 +44,10 @@
       ]
     ]
   },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.15.0"
+  },
   "dependencies": {
     "@react-keycloak/web": "^3.4.0",
     "axios": "^0.26.0",
