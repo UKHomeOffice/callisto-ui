@@ -77,7 +77,7 @@ steps:
   - name: lint_helm_chart
     image: quay.io/ukhomeofficedigital/helm:v3.5.4
     environment:
-      VALUES_FILE: environments/values-notprod.yaml
+      VALUES_FILE: helm/values.yaml
     commands:
       - helm lint --strict -f $${VALUES_FILE} helm
     when:
@@ -91,7 +91,7 @@ steps:
     image: quay.io/ukhomeofficedigital/helm:v3.5.4
     environment:
       RELEASE_NAME: callisto
-      VALUES_FILE: environments/values-notprod.yaml
+      VALUES_FILE: helm/values.yaml
       KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
       KUBE_CLUSTER_NAME: acp-notprod
       KUBE_NAMESPACE: sas-callisto-dev
