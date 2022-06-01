@@ -95,8 +95,7 @@ steps:
       KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
       KUBE_CLUSTER_NAME: acp-notprod
       KUBE_NAMESPACE: sas-callisto-dev
-      KUBE_TOKEN:
-        from_secret: kube_token_acp_notprod
+      KUBE_TOKEN: test # from_secret: kube_token_acp_notprod
     commands:
       - /setup-kubeconfig.sh
       - helm upgrade --debug -f $${VALUES_FILE} --namespace=$${KUBE_NAMESPACE} $${RELEASE_NAME} helm --set image.tag=$${DRONE_COMMIT_SHA} -i --wait --timeout 10m --history-max 5

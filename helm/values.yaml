@@ -1,0 +1,27 @@
+service:
+  type: ClusterIP
+  port: 8080
+
+replicaCount: 1
+
+securityContext:
+  runAsUser: 100
+  runAsGroup: 100
+  fsGroup: 100
+
+resources:
+  requests:
+    memory: '512Mi'
+    cpu: '500m'
+  limits:
+    memory: '1Gi'
+    cpu: '1500m'
+
+image:
+  repo: quay.io/ukhomeofficedigital/
+  name: helm
+  version: 3.5.4
+
+global:
+  ingress:
+    host: callisto.dev.homeoffice.gov.uk
