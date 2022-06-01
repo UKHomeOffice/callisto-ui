@@ -101,9 +101,9 @@ steps:
       - /setup-kubeconfig.sh
       - helm upgrade --debug -f $${VALUES_FILE} --namespace=$${KUBE_NAMESPACE} $${RELEASE_NAME} helm --set image.tag=$${DRONE_COMMIT_SHA} -i --wait --timeout 10m --history-max 5
     when:
-      branch:
-        - main
-        # - feature/*
+      # branch:
+      # - main
+      # - feature/*
       event:
         - push
     depends_on:
