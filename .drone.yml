@@ -81,9 +81,9 @@ steps:
     commands:
       - helm lint --strict -f $${VALUES_FILE} helm
     when:
-      branch:
-        - main
-        # - feature/*
+      # branch:
+      # - main
+      # - feature/*
       event:
         - push
 
