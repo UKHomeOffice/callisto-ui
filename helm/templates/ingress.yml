@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.name }} # must be a valid DNS subdomain name
+  name: {{ $.Chart.Name }}
   labels:
     cert-manager.io/solver: route53
   annotations:
@@ -13,12 +13,12 @@ spec:
   tls:
     - hosts:
         - {{ .Values.global.ingress.host }}
-      secretName: {{ .Chart.name }}-ingress
+      secretName: {{ .Chart.Name }}-ingress
   rules:
     - host: {{ .Values.global.ingress.host }}
       http:
         paths:
           - path: /
             backend:
-              serviceName: callisto-{{ .Chart.name }}
+              serviceName: callisto-{{ .Chart.Name }}
               servicePort: {{ .Values.service.port }}
