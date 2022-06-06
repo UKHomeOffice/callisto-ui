@@ -68,12 +68,10 @@ steps:
       chart: ./helm
       values_file: ./helm/values.yaml
     when:
-      # branch:
-      # - main
       event:
         - push
 
-  - name: deploy
+  - name: deploy to dev
     image: pelotech/drone-helm3
     settings:
       namespace: callisto
@@ -83,48 +81,14 @@ steps:
       values_file: ./helm/values.yaml
       release: callisto
       kube_api_server:
-        from_secret: dev_api_server
+        from_secret: dev_kube_api_url
       kube_token:
-        from_secret: dev_kubernetes_token
+        from_secret: dev_kube_token
     when:
       # branch:
       # - main
       event:
         - push
-
-  # - name: lint_helm_chart
-  #   image: quay.io/ukhomeofficedigital/helm:v3.5.4
-  #   environment:
-  #     VALUES_FILE: helm/values.yaml
-  #   commands:
-  #     - helm lint --strict -f $${VALUES_FILE} helm
-  #   when:
-  #     # branch:
-  #     # - main
-  #     # - feature/*
-  #     event:
-  #       - push
-
-  # - name: deploy_to_dev_helm
-  #   image: quay.io/ukhomeofficedigital/helm:v3.5.4
-  #   environment:
-  #     RELEASE_NAME: callisto
-  #     VALUES_FILE: helm/values.yaml
-  #     KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
-  #     KUBE_CLUSTER_NAME: acp-notprod
-  #     KUBE_NAMESPACE: sas-callisto-dev
-  #     KUBE_TOKEN: test # from_secret: kube_token_acp_notprod
-  #   commands:
-  #     - /setup-kubeconfig.sh
-  #     - helm upgrade --debug -f $${VALUES_FILE} --namespace=$${KUBE_NAMESPACE} $${RELEASE_NAME} helm --set image.tag=$${DRONE_COMMIT_SHA} -i --wait --timeout 10m --history-max 5
-  #   when:
-  #     # branch:
-  #     # - main
-  #     # - feature/*
-  #     event:
-  #       - push
-  #   depends_on:
-  #     - lint_helm_chart
 
 ---
 kind: pipeline

@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: callisto
+  name: {{ .Chart.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      name: callisto
-      service: callisto
+      name: {{ .Chart.Name }}
+      service: {{ .Values.service.name }}
   template:
     metadata:
       labels:
-        name: callisto
-        service: callisto
+        name: {{ .Chart.Name }}
+        service: {{ .Values.service.name }}
     spec:
       containers:
         - name: nginx
@@ -23,9 +23,9 @@ spec:
               runAsNonRoot: true
           ports:
             - containerPort: {{ .Values.service.port }}
-          env:
-          - name: MYSUPERSECRET
-            valueFrom:
-              secretKeyRef:
-                name: callisto-secret
-                key: mysupersecret
+          # env:
+          # - name: MYSUPERSECRET
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: callisto-secret
+          #       key: mysupersecret

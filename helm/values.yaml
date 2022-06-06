@@ -1,13 +1,14 @@
 service:
-  type: ClusterIP
+  # type: ClusterIP
+  name: callisto
   port: 8080
 
 replicaCount: 1
 
-securityContext:
-  runAsUser: 100
-  runAsGroup: 100
-  fsGroup: 100
+# securityContext:
+#   runAsUser: 100
+#   runAsGroup: 100
+#   fsGroup: 100
 
 resources:
   requests:
@@ -24,4 +25,4 @@ image:
 
 global:
   ingress:
-    host: callisto.dev.homeoffice.gov.uk
+    host: web.dev.callisto.homeoffice.gov.uk
