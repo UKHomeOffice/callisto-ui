@@ -19,8 +19,8 @@ spec:
         - name: nginx
           image: {{.Values.image.repo}}{{.Values.image.name}}:{{.Values.image.version}}
           imagePullPolicy: IfNotPresent
-           securityContext:
-              runAsNonRoot: true
+          securityContext:
+            runAsNonRoot: true
           ports:
             - containerPort: {{ .Values.service.port }}
           # env:
