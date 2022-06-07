@@ -76,7 +76,7 @@ steps:
     environment:
       KUBECONFIG: /etc/rancher/k3s/k3s.yaml
     settings:
-      namespace: callisto
+      namespace: callisto-dev
       mode: upgrade
       chart: ./helm
       values: image.tag=${DRONE_COMMIT_SHA}
