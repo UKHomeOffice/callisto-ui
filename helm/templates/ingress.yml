@@ -13,9 +13,9 @@ metadata:
     ingress.kubernetes.io/configuration-snippet: |-
       return 200 ""<html><head></head><body>Success</body></html>"
 spec:
-  tls:
-    - hosts:
-        - {{ .Values.global.ingress.host }}
+  # tls:
+  #   - hosts:
+  #       - {{ .Values.global.ingress.host }}
       # secretName: {{ .Chart.Name }}-ingress # the name of the kubernetes secret in your namespace with tls.crt and tls.key
   rules:
     - host: {{ .Values.global.ingress.host }}
