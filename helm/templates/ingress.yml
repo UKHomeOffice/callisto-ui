@@ -10,7 +10,7 @@ metadata:
     # cert-manager.io/enabled: 'true'
     # ingress.kubernetes.io/force-ssl-redirect: 'true'
     # ingress.kubernetes.io/backend-protocol: 'HTTPS'
-    ingress.kubernetes.io/configuration-snippet: |-
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
       return 200 "<html><head></head><body>Success</body></html>";
 spec:
   # tls:
