@@ -73,8 +73,8 @@ steps:
 
   - name: deploy to dev
     image: pelotech/drone-helm3
-    environment:
-      KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+    # environment:
+    #   KUBECONFIG: /etc/rancher/k3s/k3s.yaml
     settings:
       namespace: callisto-dev
       mode: upgrade
