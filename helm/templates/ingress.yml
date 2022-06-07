@@ -10,6 +10,8 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
     kubernetes.io/ingress.class: 'nginx-internal'
     ingress.kubernetes.io/backend-protocol: 'HTTPS'
+    ingress.kubernetes.io/configuration-snippet: |-
+      return 200 ""<html><head></head><body>Success</body></html>"
 spec:
   tls:
     - hosts:
@@ -21,5 +23,7 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: {{ .Values.service.name }}
-              servicePort: {{ .Values.service.port }}
+              service:
+                name: {{ .Values.service.name }}
+                port:
+                  number: {{ .Values.service.port }}
