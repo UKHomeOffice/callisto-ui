@@ -21,8 +21,8 @@ spec:
     - host: {{ .Values.global.ingress.host }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /test
+            pathType: Exact
             backend:
               service:
                 name: {{ .Values.service.name }}
