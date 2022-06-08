@@ -13,7 +13,7 @@ metadata:
     ingress.kubernetes.io/configuration-snippet: |
       return 200 "<html><head></head><body>Success</body></html>";
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-internal
   # tls:
   #   - hosts:
   #       - {{ .Values.global.ingress.host }}
