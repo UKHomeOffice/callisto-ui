@@ -13,6 +13,7 @@ metadata:
     ingress.kubernetes.io/configuration-snippet: |
       return 200 "<html><head></head><body>Success</body></html>";
 spec:
+  ingressClassName: nginx
   # tls:
   #   - hosts:
   #       - {{ .Values.global.ingress.host }}
@@ -21,8 +22,8 @@ spec:
     - host: {{ .Values.global.ingress.host }}
       http:
         paths:
-          - path: /test
-            pathType: Exact
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Values.service.name }}

@@ -1,31 +1,22 @@
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Chart.Name }}
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      name: {{ .Chart.Name }}
-      service: {{ .Values.service.name }}
-  template:
-    metadata:
-      labels:
-        name: {{ .Chart.Name }}
-        service: {{ .Values.service.name }}
-    spec:
-      containers:
-        - name: nginx
-          image: {{.Values.image.repo}}{{.Values.image.name}}:{{.Values.image.version}}
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsNonRoot: true
-          ports:
-            - containerPort: {{ .Values.service.port }}
-          # env:
-          # - name: MYSUPERSECRET
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: callisto-secret
-          #       key: mysupersecret
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: {{ .Chart.Name }}
+# spec:
+#   replicas: {{ .Values.replicaCount }}
+#   selector:
+#     matchLabels:
+#       name: {{ .Chart.Name }}
+#       service: {{ .Values.service.name }}
+#   template:
+#     metadata:
+#       labels:
+#         name: {{ .Chart.Name }}
+#         service: {{ .Values.service.name }}
+#     spec:
+#       containers:
+#         - name: {{ .Values.service.name }}
+#           image: {{.Values.image.repo}}{{.Values.image.name}}:{{.Values.image.version}}
+#           ports:
+#             - containerPort: {{ .Values.service.port }}

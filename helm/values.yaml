@@ -20,8 +20,8 @@ resources:
 
 image:
   repo: quay.io/ukhomeofficedigital/
-  name: helm
-  version: 3.5.4
+  name: developer-induction
+  version: latest
 
 global:
   ingress:
