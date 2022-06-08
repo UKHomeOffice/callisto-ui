@@ -10,8 +10,10 @@ metadata:
     # cert-manager.io/enabled: 'true'
     # ingress.kubernetes.io/force-ssl-redirect: 'true'
     # ingress.kubernetes.io/backend-protocol: 'HTTPS'
-    ingress.kubernetes.io/configuration-snippet: |
+    ingress.kubernetes.io/configuration-snippet: | 
+    location ~* "^/" {
       return 200 "<html><head></head><body>Success</body></html>";
+    }
 spec:
   # tls:
   #   - hosts:
