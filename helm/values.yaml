@@ -25,4 +25,4 @@ image:
 
 global:
   ingress:
-    host: *.dev.callisto.homeoffice.gov.uk
+    host: web.dev.callisto.homeoffice.gov.uk
