@@ -1,4 +1,4 @@
-# ---
+---
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
@@ -20,3 +20,26 @@
 #           image: {{.Values.image.repo}}{{.Values.image.name}}:{{.Values.image.version}}
 #           ports:
 #             - containerPort: {{ .Values.service.port }}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: callisto-web
+  labels:
+    app: callisto-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: callisto-web
+  template:
+    metadata:
+      labels:
+        app: callisto-web
+    spec:
+      containers:
+        - name: induction
+          image: quay.io/ukhomeofficedigital/developer-induction:latest
+          # image: gcr.io/google-samples/hello-app:1.0
+          imagePullPolicy: IfNotPresent

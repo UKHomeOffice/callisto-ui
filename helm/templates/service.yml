@@ -1,13 +1,14 @@
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: callisto
-# spec:
-#   selector:
-#     name: callisto
-#   type: ClusterIP
-#   ports:
-#     - name: http
-#       port: 80
-#       targetPort: 4000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: callisto-web
+  labels:
+    app: callisto-web
+spec:
+  selector:
+    app: callisto-web
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9000
