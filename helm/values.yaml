@@ -1,14 +1,8 @@
 service:
-  # type: ClusterIP
-  name: callisto
-  port: 8080
+  name: callisto-web
+  port: 3000
 
 replicaCount: 1
-
-# securityContext:
-#   runAsUser: 100
-#   runAsGroup: 100
-#   fsGroup: 100
 
 resources:
   requests:

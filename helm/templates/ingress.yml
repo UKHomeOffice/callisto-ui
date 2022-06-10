@@ -34,12 +34,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: callisto
+  labels:
+    app: callisto
   annotations:
-    kubernetes.io/ingress.class: 'nginx-internal'
-    # nginx.ingress.kubernetes.io/rewrite-target: /$1
-    # nginx.ingress.kubernetes.io/configuration-snippet: |-
-    #   return 200 "<html><head></head><body>Success</body></html>";
+    kubernetes.io/ingress.class: 'nginx-external'
+    kubernetes.io/backend-protocol: "HTTP"
+    kubernetes.io/rewrite-target: /$1
+    ingress.kubernetes.io/server-snippet: |
+      location /test_sk2022 {
+        return 200 "<html><head></head><body>Success</body></html>";
+      }
 spec:
+  # ingressClassName: nginx
   rules:
     - host: web.dev.callisto.homeoffice.gov.uk
       http:
@@ -50,7 +56,7 @@ spec:
               service:
                 name: callisto-web
                 port:
-                  number: 9000
+                  number: 3000
 
 
 # apiVersion: extensions/v1beta1

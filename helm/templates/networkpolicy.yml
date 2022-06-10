@@ -1,17 +1,21 @@
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: NetworkPolicy
-# metadata:
-#   name: ingress-network-policy-callisto
-# spec:
-#   podSelector:
-#     matchLabels:
-#       name: callisto
-#   ingress:
-#     - from:
-#         - namespaceSelector:
-#             matchLabels:
-#               name: ingress-internal
-#       ports:
-#         - protocol: TCP
-#           port: 4000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ingress-network-policy-callisto
+spec:
+  podSelector:
+    matchLabels:
+      app: callisto-web
+  # ingress:
+  #   - from:
+  #       - namespaceSelector:
+  #           matchLabels:
+  #             kubernetes.io/metadata.name: callisto-dev
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Egress
+    - Ingress
