@@ -41,8 +41,79 @@ metadata:
     kubernetes.io/backend-protocol: "HTTP"
     kubernetes.io/rewrite-target: /$1
     ingress.kubernetes.io/server-snippet: |
-      location /test_sk2022 {
-        return 200 "<html><head></head><body>Success</body></html>";
+      # location /dev/373/index.html {
+      #   set               $uri_path       "/dev/373/index.html";
+
+      location ~* ^(.+)$ {
+        set               $uri_path       "/dev/248$1";
+
+        if ($request_method !~ ^(GET|DELETE)$) {
+          return 403;
+        }
+
+        set               $key                    "AWSSECRETKEY";
+        set               $key_id                 "AWSKEYID";
+        set               $target_host            "ho-callisto-dev.s3.amazonaws.com";
+        set               $region                 "eu-west-2";
+        set               $empty_hash             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        set_by_lua        $time                   "return ngx.time()";
+
+        set_by_lua        $now                    "return ngx.cookie_time(tonumber(ngx.var.time))";
+        set_by_lua        $now_iso8601            "return os.date(\"!%Y%m%dT%H%M%SZ\",ngx.var.time)";
+        set_by_lua        $today                  "return os.date(\"!%Y%m%d\", ngx.var.time)";
+        set               $canonical_request      "GET\n$uri_path\n\nhost:$target_host\nx-amz-content-sha256:$empty_hash\nx-amz-date:$now_iso8601\n\nhost;x-amz-content-sha256;x-amz-date\n$empty_hash";
+
+        set_by_lua_block  $canonical_request_hash {
+          local resty_sha256 = require('resty.sha256')
+          local sha256 = resty_sha256:new(ngx.var.key)
+          local ok = sha256:update(ngx.var.canonical_request)
+          local mac = sha256:final()
+          local str = require "resty.string"
+          return str.to_hex(mac)
+        }
+        set               $string_to_sign "AWS4-HMAC-SHA256\n$now_iso8601\n$today/$region/s3/aws4_request\n$canonical_request_hash";
+
+        set_by_lua_block  $signature {
+          function gethmac()
+            {{ .Values.hmac_lua | indent 12 }}
+          end
+          if resty_hmac == nil then
+            resty_hmac = gethmac()
+          end
+
+          local hmac_sha256 = resty_hmac:new("AWS4" .. ngx.var.key, resty_hmac.ALGOS.SHA256)
+          hmac_sha256:update(ngx.var.today)
+          local date_key = hmac_sha256:final()
+
+          hmac_sha256 = resty_hmac:new(date_key, resty_hmac.ALGOS.SHA256)
+          hmac_sha256:update(ngx.var.region)
+          local date_region_key = hmac_sha256:final()
+
+          hmac_sha256 = resty_hmac:new(date_region_key, resty_hmac.ALGOS.SHA256)
+          hmac_sha256:update("s3")
+          local date_region_service_key = hmac_sha256:final()
+
+          hmac_sha256 = resty_hmac:new(date_region_service_key, resty_hmac.ALGOS.SHA256)
+          hmac_sha256:update("aws4_request")
+          local signing_key = hmac_sha256:final()
+
+          hmac_sha256 = resty_hmac:new(signing_key, resty_hmac.ALGOS.SHA256)
+          hmac_sha256:update(ngx.var.string_to_sign)
+          local signature = hmac_sha256:final()
+
+          local str = require "resty.string"
+          return str.to_hex(signature)
+        }
+
+        set   $auth "AWS4-HMAC-SHA256 Credential=$key_id/$today/$region/s3/aws4_request,SignedHeaders=host;x-amz-content-sha256;x-amz-date,Signature=$signature";
+
+        proxy_set_header       Host                     "ho-callisto-dev.s3.amazonaws.com";
+        proxy_set_header       "x-amz-content-sha256"   "$empty_hash";
+        proxy_set_header       "x-amz-date"             "$now_iso8601";
+
+        proxy_set_header       Authorization "$auth";
+        proxy_intercept_errors off;
+        proxy_pass             "https://s3-$region.amazonaws.com$uri_path";
       }
 spec:
   # ingressClassName: nginx
@@ -57,7 +128,6 @@ spec:
                 name: callisto-web
                 port:
                   number: 3000
-
 
 # apiVersion: extensions/v1beta1
 # kind: Ingress
