@@ -1,3 +1,5 @@
+name: test
+
 service:
   name: callisto-web
   port: 3000
