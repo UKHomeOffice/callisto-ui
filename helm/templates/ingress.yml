@@ -47,7 +47,7 @@ metadata:
 spec:
   # ingressClassName: nginx
   rules:
-    - host: {{ regexReplaceAll "\\W+" .Value.name "_" }}.web.dev.callisto.homeoffice.gov.uk
+    - host: {{ regexReplaceAll "\\W+" .Values.name "_" }}.web.dev.callisto.homeoffice.gov.uk
       http:
         paths:
           - path: /
