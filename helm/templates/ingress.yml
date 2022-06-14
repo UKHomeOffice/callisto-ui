@@ -47,14 +47,14 @@ metadata:
 spec:
   # ingressClassName: nginx
   rules:
-    - host: {{ regexFind "[A-Za-z]{4}-\d+" .Values.name }}.web.dev.callisto.homeoffice.gov.uk 
+    - host: {{ .Values.name | regexFind "([A-Za-z]+-\d+)" }}.web.dev.callisto.homeoffice.gov.uk 
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ regexFind "[A-Za-z]{4}-\d+" .Values.name }}-callisto-web
+                name: {{ .Values.name | regexFind “([A-Za-z]+-\d+)” }}-callisto-web
                 port:
                   number: 3000
     - host: web.dev.callisto.homeoffice.gov.uk
