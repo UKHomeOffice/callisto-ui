@@ -10,5 +10,21 @@ spec:
     app: callisto-web
   type: ClusterIP
   ports:
-    - name: http
+    - name: https
       port: 3000
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}-callisto-web
+  labels:
+    app: {{ .Values.name }}-callisto-web
+spec:
+  selector:
+    app: {{ .Values.name }}-callisto-web
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 3000
+      protocol: TCP
