@@ -14,10 +14,10 @@ metadata:
     kubernetes.io/ingress.class: 'nginx-external' # needs changing to internal
     kubernetes.io/backend-protocol: 'HTTPS'
     # kubernetes.io/rewrite-target: /$1
-    ingress.kubernetes.io/server-snippet: |
-      location /test_sk2022 {
-        return 200 "<html><head></head><body>Success</body></html>";
-      }
+    # ingress.kubernetes.io/server-snippet: |
+    #   location /test_sk2022 {
+    #     return 200 "<html><head></head><body>Success</body></html>";
+    #   }
 spec:
   tls:
     - hosts:
@@ -32,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
+                name: callisto-web
                 port:
                   number: 3000
     - host: web.dev.callisto.homeoffice.gov.uk
