@@ -17,12 +17,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.name }}-callisto-web
+  name: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
   labels:
-    app: {{ .Values.name }}-callisto-web
+    app: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
 spec:
   selector:
-    app: {{ .Values.name }}-callisto-web
+    app: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
   type: ClusterIP
   ports:
     - name: https
