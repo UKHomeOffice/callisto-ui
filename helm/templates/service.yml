@@ -13,18 +13,3 @@ spec:
     - name: https
       port: 3000
       protocol: TCP
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
-#   labels:
-#     app: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
-# spec:
-#   selector:
-#     app: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-callisto-web
-#   type: ClusterIP
-#   ports:
-#     - name: https
-#       port: 3000
-#       protocol: TCP

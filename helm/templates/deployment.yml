@@ -1,27 +1,4 @@
 ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: {{ .Chart.Name }}
-# spec:
-#   replicas: {{ .Values.replicaCount }}
-#   selector:
-#     matchLabels:
-#       name: {{ .Chart.Name }}
-#       service: {{ .Values.service.name }}
-#   template:
-#     metadata:
-#       labels:
-#         name: {{ .Chart.Name }}
-#         service: {{ .Values.service.name }}
-#     spec:
-#       containers:
-#         - name: {{ .Values.service.name }}
-#           image: {{.Values.image.repo}}{{.Values.image.name}}:{{.Values.image.version}}
-#           ports:
-#             - containerPort: {{ .Values.service.port }}
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,15 +17,9 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-      # securityContext:
-      #   runAsUser: 1000
-      #   runAsGroup: 3000
-      #   fsGroup: 2000
       containers:
         - name: induction
           image: quay.io/ukhomeofficedigital/hocs-test-viewer
-          # image: quay.io/ukhomeofficedigital/developer-induction:latest
-          # image: gcr.io/google-samples/hello-app:1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: S3_ACCESS_KEY
@@ -61,18 +32,18 @@ spec:
                 secretKeyRef:
                   name: sas-callisto-test-results
                   key: secret_access_key
-            - name: DASHBOARD_BUCKET 
+            - name: DASHBOARD_BUCKET
               valueFrom:
                 secretKeyRef:
                   name: sas-callisto-test-results
                   key: name
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: '512Mi'
+              cpu: '500m'
             limits:
-              memory: "1Gi"
-              cpu: "1500m"
+              memory: '1Gi'
+              cpu: '1500m'
           ports:
             - name: http
               containerPort: 3000

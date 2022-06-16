@@ -67,14 +67,9 @@ steps:
       mode: lint
       chart: ./helm
       values_file: ./helm/values.yaml
-    when:
-      event:
-        - push
 
   - name: deploy to dev
     image: pelotech/drone-helm3
-    # environment:
-    #   KUBECONFIG: /etc/rancher/k3s/k3s.yaml
     settings:
       namespace: callisto-dev
       mode: upgrade
@@ -89,11 +84,6 @@ steps:
         from_secret: dev_kube_api_url
       kube_token:
         from_secret: dev_kube_token
-    when:
-      # branch:
-      # - main
-      event:
-        - push
 
 ---
 kind: pipeline
