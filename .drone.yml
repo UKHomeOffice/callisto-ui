@@ -7,8 +7,8 @@ platform:
   os: linux
   arch: amd64
 
-environment:
-  branch_prefix: {{ regexReplace ([A-Za-z]+-\\d+)|[^] build.branch $1 }}
+# environment:
+#   branch_prefix: {{ regexReplace ([A-Za-z]+-\\d+)|[^] build.branch $1 }}
 
 steps:
   - name: install dependencies
@@ -62,7 +62,7 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: $branch_prefix
+      target: /dev/123
     depends_on:
       - build project
 
