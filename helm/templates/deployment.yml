@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: { { .Values.appName } }
+  name: {{ .Values.appName }}
   labels:
-    app: { { .Values.appName } }
+    app: {{ .Values.appName }}
 spec:
-  replicas: { { .Values.replicaCount } }
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: { { .Values.appName } }
+      app: {{ .Values.appName }}
   template:
     metadata:
       labels:
-        app: { { .Values.appName } }
+        app: {{ .Values.appName }}
     spec:
       securityContext:
         runAsNonRoot: true
@@ -46,4 +46,4 @@ spec:
               cpu: '1500m'
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: {{ .Values.service.port }}

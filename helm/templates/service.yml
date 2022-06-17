@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: callisto-web
+  name: {{ .Values.appName }}
   labels:
-    app: callisto-web
+    app: {{ .Values.appName }}
 spec:
   selector:
-    app: callisto-web
+    app: {{ .Values.appName }}
   type: ClusterIP
   ports:
     - name: https
-      port: 3000
+      port: {{ .Values.port }}
       protocol: TCP

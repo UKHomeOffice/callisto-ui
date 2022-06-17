@@ -16,20 +16,20 @@ metadata:
 spec:
   tls:
     - hosts:
-        - { { .Values.hostUrl } }
+        - {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
         - web.dev.callisto.homeoffice.gov.uk
       secretName: callisto-web-tls
   rules:
-    - host: { { .Values.hostUrl } }
+    - host: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: callisto-web
+                name: {{ .Values.service.name }}
                 port:
-                  number: 3000
+                  number: {{ .Values.service.port }}
     - host: web.dev.callisto.homeoffice.gov.uk
       http:
         paths:
@@ -37,6 +37,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: callisto-web
+                name: {{ .Values.service.name }}
                 port:
-                  number: 3000
+                  number: {{ .Values.service.port }}
