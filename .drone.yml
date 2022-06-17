@@ -12,7 +12,7 @@ environment:
 
 steps:
   - name: install dependencies
-    image: &node_image # the version we're targeting for production
+    image: &node_image # the version we're targeting for productio
       node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
