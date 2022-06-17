@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: callisto-web
+  name: { { .Values.appName } }
   labels:
-    app: callisto-web
+    app: { { .Values.appName } }
 spec:
-  replicas: 1
+  replicas: { { .Values.replicaCount } }
   selector:
     matchLabels:
-      app: callisto-web
+      app: { { .Values.appName } }
   template:
     metadata:
       labels:
-        app: callisto-web
+        app: { { .Values.appName } }
     spec:
       securityContext:
         runAsNonRoot: true

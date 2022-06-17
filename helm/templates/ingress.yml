@@ -16,11 +16,11 @@ metadata:
 spec:
   tls:
     - hosts:
-        - {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
+        - { { .Values.hostUrl } }
         - web.dev.callisto.homeoffice.gov.uk
       secretName: callisto-web-tls
   rules:
-    - host: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
+    - host: { { .Values.hostUrl } }
       http:
         paths:
           - path: /
