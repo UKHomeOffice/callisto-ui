@@ -8,7 +8,7 @@ platform:
   arch: amd64
 
 environment:
-  branch_prefix: /dev/123
+  branch_prefix: 1234
   # branch_prefix: {{ regexReplace ([A-Za-z]+-\\d+)|[^] build.branch $1 }}
 
 steps:
@@ -63,7 +63,7 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: $branch_prefix
+      target: dev/${branch_prefix}
     depends_on:
       - build project
 
