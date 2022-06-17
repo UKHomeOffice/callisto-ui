@@ -1,7 +1,7 @@
-name: callisto-web
+name: &dynamicName callisto-web
 appName: callisto-web
 
-hostUrl: {{ .name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk
+hostUrl: {{ *dynamicName | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk
 
 service:
   name: callisto-web
