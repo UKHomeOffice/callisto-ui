@@ -84,6 +84,9 @@ steps:
         from_secret: dev_kube_api_url
       kube_token:
         from_secret: dev_kube_token
+    when:
+      event:
+        - push
 
 ---
 kind: pipeline
