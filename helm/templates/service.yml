@@ -11,5 +11,5 @@ spec:
   type: ClusterIP
   ports:
     - name: https
-      port: {{ .Values.port }}
+      port: {{ .Values.service.port }}
       protocol: TCP
