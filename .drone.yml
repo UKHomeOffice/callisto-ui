@@ -7,10 +7,6 @@ platform:
   os: linux
   arch: amd64
 
-environment:
-  branch_prefix: 1234
-  # branch_prefix: {{ regexReplace ([A-Za-z]+-\\d+)|[^] build.branch $1 }}
-
 steps:
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
@@ -54,6 +50,8 @@ steps:
 
   - name: upload to S3
     image: plugins/s3
+    environment:
+      BRANCH_PREFIX: dev/test-1234
     settings:
       bucket: ho-callisto-dev
       region: eu-west-2
@@ -63,7 +61,7 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: dev/${branch_prefix}
+      target: $BRANCH_PREFIX
     depends_on:
       - build project
 
