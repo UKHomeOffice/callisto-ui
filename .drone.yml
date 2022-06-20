@@ -59,9 +59,10 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: dev/${DRONE_COMMIT_BRANCH#[A-Za-z]+-\\d+}
+      target: dev/${DRONE_BRANCH//\//-}
       # target: /dev/{{ regexReplace "([A-Za-z]+-\\d+)|[^]" ${DRONE_BUILD_NUMBER} "$1" }}
-    depends_on:
+    when:
+      event: push
     depends_on:
       - build project
 
