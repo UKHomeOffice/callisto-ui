@@ -59,7 +59,7 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: dev/${DRONE_BRANCH##eahw-[0-9]*}
+      target: dev/${${DRONE_BRANCH##*eahw-}%%/*}
       # target: dev/${DRONE_BRANCH##(^\\w*.|.\\w*$)}
       # target: /dev/{{ regexReplace "([A-Za-z]+-\\d+)|[^]" ${DRONE_BUILD_NUMBER} "$1" }}
     when:
