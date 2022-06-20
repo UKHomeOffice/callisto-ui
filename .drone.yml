@@ -61,7 +61,7 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: $BRANCH_PREFIX
+      target: ${BRANCH_PREFIX}
     depends_on:
       - build project
 
