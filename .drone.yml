@@ -50,8 +50,6 @@ steps:
 
   - name: upload to S3
     image: plugins/s3
-    environment:
-      BRANCH_PREFIX: dev/test-1234
     settings:
       bucket: ho-callisto-dev
       region: eu-west-2
@@ -61,7 +59,9 @@ steps:
         from_secret: s3_aws_secret_access_key
       source: dist/**/*
       strip_prefix: dist/
-      target: ${BRANCH_PREFIX}
+      target: dev/${DRONE_COMMIT_BRANCH#[A-Za-z]+-\\d+}
+      # target: /dev/{{ regexReplace "([A-Za-z]+-\\d+)|[^]" ${DRONE_BUILD_NUMBER} "$1" }}
+    depends_on:
     depends_on:
       - build project
 
