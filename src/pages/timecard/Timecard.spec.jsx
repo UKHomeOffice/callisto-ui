@@ -44,16 +44,16 @@ describe('Timecard', () => {
       });
     });
 
-  //   it('should display an error when pressing submit with nothing selected', () => {
-  //     render(<Timecard />, { wrapper: MemoryRouter });
+    //   it('should display an error when pressing submit with nothing selected', () => {
+    //     render(<Timecard />, { wrapper: MemoryRouter });
 
-  //     const continueButton = screen.getByText('Continue');
-  //     fireEvent.click(continueButton);
+    //     const continueButton = screen.getByText('Continue');
+    //     fireEvent.click(continueButton);
 
-  //     const errorMessage = screen.getByText('Select a shift type');
-  //     expect(errorMessage).toBeTruthy();
-  //   });
-  // });
+    //     const errorMessage = screen.getByText('Select a shift type');
+    //     expect(errorMessage).toBeTruthy();
+    //   });
+  });
 
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
