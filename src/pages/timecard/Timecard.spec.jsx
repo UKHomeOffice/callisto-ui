@@ -19,11 +19,25 @@ describe('Timecard', () => {
   });
 
   describe('navigation', () => {
-    it('should navigate to the previous day', () => {
+    it('should contain a link to previous day', () => {
       render(<Timecard />, { wrapper: MemoryRouter });
 
       const previousDayLink = screen.getByText('Previous day');
       expect(previousDayLink.pathname).toBe('/timecard/2022-06-30');
+    });
+
+    it('should contain a link to next day', () => {
+      render(<Timecard />, { wrapper: MemoryRouter });
+
+      const nextDayLink = screen.getByText('Next day');
+      expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
+    });
+
+    it('should contain a link to the calendar', () => {
+      render(<Timecard />, { wrapper: MemoryRouter });
+
+      const nextDayLink = screen.getByText('Choose another day');
+      expect(nextDayLink.pathname).toBe('/calendar');
     });
   });
 });
