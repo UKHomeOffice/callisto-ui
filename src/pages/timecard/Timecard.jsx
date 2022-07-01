@@ -1,11 +1,35 @@
+import { useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
-import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+
+import BackLink from '../../components/common/form/navigation/backlink/BackLink';
+import Radios from '../../components/common/form/radios/Radios';
 
 const Timecard = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
+
+  const shiftTypes = [
+    'Shift',
+    'Scheduled rest day',
+    'Non-working day',
+    'On call',
+    'Absence',
+    'Training',
+    'Overtime',
+  ];
+
+  const [shiftType, setShiftType] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    reValidateMode: 'onSubmit',
+  });
 
   return (
     <>
@@ -33,30 +57,21 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {/* <form
+      <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
-          navigate('/');
+          setShiftType(data);
+          console.log(shiftType);
         })}
         style={{
           border: '1px solid #b1b4b6',
           padding: '15px',
-          backgroundColor: 'white',
         }}
       >
         <Radios
           name="shiftType"
           heading="Add a new time period"
           headingSize="s"
-          options={[
-            'Shift',
-            'Scheduled rest day',
-            'Non-working day',
-            'On call',
-            'Absence',
-            'Training',
-            'Overtime',
-          ]}
+          options={shiftTypes}
           errors={errors}
           {...register('shiftType', {
             required: {
@@ -67,13 +82,13 @@ const Timecard = () => {
         />
 
         <button
-          className="govuk-button govuk-padding-"
+          className="govuk-button"
           data-module="govuk-button"
           type="submit"
         >
-          Save and continue
+          Continue
         </button>
-      </form> */}
+      </form>
     </>
   );
 };
