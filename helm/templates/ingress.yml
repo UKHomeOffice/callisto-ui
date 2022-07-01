@@ -18,7 +18,7 @@ spec:
     - hosts:
         - {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
         - web.dev.callisto.homeoffice.gov.uk
-        - "*-web.dev.callisto.homeoffice.gov.uk"
+        - "*.web.dev.callisto.homeoffice.gov.uk"
       secretName: callisto-web-tls
   rules:
     - host: {{ .Values.name | regexFind "([A-Za-z]+-\\d+)" | lower }}-web.dev.callisto.homeoffice.gov.uk 
@@ -31,7 +31,7 @@ spec:
                 name: {{ .Values.service.name }}
                 port:
                   number: {{ .Values.service.port }}
-    - host: "*-web.dev.callisto.homeoffice.gov.uk"
+    - host: "*.web.dev.callisto.homeoffice.gov.uk"
       http:
         paths:
           - path: /
