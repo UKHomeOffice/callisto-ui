@@ -1,16 +1,16 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import Timecard from './Timecard';
 
-describe('Timecard', () => {
-  jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: () => ({
-      date: '2022-07-01',
-    }),
-  }));
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({
+    date: '2022-07-01',
+  }),
+}));
 
+describe('Timecard', () => {
   it('should render a timecard component with the correct date', () => {
     render(<Timecard />, { wrapper: MemoryRouter });
 
@@ -44,15 +44,17 @@ describe('Timecard', () => {
       });
     });
 
-    //   it('should display an error when pressing submit with nothing selected', () => {
-    //     render(<Timecard />, { wrapper: MemoryRouter });
+    it('should display an error when pressing submit with nothing selected', async () => {
+      render(<Timecard />, { wrapper: MemoryRouter });
 
-    //     const continueButton = screen.getByText('Continue');
-    //     fireEvent.click(continueButton);
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
 
-    //     const errorMessage = screen.getByText('Select a shift type');
-    //     expect(errorMessage).toBeTruthy();
-    //   });
+      await waitFor(() => {
+        const errorMessage = screen.getByText('Select a shift type');
+        expect(errorMessage).toBeTruthy();
+      });
+    });
   });
 
   describe('navigation', () => {
