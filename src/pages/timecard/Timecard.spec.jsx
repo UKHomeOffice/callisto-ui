@@ -1,13 +1,16 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import * as router from 'react-router';
 
 import Timecard from './Timecard';
 
+const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
     date: '2022-07-01',
   }),
+  useNavigate: () => mockNavigate,
 }));
 
 describe('Timecard', () => {
@@ -18,7 +21,7 @@ describe('Timecard', () => {
     expect(date).toBeTruthy();
   });
 
-  describe('radios', () => {
+  describe('No time entries', () => {
     it('should display the correct heading', () => {
       render(<Timecard />, { wrapper: MemoryRouter });
 
@@ -50,9 +53,23 @@ describe('Timecard', () => {
       const continueButton = screen.getByText('Continue');
       fireEvent.click(continueButton);
 
+      const errorMessage = await screen.findByText('Select a shift type');
+      expect(errorMessage).toBeTruthy();
+    });
+
+    it('should navigate to next page when pressing continue with time period selected', async () => {
+      jest.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate);
+
+      render(<Timecard />, { wrapper: MemoryRouter });
+
+      const radioButton = screen.getByLabelText('Shift');
+      fireEvent.click(radioButton, { target: { checked: true } });
+
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
+
       await waitFor(() => {
-        const errorMessage = screen.getByText('Select a shift type');
-        expect(errorMessage).toBeTruthy();
+        expect(mockNavigate).toHaveBeenCalledWith('/next-page');
       });
     });
   });

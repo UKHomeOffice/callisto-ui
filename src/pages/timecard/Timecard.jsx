@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -22,13 +22,14 @@ const Timecard = () => {
   ];
 
   const [shiftType, setShiftType] = useState('');
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    reValidateMode: 'onSubmit',
+    reValidateMode: 'onChange',
   });
 
   return (
@@ -61,6 +62,7 @@ const Timecard = () => {
         onSubmit={handleSubmit((data) => {
           setShiftType(data);
           console.log(shiftType);
+          navigate('/next-page');
         })}
         style={{
           border: '1px solid #b1b4b6',
