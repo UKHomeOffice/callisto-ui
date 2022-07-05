@@ -27,7 +27,8 @@ spec:
             name: default-conf
       containers:
         - name: nginx-s3proxy
-          image: ghcr.io/nginxinc/nginx-s3-gateway/nginx-oss-s3-gateway:latest
+          image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/callisto/nginx-s3-gateway:latest
+          #image: ghcr.io/nginxinc/nginx-s3-gateway/nginx-oss-s3-gateway:latest
           #image: quay.io/ukhomeofficedigital/hocs-test-viewer
           # image: quay.io/ukhomeofficedigital/developer-induction:latest
           # image: gcr.io/google-samples/hello-app:1.0
