@@ -42,72 +42,72 @@ spec:
             - name: S3_BUCKET_NAME
               valueFrom:
                 secretKeyRef:
-                  name: s3-bucket-name
+                  name: nginxs3proxy
                   key: s3bucketname
             - name: S3_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: s3-access-key-id
+                  name: nginxs3proxy
                   key: s3accesskeyid
             - name: S3_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: s3-secret-key
+                  name: nginxs3proxy
                   key: s3secretkey
             - name: S3_SERVER
               valueFrom:
                 secretKeyRef:
-                  name: s3-server
+                  name: nginxs3proxy
                   key: s3server
             - name: S3_SERVER_PORT
               valueFrom:
                 secretKeyRef:
-                  name: s3-server-port
+                  name: nginxs3proxy
                   key: s3serverport
             - name: S3_SERVER_PROTO
               valueFrom:
                 secretKeyRef:
-                  name: s3-server-proto
+                  name: nginxs3proxy
                   key: s3serverproto
             - name: S3_REGION
               valueFrom:
                 secretKeyRef:
-                  name: s3-region
+                  name: nginxs3proxy
                   key: s3region
             - name: S3_STYLE
               valueFrom:
                 secretKeyRef:
-                  name: s3-style
+                  name: nginxs3proxy
                   key: s3style
             - name: S3_DEBUG
               valueFrom:
                 secretKeyRef:
-                  name: s3-debug
+                  name: nginxs3proxy
                   key: s3debug
             - name: AWS_SIGS_VERSION
               valueFrom:
                 secretKeyRef:
-                  name: aws-sigs-version
+                  name: nginxs3proxy
                   key: awssigsversion
             - name: ALLOW_DIRECTORY_LIST
               valueFrom:
                 secretKeyRef:
-                  name: allow-directory-list
+                  name: nginxs3proxy
                   key: allowdirectorylist
             - name: PROXY_CACHE_VALID_OK
               valueFrom:
                 secretKeyRef:
-                  name: proxy-cache-valid-ok
+                  name: nginxs3proxy
                   key: proxycachevalidok
             - name: PROXY_CACHE_VALID_NOTFOUND
               valueFrom:
                 secretKeyRef:
-                  name: proxy-cache-valid-not-found
+                  name: nginxs3proxy
                   key: proxycachevalidnotfound
             - name: PROXY_CACHE_VALID_FORBIDDEN
               valueFrom:
                 secretKeyRef:
-                  name: proxy-cache-valid-forbidden
+                  name: nginxs3proxy
                   key: proxycachevalidforbidden
           resources:
             requests:
