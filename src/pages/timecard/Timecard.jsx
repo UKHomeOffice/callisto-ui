@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
-import AddShift from '../../components/timecard/add-shift/AddShift';
+import AddTimePeriod from '../../components/timecard/add-time-period/AddTimePeriod';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 
 const Timecard = () => {
@@ -48,7 +48,7 @@ const Timecard = () => {
         </Link>
       </div>
 
-      <AddShift
+      <AddTimePeriod
         register={register}
         handleSubmit={handleSubmit}
         errors={errors}

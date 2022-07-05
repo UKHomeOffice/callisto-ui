@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import AddTimePeriod from './AddShift';
+import AddTimePeriod from './AddTimePeriod';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
