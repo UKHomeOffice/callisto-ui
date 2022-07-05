@@ -1,9 +1,9 @@
-import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import Radios from '../../common/form/radios/Radios';
 
-const AddShift = () => {
+const AddShift = ({ register, handleSubmit, errors }) => {
   const shiftTypes = [
     'Shift',
     'Scheduled rest day',
@@ -15,14 +15,6 @@ const AddShift = () => {
   ];
 
   const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    reValidateMode: 'onChange',
-  });
 
   return (
     <>
@@ -63,3 +55,10 @@ const AddShift = () => {
 };
 
 export default AddShift;
+
+AddShift.displayName = 'AddShift';
+AddShift.propTypes = {
+  register: PropTypes.any.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  errors: PropTypes.any,
+};

@@ -45,8 +45,8 @@ describe('Timecard', () => {
     it('should contain a link to the calendar', () => {
       render(<Timecard />, { wrapper: MemoryRouter });
 
-      const nextDayLink = screen.getByText('Choose another day');
-      expect(nextDayLink.pathname).toBe('/calendar');
+      const calendarLink = screen.getByText('Select another date');
+      expect(calendarLink.pathname).toBe('/calendar');
     });
   });
 });
