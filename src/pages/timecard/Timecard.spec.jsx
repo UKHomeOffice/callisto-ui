@@ -23,7 +23,7 @@ describe('Timecard', () => {
   });
 
   describe('No time entries', () => {
-    it('should render the add shift component when no time entries have been added', () => {
+    it('should render the add time period component when no time entries have been added', () => {
       render(<Timecard />, { wrapper: MemoryRouter });
 
       const heading = screen.getByText('Add a new time period');
@@ -39,7 +39,9 @@ describe('Timecard', () => {
       });
 
       await waitFor(() => {
-        const errorMessages = screen.getAllByText('Select a shift type');
+        const errorMessages = screen.getAllByText(
+          'You must select a time period'
+        );
         expect(errorMessages.length).toBe(2);
       });
     });

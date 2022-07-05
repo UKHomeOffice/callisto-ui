@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import Radios from '../../common/form/radios/Radios';
 
-const AddShift = ({ register, handleSubmit, errors }) => {
-  const shiftTypes = [
+const AddTimePeriod = ({ register, handleSubmit, errors }) => {
+  const timePeriods = [
     'Shift',
     'Scheduled rest day',
     'Non-working day',
@@ -29,15 +29,15 @@ const AddShift = ({ register, handleSubmit, errors }) => {
         }}
       >
         <Radios
-          name="shiftType"
+          name="timePeriod"
           heading="Add a new time period"
           headingSize="s"
-          options={shiftTypes}
+          options={timePeriods}
           errors={errors}
-          {...register('shiftType', {
+          {...register('timePeriod', {
             required: {
               value: true,
-              message: 'Select a shift type',
+              message: 'You must select a time period',
             },
           })}
         />
@@ -54,10 +54,10 @@ const AddShift = ({ register, handleSubmit, errors }) => {
   );
 };
 
-export default AddShift;
+export default AddTimePeriod;
 
-AddShift.displayName = 'AddShift';
-AddShift.propTypes = {
+AddTimePeriod.displayName = 'AddTimePeriod';
+AddTimePeriod.propTypes = {
   register: PropTypes.any.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errors: PropTypes.any,

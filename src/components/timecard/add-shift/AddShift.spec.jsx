@@ -1,15 +1,15 @@
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import AddShift from './AddShift';
+import AddTimePeriod from './AddShift';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = [];
 
-describe('AddShift', () => {
-  it('should render a radios component with the correct shift types', () => {
-    const shiftTypes = [
+describe('AddTimePeriod', () => {
+  it('should render a radios component with the correct time periods', () => {
+    const timePeriods = [
       'Shift',
       'Scheduled rest day',
       'Non-working day',
@@ -20,7 +20,7 @@ describe('AddShift', () => {
     ];
 
     render(
-      <AddShift
+      <AddTimePeriod
         register={mockRegister}
         handleSubmit={handleSubmit}
         errors={errors}
@@ -30,7 +30,7 @@ describe('AddShift', () => {
       }
     );
 
-    shiftTypes.map((option) => {
+    timePeriods.map((option) => {
       expect(screen.getByText(option)).toBeTruthy();
     });
   });
