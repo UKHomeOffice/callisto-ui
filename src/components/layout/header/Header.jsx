@@ -2,6 +2,7 @@ import HomeOfficeLogo from './HomeOfficeLogo';
 import PhaseBanner from '../phase-banner/PhaseBanner';
 import { useState } from 'react';
 import SignIn from './SignIn';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -62,22 +63,22 @@ const Header = () => {
               }`}
             >
               <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
-                <a
+                <Link
                   className="govuk-header__link"
-                  href="/"
+                  to="/"
                   style={{ color: 'black' }}
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li className="govuk-header__navigation-item govuk-header__navigation-item">
-                <a
+                <Link
                   className="govuk-header__link"
-                  href="/timecard"
+                  to="/timecard/2021-11-20"
                   style={{ color: '#000' }}
                 >
-                  Timecard
-                </a>
+                  Record my time
+                </Link>
               </li>
             </ul>
           </nav>
