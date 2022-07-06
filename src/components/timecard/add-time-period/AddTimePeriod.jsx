@@ -23,10 +23,7 @@ const AddTimePeriod = ({ register, handleSubmit, errors }) => {
           console.log(data);
           navigate('/next-page');
         })}
-        style={{
-          border: '1px solid #b1b4b6',
-          padding: '15px',
-        }}
+        className="add-time-period"
       >
         <Radios
           name="timePeriod"

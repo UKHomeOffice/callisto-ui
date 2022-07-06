@@ -1,6 +1,9 @@
-$govuk-assets-path: "assets/";
+$govuk-assets-path: 'assets/';
 $govuk-show-breakpoints: false;
 $govuk-font-family: helvetica, arial, sans-serif;
 
-@import "node_modules/govuk-frontend/govuk/all";
-@import "assets/Timeline";
+@import 'node_modules/govuk-frontend/govuk/all';
+
+// Components
+@import 'assets/Timeline';
+@import 'assets/AddTimePeriod';
