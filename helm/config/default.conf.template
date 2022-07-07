@@ -22,11 +22,11 @@ map $S3_STYLE $s3_host_hdr {
 }
 
 map $host $branch {
-    ~^(https:\/\/)(?<p1>[^.]+)-web\.[^.]+\.callisto.homeoffice.gov.uk$ $p1;
+    ~^(?<p1>[^.]+)-web\.[^.]+\.callisto.homeoffice.gov.uk$ $p1;
 }
 
 map $host $subenv {
-    ~^(https:\/\/)[^.]+\.(?<p2>[^.]+)\.callisto.homeoffice.gov.uk$ $p2;
+    ~^[^.]+\.(?<p2>[^.]+)\.callisto.homeoffice.gov.uk$ $p2;
 }
 
 js_var $indexIsEmpty true;
