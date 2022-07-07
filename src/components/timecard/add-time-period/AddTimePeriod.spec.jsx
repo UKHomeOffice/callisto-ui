@@ -5,7 +5,7 @@ import AddTimePeriod from './AddTimePeriod';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
-const errors = [];
+const errors = {};
 
 describe('AddTimePeriod', () => {
   it('should render a radios component with the correct time periods', () => {

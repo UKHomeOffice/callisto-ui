@@ -57,5 +57,5 @@ AddTimePeriod.displayName = 'AddTimePeriod';
 AddTimePeriod.propTypes = {
   register: PropTypes.any.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.any,
+  errors: PropTypes.any.isRequired,
 };
