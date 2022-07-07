@@ -15,29 +15,31 @@ spec:
       labels:
         app: {{ .Values.appName }}
     spec:
-      #securityContext:
-      #  runAsNonRoot: true
-      # securityContext:
-      #   runAsUser: 1000
-      #   runAsGroup: 3000
-      #   fsGroup: 2000
+      securityContext: 
+        runAsUser: 1001      
+        runAsGroup: 1001
       volumes:
-        - name: nginx-conf
+        - name: nginx-templates
           configMap:
             name: default-conf
+        - name: nginx-conf
+          configMap:
+            name: default-conf            
       containers:
         - name: nginx-s3proxy
           image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/callisto/nginx-s3-gateway:latest
           #image: ghcr.io/nginxinc/nginx-s3-gateway/nginx-oss-s3-gateway:latest
           #image: quay.io/ukhomeofficedigital/hocs-test-viewer
           # image: quay.io/ukhomeofficedigital/developer-induction:latest
-          # image: gcr.io/google-samples/hello-app:1.0
+          # image: gcr.io/google-samples/hello-app:1.0          
           imagePullPolicy: IfNotPresent
           volumeMounts:
-            - name: nginx-conf  # matches volume name: in this file
+            - name: nginx-templates  # matches volume name: in this file
               mountPath: /etc/nginx/templates/default.conf.template
               subPath: default.conf.template
-
+            - name: nginx-conf  # matches volume name: in this file
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
           env:
             - name: S3_BUCKET_NAME
               valueFrom:
