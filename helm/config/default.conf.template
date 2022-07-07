@@ -21,15 +21,13 @@ map $S3_STYLE $s3_host_hdr {
     default "${S3_BUCKET_NAME}.${S3_SERVER}";
 }
 
-map $host $branch {
-    ~^(?<p1>.+)\.[^\.]+\.[^\.]+$ $p1;    
+map $host $branch {    
+    ~^(https:\/\/)(?<p1>[^.]+)-web\.[^.]+\.callisto.homeoffice.gov.uk$ $p1
 }
 
-map $host $subenv {
-    ~^[^\.]+\.(?<p2>.+)+\.[^\.]+$ $p2;        
+map $host $subenv {    
+    ~^(https:\/\/)[^.]+\.(?<p2>[^.]+)\.callisto.homeoffice.gov.uk$ $p2
 }
-
-#^(?<branch>[^.]+)\.(?<subenv>[^.]+)\.callisto.homeoffice.gov.uk$ $sub;
 
 js_var $indexIsEmpty true;
 # This creates the HTTP authentication header to be sent to S3
