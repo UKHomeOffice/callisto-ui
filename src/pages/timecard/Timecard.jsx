@@ -31,8 +31,8 @@ const Timecard = () => {
       {errors && Object.keys(errors).length !== 0 && (
         <ErrorSummary errors={errors} />
       )}
-      <h2 className="govuk-caption-m">My Timecard</h2>
-      <h1 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h1>
+      <h1 className="govuk-caption-m">My Timecard</h1>
+      <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
           className="govuk-link govuk-link--no-visited-state"
