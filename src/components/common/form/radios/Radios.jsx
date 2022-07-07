@@ -26,7 +26,7 @@ const Radios = React.forwardRef(
         >
           <fieldset
             className="govuk-fieldset"
-            aria-describedby={`${name}-error`}
+            aria-describedby={errors && errors[name] && `${name}-error`}
           >
             <legend
               className={`govuk-fieldset__legend govuk-fieldset__legend--${headingSize}`}
