@@ -1,15 +1,21 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import AddTimePeriod from '../../components/timecard/add-time-period/AddTimePeriod';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
+import generateDocumentTitle from '../../utils/generateDocumentTitleUtil';
 
 const Timecard = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
+
+  useEffect(() => {
+    document.title = generateDocumentTitle('Add time period');
+  });
 
   const {
     register,
@@ -25,7 +31,7 @@ const Timecard = () => {
       {errors && Object.keys(errors).length !== 0 && (
         <ErrorSummary errors={errors} />
       )}
-      <h1 className="govuk-caption-m">My Timecard</h1>
+      <h2 className="govuk-caption-m">My Timecard</h2>
       <h1 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h1>
       <div className="govuk-button-group">
         <Link
