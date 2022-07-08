@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
-import BackLink from '../../../components/common/form/navigation/backlink/BackLink';
-import SelectTimecardPeriodType from '../../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
-import ErrorSummary from '../../../components/common/form/error-summary/ErrorSummary';
-import generateDocumentTitle from '../../../utils/generateDocumentTitleUtil';
+import BackLink from '../../components/common/form/navigation/backlink/BackLink';
+import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
+import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
+import generateDocumentTitle from '../../utils/generateDocumentTitleUtil';
 
-const TimecardPeriodType = () => {
+const Timecard = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -63,4 +63,4 @@ const TimecardPeriodType = () => {
   );
 };
 
-export default TimecardPeriodType;
+export default Timecard;
