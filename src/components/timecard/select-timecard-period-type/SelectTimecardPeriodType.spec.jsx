@@ -1,13 +1,13 @@
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import AddTimePeriod from './AddTimePeriod';
+import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = {};
 
-describe('AddTimePeriod', () => {
+describe('SelectTimecardPeriodType', () => {
   it('should render a radios component with the correct time periods', () => {
     const timePeriods = [
       'Shift',
@@ -20,7 +20,7 @@ describe('AddTimePeriod', () => {
     ];
 
     render(
-      <AddTimePeriod
+      <SelectTimecardPeriodType
         register={mockRegister}
         handleSubmit={handleSubmit}
         errors={errors}

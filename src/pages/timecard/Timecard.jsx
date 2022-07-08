@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
-import AddTimePeriod from '../../components/timecard/add-time-period/AddTimePeriod';
+import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generateDocumentTitleUtil';
 
@@ -54,7 +54,7 @@ const Timecard = () => {
         </Link>
       </div>
 
-      <AddTimePeriod
+      <SelectTimecardPeriodType
         register={register}
         handleSubmit={handleSubmit}
         errors={errors}

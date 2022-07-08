@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Radios from '../../common/form/radios/Radios';
 
-const AddTimePeriod = ({ register, handleSubmit, errors }) => {
+const SelectTimecardPeriodType = ({ register, handleSubmit, errors }) => {
   const timePeriods = [
     'Shift',
     'Scheduled rest day',
@@ -19,11 +19,11 @@ const AddTimePeriod = ({ register, handleSubmit, errors }) => {
   return (
     <>
       <form
+        className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
           console.log(data);
           navigate('/next-page');
         })}
-        className="add-time-period"
       >
         <Radios
           name="timePeriod"
@@ -51,10 +51,10 @@ const AddTimePeriod = ({ register, handleSubmit, errors }) => {
   );
 };
 
-export default AddTimePeriod;
+export default SelectTimecardPeriodType;
 
-AddTimePeriod.displayName = 'AddTimePeriod';
-AddTimePeriod.propTypes = {
+SelectTimecardPeriodType.displayName = 'SelectTimecardPeriodType';
+SelectTimecardPeriodType.propTypes = {
   register: PropTypes.any.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errors: PropTypes.any.isRequired,
