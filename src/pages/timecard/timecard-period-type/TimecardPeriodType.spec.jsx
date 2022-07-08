@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import * as router from 'react-router';
 import { act } from 'react-test-renderer';
 
-import Timecard from './Timecard';
+import TimecardPeriodType from './TimecardPeriodType';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -14,24 +14,24 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-describe('Timecard', () => {
-  it('should render a timecard component with the correct date', () => {
-    render(<Timecard />, { wrapper: MemoryRouter });
+describe('TimecardPeriodType', () => {
+  it('should render a TimecardPeriodType component with the correct date', () => {
+    render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
     const date = screen.getByText('01 July 2022');
     expect(date).toBeTruthy();
   });
 
   describe('No time entries', () => {
-    it('should render the add time period component when no time entries have been added', () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+    it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       const heading = screen.getByText('Add a new time period');
       expect(heading).toBeTruthy();
     });
 
     it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       act(() => {
         const continueButton = screen.getByText('Continue');
@@ -49,7 +49,7 @@ describe('Timecard', () => {
     it('should navigate to next page when pressing continue with time period selected', async () => {
       jest.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate);
 
-      render(<Timecard />, { wrapper: MemoryRouter });
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       const radioButton = screen.getByLabelText('Shift');
       fireEvent.click(radioButton, { target: { checked: true } });
@@ -65,21 +65,21 @@ describe('Timecard', () => {
 
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       const previousDayLink = screen.getByText('Previous day');
       expect(previousDayLink.pathname).toBe('/timecard/2022-06-30');
     });
 
     it('should contain a link to next day', () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       const nextDayLink = screen.getByText('Next day');
       expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
     });
 
     it('should contain a link to the calendar', () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+      render(<TimecardPeriodType />, { wrapper: MemoryRouter });
 
       const calendarLink = screen.getByText('Select another date');
       expect(calendarLink.pathname).toBe('/calendar');

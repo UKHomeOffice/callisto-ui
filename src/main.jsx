@@ -8,7 +8,7 @@ import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak from './keycloak';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
-import Timecard from './pages/timecard/Timecard';
+import TimecardPeriodType from './pages/timecard/timecard-period-type/TimecardPeriodType';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +17,10 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
-            <Route path="/timecard/:date" element={<Timecard />} />
+            <Route
+              path="/timecard/select-time-period-type/:date"
+              element={<TimecardPeriodType />}
+            />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"
