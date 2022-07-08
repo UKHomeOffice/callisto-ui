@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import generateDocumentTitle from '../utils/generateDocumentTitleUtil';
+import generateDocumentTitle from '../utils/generate-document-title/generateDocumentTitle';
 
 const Home = () => {
   useEffect(() => {

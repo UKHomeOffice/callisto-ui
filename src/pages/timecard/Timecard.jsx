@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
-import generateDocumentTitle from '../../utils/generateDocumentTitleUtil';
+import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 
 const Timecard = () => {
   const { date } = useParams();
