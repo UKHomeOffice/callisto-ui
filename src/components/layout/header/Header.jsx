@@ -74,7 +74,7 @@ const Header = () => {
               <li className="govuk-header__navigation-item govuk-header__navigation-item">
                 <Link
                   className="govuk-header__link"
-                  to="/timecard/2021-11-20"
+                  to="/timecard"
                   style={{ color: '#000' }}
                 >
                   Record my time

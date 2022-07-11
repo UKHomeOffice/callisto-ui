@@ -18,6 +18,7 @@ ReactDOM.render(
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
             <Route path="/timecard/:date" element={<Timecard />} />
+            <Route path="/timecard" element={<Timecard />} />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"

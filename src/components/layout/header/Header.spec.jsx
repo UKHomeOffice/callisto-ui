@@ -15,7 +15,7 @@ describe('Header component', () => {
   it('should link to /timecard when pressing the Timecard button', () => {
     renderWithProviders(<Header />, authClientStub);
     const timecardButton = screen.getByText('Record my time');
-    expect(timecardButton.pathname).toBe('/timecard/2021-11-20');
+    expect(timecardButton.pathname).toBe('/timecard');
   });
 
   function createAuthClientStub() {
