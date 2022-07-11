@@ -9,8 +9,8 @@
 
     &::before {
       /* styling for lines in margin */
-      background-color: govuk-colour('blue');
-      content: '';
+      background-color: govuk-colour("blue");
+      content: "";
       padding-top: 0.3em;
       padding-right: 1em;
       left: 0;
@@ -22,8 +22,8 @@
 
   &::before {
     /* styling for lines in margin */
-    background-color: govuk-colour('blue');
-    content: '';
+    background-color: govuk-colour("blue");
+    content: "";
     height: 100%;
     left: 0;
     position: absolute;
@@ -33,7 +33,7 @@
   }
 
   &__title {
-    @include govuk-font(19, 'bold');
+    @include govuk-font(19, "bold");
 
     display: inline;
     margin-right: 5px;
@@ -42,14 +42,14 @@
   &__by {
     @include govuk-font(16);
 
-    color: govuk-colour('dark-grey');
+    color: govuk-colour("dark-grey");
     display: inline;
   }
 
   &__date {
     @include govuk-font(16);
 
-    color: govuk-colour('dark-grey');
+    color: govuk-colour("dark-grey");
     margin-top: 0;
   }
 
