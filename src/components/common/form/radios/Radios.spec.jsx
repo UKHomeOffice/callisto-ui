@@ -164,5 +164,4 @@ describe('Radios', () => {
     const radios = screen.getByTestId('govuk-inline-radios');
     expect(radios.className).toContain('govuk-radios--inline');
   });
-
 });

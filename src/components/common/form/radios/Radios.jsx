@@ -13,7 +13,7 @@ const Radios = React.forwardRef(
       errors,
       onChange,
       defaultValue = options[0],
-      inline
+      inline,
     },
     ref
   ) => {
