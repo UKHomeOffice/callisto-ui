@@ -13,6 +13,7 @@ const Radios = React.forwardRef(
       errors,
       onChange,
       defaultValue = options[0],
+      inline
     },
     ref
   ) => {
@@ -42,7 +43,11 @@ const Radios = React.forwardRef(
                 {errors[name].message}
               </p>
             )}
-            <div className="govuk-radios" data-module="govuk-radios">
+            <div
+              className={`govuk-radios ${inline && 'govuk-radios--inline'}`}
+              data-module="govuk-radios"
+              data-testid="govuk-inline-radios"
+            >
               <div key="0" className="govuk-radios__item">
                 <input
                   className="govuk-radios__input"
@@ -102,4 +107,5 @@ Radios.propTypes = {
   errors: PropTypes.any,
   onChange: PropTypes.func,
   defaultValue: PropTypes.string,
+  inline: PropTypes.bool,
 };
