@@ -1,4 +1,5 @@
 import { screen, render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 
 import ErrorSummary from './ErrorSummary';
 
@@ -12,7 +13,8 @@ describe('ErrorSummary', () => {
           { inputName: 'test-month', message: 'Enter a month' },
           { inputName: 'test-year', message: 'Enter a year' },
         ]}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
 
     const overallErrorMessage = screen.getByText('Date cannot be blank');

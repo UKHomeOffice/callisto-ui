@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import SummaryList from './SummaryList';
 
@@ -15,7 +16,8 @@ describe('SummaryList', () => {
             link: '/remove-shift',
           },
         ]}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
 
     const title = screen.getByText('Shift');
@@ -45,7 +47,8 @@ describe('SummaryList', () => {
             link: '/change-hours',
           },
         ]}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
 
     const title = screen.getByText('Hours');
