@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const BackLink = ({ text }) => {
+const BackLink = ({ text, link }) => {
   return (
-    <a href="/" className="govuk-link--no-visited-state">
-      {text}
-    </a>
+    <Link to={link} className="govuk-back-link">
+      {text ? text : 'Back'}
+    </Link>
   );
 };
 
 BackLink.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  link: PropTypes.string.isRequired,
 };
 
 export default BackLink;

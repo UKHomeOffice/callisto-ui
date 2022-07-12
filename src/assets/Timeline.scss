@@ -10,7 +10,6 @@
     &::before {
       /* styling for lines in margin */
       background-color: govuk-colour("blue");
-      content: "";
       padding-top: 0.3em;
       padding-right: 1em;
       left: 0;
@@ -23,7 +22,6 @@
   &::before {
     /* styling for lines in margin */
     background-color: govuk-colour("blue");
-    content: "";
     height: 100%;
     left: 0;
     position: absolute;
