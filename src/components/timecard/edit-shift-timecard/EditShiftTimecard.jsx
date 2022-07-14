@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
-import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
-
-const EditShiftTimecard = ({ register, handleSubmit, errors, formState }) => {
+const EditShiftTimecard = () => {
   const removeShift = (event) => {
     event.preventDefault();
     console.log('removed');
@@ -46,31 +45,7 @@ const EditShiftTimecard = ({ register, handleSubmit, errors, formState }) => {
             </Link>
           </dd>
         </div>
-        <div>
-          <form
-            onSubmit={handleSubmit((data) => {
-              console.log(data);
-            })}
-          >
-            <StartFinishTimeInput
-              name={'hours'}
-              errors={errors}
-              register={register}
-              formState={formState}
-            />
-            <div className="govuk-button-group">
-              <button className="govuk-button" type="submit">
-                Save
-              </button>
-              <button
-                className="govuk-button govuk-button--secondary"
-                type="submit"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+        <EditShiftHours />
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Meal break</dt>
           <dd className="govuk-summary-list__actions">
@@ -91,9 +66,4 @@ const EditShiftTimecard = ({ register, handleSubmit, errors, formState }) => {
 export default EditShiftTimecard;
 
 EditShiftTimecard.displayName = 'EditShiftTimecard';
-EditShiftTimecard.propTypes = {
-  register: PropTypes.any.isRequired,
-  handleSubmit: PropTypes.func,
-  errors: PropTypes.any.isRequired,
-  formState: PropTypes.any,
-};
+EditShiftTimecard.propTypes = {};
