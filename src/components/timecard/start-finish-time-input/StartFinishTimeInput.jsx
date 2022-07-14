@@ -40,7 +40,7 @@ const StartFinishTimeInput = ({
             <p
               id={`${name}-error`}
               key={i}
-              className="govuk-error-message govuk-!-margin-left-2"
+              className="govuk-error-message govuk-!-margin-left-3"
             >
               <span className="govuk-visually-hidden">Error:</span>
               {error}

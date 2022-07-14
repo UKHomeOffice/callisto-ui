@@ -30,10 +30,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           <button className="govuk-button" type="submit">
             Save
           </button>
-          <button
-            className="govuk-button govuk-button--secondary"
-            type="submit"
-          >
+          <button className="govuk-button govuk-button--secondary">
             Cancel
           </button>
         </div>

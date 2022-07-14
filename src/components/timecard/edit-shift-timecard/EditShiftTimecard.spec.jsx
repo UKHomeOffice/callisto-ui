@@ -21,7 +21,7 @@ describe('EditShiftTimecard', () => {
       wrapper: MemoryRouter,
     });
 
-    const changeButton = screen.getByTestId('shift-change-button');
+    const changeButton = screen.getByTestId('hours-change-button');
 
     expect(screen.queryByText('Start time')).toBeFalsy();
     expect(screen.queryByText('Finish time')).toBeFalsy();
@@ -39,7 +39,7 @@ describe('EditShiftTimecard', () => {
       wrapper: MemoryRouter,
     });
 
-    const changeButton = screen.getByTestId('shift-change-button');
+    const changeButton = screen.getByTestId('hours-change-button');
 
     expect(screen.queryByText('Start time')).toBeFalsy();
     expect(screen.queryByText('Finish time')).toBeFalsy();
@@ -62,7 +62,7 @@ describe('EditShiftTimecard', () => {
       wrapper: MemoryRouter,
     });
 
-    const changeButton = screen.getByTestId('shift-change-button');
+    const changeButton = screen.getByTestId('hours-change-button');
     fireEvent.click(changeButton);
 
     const startTimeInput = screen.getByTestId('start-time-input');

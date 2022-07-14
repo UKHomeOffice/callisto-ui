@@ -1,7 +1,5 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-// import * as router from 'react-router';
-import { act } from 'react-test-renderer';
 
 import Timecard from './Timecard';
 

@@ -28,7 +28,7 @@ const EditShiftTimecard = () => {
               onClick={toggleEditShiftHours}
               className="govuk-link govuk-link--no-visited-state"
               to={'/'}
-              data-testid="shift-change-button"
+              data-testid="hours-change-button"
             >
               Change<span className="govuk-visually-hidden"> hours</span>
             </Link>
