@@ -19,9 +19,12 @@ const Footer = () => {
             </Link>
           </div>
           <div className="govuk-footer__meta-item">
-            <a className="govuk-footer__link" href="https://gov.uk">
+            <Link
+              className="govuk-footer__link"
+              to={{ pathname: 'https://gov.uk' }}
+            >
               Gov.UK home
-            </a>
+            </Link>
           </div>
         </div>
       </div>
