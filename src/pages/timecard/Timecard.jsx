@@ -1,28 +1,25 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
+import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
+import { useState } from 'react';
 
 const Timecard = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
+  const [timecardEntryExists, setTimecardEntryExists] = useState(false);
+  // const [errors, setErrors] = useState({});
+  const errors = {};
+
   useEffect(() => {
     document.title = generateDocumentTitle('Add time period');
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    reValidateMode: 'onSubmit',
   });
 
   return (
@@ -54,11 +51,13 @@ const Timecard = () => {
         </Link>
       </div>
 
-      <SelectTimecardPeriodType
-        register={register}
-        handleSubmit={handleSubmit}
-        errors={errors}
-      />
+      {!timecardEntryExists ? (
+        <SelectTimecardPeriodType
+          setTimecardEntryExists={setTimecardEntryExists}
+        />
+      ) : (
+        <EditShiftTimecard />
+      )}
     </>
   );
 };

@@ -30,37 +30,20 @@ describe('Timecard', () => {
       expect(heading).toBeTruthy();
     });
 
-    it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
+    it('should render the EditShiftTimecard component when selecting "Shift"', async () => {
       render(<Timecard />, { wrapper: MemoryRouter });
 
-      act(() => {
-        const continueButton = screen.getByText('Continue');
-        fireEvent.click(continueButton);
-      });
+      const radioButton = screen.getByLabelText('Shift');
+      fireEvent.click(radioButton, { target: { checked: true } });
+
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
 
       await waitFor(() => {
-        const errorMessages = screen.getAllByText(
-          'You must select a time period'
-        );
-        expect(errorMessages.length).toBe(2);
+        expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        expect(screen.getByText('Hours')).toBeTruthy();
       });
     });
-
-    // it('should navigate to next page when pressing continue with time period selected', async () => {
-    //   jest.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate);
-
-    //   render(<Timecard />, { wrapper: MemoryRouter });
-
-    //   const radioButton = screen.getByLabelText('Shift');
-    //   fireEvent.click(radioButton, { target: { checked: true } });
-
-    //   const continueButton = screen.getByText('Continue');
-    //   fireEvent.click(continueButton);
-
-    //   await waitFor(() => {
-    //     expect(mockNavigate).toHaveBeenCalledWith('/next-page');
-    //   });
-    // });
   });
 
   describe('navigation', () => {

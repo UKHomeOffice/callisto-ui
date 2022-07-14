@@ -1,14 +1,9 @@
 import PropTypes from 'prop-types';
-// import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import Radios from '../../common/form/radios/Radios';
 
-const SelectTimecardPeriodType = ({
-  register,
-  handleSubmit,
-  errors,
-  setTimecardEntryExists,
-}) => {
+const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
   const timePeriods = [
     'Shift',
     'Scheduled rest day',
@@ -19,7 +14,13 @@ const SelectTimecardPeriodType = ({
     'Overtime',
   ];
 
-  // const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    reValidateMode: 'onSubmit',
+  });
 
   return (
     <>
@@ -28,7 +29,6 @@ const SelectTimecardPeriodType = ({
         onSubmit={handleSubmit((data) => {
           console.log(data);
           setTimecardEntryExists(true);
-          // navigate('/next-page');
         })}
       >
         <Radios
@@ -61,8 +61,5 @@ export default SelectTimecardPeriodType;
 
 SelectTimecardPeriodType.displayName = 'SelectTimecardPeriodType';
 SelectTimecardPeriodType.propTypes = {
-  register: PropTypes.any.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.any.isRequired,
   setTimecardEntryExists: PropTypes.func,
 };
