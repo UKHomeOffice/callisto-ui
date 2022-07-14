@@ -73,7 +73,7 @@ const StartFinishTimeInput = ({
             name={`${name}-start-time`}
             type="text"
             defaultValue={startTimeValue}
-            // data-testid="input-box"
+            data-testid="start-time-input"
             {...register(name + '-start-time', {
               required: {
                 value: true,
@@ -103,7 +103,7 @@ const StartFinishTimeInput = ({
               name={`${name}-finish-time`}
               type="text"
               defaultValue={finishTimeValue}
-              // data-testid="input-box"
+              data-testid="finish-time-input"
               {...register(name + '-finish-time')}
             />
           </div>
