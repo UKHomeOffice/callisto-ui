@@ -56,4 +56,29 @@ describe('EditShiftTimecard', () => {
       expect(screen.queryByText('Finish time')).toBeFalsy();
     });
   });
+
+  it('should hide EditShiftHours component when clicking "Save" on success', async () => {
+    render(<EditShiftTimecard />, {
+      wrapper: MemoryRouter,
+    });
+
+    const changeButton = screen.getByTestId('shift-change-button');
+    fireEvent.click(changeButton);
+
+    const startTimeInput = screen.getByTestId('start-time-input');
+    const finishTimeInput = screen.getByTestId('finish-time-input');
+
+    fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+    fireEvent.change(finishTimeInput, { target: { value: '16:00' } });
+
+    act(() => {
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Start time')).toBeFalsy();
+      expect(screen.queryByText('Finish time')).toBeFalsy();
+    });
+  });
 });

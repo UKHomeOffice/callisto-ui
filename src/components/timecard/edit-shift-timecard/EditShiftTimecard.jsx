@@ -34,7 +34,9 @@ const EditShiftTimecard = () => {
             </Link>
           </dd>
         </div>
-        {showEditShiftHours && <EditShiftHours />}
+        {showEditShiftHours && (
+          <EditShiftHours setShowEditShiftHours={setShowEditShiftHours} />
+        )}
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Meal break</dt>
           <dd className="govuk-summary-list__actions">

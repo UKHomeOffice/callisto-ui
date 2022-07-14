@@ -1,7 +1,8 @@
+import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 
-const EditShiftHours = () => {
+const EditShiftHours = ({ setShowEditShiftHours }) => {
   const {
     register,
     handleSubmit,
@@ -16,6 +17,7 @@ const EditShiftHours = () => {
       <form
         onSubmit={handleSubmit((data) => {
           console.log(data);
+          setShowEditShiftHours(false);
         })}
       >
         <StartFinishTimeInput
@@ -41,3 +43,6 @@ const EditShiftHours = () => {
 };
 
 export default EditShiftHours;
+EditShiftHours.propTypes = {
+  setShowEditShiftHours: PropTypes.func,
+};
