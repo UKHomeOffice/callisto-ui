@@ -1,22 +1,14 @@
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
 const EditShiftTimecard = () => {
-  const removeShift = (event) => {
-    event.preventDefault();
-    console.log('removed');
-  };
-
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
-    console.log('open / close hours');
+    setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const changeMealBreak = (event) => {
-    event.preventDefault();
-    console.log('change meal break');
-  };
+  const [showEditShiftHours, setShowEditShiftHours] = useState(false);
 
   return (
     <div className="select-timecard-period-type">
@@ -24,11 +16,7 @@ const EditShiftTimecard = () => {
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Shift</dt>
           <dd className="govuk-summary-list__actions">
-            <Link
-              onClick={removeShift}
-              className="govuk-link govuk-link--no-visited-state"
-              to={'/'}
-            >
+            <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
               Remove<span className="govuk-visually-hidden"> shift</span>
             </Link>
           </dd>
@@ -40,20 +28,17 @@ const EditShiftTimecard = () => {
               onClick={toggleEditShiftHours}
               className="govuk-link govuk-link--no-visited-state"
               to={'/'}
+              data-testid="shift-change-button"
             >
               Change<span className="govuk-visually-hidden"> hours</span>
             </Link>
           </dd>
         </div>
-        <EditShiftHours />
+        {showEditShiftHours && <EditShiftHours />}
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Meal break</dt>
           <dd className="govuk-summary-list__actions">
-            <Link
-              onClick={changeMealBreak}
-              className="govuk-link govuk-link--no-visited-state"
-              to={'/'}
-            >
+            <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
               Change<span className="govuk-visually-hidden"> meal break</span>
             </Link>
           </dd>
@@ -66,4 +51,3 @@ const EditShiftTimecard = () => {
 export default EditShiftTimecard;
 
 EditShiftTimecard.displayName = 'EditShiftTimecard';
-EditShiftTimecard.propTypes = {};
