@@ -1,6 +1,7 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-test-renderer';
+import { TimecardContext } from '../../../pages/timecard/Timecard';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
@@ -21,11 +22,13 @@ describe('SelectTimecardPeriodType', () => {
     ];
 
     render(
-      <SelectTimecardPeriodType
-        register={mockRegister}
-        handleSubmit={handleSubmit}
-        errors={errors}
-      />,
+      <TimecardContext.Provider value={{ setErrors: jest.fn() }}>
+        <SelectTimecardPeriodType
+          register={mockRegister}
+          handleSubmit={handleSubmit}
+          errors={errors}
+        />
+      </TimecardContext.Provider>,
       {
         wrapper: MemoryRouter,
       }
@@ -37,7 +40,12 @@ describe('SelectTimecardPeriodType', () => {
   });
 
   it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
-    render(<SelectTimecardPeriodType />, { wrapper: MemoryRouter });
+    render(
+      <TimecardContext.Provider value={{ setErrors: jest.fn() }}>
+        <SelectTimecardPeriodType />
+      </TimecardContext.Provider>,
+      { wrapper: MemoryRouter }
+    );
 
     act(() => {
       const continueButton = screen.getByText('Continue');

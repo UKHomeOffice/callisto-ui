@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { TimecardContext } from '../../../pages/timecard/Timecard';
 
 import Radios from '../../common/form/radios/Radios';
 
@@ -22,11 +24,18 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
     reValidateMode: 'onSubmit',
   });
 
+  const { setErrors } = useContext(TimecardContext);
+
+  useEffect(() => {
+    setErrors(errors);
+  }, [errors]);
+
   return (
     <>
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
+          console.log('submitted');
           console.log(data);
           setTimecardEntryExists(true);
         })}
