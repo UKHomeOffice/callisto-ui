@@ -1,7 +1,6 @@
-import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import { TimecardContext } from '../../../pages/timecard/Timecard';
+import { renderWithTimecardContext } from '../../../test/Helpers';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
@@ -21,19 +20,12 @@ describe('SelectTimecardPeriodType', () => {
       'Overtime',
     ];
 
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <SelectTimecardPeriodType
-          register={mockRegister}
-          handleSubmit={handleSubmit}
-          errors={errors}
-        />
-      </TimecardContext.Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
+    renderWithTimecardContext(
+      <SelectTimecardPeriodType
+        register={mockRegister}
+        handleSubmit={handleSubmit}
+        errors={errors}
+      />
     );
 
     timePeriods.map((option) => {
@@ -42,13 +34,12 @@ describe('SelectTimecardPeriodType', () => {
   });
 
   it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <SelectTimecardPeriodType />
-      </TimecardContext.Provider>,
-      { wrapper: MemoryRouter }
+    renderWithTimecardContext(
+      <SelectTimecardPeriodType
+        register={mockRegister}
+        handleSubmit={handleSubmit}
+        errors={errors}
+      />
     );
 
     act(() => {

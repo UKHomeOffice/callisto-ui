@@ -1,22 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
-import { TimecardContext } from '../../../pages/timecard/Timecard';
+import { renderWithTimecardContext } from '../../../test/Helpers';
 import EditShiftTimecard from './EditShiftTimecard';
 
 describe('EditShiftTimecard', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <EditShiftTimecard />
-      </TimecardContext.Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
-    );
+    renderWithTimecardContext(<EditShiftTimecard />);
 
     const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
 
@@ -26,16 +16,7 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <EditShiftTimecard />
-      </TimecardContext.Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
-    );
+    renderWithTimecardContext(<EditShiftTimecard />);
 
     const changeButton = screen.getByTestId('hours-change-button');
 
@@ -51,16 +32,7 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Change" button twice', async () => {
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <EditShiftTimecard />
-      </TimecardContext.Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
-    );
+    renderWithTimecardContext(<EditShiftTimecard />);
 
     const changeButton = screen.getByTestId('hours-change-button');
 
@@ -81,16 +53,7 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
-    render(
-      <TimecardContext.Provider
-        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
-      >
-        <EditShiftTimecard />
-      </TimecardContext.Provider>,
-      {
-        wrapper: MemoryRouter,
-      }
-    );
+    renderWithTimecardContext(<EditShiftTimecard />);
 
     const changeButton = screen.getByTestId('hours-change-button');
     fireEvent.click(changeButton);
