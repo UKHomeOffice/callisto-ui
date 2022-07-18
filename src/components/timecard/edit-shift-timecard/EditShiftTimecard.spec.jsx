@@ -1,13 +1,22 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-test-renderer';
+
+import { TimecardContext } from '../../../pages/timecard/Timecard';
 import EditShiftTimecard from './EditShiftTimecard';
 
 describe('EditShiftTimecard', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
-    render(<EditShiftTimecard />, {
-      wrapper: MemoryRouter,
-    });
+    render(
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
+        <EditShiftTimecard />
+      </TimecardContext.Provider>,
+      {
+        wrapper: MemoryRouter,
+      }
+    );
 
     const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
 
@@ -17,9 +26,16 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
-    render(<EditShiftTimecard />, {
-      wrapper: MemoryRouter,
-    });
+    render(
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
+        <EditShiftTimecard />
+      </TimecardContext.Provider>,
+      {
+        wrapper: MemoryRouter,
+      }
+    );
 
     const changeButton = screen.getByTestId('hours-change-button');
 
@@ -35,9 +51,16 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Change" button twice', async () => {
-    render(<EditShiftTimecard />, {
-      wrapper: MemoryRouter,
-    });
+    render(
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
+        <EditShiftTimecard />
+      </TimecardContext.Provider>,
+      {
+        wrapper: MemoryRouter,
+      }
+    );
 
     const changeButton = screen.getByTestId('hours-change-button');
 
@@ -58,9 +81,16 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
-    render(<EditShiftTimecard />, {
-      wrapper: MemoryRouter,
-    });
+    render(
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
+        <EditShiftTimecard />
+      </TimecardContext.Provider>,
+      {
+        wrapper: MemoryRouter,
+      }
+    );
 
     const changeButton = screen.getByTestId('hours-change-button');
     fireEvent.click(changeButton);

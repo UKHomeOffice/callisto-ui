@@ -16,17 +16,17 @@ const Timecard = () => {
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
   const [timecardEntryExists, setTimecardEntryExists] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [summaryErrors, setSummaryErrors] = useState({});
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard');
   });
 
   return (
-    <TimecardContext.Provider value={{ setErrors }}>
+    <TimecardContext.Provider value={{ summaryErrors, setSummaryErrors }}>
       <BackLink text="Back to calendar" link="/calendar" />
-      {errors && Object.keys(errors).length !== 0 && (
-        <ErrorSummary errors={errors} />
+      {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
+        <ErrorSummary errors={summaryErrors} />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>

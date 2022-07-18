@@ -24,10 +24,14 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
     reValidateMode: 'onSubmit',
   });
 
-  const { setErrors } = useContext(TimecardContext);
+  const { summaryErrors, setSummaryErrors } = useContext(TimecardContext);
 
   useEffect(() => {
-    setErrors(errors);
+    const newErrors = { ...summaryErrors, ...errors };
+    if (Object.keys(errors).length === 0) {
+      delete newErrors.timePeriod;
+    }
+    setSummaryErrors(newErrors);
   }, [errors]);
 
   return (
@@ -35,7 +39,6 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
-          console.log('submitted');
           console.log(data);
           setTimecardEntryExists(true);
         })}

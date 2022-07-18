@@ -22,7 +22,9 @@ describe('SelectTimecardPeriodType', () => {
     ];
 
     render(
-      <TimecardContext.Provider value={{ setErrors: jest.fn() }}>
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
         <SelectTimecardPeriodType
           register={mockRegister}
           handleSubmit={handleSubmit}
@@ -41,7 +43,9 @@ describe('SelectTimecardPeriodType', () => {
 
   it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
     render(
-      <TimecardContext.Provider value={{ setErrors: jest.fn() }}>
+      <TimecardContext.Provider
+        value={{ summaryErrors: {}, setSummaryErrors: jest.fn() }}
+      >
         <SelectTimecardPeriodType />
       </TimecardContext.Provider>,
       { wrapper: MemoryRouter }
