@@ -14,12 +14,13 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     reValidateMode: 'onSubmit',
   });
 
+  const inputName = 'hours';
   const { summaryErrors, setSummaryErrors } = useContext(TimecardContext);
 
   useEffect(() => {
     const newErrors = { ...summaryErrors, ...errors };
-    if (!errors['hours-start-time']) {
-      delete newErrors['hours-start-time'];
+    if (!errors[`${inputName}-start-time`]) {
+      delete newErrors[`${inputName}-start-time`];
     }
     setSummaryErrors(newErrors);
   }, [errors]);
@@ -33,7 +34,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
         })}
       >
         <StartFinishTimeInput
-          name={'hours'}
+          name={inputName}
           errors={errors}
           register={register}
           formState={formState}

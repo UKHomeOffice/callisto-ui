@@ -24,12 +24,13 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
     reValidateMode: 'onSubmit',
   });
 
+  const radioName = 'timePeriod';
   const { summaryErrors, setSummaryErrors } = useContext(TimecardContext);
 
   useEffect(() => {
     const newErrors = { ...summaryErrors, ...errors };
     if (Object.keys(errors).length === 0) {
-      delete newErrors.timePeriod;
+      delete newErrors[radioName];
     }
     setSummaryErrors(newErrors);
   }, [errors]);
@@ -44,12 +45,12 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
         })}
       >
         <Radios
-          name="timePeriod"
+          name={radioName}
           heading="Add a new time period"
           headingSize="s"
           options={timePeriods}
           errors={errors}
-          {...register('timePeriod', {
+          {...register(radioName, {
             required: {
               value: true,
               message: 'You must select a time period',
