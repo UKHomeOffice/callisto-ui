@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
 
 import SummaryList from './SummaryList';
+import { renderWithRouter } from '../../../test/Helpers';
 
 describe('SummaryList', () => {
   it('should render summary list with correct first row', () => {
-    render(
+    renderWithRouter(
       <SummaryList
         rows={[
           {
@@ -16,8 +16,7 @@ describe('SummaryList', () => {
             link: '/remove-shift',
           },
         ]}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
 
     const title = screen.getByText('Shift');
@@ -31,7 +30,7 @@ describe('SummaryList', () => {
   });
 
   it('should render summary list with correct second row', () => {
-    render(
+    renderWithRouter(
       <SummaryList
         rows={[
           {
@@ -47,8 +46,7 @@ describe('SummaryList', () => {
             link: '/change-hours',
           },
         ]}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
 
     const title = screen.getByText('Hours');
