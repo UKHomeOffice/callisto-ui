@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { TimecardContext } from '../../../pages/timecard/Timecard';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
 const EditShiftTimecard = () => {
@@ -8,7 +10,8 @@ const EditShiftTimecard = () => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const [showEditShiftHours, setShowEditShiftHours] = useState(false);
+  const [showEditShiftHours, setShowEditShiftHours] = useState(true);
+  const { timecardData } = useContext(TimecardContext);
 
   return (
     <div className="select-timecard-period-type">
@@ -34,14 +37,16 @@ const EditShiftTimecard = () => {
             Hours
           </dt>
           <dd className="govuk-summary-list__actions">
-            <Link
-              onClick={toggleEditShiftHours}
-              className="govuk-link govuk-link--no-visited-state"
-              to={'/'}
-              data-testid="hours-change-button"
-            >
-              Change<span className="govuk-visually-hidden"> hours</span>
-            </Link>
+            {timecardData && timecardData.startTime !== '' && (
+              <Link
+                onClick={toggleEditShiftHours}
+                className="govuk-link govuk-link--no-visited-state"
+                to={'/'}
+                data-testid="hours-change-button"
+              >
+                Change<span className="govuk-visually-hidden"> hours</span>
+              </Link>
+            )}
           </dd>
         </div>
         {showEditShiftHours && (

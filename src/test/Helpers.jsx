@@ -15,7 +15,10 @@ export const renderWithTimecardContext = (
   values = {
     summaryErrors: {},
     setSummaryErrors: jest.fn(),
-    timecardData: {},
+    timecardData: {
+      startTime: '',
+      endTime: '',
+    },
     setTimecardData: jest.fn(),
   }
 ) => {

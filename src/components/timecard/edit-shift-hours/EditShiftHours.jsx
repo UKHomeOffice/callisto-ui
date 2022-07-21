@@ -30,11 +30,10 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     <div>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
           setTimecardData({
             ...timecardData,
-            startTime: data['hours-start-time'],
-            endTime: data['hours-finish-time'],
+            startTime: data[`${inputName}-start-time`],
+            endTime: data[`${inputName}-finish-time`],
           });
           setShowEditShiftHours(false);
         })}
