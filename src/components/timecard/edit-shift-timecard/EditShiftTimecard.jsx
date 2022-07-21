@@ -10,8 +10,10 @@ const EditShiftTimecard = () => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const [showEditShiftHours, setShowEditShiftHours] = useState(true);
   const { timecardData } = useContext(TimecardContext);
+  const timecardDataExists = timecardData.startTime === '';
+  const [showEditShiftHours, setShowEditShiftHours] =
+    useState(timecardDataExists);
 
   return (
     <div className="select-timecard-period-type">
@@ -37,7 +39,7 @@ const EditShiftTimecard = () => {
             Hours
           </dt>
           <dd className="govuk-summary-list__actions">
-            {timecardData && timecardData.startTime !== '' && (
+            {timecardData && !timecardDataExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"

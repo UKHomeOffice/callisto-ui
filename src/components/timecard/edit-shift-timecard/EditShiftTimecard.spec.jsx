@@ -57,6 +57,28 @@ describe('EditShiftTimecard', () => {
     expect(changeButton).toBeTruthy();
   });
 
+  it('should show EditShiftHours component when clicking "Change" button', async () => {
+    renderWithTimecardContext(<EditShiftTimecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timecardData: {
+        startTime: '08:00',
+        finishTime: '16:00',
+      },
+      setTimecardData: jest.fn(),
+    });
+
+    act(() => {
+      const changeButton = screen.getByTestId('hours-change-button');
+      fireEvent.click(changeButton);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Start time')).toBeTruthy();
+      expect(screen.queryByText('Finish time')).toBeTruthy();
+    });
+  });
+
   it('should not render the "Change" button when there is no timecard data', async () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
