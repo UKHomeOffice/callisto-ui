@@ -72,7 +72,6 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
 
 export default SelectTimecardPeriodType;
 
-SelectTimecardPeriodType.displayName = 'SelectTimecardPeriodType';
 SelectTimecardPeriodType.propTypes = {
   setTimecardEntryExists: PropTypes.func,
 };

@@ -79,5 +79,3 @@ const EditShiftTimecard = () => {
 };
 
 export default EditShiftTimecard;
-
-EditShiftTimecard.displayName = 'EditShiftTimecard';

@@ -115,7 +115,6 @@ const StartFinishTimeInput = ({
 
 export default StartFinishTimeInput;
 
-StartFinishTimeInput.displayName = 'StartFinishTimeInput';
 StartFinishTimeInput.propTypes = {
   name: PropTypes.string,
   errors: PropTypes.any.isRequired,
