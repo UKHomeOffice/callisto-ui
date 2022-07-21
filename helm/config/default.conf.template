@@ -23,6 +23,7 @@ map $S3_STYLE $s3_host_hdr {
 
 map $host $branch {
     ~^(?<p1>[^.]+)-web\.[^.]+\.callisto.homeoffice.gov.uk$ $p1;
+    ~^web.[^.]+.callisto.homeoffice.gov.uk$ "main";
 }
 
 map $host $subenv {
