@@ -33,7 +33,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           setTimecardData({
             ...timecardData,
             startTime: data[`${inputName}-start-time`],
-            endTime: data[`${inputName}-finish-time`],
+            finishTime: data[`${inputName}-finish-time`],
           });
           setShowEditShiftHours(false);
         })}
@@ -43,8 +43,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timecardData.startTime ? timecardData.startTime : ''}
-          finishTimeValue={timecardData.endTime ? timecardData.endTime : ''}
+          startTimeValue={timecardData.startTime}
+          finishTimeValue={timecardData.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">

@@ -20,7 +20,7 @@ const Timecard = () => {
 
   const [timecardData, setTimecardData] = useState({
     startTime: '',
-    endTime: '',
+    finishTime: '',
   });
 
   useEffect(() => {

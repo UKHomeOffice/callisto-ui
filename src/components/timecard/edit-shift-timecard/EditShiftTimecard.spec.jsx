@@ -48,7 +48,7 @@ describe('EditShiftTimecard', () => {
       setSummaryErrors: jest.fn(),
       timecardData: {
         startTime: '08:00',
-        endTime: '16:00',
+        finishTime: '16:00',
       },
       setTimecardData: jest.fn(),
     });
@@ -63,7 +63,7 @@ describe('EditShiftTimecard', () => {
       setSummaryErrors: jest.fn(),
       timecardData: {
         startTime: '',
-        endTime: '',
+        finishTime: '',
       },
       setTimecardData: jest.fn(),
     });
