@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
   return (
@@ -15,7 +16,7 @@ const ErrorSummary = ({ errors }) => {
         <ul className="govuk-list govuk-error-summary__list">
           {Object.keys(errors).map((key, i) => (
             <li key={i}>
-              <a href={`#${key}`}>{errors[key].message}</a>
+              <HashLink to={`#${key}`}>{errors[key].message}</HashLink>
             </li>
           ))}
         </ul>

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 
 export const renderWithProviders = (Component, AuthClientStub) =>
@@ -8,3 +9,16 @@ export const renderWithProviders = (Component, AuthClientStub) =>
       <BrowserRouter>{Component}</BrowserRouter>
     </ReactKeycloakProvider>
   );
+
+export const renderWithRouter = (
+  Component,
+  {
+    route = '/',
+    history = createMemoryHistory({ initialEntries: [route] }),
+  } = {}
+) => {
+  return {
+    ...render(<BrowserRouter history={history}>{Component}</BrowserRouter>),
+    history,
+  };
+};
