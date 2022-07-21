@@ -39,7 +39,7 @@ const EditShiftTimecard = () => {
             Hours
           </dt>
           <dd className="govuk-summary-list__actions">
-            {timecardData && !timecardDataExists && (
+            {!timecardDataExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"

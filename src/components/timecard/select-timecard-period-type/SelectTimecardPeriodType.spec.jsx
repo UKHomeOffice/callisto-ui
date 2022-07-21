@@ -33,7 +33,7 @@ describe('SelectTimecardPeriodType', () => {
     });
   });
 
-  it('should display an error message and error summary box when pressing submit with nothing selected', async () => {
+  it('should display an error message when pressing submit with nothing selected', async () => {
     renderWithTimecardContext(
       <SelectTimecardPeriodType
         register={mockRegister}

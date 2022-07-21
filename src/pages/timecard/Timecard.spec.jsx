@@ -39,7 +39,8 @@ describe('Timecard', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('Add a new time period')).toBeFalsy();
-        expect(screen.getByText('Hours')).toBeTruthy();
+        expect(screen.getByText('Start time')).toBeTruthy();
+        expect(screen.getByText('Finish time')).toBeTruthy();
       });
     });
   });
