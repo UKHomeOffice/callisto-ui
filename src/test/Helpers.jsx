@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { TimecardContext } from '../pages/timecard/Timecard';
 
@@ -28,5 +29,18 @@ export const renderWithTimecardContext = (
         <MemoryRouter>{Component}</MemoryRouter>
       </TimecardContext.Provider>
     ),
+  };
+};
+
+export const renderWithRouter = (
+  Component,
+  {
+    route = '/',
+    history = createMemoryHistory({ initialEntries: [route] }),
+  } = {}
+) => {
+  return {
+    ...render(<BrowserRouter history={history}>{Component}</BrowserRouter>),
+    history,
   };
 };

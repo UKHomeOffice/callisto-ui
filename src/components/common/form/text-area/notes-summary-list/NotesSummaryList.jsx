@@ -1,5 +1,6 @@
 import { initAll } from 'govuk-frontend';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Notes from '../notes/Notes';
 
 const NotesSummaryList = () => {
@@ -20,9 +21,9 @@ const NotesSummaryList = () => {
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Notes</dt>
           <dd className="govuk-summary-list__actions">
-            <a className="govuk-link" href="/" onClick={handleClick}>
+            <Link className="govuk-link" to="/" onClick={handleClick}>
               Add<span className="govuk-visually-hidden"> notes</span>
-            </a>
+            </Link>
           </dd>
         </div>
         <div id="with-hint-hint" className="govuk-hint">

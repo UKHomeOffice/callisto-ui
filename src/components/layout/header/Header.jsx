@@ -39,13 +39,13 @@ const Header = () => {
             >
               Menu
             </button>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="govuk-header__link govuk-header__link--service-name"
               style={{ color: '#000' }}
             >
               Callisto
-            </a>
+            </Link>
             <SignIn />
           </div>
         </div>
