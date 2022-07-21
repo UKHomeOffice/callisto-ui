@@ -15,7 +15,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   });
 
   const inputName = 'hours';
-  const { summaryErrors, setSummaryErrors } = useContext(TimecardContext);
+  const { summaryErrors, setSummaryErrors, timecardData, setTimecardData } =
+    useContext(TimecardContext);
 
   useEffect(() => {
     const newErrors = { ...summaryErrors, ...errors };
@@ -30,6 +31,11 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
       <form
         onSubmit={handleSubmit((data) => {
           console.log(data);
+          setTimecardData({
+            ...timecardData,
+            startTime: data['hours-start-time'],
+            endTime: data['hours-finish-time'],
+          });
           setShowEditShiftHours(false);
         })}
       >
@@ -38,6 +44,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
+          startTimeValue={timecardData.startTime ? timecardData.startTime : ''}
+          finishTimeValue={timecardData.endTime ? timecardData.endTime : ''}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">

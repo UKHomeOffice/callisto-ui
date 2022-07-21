@@ -18,12 +18,19 @@ const Timecard = () => {
   const [timecardEntryExists, setTimecardEntryExists] = useState(false);
   const [summaryErrors, setSummaryErrors] = useState({});
 
+  const [timecardData, setTimecardData] = useState({
+    startTime: '',
+    endTime: '',
+  });
+
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard');
   });
 
   return (
-    <TimecardContext.Provider value={{ summaryErrors, setSummaryErrors }}>
+    <TimecardContext.Provider
+      value={{ summaryErrors, setSummaryErrors, timecardData, setTimecardData }}
+    >
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
         <ErrorSummary errors={summaryErrors} />
