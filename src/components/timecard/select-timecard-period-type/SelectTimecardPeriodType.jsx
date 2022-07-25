@@ -5,7 +5,7 @@ import { TimecardContext } from '../../../pages/timecard/Timecard';
 
 import Radios from '../../common/form/radios/Radios';
 
-const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
+const SelectTimecardPeriodType = () => {
   const timePeriods = [
     'Shift',
     'Scheduled rest day',
@@ -25,7 +25,8 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
   });
 
   const radioName = 'timePeriod';
-  const { summaryErrors, setSummaryErrors } = useContext(TimecardContext);
+  const { timecardData, setTimecardData, summaryErrors, setSummaryErrors } =
+    useContext(TimecardContext);
 
   useEffect(() => {
     const newErrors = { ...summaryErrors, ...errors };
@@ -41,7 +42,7 @@ const SelectTimecardPeriodType = ({ setTimecardEntryExists }) => {
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
           console.log(data);
-          setTimecardEntryExists(true);
+          setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
         })}
       >
         <Radios

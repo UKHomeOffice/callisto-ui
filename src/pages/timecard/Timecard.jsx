@@ -15,10 +15,9 @@ const Timecard = () => {
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const [timecardEntryExists, setTimecardEntryExists] = useState(false);
   const [summaryErrors, setSummaryErrors] = useState({});
-
   const [timecardData, setTimecardData] = useState({
+    timePeriodType: '',
     startTime: '',
     finishTime: '',
   });
@@ -58,10 +57,8 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {!timecardEntryExists ? (
-        <SelectTimecardPeriodType
-          setTimecardEntryExists={setTimecardEntryExists}
-        />
+      {!timecardData.timePeriodType ? (
+        <SelectTimecardPeriodType />
       ) : (
         <EditShiftTimecard />
       )}

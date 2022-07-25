@@ -28,21 +28,21 @@ describe('Timecard', () => {
       expect(heading).toBeTruthy();
     });
 
-    it('should render the EditShiftTimecard component when selecting "Shift"', async () => {
-      render(<Timecard />, { wrapper: MemoryRouter });
+    // it('should render the EditShiftTimecard component when selecting "Shift"', async () => {
+    //   render(<Timecard />, { wrapper: MemoryRouter });
 
-      const radioButton = screen.getByLabelText('Shift');
-      fireEvent.click(radioButton, { target: { checked: true } });
+    //   const radioButton = screen.getByLabelText('Shift');
+    //   fireEvent.click(radioButton, { target: { checked: true } });
 
-      const continueButton = screen.getByText('Continue');
-      fireEvent.click(continueButton);
+    //   const continueButton = screen.getByText('Continue');
+    //   fireEvent.click(continueButton);
 
-      await waitFor(() => {
-        expect(screen.queryByText('Add a new time period')).toBeFalsy();
-        expect(screen.getByText('Start time')).toBeTruthy();
-        expect(screen.getByText('Finish time')).toBeTruthy();
-      });
-    });
+    //   await waitFor(() => {
+    //     expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    //     expect(screen.getByText('Start time')).toBeTruthy();
+    //     expect(screen.getByText('Finish time')).toBeTruthy();
+    //   });
+    // });
   });
 
   describe('navigation', () => {
