@@ -19,7 +19,7 @@ const EditShiftTimecard = () => {
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
           <dt
-            className="govuk-summary-list__key"
+            className="govuk-summary-list__key govuk-!-width-one-third"
             style={{ paddingBottom: '20px', paddingTop: '10px' }}
           >
             Shift
@@ -51,7 +51,11 @@ const EditShiftTimecard = () => {
           </dd>
         </div>
         {showEditShiftHours && (
-          <EditShiftHours setShowEditShiftHours={setShowEditShiftHours} />
+          <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
+            <dt className="govuk-summary-list__key">
+              <EditShiftHours setShowEditShiftHours={setShowEditShiftHours} />
+            </dt>
+          </div>
         )}
         <div
           className="govuk-summary-list__row govuk-summary-list__row--no-border"
