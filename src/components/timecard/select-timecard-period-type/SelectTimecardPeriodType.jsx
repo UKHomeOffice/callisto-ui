@@ -42,7 +42,6 @@ const SelectTimecardPeriodType = () => {
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
-          console.log(data);
           setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
         })}
       >
