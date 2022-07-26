@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useEffect, createContext } from 'react';
+import { useEffect } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
@@ -11,8 +11,6 @@ import {
   TimecardProvider,
   useTimecardContext,
 } from '../../context/TimecardContext';
-
-export const TimecardContext = createContext();
 
 const Timecard = () => {
   return (

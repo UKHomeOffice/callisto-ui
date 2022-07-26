@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import { renderWithTimecardContext } from '../../../test/Helpers';
+import { renderWithTimecardContext } from '../../../test/Helpers/TimecardContext';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 

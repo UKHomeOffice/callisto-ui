@@ -1,6 +1,7 @@
 import { useState, useContext, createContext } from 'react';
+import PropTypes from 'prop-types';
 
-const TimecardContext = createContext();
+export const TimecardContext = createContext();
 
 export const TimecardProvider = ({ children }) => {
   const [summaryErrors, setSummaryErrors] = useState({});
@@ -26,4 +27,8 @@ export const TimecardProvider = ({ children }) => {
 
 export const useTimecardContext = () => {
   return useContext(TimecardContext);
+};
+
+TimecardProvider.propTypes = {
+  children: PropTypes.element,
 };
