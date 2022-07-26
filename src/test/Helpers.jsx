@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import { TimecardContext } from '../pages/timecard/Timecard';
+import { TimecardProvider } from '../context/TimecardContext';
 
 export const renderWithProviders = (Component, AuthClientStub) =>
   render(
@@ -10,6 +10,39 @@ export const renderWithProviders = (Component, AuthClientStub) =>
       <BrowserRouter>{Component}</BrowserRouter>
     </ReactKeycloakProvider>
   );
+
+// export const MockTimecardProvider = ({
+//   component,
+//   values = {
+//     summaryErrors: {},
+//     setSummaryErrors: jest.fn(),
+//     timecardData: {
+//       startTime: '',
+//       finishTime: '',
+//     },
+//     setTimecardData: jest.fn(),
+//   },
+// }) => {
+//   const [summaryErrors, setSummaryErrors] = useState({});
+//   const [timecardData, setTimecardData] = useState({
+//     timePeriodType: '',
+//     startTime: '',
+//     finishTime: '',
+//   });
+
+//   const value = {
+//     summaryErrors,
+//     setSummaryErrors,
+//     timecardData,
+//     setTimecardData,
+//   };
+
+//   return (
+//     <TimecardContext.Provider value={values}>
+//       {component}
+//     </TimecardContext.Provider>
+//   );
+// };
 
 export const renderWithTimecardContext = (
   Component,
@@ -25,9 +58,9 @@ export const renderWithTimecardContext = (
 ) => {
   return {
     ...render(
-      <TimecardContext.Provider value={values}>
+      <TimecardProvider>
         <MemoryRouter>{Component}</MemoryRouter>
-      </TimecardContext.Provider>
+      </TimecardProvider>
     ),
   };
 };

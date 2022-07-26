@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { TimecardContext } from '../../../pages/timecard/Timecard';
+import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
 
@@ -25,8 +25,9 @@ const SelectTimecardPeriodType = () => {
   });
 
   const radioName = 'timePeriod';
+
   const { timecardData, setTimecardData, summaryErrors, setSummaryErrors } =
-    useContext(TimecardContext);
+    useTimecardContext();
 
   useEffect(() => {
     const newErrors = { ...summaryErrors, ...errors };

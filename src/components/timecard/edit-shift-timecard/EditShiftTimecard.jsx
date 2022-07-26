@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TimecardContext } from '../../../pages/timecard/Timecard';
+import { useTimecardContext } from '../../../context/TimecardContext';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
 const EditShiftTimecard = () => {
@@ -10,7 +9,7 @@ const EditShiftTimecard = () => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const { timecardData } = useContext(TimecardContext);
+  const { timecardData } = useTimecardContext();
   const timecardDataExists = timecardData.startTime === '';
   const [showEditShiftHours, setShowEditShiftHours] =
     useState(timecardDataExists);

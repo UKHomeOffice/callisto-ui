@@ -1,0 +1,29 @@
+import { useState, useContext, createContext } from 'react';
+
+const TimecardContext = createContext();
+
+export const TimecardProvider = ({ children }) => {
+  const [summaryErrors, setSummaryErrors] = useState({});
+  const [timecardData, setTimecardData] = useState({
+    timePeriodType: '',
+    startTime: '',
+    finishTime: '',
+  });
+
+  const value = {
+    summaryErrors,
+    setSummaryErrors,
+    timecardData,
+    setTimecardData,
+  };
+
+  return (
+    <TimecardContext.Provider value={value}>
+      {children}
+    </TimecardContext.Provider>
+  );
+};
+
+export const useTimecardContext = () => {
+  return useContext(TimecardContext);
+};
