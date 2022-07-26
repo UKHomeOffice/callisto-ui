@@ -7,10 +7,7 @@ import SelectTimecardPeriodType from '../../components/timecard/select-timecard-
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
-import {
-  TimecardProvider,
-  useTimecardContext,
-} from '../../context/TimecardContext';
+import { useTimecardContext } from '../../context/TimecardContext';
 
 const Timecard = () => {
   const { date } = useParams();
@@ -24,7 +21,7 @@ const Timecard = () => {
   });
 
   return (
-    <TimecardProvider>
+    <>
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
         <ErrorSummary errors={summaryErrors} />
@@ -57,7 +54,7 @@ const Timecard = () => {
       ) : (
         <EditShiftTimecard />
       )}
-    </TimecardProvider>
+    </>
   );
 };
 
