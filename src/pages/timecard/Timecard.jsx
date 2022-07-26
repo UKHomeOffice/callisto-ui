@@ -12,7 +12,7 @@ import {
   useTimecardContext,
 } from '../../context/TimecardContext';
 
-const Timecard = () => {
+export const Timecard = () => {
   return (
     <TimecardProvider>
       <TimecardPage />
@@ -20,7 +20,7 @@ const Timecard = () => {
   );
 };
 
-const TimecardPage = () => {
+export const TimecardPage = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -68,5 +68,3 @@ const TimecardPage = () => {
     </>
   );
 };
-
-export default Timecard;
