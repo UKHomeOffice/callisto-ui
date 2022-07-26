@@ -12,15 +12,7 @@ import {
   useTimecardContext,
 } from '../../context/TimecardContext';
 
-export const Timecard = () => {
-  return (
-    <TimecardProvider>
-      <TimecardPage />
-    </TimecardProvider>
-  );
-};
-
-export const TimecardPage = () => {
+const Timecard = () => {
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -32,7 +24,7 @@ export const TimecardPage = () => {
   });
 
   return (
-    <>
+    <TimecardProvider>
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
         <ErrorSummary errors={summaryErrors} />
@@ -65,6 +57,8 @@ export const TimecardPage = () => {
       ) : (
         <EditShiftTimecard />
       )}
-    </>
+    </TimecardProvider>
   );
 };
+
+export default Timecard;
