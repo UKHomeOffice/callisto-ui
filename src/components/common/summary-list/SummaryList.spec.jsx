@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import SummaryList from './SummaryList';
-import { renderWithRouter } from '../../../test/Helpers';
+import { renderWithRouter } from '../../../test/helpers/Helpers';
 
 describe('SummaryList', () => {
   it('should render summary list with correct first row', () => {

@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { renderWithRouter } from '../../../test/Helpers';
+import { renderWithRouter } from '../../../test/helpers/Helpers';
 
 import Footer from './Footer';
 

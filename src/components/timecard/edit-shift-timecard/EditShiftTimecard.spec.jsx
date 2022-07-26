@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
-import { renderWithTimecardContext } from '../../../test/Helpers/TimecardContext';
+import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftTimecard from './EditShiftTimecard';
 
 describe('EditShiftTimecard', () => {
