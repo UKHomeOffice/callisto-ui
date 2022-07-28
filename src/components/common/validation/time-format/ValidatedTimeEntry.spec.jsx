@@ -4,12 +4,16 @@ import '@testing-library/jest-dom';
 import ValidatedTimeEntry from './ValidatedTimeEntry';
 
 describe('ValidatedTimeEntry', () => {
-    it('should render correctly', () => {
-        render(
-            <ValidatedTimeEntry timeType="Start Time"/>
-        );
+  it('should render correctly', () => {
+    const component = render(
+      <ValidatedTimeEntry
+        name="start-time"
+        timeType="start time"
+        errors={{}}
+        register={jest.fn()}
+      />
+    );
 
-        c
-        expect(timeType).toBeTruthy();
-    });
-})
+    expect(component).toBeTruthy();
+  });
+});
