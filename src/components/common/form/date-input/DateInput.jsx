@@ -144,7 +144,6 @@ const DateInputItem = ({
 
 export default DateInput;
 
-DateInput.displayName = 'DateInput';
 DateInput.propTypes = {
   name: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,

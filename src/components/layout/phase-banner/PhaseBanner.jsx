@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const PhaseBanner = () => {
   return (
     <>
@@ -11,9 +13,9 @@ const PhaseBanner = () => {
           </strong>
           <span className="govuk-phase-banner__text">
             This is a new service – your{' '}
-            <a className="govuk-link" href="/">
+            <Link className="govuk-link" to="/">
               feedback
-            </a>{' '}
+            </Link>{' '}
             will help us to improve it.
           </span>
         </p>

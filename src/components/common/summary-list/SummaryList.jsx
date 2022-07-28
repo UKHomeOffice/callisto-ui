@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const SummaryList = ({ rows }) => {
   return (
@@ -14,13 +15,13 @@ const SummaryList = ({ rows }) => {
                   className="govuk-summary-list__actions"
                   data-testid="summary-actions"
                 >
-                  <a className="govuk-link" href={row.link}>
+                  <Link className="govuk-link" to={row.link}>
                     {row.action}
                     <span className="govuk-visually-hidden">
                       {' '}
                       {row.title.toLowerCase()}
                     </span>
-                  </a>
+                  </Link>
                 </dd>
               )}
             </div>

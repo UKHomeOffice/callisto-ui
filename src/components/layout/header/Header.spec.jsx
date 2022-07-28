@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { renderWithProviders } from '../../../test/Helpers';
+import { renderWithProviders } from '../../../test/helpers/Helpers';
 
 import Header from './Header';
 
@@ -8,14 +8,14 @@ describe('Header component', () => {
 
   it('should link to /home when pressing the Home button', () => {
     renderWithProviders(<Header />, authClientStub);
-    const homeButton = screen.getByRole('link', { name: 'Home' });
-    expect(homeButton.getAttribute('href')).toBe('/');
+    const homeButton = screen.getByText('Home');
+    expect(homeButton.pathname).toBe('/');
   });
 
   it('should link to /timecard when pressing the Timecard button', () => {
     renderWithProviders(<Header />, authClientStub);
-    const timecardButton = screen.getByRole('link', { name: 'Timecard' });
-    expect(timecardButton.getAttribute('href')).toBe('/timecard');
+    const timecardButton = screen.getByText('Record my time');
+    expect(timecardButton.pathname).toBe('/timecard');
   });
 
   function createAuthClientStub() {

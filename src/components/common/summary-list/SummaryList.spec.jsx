@@ -2,10 +2,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import SummaryList from './SummaryList';
+import { renderWithRouter } from '../../../test/helpers/Helpers';
 
 describe('SummaryList', () => {
   it('should render summary list with correct first row', () => {
-    render(
+    renderWithRouter(
       <SummaryList
         rows={[
           {
@@ -29,7 +30,7 @@ describe('SummaryList', () => {
   });
 
   it('should render summary list with correct second row', () => {
-    render(
+    renderWithRouter(
       <SummaryList
         rows={[
           {

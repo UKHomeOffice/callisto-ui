@@ -1,10 +1,11 @@
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithRouter } from '../../../../test/helpers/Helpers';
 
 import ErrorSummary from './ErrorSummary';
 
 describe('ErrorSummary', () => {
   it('should render an error summary component with all error messages', () => {
-    render(
+    renderWithRouter(
       <ErrorSummary
         errors={[
           { inputName: 'test', message: 'Date cannot be blank' },

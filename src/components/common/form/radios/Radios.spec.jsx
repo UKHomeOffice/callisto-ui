@@ -132,8 +132,8 @@ describe('Radios', () => {
       />
     );
 
-    const inputBox = screen.getByTestId('radio-buttons');
-    expect(inputBox.className).toContain('govuk-form-group--error');
+    const radios = screen.getByTestId('radio-buttons');
+    expect(radios.className).toContain('govuk-form-group--error');
   });
 
   it('should not add error styling to radios when there is not an error', () => {
@@ -146,7 +146,22 @@ describe('Radios', () => {
       />
     );
 
-    const inputBox = screen.getByTestId('radio-buttons');
-    expect(inputBox.className).not.toContain('govuk-form-group--error');
+    const radios = screen.getByTestId('radio-buttons');
+    expect(radios.className).not.toContain('govuk-form-group--error');
+  });
+
+  it('should add inline class when inline flag passed to component', () => {
+    render(
+      <Radios
+        name="radios"
+        heading="Where do you live?"
+        headingSize="l"
+        options={['England', 'Ireland', 'Scotland', 'Wales']}
+        inline={true}
+      />
+    );
+
+    const radios = screen.getByTestId('govuk-inline-radios');
+    expect(radios.className).toContain('govuk-radios--inline');
   });
 });
