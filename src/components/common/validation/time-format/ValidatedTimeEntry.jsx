@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { validateTime } from '../../../../utils/validation/validate-time/validateTime';
 
 const ValidatedTimeEntry = ({
   name,
@@ -7,28 +8,6 @@ const ValidatedTimeEntry = ({
   defaultValue,
   register,
 }) => {
-  const validateTime = (time) => {
-    console.log('validating');
-    var timeRegEx = /^\d{2}:\d{2}$/;
-    // If the time isn't in the correct format don't even bother running the rest of the validation
-    if (timeRegEx.test(time)) {
-      var hours = time.slice(0, 2);
-      var minutes = time.slice(2);
-
-      minutes = minutes.replace(':', '');
-
-      if (hours > 23 || hours < 0) {
-        return false;
-      }
-      if (minutes > 59 || minutes < 0) {
-        return false;
-      }
-    } else {
-      return false;
-    }
-    return true;
-  };
-
   const triggerValidation = (e) => {
     validateTime(e.target.value);
   };
@@ -58,9 +37,7 @@ const ValidatedTimeEntry = ({
         validate: {
           validateTimeEntry: (v) =>
             validateTime(v) ||
-            'You must enter a ' +
-              timeType +
-              ' in the HH:MM 24 hour clock format',
+            'Time is not in the correct format, please re-input in the HH:MM 24hr clock',
         },
       })}
     />
