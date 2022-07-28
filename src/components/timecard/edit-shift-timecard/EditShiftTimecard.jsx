@@ -10,21 +10,23 @@ const EditShiftTimecard = () => {
   };
 
   const { timecardData } = useTimecardContext();
-  const timecardDataExists = timecardData.startTime === '';
-  const [showEditShiftHours, setShowEditShiftHours] =
-    useState(timecardDataExists);
+  const timecardDataExists = timecardData.startTime !== '';
+  const [showEditShiftHours, setShowEditShiftHours] = useState(
+    !timecardDataExists
+  );
 
   return (
     <div className="select-timecard-period-type">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
           <dt
-            className="govuk-summary-list__key govuk-!-width-one-third"
+            className="govuk-summary-list__key govuk-!-width-two-thirds"
             style={{ paddingBottom: '20px', paddingTop: '10px' }}
           >
             Shift
           </dt>
-          <dd className="govuk-summary-list__actions">
+          <dd className="govuk-summary-list__value"></dd>
+          <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
             <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
               Remove<span className="govuk-visually-hidden"> shift</span>
             </Link>
@@ -37,8 +39,15 @@ const EditShiftTimecard = () => {
           >
             Hours
           </dt>
+          <dd className="govuk-summary-list__value">
+            {!showEditShiftHours &&
+              timecardDataExists &&
+              `${timecardData.startTime} to ${
+                timecardData.finishTime ? timecardData.finishTime : '-'
+              }`}
+          </dd>
           <dd className="govuk-summary-list__actions">
-            {!timecardDataExists && (
+            {timecardDataExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -70,6 +79,7 @@ const EditShiftTimecard = () => {
           >
             Meal break
           </dt>
+          <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
             <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
               Change<span className="govuk-visually-hidden"> meal break</span>

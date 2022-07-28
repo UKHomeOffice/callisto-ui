@@ -93,4 +93,72 @@ describe('EditShiftTimecard', () => {
     const changeButton = screen.queryByTestId('hours-change-button');
     expect(changeButton).toBeFalsy();
   });
+
+  describe('hours summary text', () => {
+    it('should display start time on timecard when start time has been entered', async () => {
+      renderWithTimecardContext(<EditShiftTimecard />, {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timecardData: {
+          timePeriodType: 'Shift',
+          startTime: '08:00',
+          finishTime: '',
+        },
+        setTimecardData: jest.fn(),
+      });
+
+      expect(screen.getByText('08:00 to -')).toBeTruthy();
+    });
+
+    it('should display start and finish time on timecard when both times have been entered', async () => {
+      renderWithTimecardContext(<EditShiftTimecard />, {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timecardData: {
+          startTime: '08:00',
+          finishTime: '16:00',
+        },
+        setTimecardData: jest.fn(),
+      });
+
+      expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
+    });
+
+    it('should not display start and finish time on timecard when nothing has been entered', async () => {
+      renderWithTimecardContext(<EditShiftTimecard />, {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timecardData: {
+          startTime: '',
+          finishTime: '',
+        },
+        setTimecardData: jest.fn(),
+      });
+
+      expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+    });
+
+    it('should not display start and finish time on timecard when edit hours toggle is open', async () => {
+      renderWithTimecardContext(<EditShiftTimecard />, {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timecardData: {
+          startTime: '08:00',
+          finishTime: '16:00',
+        },
+        setTimecardData: jest.fn(),
+      });
+
+      expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
+
+      act(() => {
+        const changeButton = screen.getByTestId('hours-change-button');
+        fireEvent.click(changeButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+      });
+    });
+  });
 });
