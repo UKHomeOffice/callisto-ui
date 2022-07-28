@@ -1,5 +1,6 @@
-import { screen, render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react-test-renderer';
+import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
@@ -19,19 +20,36 @@ describe('SelectTimecardPeriodType', () => {
       'Overtime',
     ];
 
-    render(
+    renderWithTimecardContext(
       <SelectTimecardPeriodType
         register={mockRegister}
         handleSubmit={handleSubmit}
         errors={errors}
-      />,
-      {
-        wrapper: MemoryRouter,
-      }
+      />
     );
 
     timePeriods.map((option) => {
       expect(screen.getByText(option)).toBeTruthy();
+    });
+  });
+
+  it('should display an error message when pressing submit with nothing selected', async () => {
+    renderWithTimecardContext(
+      <SelectTimecardPeriodType
+        register={mockRegister}
+        handleSubmit={handleSubmit}
+        errors={errors}
+      />
+    );
+
+    act(() => {
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
+    });
+
+    await waitFor(() => {
+      const errorMessage = screen.getByText('You must select a time period');
+      expect(errorMessage).toBeTruthy();
     });
   });
 });

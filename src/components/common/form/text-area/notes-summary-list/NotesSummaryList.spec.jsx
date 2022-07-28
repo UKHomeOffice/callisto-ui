@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import NotesSummaryList from './NotesSummaryList';
-import { renderWithRouter } from '../../../../../test/Helpers';
+import { renderWithRouter } from '../../../../../test/helpers/Helpers';
 
 test('should render summary list with correct keys', () => {
   renderWithRouter(<NotesSummaryList />);

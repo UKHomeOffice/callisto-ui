@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
 
-const SelectTimecardPeriodType = ({ register, handleSubmit, errors }) => {
+const SelectTimecardPeriodType = () => {
   const timePeriods = [
     'Shift',
     'Scheduled rest day',
@@ -14,24 +16,42 @@ const SelectTimecardPeriodType = ({ register, handleSubmit, errors }) => {
     'Overtime',
   ];
 
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    reValidateMode: 'onSubmit',
+  });
+
+  const radioName = 'timePeriod';
+
+  const { timecardData, setTimecardData, summaryErrors, setSummaryErrors } =
+    useTimecardContext();
+
+  useEffect(() => {
+    const newErrors = { ...summaryErrors, ...errors };
+    if (Object.keys(errors).length === 0) {
+      delete newErrors[radioName];
+    }
+    setSummaryErrors(newErrors);
+  }, [errors]);
 
   return (
     <>
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
-          console.log(data);
-          navigate('/next-page');
+          setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
         })}
       >
         <Radios
-          name="timePeriod"
+          name={radioName}
           heading="Add a new time period"
           headingSize="s"
           options={timePeriods}
           errors={errors}
-          {...register('timePeriod', {
+          {...register(radioName, {
             required: {
               value: true,
               message: 'You must select a time period',
@@ -53,9 +73,6 @@ const SelectTimecardPeriodType = ({ register, handleSubmit, errors }) => {
 
 export default SelectTimecardPeriodType;
 
-SelectTimecardPeriodType.displayName = 'SelectTimecardPeriodType';
 SelectTimecardPeriodType.propTypes = {
-  register: PropTypes.any.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.any.isRequired,
+  setTimecardEntryExists: PropTypes.func,
 };

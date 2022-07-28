@@ -9,6 +9,7 @@ import keycloak from './keycloak';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
+import { TimecardProvider } from './context/TimecardContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,8 +18,22 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
-            <Route path="/timecard/:date" element={<Timecard />} />
-            <Route path="/timecard" element={<Timecard />} />
+            <Route
+              path="/timecard/:date"
+              element={
+                <TimecardProvider>
+                  <Timecard />
+                </TimecardProvider>
+              }
+            />
+            <Route
+              path="/timecard"
+              element={
+                <TimecardProvider>
+                  <Timecard />
+                </TimecardProvider>
+              }
+            />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"
