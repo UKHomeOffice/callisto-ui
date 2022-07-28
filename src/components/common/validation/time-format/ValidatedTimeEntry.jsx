@@ -26,6 +26,7 @@ const ValidatedTimeEntry = ({
       } govuk-input--width-5`}
       defaultValue={defaultValue}
       onBlur={triggerValidation}
+      data-testid={name}
       {...register(name, {
         required: {
           value: true,
@@ -37,7 +38,9 @@ const ValidatedTimeEntry = ({
         validate: {
           validateTimeEntry: (v) =>
             validateTime(v) ||
-            'Time is not in the correct format, please re-input in the HH:MM 24hr clock',
+            'You must enter a ' +
+              timeType +
+              ' in the HH:MM 24 hour clock format',
         },
       })}
     />

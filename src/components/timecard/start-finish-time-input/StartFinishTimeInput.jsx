@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 
 const StartFinishTimeInput = ({
   name,
@@ -61,26 +62,12 @@ const StartFinishTimeInput = ({
           <div id={`${name}-start-time-hint`} className="govuk-hint">
             For example, 08:00
           </div>
-          <input
-            className={`govuk-input ${
-              errors &&
-              Object.keys(errors).find((error) => {
-                return error === name + '-start-time';
-              }) &&
-              'govuk-input--error'
-            } govuk-input--width-5`}
-            id={`${name}-start-time`}
+          <ValidatedTimeEntry
             name={`${name}-start-time`}
-            type="text"
+            timeType="start time"
+            errors={errors}
             defaultValue={startTimeValue}
-            data-testid="start-time-input"
-            {...register(name + '-start-time', {
-              required: {
-                value: true,
-                message:
-                  'You must enter a start time in the HH:MM 24 hour clock format',
-              },
-            })}
+            register={register}
           />
         </div>
 

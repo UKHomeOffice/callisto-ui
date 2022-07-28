@@ -25,7 +25,7 @@ describe('EditShiftTimecard', () => {
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
     renderWithTimecardContext(<EditShiftTimecard />);
 
-    const startTimeInput = screen.getByTestId('start-time-input');
+    const startTimeInput = screen.getByTestId('hours-start-time');
     const finishTimeInput = screen.getByTestId('finish-time-input');
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
