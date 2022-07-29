@@ -50,7 +50,7 @@ steps:
       VITE_KC_CLIENTID:
         from_secret: kc_clientid_dev                        
     commands:
-      - $VITE_KC_URL $VITE_KC_REALM $VITE_KC_CLIENTID npm run build
+      - npm run build
     depends_on:
       - install dependencies
 
