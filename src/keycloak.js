@@ -1,8 +1,8 @@
 import Keycloak from 'keycloak-js';
 const keycloak = new Keycloak({
-  url: 'http://localhost:8080/auth',
-  realm: 'callistorealm',
-  clientId: 'callistoreactclientid',
+  url: import.meta.env.VITE_KC_URL,
+  realm: import.meta.env.VITE_KC_REALM,
+  clientId: import.meta.env.VITE_KC_CLIENTID,
 });
 
 export default keycloak;
