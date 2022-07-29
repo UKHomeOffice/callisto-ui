@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { validateTime } from '../../../../utils/validation/validate-time/validateTime';
 
 const ValidatedTimeEntry = ({
   name,
@@ -7,10 +6,10 @@ const ValidatedTimeEntry = ({
   errors,
   defaultValue,
   register,
+  isRequired,
 }) => {
-  const triggerValidation = (e) => {
-    validateTime(e.target.value);
-  };
+  const errorMessage =
+    'You must enter a ' + timeType + ' in the HH:MM 24 hour clock format';
 
   return (
     <input
@@ -25,22 +24,15 @@ const ValidatedTimeEntry = ({
           : ''
       } govuk-input--width-5`}
       defaultValue={defaultValue}
-      onBlur={triggerValidation}
       data-testid={name}
       {...register(name, {
         required: {
-          value: true,
-          message:
-            'You must enter a ' +
-            timeType +
-            ' in the HH:MM 24 hour clock format',
+          value: isRequired,
+          message: errorMessage,
         },
-        validate: {
-          validateTimeEntry: (v) =>
-            validateTime(v) ||
-            'You must enter a ' +
-              timeType +
-              ' in the HH:MM 24 hour clock format',
+        pattern: {
+          value: /^([01]\d|2[0-3]):?([0-5]\d)$/,
+          message: errorMessage,
         },
       })}
     />
@@ -55,4 +47,5 @@ ValidatedTimeEntry.propTypes = {
   errors: PropTypes.object.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
+  isRequired: PropTypes.bool,
 };

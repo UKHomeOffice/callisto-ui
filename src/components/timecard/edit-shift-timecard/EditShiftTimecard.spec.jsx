@@ -26,7 +26,7 @@ describe('EditShiftTimecard', () => {
     renderWithTimecardContext(<EditShiftTimecard />);
 
     const startTimeInput = screen.getByTestId('hours-start-time');
-    const finishTimeInput = screen.getByTestId('finish-time-input');
+    const finishTimeInput = screen.getByTestId('hours-finish-time');
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });

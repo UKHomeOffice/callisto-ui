@@ -46,7 +46,7 @@ describe('StartFinishTimeInput', () => {
     );
 
     const startTimeInput = screen.getByTestId('hours-start-time');
-    const finishTimeInput = screen.getByTestId('finish-time-input');
+    const finishTimeInput = screen.getByTestId('hours-finish-time');
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });
@@ -67,7 +67,7 @@ describe('StartFinishTimeInput', () => {
     );
 
     const startTimeInput = screen.getByTestId('hours-start-time');
-    const finishTimeInput = screen.getByTestId('finish-time-input');
+    const finishTimeInput = screen.getByTestId('hours-finish-time');
 
     expect(startTimeInput.value).toBe('07:00');
     expect(finishTimeInput.value).toBe('17:00');

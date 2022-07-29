@@ -68,6 +68,7 @@ const StartFinishTimeInput = ({
             errors={errors}
             defaultValue={startTimeValue}
             register={register}
+            isRequired={true}
           />
         </div>
 
@@ -84,14 +85,12 @@ const StartFinishTimeInput = ({
             <div id={`${name}-finish-time-hint`} className="govuk-hint">
               For example, 16:00
             </div>
-            <input
-              className={`govuk-input govuk-input--width-5`}
-              id={`${name}-finish-time`}
+            <ValidatedTimeEntry
               name={`${name}-finish-time`}
-              type="text"
+              timeType="finish time"
+              errors={errors}
               defaultValue={finishTimeValue}
-              data-testid="finish-time-input"
-              {...register(name + '-finish-time')}
+              register={register}
             />
           </div>
         </div>
