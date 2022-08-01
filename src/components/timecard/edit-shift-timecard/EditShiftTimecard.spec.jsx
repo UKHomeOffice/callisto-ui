@@ -42,19 +42,27 @@ describe('EditShiftTimecard', () => {
     });
   });
 
-  it('should render the "Change" button when there is timecard data', async () => {
+  it('should render the "Remove" and "Change" buttons when there is timecard data', async () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timecardData: {
+        timePeriodType: 'Shift',
         startTime: '08:00',
         finishTime: '16:00',
       },
       setTimecardData: jest.fn(),
     });
 
-    const changeButton = screen.getByTestId('hours-change-button');
-    expect(changeButton).toBeTruthy();
+    const hoursChangeButton = screen.queryByTestId('hours-change-button');
+    const removeShiftButton = screen.queryByText('Remove');
+    const mealBreakChangeButton = screen.queryByTestId(
+      'meal-break-change-button'
+    );
+
+    expect(hoursChangeButton).toBeTruthy();
+    expect(removeShiftButton).toBeTruthy();
+    expect(mealBreakChangeButton).toBeTruthy();
   });
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
@@ -62,6 +70,7 @@ describe('EditShiftTimecard', () => {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timecardData: {
+        timePeriodType: 'Shift',
         startTime: '08:00',
         finishTime: '16:00',
       },
@@ -79,19 +88,27 @@ describe('EditShiftTimecard', () => {
     });
   });
 
-  it('should not render the "Change" button when there is no timecard data', async () => {
+  it('should not render the "Remove" or "Change" buttons when there is no timecard data', async () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timecardData: {
+        timePeriodType: 'Shift',
         startTime: '',
         finishTime: '',
       },
       setTimecardData: jest.fn(),
     });
 
-    const changeButton = screen.queryByTestId('hours-change-button');
-    expect(changeButton).toBeFalsy();
+    const hoursChangeButton = screen.queryByTestId('hours-change-button');
+    const removeShiftButton = screen.queryByText('Remove');
+    const mealBreakChangeButton = screen.queryByTestId(
+      'meal-break-change-button'
+    );
+
+    expect(hoursChangeButton).toBeFalsy();
+    expect(removeShiftButton).toBeFalsy();
+    expect(mealBreakChangeButton).toBeFalsy();
   });
 
   describe('hours summary text', () => {

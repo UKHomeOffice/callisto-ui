@@ -27,9 +27,14 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
-              Remove<span className="govuk-visually-hidden"> shift</span>
-            </Link>
+            {timecardDataExists && (
+              <Link
+                className="govuk-link govuk-link--no-visited-state"
+                to={'/'}
+              >
+                Remove<span className="govuk-visually-hidden"> shift</span>
+              </Link>
+            )}
           </dd>
         </div>
         <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
@@ -81,9 +86,15 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            <Link className="govuk-link govuk-link--no-visited-state" to={'/'}>
-              Change<span className="govuk-visually-hidden"> meal break</span>
-            </Link>
+            {timecardDataExists && (
+              <Link
+                className="govuk-link govuk-link--no-visited-state"
+                to={'/'}
+                data-testid="meal-break-change-button"
+              >
+                Change<span className="govuk-visually-hidden"> meal break</span>
+              </Link>
+            )}
           </dd>
         </div>
       </dl>
