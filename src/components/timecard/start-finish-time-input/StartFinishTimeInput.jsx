@@ -52,7 +52,7 @@ const StartFinishTimeInput = ({
         <div className="govuk-grid-column-one-third">
           <h1 className="govuk-label-wrapper">
             <label
-              className={`govuk-label govuk-label--s`}
+              className="govuk-label govuk-label--s"
               htmlFor={`${name}-start-time`}
             >
               Start time
@@ -71,8 +71,8 @@ const StartFinishTimeInput = ({
             } govuk-input--width-5`}
             id={`${name}-start-time`}
             name={`${name}-start-time`}
-            type="text"
             defaultValue={startTimeValue}
+            autoComplete="off"
             data-testid="start-time-input"
             {...register(name + '-start-time', {
               required: {
@@ -85,10 +85,10 @@ const StartFinishTimeInput = ({
         </div>
 
         <div className="govuk-grid-column-one-third">
-          <div className={`govuk-form-group`}>
+          <div className="govuk-form-group">
             <h1 className="govuk-label-wrapper">
               <label
-                className={`govuk-label govuk-label--s`}
+                className="govuk-label govuk-label--s responsive-margin"
                 htmlFor={`${name}-finish-time`}
               >
                 Finish time
@@ -101,7 +101,7 @@ const StartFinishTimeInput = ({
               className={`govuk-input govuk-input--width-5`}
               id={`${name}-finish-time`}
               name={`${name}-finish-time`}
-              type="text"
+              autoComplete="off"
               defaultValue={finishTimeValue}
               data-testid="finish-time-input"
               {...register(name + '-finish-time')}
