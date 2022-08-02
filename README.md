@@ -10,6 +10,14 @@ Install Docker, validate with `docker -v` to ensure the docker service is runnin
 
 ## Getting started
 
+Create an .env.local file in the root and add the following:
+
+```
+VITE_KC_URL="http://localhost:8080/auth/"
+VITE_KC_REALM="callistorealm"
+VITE_KC_CLIENTID="callistoreactclientid"
+```
+
 Before running the application for the first time, install the node packages
 
 `npm install`
@@ -24,7 +32,7 @@ Navigate to http://localhost:3000
 
 `npm run start:dev`
 
-Note: To override the default url http://localhost:5000, create an .env.local file and add the following:
+Note: To override the default url http://localhost:5000, add the following to .env.local:
 `VITE_LOCAL_API_URL="http://{url:port}"`
 
 Then run:
