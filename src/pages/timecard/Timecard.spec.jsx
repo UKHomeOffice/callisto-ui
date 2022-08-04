@@ -44,6 +44,26 @@ describe('Timecard', () => {
     expect(screen.getByText('Finish time')).toBeTruthy();
   });
 
+  it('should display error summary messages when summary errors exist', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {
+        timePeriod: {
+          message: 'You must select a time period',
+        },
+      },
+      setSummaryErrors: jest.fn(),
+      timecardData: {
+        timePeriodType: '',
+        startTime: '',
+        finishTime: '',
+      },
+      setTimecardData: jest.fn(),
+    });
+
+    expect(screen.getByText('There is a problem')).toBeTruthy();
+    expect(screen.getByText('You must select a time period')).toBeTruthy();
+  });
+
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
       renderWithTimecardContext(<Timecard />);

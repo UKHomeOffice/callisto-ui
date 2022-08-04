@@ -50,14 +50,12 @@ const StartFinishTimeInput = ({
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-one-third">
-          <h1 className="govuk-label-wrapper">
-            <label
-              className={`govuk-label govuk-label--s`}
-              htmlFor={`${name}-start-time`}
-            >
-              Start time
-            </label>
-          </h1>
+          <label
+            className="govuk-label govuk-label--s"
+            htmlFor={`${name}-start-time`}
+          >
+            Start time
+          </label>
           <div id={`${name}-start-time-hint`} className="govuk-hint">
             For example, 08:00
           </div>
@@ -71,8 +69,9 @@ const StartFinishTimeInput = ({
             } govuk-input--width-5`}
             id={`${name}-start-time`}
             name={`${name}-start-time`}
-            type="text"
             defaultValue={startTimeValue}
+            autoComplete="off"
+            type="text"
             data-testid="start-time-input"
             {...register(name + '-start-time', {
               required: {
@@ -85,15 +84,13 @@ const StartFinishTimeInput = ({
         </div>
 
         <div className="govuk-grid-column-one-third">
-          <div className={`govuk-form-group`}>
-            <h1 className="govuk-label-wrapper">
-              <label
-                className={`govuk-label govuk-label--s`}
-                htmlFor={`${name}-finish-time`}
-              >
-                Finish time
-              </label>
-            </h1>
+          <div className="govuk-form-group">
+            <label
+              className="govuk-label govuk-label--s responsive-margin"
+              htmlFor={`${name}-finish-time`}
+            >
+              Finish time
+            </label>
             <div id={`${name}-finish-time-hint`} className="govuk-hint">
               For example, 16:00
             </div>
@@ -101,8 +98,9 @@ const StartFinishTimeInput = ({
               className={`govuk-input govuk-input--width-5`}
               id={`${name}-finish-time`}
               name={`${name}-finish-time`}
-              type="text"
               defaultValue={finishTimeValue}
+              autoComplete="off"
+              type="text"
               data-testid="finish-time-input"
               {...register(name + '-finish-time')}
             />
