@@ -1,28 +1,20 @@
 import api from '../core';
 
-const baseUrl = 'https://timecard.dev.callisto.homeoffice.gov.uk'; //TODO: Move to env variable
+const baseUrl = import.meta.env.VITE_TIMECARD_API_URL;
+const serviceName = 'Timecard Service ';
+
+export const getHelloWorld = async () => {
+  try {
+    return await api.get(baseUrl + 'api/v1/');
+  } catch (error) {
+    throw new Error(serviceName + ' getHelloWorld function threw ' + error);
+  }
+};
 
 export const getTimecard = async (params) => {
   try {
-    return await api.get(baseUrl + '/api/timecard', params);
+    return await api.get(baseUrl + 'api/v1/timecard', params);
   } catch (error) {
-    throw new Error('timecardService getTimecard error:' + error);
-    //TODO: post/log error
-  }
-};
-
-export const createTimecard = async (params, data) => {
-  try {
-    return await api.post(baseUrl + '/api/timecard', params, data);
-  } catch (error) {
-    throw new Error('timecardService createTimecard error:' + error);
-  }
-};
-
-export const updateTimecard = async (data) => {
-  try {
-    return await api.put(baseUrl + '/api/timecard', data);
-  } catch (error) {
-    throw new Error('timecardService updateTimecard error:' + error);
+    throw new Error(serviceName + ' getTimecard function threw ' + error);
   }
 };
