@@ -15,25 +15,15 @@ const useApiCall = (service) => {
     try {
       service()
         .then((data) => {
-          console.log('--- called service got data: ' + data + ' dispatching');
           dispatch({ type: 'success', data });
         })
         .catch((error) => {
-          console.log(
-            '--- called service got ERROR: ' + error + ' dispatching'
-          );
           dispatch({ type: 'error', error });
         });
     } catch (error) {
       console.log('error - log');
     }
   }, [service]);
-  console.log(
-    'useApiCall ' +
-      service.name +
-      '  state: ' +
-      [state.loading, state.data, state.error]
-  );
   return [state.loading, state.data, state.error];
 };
 
