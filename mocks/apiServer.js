@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-const jsonServer = require("json-server");
+const jsonServer = require('json-server');
 const server = jsonServer.create();
-const path = require("path");
-const router = jsonServer.router(path.join(__dirname, "db.json"));
+const path = require('path');
+const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 const db = router.db;
 
@@ -17,21 +17,25 @@ server.use(function (req, res, next) {
 ///
 // Add this before server.use(router)
 
+server.get('/api/v1/', (req, res) => {
+  res.jsonp('Hello World');
+});
+
 server.use(
   jsonServer.rewriter({
-    "/resources/artists?filter=:searchstring%3E:searchval":
-      "/artists?artist_id_gte=:searchval&artist_id_ne=:searchval",
+    '/resources/artists?filter=:searchstring%3E:searchval':
+      '/artists?artist_id_gte=:searchval&artist_id_ne=:searchval',
   })
 );
 
 server.use((req, res, next) => {
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     req.body.createdAt = Date.now();
   }
   next();
 });
 
-server.post("/timecard/", function (req, res, next) {
+server.post('/timecard/', function (req, res, next) {
   const error = validateTimecard(req.body);
   if (error) {
     res.status(400).send(error);
@@ -64,9 +68,9 @@ server.listen(port, () => {
 //
 
 function validateTimecard(timecard) {
-  if (!timecard.startTime) return "Start time is required.";
-  if (!timecard.finishTime) return "Finish time is required.";
-  if (!timecard.startDate) return "Start date is required.";
-  if (!timecard.endDate) return "End date is required.";
-  return "";
+  if (!timecard.startTime) return 'Start time is required.';
+  if (!timecard.finishTime) return 'Finish time is required.';
+  if (!timecard.startDate) return 'Start date is required.';
+  if (!timecard.endDate) return 'End date is required.';
+  return '';
 }
