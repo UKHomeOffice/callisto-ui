@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import { apiCallReducer } from './apiCallReducer';
+import apiCallReducer from './apiCallReducer';
 
 const initialApiState = {
   loading: false,
