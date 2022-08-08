@@ -3,7 +3,7 @@ const apiCallReducer = (apiState, action) => {
     case 'loading':
       return { ...apiState, loading: true };
     case 'success':
-      return { ...apiState, data: action.data };
+      return { ...apiState, loading: false, data: action.data };
     case 'error':
       return { ...apiState, error: action.error };
     default:
