@@ -12,7 +12,6 @@ const Home = () => {
   const loadingText = ' loading...';
 
   if (error) {
-    console.log(error);
     apiError = error.message;
   } else {
     if (data) {
