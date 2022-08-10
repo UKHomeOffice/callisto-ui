@@ -7,24 +7,24 @@ const instance = axios.create({
 });
 
 export default {
-  get: (endpoint, token) =>
+  get: (endpoint, params) =>
     instance({
-      headers: { 'X-SPOOF-AUTHORIZATION': `Bearer ${token}` },
       method: 'GET',
       url: endpoint,
+      params: params,
     }),
-  post: (endpoint, data, token) =>
+  post: (endpoint, params, data) =>
     instance({
-      headers: { 'X-SPOOF-AUTHORIZATION': `Bearer ${token}` },
       method: 'POST',
       url: endpoint,
+      params: params,
       data,
     }),
-  put: (endpoint, data, token) =>
+  put: (endpoint, params, data) =>
     instance({
-      headers: { 'X-SPOOF-AUTHORIZATION': `Bearer ${token}` },
       method: 'PUT',
       url: endpoint,
+      params: params,
       data,
     }),
 };

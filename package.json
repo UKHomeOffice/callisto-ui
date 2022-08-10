@@ -24,7 +24,8 @@
       "!**/mocks/**",
       "!**/coverage/**",
       "!**/dist/**",
-      "!**/*.config.js"
+      "!**/*.config.js",
+      "!**/*keycloak.js"
     ],
     "testEnvironment": "jest-environment-jsdom",
     "setupFilesAfterEnv": [
@@ -44,7 +45,7 @@
       ]
     ],
     "plugins": [
-      "@babel/plugin-transform-runtime"
+      "@babel/plugin-transform-runtime", "babel-plugin-transform-vite-meta-env"
     ]
   },
   "dependencies": {
@@ -70,6 +71,7 @@
     "@testing-library/react": "^12.1.4",
     "@vitejs/plugin-react": "^1.0.7",
     "babel-jest": "^27.5.1",
+    "babel-plugin-transform-vite-meta-env": "^1.0.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
