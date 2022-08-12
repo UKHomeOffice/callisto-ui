@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
+  console.log(errors);
   return (
     <div
       className="govuk-error-summary"

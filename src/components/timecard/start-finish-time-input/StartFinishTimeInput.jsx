@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
+import { useForm } from 'react-hook-form';
 
 const StartFinishTimeInput = ({
   name,
-  errors,
   startTimeValue,
   finishTimeValue,
   register,
@@ -12,9 +12,13 @@ const StartFinishTimeInput = ({
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
+  const {
+    formState: { errors },
+  } = useForm();
+
   useEffect(() => {
     updateErrorMessages();
-  }, [formState]);
+  }, [errors]);
 
   const updateErrorMessages = () => {
     const findErrors =
@@ -26,7 +30,6 @@ const StartFinishTimeInput = ({
         return errors[inputName].message;
       });
     }
-    setErrorMessages(relevantErrorMessages);
   };
 
   return (

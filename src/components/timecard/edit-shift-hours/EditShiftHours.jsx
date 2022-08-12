@@ -19,12 +19,15 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     useTimecardContext();
 
   useEffect(() => {
+    updateErrors();  
+  }, [errors]);
+
+  const updateErrors = () => {
     const newErrors = { ...summaryErrors, ...errors };
     if (!errors[`${inputName}-start-time`]) {
       delete newErrors[`${inputName}-start-time`];
     }
-    setSummaryErrors(newErrors);
-  }, [errors]);
+  }
 
   return (
     <div>
