@@ -1,23 +1,28 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 const DateInput = ({
   name,
   heading,
   headingSize,
   hint,
-  errors,
   dayValue,
   monthValue,
   yearValue,
   register,
   formState,
 }) => {
+  const {
+    formState: { errors },
+  } = useForm();
+
   const [errorMessages, setErrorMessages] = useState([]);
+  console.log(errors);
 
   useEffect(() => {
     updateErrorMessages();
-  }, [formState]);
+  }, [errors]);
 
   const updateErrorMessages = () => {
     const findErrors =
@@ -29,7 +34,6 @@ const DateInput = ({
         return errors[inputName].message;
       });
     }
-    setErrorMessages(relevantErrorMessages);
   };
 
   return (
