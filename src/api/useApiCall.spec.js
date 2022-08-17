@@ -1,9 +1,6 @@
 import useApiCall from './useApiCall';
 import { renderHook } from '@testing-library/react-hooks';
 
-const services = require('./services/timecardService');
-const mockGetHelloWorld = jest.spyOn(services, 'getHelloWorld');
-
 beforeEach(() => {
   jest.resetAllMocks();
 });
@@ -19,7 +16,7 @@ describe('useApiCall', () => {
       status: 200,
       statusText: 'OK',
     };
-    mockGetHelloWorld.mockImplementation(() => Promise.resolve(matchObj));
+    const mockGetHelloWorld = jest.fn().mockResolvedValue(matchObj);
     const { result, waitForNextUpdate } = renderHook(() =>
       useApiCall(mockGetHelloWorld)
     );
@@ -34,13 +31,13 @@ describe('useApiCall', () => {
       status: 404,
       statusText: 'Not Found',
     };
-    mockGetHelloWorld.mockImplementation(() => Promise.reject(matchObj));
+    const mockGetHelloWorld = jest.fn().mockRejectedValue(matchObj);
     const { result, waitForNextUpdate } = renderHook(() =>
       useApiCall(mockGetHelloWorld)
     );
 
     expect(result.current).toMatchObject([true, null, null]);
     await waitForNextUpdate();
-    expect(result.current).toMatchObject([true, null, matchObj]);
+    expect(result.current).toMatchObject([false, null, matchObj]);
   });
 });
