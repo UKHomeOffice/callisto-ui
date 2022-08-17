@@ -1,19 +1,13 @@
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 
 const ValidatedTimeEntry = ({
   name,
   timeType,
+  errors,
   defaultValue,
   register,
   isRequired,
 }) => {
-
-  const {
-    formState: { errors },
-    setError
-  } = useForm();
-
   const errorMessage =
     'You must enter a ' + timeType + ' in the HH:MM 24 hour clock format';
 
@@ -33,13 +27,14 @@ const ValidatedTimeEntry = ({
       data-testid={name}
       {...register(name, {
         required: {
-          value: isRequired
+          value: isRequired,
+          message: errorMessage,
         },
         pattern: {
-          value: /^([01]\d|2[0-3]):?([0-5]\d)$/ 
+          value: /^([01]\d|2[0-3]):?([0-5]\d)$/,
+          message: errorMessage,
         },
       })}
-      {...setError(name, {type: "timeValidationError", message: errorMessage})}
     />
   );
 };
