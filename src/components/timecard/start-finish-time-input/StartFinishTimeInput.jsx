@@ -39,7 +39,7 @@ const StartFinishTimeInput = ({
         {errorMessages &&
           errorMessages.map((error, i) => (
             <p
-              id={`${name}-error`}
+              id={`${name}-${i}-error`}
               key={i}
               className="govuk-error-message govuk-!-margin-left-3"
             >

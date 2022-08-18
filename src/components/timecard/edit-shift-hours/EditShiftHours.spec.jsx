@@ -4,6 +4,7 @@ import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext
 import EditShiftHours from './EditShiftHours';
 
 describe('EditShiftHours', () => {
+
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
@@ -28,7 +29,7 @@ describe('EditShiftHours', () => {
     );
 
     act(() => {
-      const startTimeInput = screen.getByTestId('hours-start-time');
+      const startTimeInput = screen.getByTestId('shift-start-time');
       fireEvent.change(startTimeInput, { target: { value: '8:00' } });
 
       const saveButton = screen.getByText('Save');
@@ -49,7 +50,7 @@ describe('EditShiftHours', () => {
     );
 
     act(() => {
-      const startTimeInput = screen.getByTestId('hours-start-time');
+      const startTimeInput = screen.getByTestId('shift-start-time');
       fireEvent.change(startTimeInput, { target: { value: '08:00' } });
 
       const saveButton = screen.getByText('Save');
@@ -64,14 +65,17 @@ describe('EditShiftHours', () => {
     });
   });
 
-  it('should display an error when pressing save with an invalid finish time', async () => {
+  test.each([
+      '8:00', '-00:01', '24:00', 'abcd', '!'
+    ])('should display an error when pressing save with an invalid finish time', async (testValue) => {
+    
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
     );
 
     act(() => {
-      const finishTimeInput = screen.getByTestId('hours-finish-time');
-      fireEvent.change(finishTimeInput, { target: { value: '8:00' } });
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
@@ -85,14 +89,16 @@ describe('EditShiftHours', () => {
     });
   });
 
-  it('should not display an error when pressing save with a valid finish time', async () => {
+  test.each([
+    '00:00', '08:00', '23:59', '04:26', '0000'
+  ])('should not display an error when pressing save with a valid finish time', async (testValue) => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
     );
 
     act(() => {
-      const finishTimeInput = screen.getByTestId('hours-finish-time');
-      fireEvent.change(finishTimeInput, { target: { value: '08:00' } });
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);

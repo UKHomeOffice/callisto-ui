@@ -13,7 +13,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     reValidateMode: 'onSubmit',
   });
 
-  const inputName = 'hours';
+  const inputName = 'shift';
   const { timecardData, setTimecardData } = useTimecardContext();
   const { setSummaryErrors } = useTimecardContext();
 
