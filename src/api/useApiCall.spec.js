@@ -1,16 +1,8 @@
 import useApiCall from './useApiCall';
 import { renderHook } from '@testing-library/react-hooks';
 
-beforeEach(() => {
-  jest.resetAllMocks();
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
 describe('useApiCall', () => {
-  it('useApiCall should return correct response from getHelloWorld', async () => {
+  it('should return correct response from getHelloWorld', async () => {
     const matchObj = {
       data: 'Hello World',
       status: 200,
@@ -26,7 +18,7 @@ describe('useApiCall', () => {
     expect(result.current).toMatchObject([false, matchObj, null]);
   });
 
-  it('useApiCall should return correct reject response from getHelloWorld', async () => {
+  it('should return correct reject response from getHelloWorld', async () => {
     const matchObj = {
       status: 404,
       statusText: 'Not Found',
