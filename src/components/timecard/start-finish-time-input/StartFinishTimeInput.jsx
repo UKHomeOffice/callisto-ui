@@ -87,6 +87,8 @@ const StartFinishTimeInput = ({
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
+              autoComplete="off"
+              type="text"
             />
           </div>
         </div>
