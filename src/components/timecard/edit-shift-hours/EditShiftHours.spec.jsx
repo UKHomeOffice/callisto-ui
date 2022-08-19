@@ -23,7 +23,9 @@ describe('EditShiftHours', () => {
     });
   });
 
-  it('should display an error when pressing save with an invalid start time', async () => {
+  test.each([
+    '8:00', '-00:01', '24:00', 'abcd', '!'
+  ])('should display an error when pressing save with an invalid start time', async (testValue) => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
     );
@@ -44,14 +46,16 @@ describe('EditShiftHours', () => {
     });
   });
 
-  it('should not display an error when pressing save with a valid start time', async () => {
+  test.each([
+    '00:00', '08:00', '23:59', '04:26', '0000'
+  ])('should not display an error when pressing save with a valid start time', async (testValue) => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
     );
 
     act(() => {
       const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+      fireEvent.change(startTimeInput, { target: { value: testValue } });
 
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
