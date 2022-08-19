@@ -29,13 +29,9 @@ const SelectTimecardPeriodType = () => {
   const { timecardData, setTimecardData, summaryErrors, setSummaryErrors } =
     useTimecardContext();
 
-  useEffect(() => {
-    const newErrors = { ...summaryErrors, ...errors };
-    if (Object.keys(errors).length === 0) {
-      delete newErrors[radioName];
-    }
-    setSummaryErrors(newErrors);
-  }, [errors]);
+  const handleError = (errorFields) => {
+    setSummaryErrors(errorFields);
+  };
 
   return (
     <>
@@ -43,7 +39,7 @@ const SelectTimecardPeriodType = () => {
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
           setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
-        })}
+        }, handleError)}
       >
         <Radios
           name={radioName}
