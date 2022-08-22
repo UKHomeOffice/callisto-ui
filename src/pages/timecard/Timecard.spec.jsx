@@ -46,7 +46,7 @@ describe('Timecard', () => {
 
   it('should display error summary messages when summary errors exist', async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
-    
+
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {
         timePeriod: {

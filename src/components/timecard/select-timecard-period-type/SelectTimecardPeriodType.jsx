@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import React from 'react';
 
 import Radios from '../../common/form/radios/Radios';
 

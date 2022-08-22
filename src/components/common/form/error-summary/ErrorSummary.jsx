@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
