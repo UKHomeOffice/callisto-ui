@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
@@ -26,16 +25,12 @@ const SelectTimecardPeriodType = () => {
 
   const radioName = 'timePeriod';
 
-  const { timecardData, setTimecardData, summaryErrors, setSummaryErrors } =
+  const { timecardData, setTimecardData, setSummaryErrors } =
     useTimecardContext();
 
-  useEffect(() => {
-    const newErrors = { ...summaryErrors, ...errors };
-    if (Object.keys(errors).length === 0) {
-      delete newErrors[radioName];
-    }
-    setSummaryErrors(newErrors);
-  }, [errors]);
+  const handleError = (errorFields) => {
+    setSummaryErrors(errorFields);
+  };
 
   return (
     <>
@@ -43,7 +38,8 @@ const SelectTimecardPeriodType = () => {
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
           setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
-        })}
+          setSummaryErrors({});
+        }, handleError)}
       >
         <Radios
           name={radioName}

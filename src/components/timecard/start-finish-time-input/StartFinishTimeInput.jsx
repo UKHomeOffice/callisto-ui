@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 
 const StartFinishTimeInput = ({
   name,
@@ -38,7 +39,7 @@ const StartFinishTimeInput = ({
         {errorMessages &&
           errorMessages.map((error, i) => (
             <p
-              id={`${name}-error`}
+              id={`${name}-${i}-error`}
               key={i}
               className="govuk-error-message govuk-!-margin-left-3"
             >
@@ -59,27 +60,15 @@ const StartFinishTimeInput = ({
           <div id={`${name}-start-time-hint`} className="govuk-hint">
             For example, 08:00
           </div>
-          <input
-            className={`govuk-input ${
-              errors &&
-              Object.keys(errors).find((error) => {
-                return error === name + '-start-time';
-              }) &&
-              'govuk-input--error'
-            } govuk-input--width-5`}
-            id={`${name}-start-time`}
+          <ValidatedTimeEntry
             name={`${name}-start-time`}
+            timeType="start time"
+            errors={errors}
             defaultValue={startTimeValue}
+            register={register}
+            isRequired={true}
             autoComplete="off"
             type="text"
-            data-testid="start-time-input"
-            {...register(name + '-start-time', {
-              required: {
-                value: true,
-                message:
-                  'You must enter a start time in the HH:MM 24 hour clock format',
-              },
-            })}
           />
         </div>
 
@@ -94,15 +83,14 @@ const StartFinishTimeInput = ({
             <div id={`${name}-finish-time-hint`} className="govuk-hint">
               For example, 16:00
             </div>
-            <input
-              className={`govuk-input govuk-input--width-5`}
-              id={`${name}-finish-time`}
+            <ValidatedTimeEntry
               name={`${name}-finish-time`}
+              timeType="finish time"
+              errors={errors}
               defaultValue={finishTimeValue}
+              register={register}
               autoComplete="off"
               type="text"
-              data-testid="finish-time-input"
-              {...register(name + '-finish-time')}
             />
           </div>
         </div>

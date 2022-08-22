@@ -1,5 +1,4 @@
 import { PropTypes } from 'prop-types';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
@@ -14,17 +13,13 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     reValidateMode: 'onSubmit',
   });
 
-  const inputName = 'hours';
-  const { summaryErrors, setSummaryErrors, timecardData, setTimecardData } =
-    useTimecardContext();
+  const inputName = 'shift';
+  const { timecardData, setTimecardData } = useTimecardContext();
+  const { setSummaryErrors } = useTimecardContext();
 
-  useEffect(() => {
-    const newErrors = { ...summaryErrors, ...errors };
-    if (!errors[`${inputName}-start-time`]) {
-      delete newErrors[`${inputName}-start-time`];
-    }
-    setSummaryErrors(newErrors);
-  }, [errors]);
+  const handleError = (errorFields) => {
+    setSummaryErrors(errorFields);
+  };
 
   return (
     <div>
@@ -36,7 +31,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
             finishTime: data[`${inputName}-finish-time`],
           });
           setShowEditShiftHours(false);
-        })}
+          setSummaryErrors({});
+        }, handleError)}
       >
         <StartFinishTimeInput
           name={inputName}

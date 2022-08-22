@@ -7,7 +7,7 @@ describe('StartFinishTimeInput', () => {
   it('should display titles for each input box', () => {
     render(
       <StartFinishTimeInput
-        name={'hours'}
+        name={'shift'}
         errors={{}}
         register={mockRegister}
       />
@@ -23,7 +23,7 @@ describe('StartFinishTimeInput', () => {
   it('should display hints for each input box', () => {
     render(
       <StartFinishTimeInput
-        name={'hours'}
+        name={'shift'}
         errors={{}}
         register={mockRegister}
       />
@@ -39,14 +39,14 @@ describe('StartFinishTimeInput', () => {
   it('should update the input value on change', () => {
     render(
       <StartFinishTimeInput
-        name={'hours'}
+        name={'shift'}
         errors={{}}
         register={mockRegister}
       />
     );
 
-    const startTimeInput = screen.getByTestId('start-time-input');
-    const finishTimeInput = screen.getByTestId('finish-time-input');
+    const startTimeInput = screen.getByTestId('shift-start-time');
+    const finishTimeInput = screen.getByTestId('shift-finish-time');
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });
@@ -58,7 +58,7 @@ describe('StartFinishTimeInput', () => {
   it('should pre-fill the inputs if values are passed in', () => {
     render(
       <StartFinishTimeInput
-        name={'hours'}
+        name={'shift'}
         startTimeValue="07:00"
         finishTimeValue="17:00"
         errors={{}}
@@ -66,8 +66,8 @@ describe('StartFinishTimeInput', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('start-time-input');
-    const finishTimeInput = screen.getByTestId('finish-time-input');
+    const startTimeInput = screen.getByTestId('shift-start-time');
+    const finishTimeInput = screen.getByTestId('shift-finish-time');
 
     expect(startTimeInput.value).toBe('07:00');
     expect(finishTimeInput.value).toBe('17:00');
@@ -80,10 +80,10 @@ describe('StartFinishTimeInput', () => {
 
       render(
         <StartFinishTimeInput
-          name={'hours'}
+          name={'shift'}
           errors={{
             'radio-error': { message: 'Select a radio button' }, // error message for another component
-            'hours-start-time': { message: startTimeErrorMessage },
+            'shift-start-time': { message: startTimeErrorMessage },
           }}
           register={mockRegister}
         />
