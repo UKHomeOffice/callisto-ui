@@ -5,9 +5,8 @@ import { HashLink } from 'react-router-hash-link';
 const ErrorSummary = ({ errors }) => {
 
   const callbackRef = (node) => {
-    console.log('Attached node', node)
+    // if node exists (there is a summary error), scroll to the first summary error and focus it
     if(node) {
-      console.log('Scrolling and focusing', node.children["summary-error-0"].children["summary-error-0-message"])
       node.children["summary-error-0"].children["summary-error-0-message"]
         .scrollIntoView({block: "center", inline: "center"});
       node.children["summary-error-0"].children["summary-error-0-message"].focus();
