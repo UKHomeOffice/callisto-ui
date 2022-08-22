@@ -5,8 +5,15 @@ const ErrorSummary = ({ errors }) => {
   const callbackRef = (summaryErrorList) => {
     // if node exists (there is a summary error), scroll to the first summary error and focus it
     if (summaryErrorList) {
-      const firstSummaryError = summaryErrorList.children['summary-error-0'].children['summary-error-0-message']
-      firstSummaryError.scrollIntoView({ block: 'center', inline: 'center', behaviour: 'smooth' });
+      const firstSummaryError =
+        summaryErrorList.children['summary-error-0'].children[
+          'summary-error-0-message'
+        ];
+      firstSummaryError.scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behaviour: 'smooth',
+      });
       firstSummaryError.focus();
     }
   };
