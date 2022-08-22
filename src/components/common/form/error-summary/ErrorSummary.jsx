@@ -2,15 +2,12 @@ import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
-  const callbackRef = (node) => {
+  const callbackRef = (summaryErrorList) => {
     // if node exists (there is a summary error), scroll to the first summary error and focus it
-    if (node) {
-      node.children['summary-error-0'].children[
-        'summary-error-0-message'
-      ].scrollIntoView({ block: 'center', inline: 'center' });
-      node.children['summary-error-0'].children[
-        'summary-error-0-message'
-      ].focus();
+    if (summaryErrorList) {
+      const firstSummaryError = summaryErrorList.children['summary-error-0'].children['summary-error-0-message']
+      firstSummaryError.scrollIntoView({ block: 'center', inline: 'center', behaviour: 'smooth' });
+      firstSummaryError.focus();
     }
   };
 
