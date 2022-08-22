@@ -8,9 +8,8 @@ const ValidatedTimeEntry = ({
   register,
   isRequired,
 }) => {
-  const errorMessage =
-    'You must enter a ' + timeType + ' in the HH:MM 24 hour clock format';
-
+  const errorMessage = `You must enter a ${timeType} in the HH:MM 24 hour clock format`;
+  
   return (
     <input
       id={name}
