@@ -5,7 +5,7 @@ const serviceName = 'Timecard Service ';
 
 export const getHelloWorld = async () => {
   try {
-    return await api.get(baseUrl + 'api/v1/');
+    return await api.get(baseUrl + 'api/v1/hello');
   } catch (error) {
     throw new Error(serviceName + ' getHelloWorld function threw ' + error);
   }
@@ -16,5 +16,13 @@ export const getTimecard = async (params) => {
     return await api.get(baseUrl + 'api/v1/timecard', params);
   } catch (error) {
     throw new Error(serviceName + ' getTimecard function threw ' + error);
+  }
+};
+
+export const saveTimecard = async (payload, params) => {
+  try {
+    return await api.post(baseUrl + 'api/v1/timecard', params, payload);
+  } catch (error) {
+    throw new Error(serviceName + ' saveTimecard function threw ' + error);
   }
 };
