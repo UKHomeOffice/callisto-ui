@@ -45,7 +45,8 @@
       ]
     ],
     "plugins": [
-      "@babel/plugin-transform-runtime", "babel-plugin-transform-vite-meta-env"
+      "@babel/plugin-transform-runtime",
+      "babel-plugin-transform-vite-meta-env"
     ]
   },
   "dependencies": {
@@ -69,6 +70,7 @@
     "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
+    "@testing-library/react-hooks": "^8.0.1",
     "@vitejs/plugin-react": "^1.0.7",
     "babel-jest": "^27.5.1",
     "babel-plugin-transform-vite-meta-env": "^1.0.3",

@@ -5,7 +5,7 @@ const apiCallReducer = (apiState, action) => {
     case 'success':
       return { ...apiState, loading: false, data: action.data };
     case 'error':
-      return { ...apiState, error: action.error };
+      return { ...apiState, loading: false, error: action.error };
     default:
       throw new Error('Unknown action type supplied to apiCallReducer');
   }
