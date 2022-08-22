@@ -1,7 +1,19 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
+
+  const callbackRef = (node) => {
+    console.log('Attached node', node)
+    if(node) {
+      console.log('Scrolling and focusing', node.children["summary-error-0"].children["summary-error-0-message"])
+      node.children["summary-error-0"].children["summary-error-0-message"]
+        .scrollIntoView({block: "center", inline: "center"});
+      node.children["summary-error-0"].children["summary-error-0-message"].focus();
+    }
+  }
+
   return (
     <div
       className="govuk-error-summary"
@@ -13,10 +25,10 @@ const ErrorSummary = ({ errors }) => {
         There is a problem
       </h2>
       <div className="govuk-error-summary__body">
-        <ul className="govuk-list govuk-error-summary__list">
+        <ul className="govuk-list govuk-error-summary__list" ref={callbackRef}>
           {Object.keys(errors).map((key, i) => (
-            <li key={i}>
-              <HashLink to={`#${key}`}>{errors[key].message}</HashLink>
+            <li key={i} id={`summary-error-${i}`}>
+              <HashLink id={`summary-error-${i}-message`} to={`#${key}`}>{errors[key].message}</HashLink>
             </li>
           ))}
         </ul>
