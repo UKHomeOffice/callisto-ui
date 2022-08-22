@@ -21,7 +21,7 @@ const Header = () => {
           className="govuk-header__container govuk-width-container"
           style={{ borderBottom: 0 }}
         >
-          <div className="govuk-header__logo">
+          <div className="govuk-header__logo govuk-!-margin-top-0">
             <HomeOfficeLogo />
           </div>
           <div className="govuk-header__content">
