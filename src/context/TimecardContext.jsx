@@ -9,6 +9,7 @@ export const TimecardProvider = ({ children }) => {
     timePeriodType: '',
     startTime: '',
     finishTime: '',
+    startDate: '',
   });
 
   const value = {
