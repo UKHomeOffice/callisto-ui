@@ -3,15 +3,17 @@ import { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
-
   const callbackRef = (node) => {
     // if node exists (there is a summary error), scroll to the first summary error and focus it
-    if(node) {
-      node.children["summary-error-0"].children["summary-error-0-message"]
-        .scrollIntoView({block: "center", inline: "center"});
-      node.children["summary-error-0"].children["summary-error-0-message"].focus();
+    if (node) {
+      node.children['summary-error-0'].children[
+        'summary-error-0-message'
+      ].scrollIntoView({ block: 'center', inline: 'center' });
+      node.children['summary-error-0'].children[
+        'summary-error-0-message'
+      ].focus();
     }
-  }
+  };
 
   return (
     <div
@@ -27,7 +29,9 @@ const ErrorSummary = ({ errors }) => {
         <ul className="govuk-list govuk-error-summary__list" ref={callbackRef}>
           {Object.keys(errors).map((key, i) => (
             <li key={i} id={`summary-error-${i}`}>
-              <HashLink id={`summary-error-${i}-message`} to={`#${key}`}>{errors[key].message}</HashLink>
+              <HashLink id={`summary-error-${i}-message`} to={`#${key}`}>
+                {errors[key].message}
+              </HashLink>
             </li>
           ))}
         </ul>
