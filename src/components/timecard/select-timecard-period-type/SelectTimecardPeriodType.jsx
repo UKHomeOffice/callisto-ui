@@ -38,6 +38,7 @@ const SelectTimecardPeriodType = () => {
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
           setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
+          setSummaryErrors({});
         }, handleError)}
       >
         <Radios
