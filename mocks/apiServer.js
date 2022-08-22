@@ -17,7 +17,7 @@ server.use(function (req, res, next) {
 ///
 // Add this before server.use(router)
 
-server.get('/api/v1/', (req, res) => {
+server.get('/hello', (req, res) => {
   res.jsonp('Hello World');
 });
 
@@ -35,14 +35,14 @@ server.use((req, res, next) => {
   next();
 });
 
-server.post('/timecard/', function (req, res, next) {
+server.post('/timecard', function (req, res) {
   const error = validateTimecard(req.body);
   if (error) {
     res.status(400).send(error);
   } else {
     // Generate id
     // createId();
-    next();
+    res.jsonp('Saved!');
   }
 });
 
@@ -71,6 +71,5 @@ function validateTimecard(timecard) {
   if (!timecard.startTime) return 'Start time is required.';
   if (!timecard.finishTime) return 'Finish time is required.';
   if (!timecard.startDate) return 'Start date is required.';
-  if (!timecard.endDate) return 'End date is required.';
   return '';
 }
