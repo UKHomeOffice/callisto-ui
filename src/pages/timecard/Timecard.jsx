@@ -11,14 +11,21 @@ import { useTimecardContext } from '../../context/TimecardContext';
 
 const Timecard = () => {
   const { date } = useParams();
+  const utcDate = dayjs(date).format();
+
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const { summaryErrors, timecardData } = useTimecardContext();
+  const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
 
   useEffect(() => {
-    document.title = generateDocumentTitle('Timecard');
-  });
+    console.log('set utcDate ' + utcDate);
+    document.title = generateDocumentTitle('Timecard ');
+    setTimecardData({
+      ...timecardData,
+      startDate: utcDate,
+    });
+  }, [date]);
 
   return (
     <>
