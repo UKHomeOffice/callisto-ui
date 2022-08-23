@@ -3,7 +3,6 @@ import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors }) => {
   const callbackRef = (summaryErrorList) => {
-    // if node exists (there is a summary error), scroll to the first summary error and focus it
     if (summaryErrorList) {
       const firstSummaryError =
         summaryErrorList.children['summary-error-0'].children[

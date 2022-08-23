@@ -26,5 +26,6 @@ describe('ErrorSummary', () => {
     expect(dayErrorMessage).toBeTruthy();
     expect(monthErrorMessage).toBeTruthy();
     expect(yearErrorMessage).toBeTruthy();
+    expect(overallErrorMessage).toHaveFocus();
   });
 });
