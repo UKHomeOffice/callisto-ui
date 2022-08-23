@@ -9,7 +9,7 @@ const SignIn = () => {
         className="govuk-header__navigation"
         aria-label="User profile navigation"
       >
-        <ul className="govuk-header__navigation-list-profile govuk-!-margin-bottom-0">
+        <ul className="govuk-header__navigation-list-profile govuk-!-margin-top-2">
           {keycloak.authenticated ? (
             <>
               <li className="govuk-header__navigation-item">

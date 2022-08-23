@@ -1,5 +1,5 @@
 const HomeOfficeLogo = () => (
-  <svg preserveAspectRatio="xMinYMin meet" viewBox="0 0 578 138" height={50}>
+  <svg preserveAspectRatio="xMinYMin meet" viewBox="0 0 578 138" height={40}>
     <g fill="none">
       <path fill="#7F3F98" d="M.7.1h6.9V138H.7z"></path>
       <path
