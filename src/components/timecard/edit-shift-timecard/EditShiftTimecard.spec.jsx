@@ -1,8 +1,11 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
+import { saveTimecard } from '../../../api/services/timecardService';
 
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftTimecard from './EditShiftTimecard';
+
+jest.mock('../../../api/services/timecardService');
 
 describe('EditShiftTimecard', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
@@ -23,6 +26,8 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
+    saveTimecard.mockResolvedValue({ data: [] });
+
     renderWithTimecardContext(<EditShiftTimecard />);
 
     const startTimeInput = screen.getByTestId('shift-start-time');
@@ -39,6 +44,7 @@ describe('EditShiftTimecard', () => {
     await waitFor(() => {
       expect(screen.queryByText('Start time')).toBeFalsy();
       expect(screen.queryByText('Finish time')).toBeFalsy();
+      expect(saveTimecard).toHaveBeenCalled();
     });
   });
 
