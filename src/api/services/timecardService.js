@@ -11,6 +11,14 @@ export const getHelloWorld = async () => {
   }
 };
 
+export const getTimeEntry = async (params) => {
+  try {
+    return await api.get(baseUrl + 'resources/time-entry/0a650b42-82cf-1771-8182-cfb15fcd0004', params);
+  } catch (error) {
+    throw new Error(serviceName + ' get timeentry function threw ' + error);
+  }
+};
+
 export const getTimecard = async (params) => {
   try {
     return await api.get(baseUrl + 'api/v1/timecard', params);
