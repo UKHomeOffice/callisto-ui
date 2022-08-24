@@ -11,6 +11,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     formState,
   } = useForm({
     reValidateMode: 'onSubmit',
+    shouldFocusError: false,
   });
 
   const inputName = 'shift';
