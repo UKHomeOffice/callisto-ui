@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { axios } from 'axios';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
-const axios = require('axios');
 
 const SelectTimecardPeriodType = () => {
   axios
