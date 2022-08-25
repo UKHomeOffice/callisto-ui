@@ -14,6 +14,7 @@ const StartFinishTimeInput = ({
 
   useEffect(() => {
     updateErrorMessages();
+    sortErrors();
   }, [formState]);
 
   const updateErrorMessages = () => {
@@ -29,6 +30,18 @@ const StartFinishTimeInput = ({
     setErrorMessages(relevantErrorMessages);
   };
 
+  const sortErrors = () => {
+    const errorKeys = [];
+    const errorMessageKeys = Object.keys(errors);
+    if (errorMessageKeys.includes('shift-start-time')) {
+      errorKeys.push('shift-start-time')
+    }
+    if (errorMessageKeys.includes('shift-finish-time')) {
+      errorKeys.push('shift-finish-time')
+    }
+    return errorKeys;
+  }
+
   return (
     <div
       className={`govuk-form-group ${
@@ -36,15 +49,15 @@ const StartFinishTimeInput = ({
       }`}
     >
       <div className="govuk-grid-row">
-        {errorMessages &&
-          errorMessages.map((error, i) => (
+        {sortErrors() &&
+          sortErrors().map((error, i) => (
             <p
               id={`${name}-${i}-error`}
               key={i}
               className="govuk-error-message govuk-!-margin-left-3"
             >
               <span className="govuk-visually-hidden">Error:</span>
-              {error}
+              {errors[error]?.message}
             </p>
           ))}
       </div>

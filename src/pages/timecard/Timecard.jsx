@@ -20,11 +20,26 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard');
   });
 
+  const sortSummaryErrors = () => {
+    var errorKeys = [];
+    const errors = Object.keys(summaryErrors);
+    if (errors.includes('shift-start-time')) {
+      errorKeys.push('shift-start-time')
+    }
+    if (errors.includes('shift-finish-time')) {
+      errorKeys.push('shift-finish-time')
+    }
+    if (errors.includes('timePeriod')) {
+      errorKeys.push('timePeriod')
+    }
+    return errorKeys;
+  }
+
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
-        <ErrorSummary errors={summaryErrors} />
+        <ErrorSummary errors={summaryErrors} keys={sortSummaryErrors()} />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
