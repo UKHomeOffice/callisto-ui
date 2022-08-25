@@ -46,4 +46,5 @@ export default ErrorSummary;
 
 ErrorSummary.propTypes = {
   errors: PropTypes.any,
+  keys: PropTypes.array
 };
