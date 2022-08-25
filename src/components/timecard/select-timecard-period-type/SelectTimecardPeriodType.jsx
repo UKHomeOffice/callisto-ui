@@ -3,28 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
+const axios = require('axios');
 
 const SelectTimecardPeriodType = () => {
-
-  const client = Axios.create({
-    baseURL: 'http://localhost:9090',
-    responseType: 'arraybuffer',
-    responseEncoding: 'binary',
-  });
-
-  client.get('/resources/time-period-type?tenantId=00000000-0000-0000-0000-000000000000', { 
-    mode: 'no-cors',   
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: {
-      pageable: {
-        "page": '0',
-        "size": '10'
-      }
-    } 
-  }).then(response => console.log(response))
-    .then(data => console.log(data));
+  axios
+    .get(
+      'http://localhost:9090/resources/time-period-type/00000000-0000-0000-0000-000000000001?tenantId=00000000-0000-0000-0000-000000000000'
+    )
+    .then((response) => console.log(response));
 
   const timePeriods = [
     'Shift',
