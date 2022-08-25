@@ -14,11 +14,11 @@ const ErrorSummary = ({ errors, keys }) => {
       </h2>
       <div className="govuk-error-summary__body">
         <ul className="govuk-list govuk-error-summary__list">
-            {keys.map((key, i) => (
-              <li key={i}>
-                <HashLink to={`#${key}`}>{errors[key].message}</HashLink>
-              </li>
-            ))}
+          {keys.map((key, i) => (
+            <li key={i}>
+              <HashLink to={`#${key}`}>{errors[key].message}</HashLink>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

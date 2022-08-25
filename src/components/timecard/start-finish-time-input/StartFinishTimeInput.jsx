@@ -34,13 +34,13 @@ const StartFinishTimeInput = ({
     const errorKeys = [];
     const errorMessageKeys = Object.keys(errors);
     if (errorMessageKeys.includes('shift-start-time')) {
-      errorKeys.push('shift-start-time')
+      errorKeys.push('shift-start-time');
     }
     if (errorMessageKeys.includes('shift-finish-time')) {
-      errorKeys.push('shift-finish-time')
+      errorKeys.push('shift-finish-time');
     }
     return errorKeys;
-  }
+  };
 
   return (
     <div

@@ -6,16 +6,15 @@ import ErrorSummary from './ErrorSummary';
 describe('ErrorSummary', () => {
   it('should render an error summary component with all error messages', () => {
     const testErrors = {
-      'test': { inputName: 'test', message: 'Date cannot be blank' },
+      test: { inputName: 'test', message: 'Date cannot be blank' },
       'test-day': { inputName: 'test-day', message: 'Enter a day' },
       'test-month': { inputName: 'test-month', message: 'Enter a month' },
       'test-year': { inputName: 'test-year', message: 'Enter a year' },
-    }
+    };
     renderWithRouter(
-      
       <ErrorSummary
-        errors = {testErrors}
-        keys = {['test', 'test-day', 'test-month', 'test-year']}
+        errors={testErrors}
+        keys={['test', 'test-day', 'test-month', 'test-year']}
       />
     );
 

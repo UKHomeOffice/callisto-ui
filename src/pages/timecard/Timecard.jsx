@@ -24,16 +24,16 @@ const Timecard = () => {
     var errorKeys = [];
     const errors = Object.keys(summaryErrors);
     if (errors.includes('shift-start-time')) {
-      errorKeys.push('shift-start-time')
+      errorKeys.push('shift-start-time');
     }
     if (errors.includes('shift-finish-time')) {
-      errorKeys.push('shift-finish-time')
+      errorKeys.push('shift-finish-time');
     }
     if (errors.includes('timePeriod')) {
-      errorKeys.push('timePeriod')
+      errorKeys.push('timePeriod');
     }
     return errorKeys;
-  }
+  };
 
   return (
     <>
