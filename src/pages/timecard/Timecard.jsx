@@ -8,7 +8,6 @@ import ErrorSummary from '../../components/common/form/error-summary/ErrorSummar
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
-import { getTimeEntry } from '../../api/services/timecardService';
 
 const Timecard = () => {
   const { date } = useParams();
@@ -17,15 +16,7 @@ const Timecard = () => {
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
-  getTimeEntry({tenantId: "00000000-0000-0000-0000-000000000000"}).then(data => {
-    let startTime = dayjs(data.data.items[0].actualStartTime).format('HH:mm')
-    setTimecardData({
-      ...timecardData,
-      startTime: startTime
-,
-    });
-  });
+   const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
   
 
   useEffect(() => {

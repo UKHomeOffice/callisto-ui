@@ -11,11 +11,11 @@ export const getHelloWorld = async () => {
   }
 };
 
-export const getTimeEntry = async (params) => {
+export const getTimeEntry = async (id, params) => {
   try {
-    return await api.get(baseUrl + 'resources/time-entry/0a650b42-82cf-1771-8182-cfb15fcd0004', params);
+    return await api.get(baseUrl + 'resources/time-entry/' + id, params);
   } catch (error) {
-    throw new Error(serviceName + ' get timeentry function threw ' + error);
+    throw new Error(serviceName + ' getTimeEntry function threw ' + error);
   }
 };
 
@@ -32,5 +32,13 @@ export const saveTimecard = async (payload, params) => {
     return await api.post(baseUrl + 'resources/time-entry', params, payload);
   } catch (error) {
     throw new Error(serviceName + ' saveTimecard function threw ' + error);
+  }
+};
+
+export const updateTimeEntry = async (id, payload, params) => {
+  try {
+    return await api.put(baseUrl + 'resources/time-entry/' + id, params, payload);
+  } catch (error) {
+    throw new Error(serviceName + ' updateTimecard function threw ' + error);
   }
 };
