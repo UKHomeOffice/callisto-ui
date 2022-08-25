@@ -21,7 +21,7 @@ export const getTimecard = async (params) => {
 
 export const saveTimecard = async (payload, params) => {
   try {
-    return await api.post(baseUrl + 'api/v1/timecard', params, payload);
+    return await api.post(baseUrl + 'resources/time-entry', params, payload);
   } catch (error) {
     throw new Error(serviceName + ' saveTimecard function threw ' + error);
   }
