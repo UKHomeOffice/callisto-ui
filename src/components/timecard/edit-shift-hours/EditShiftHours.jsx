@@ -30,14 +30,14 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     const actualStartDate = dayjs(formData['startDate']).format('YYYY-MM-DD');
     const startTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(actualStartDate + ' ' + startTime)
-      .utc()
+      //.utc()
       .format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime;
     if (endTime) {
       actualEndDateTime = dayjs(actualStartDate + ' ' + endTime)
-        .utc()
+        //.utc()
         .format();
     }
     const tempNow = dayjs(new Date()).format();
