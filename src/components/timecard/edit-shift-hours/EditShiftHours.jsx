@@ -105,7 +105,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           />
           <input
             type="hidden"
-            {...register('timePerdiodTypeId')}
+            {...register('timePeriodTypeId')}
             defaultValue={timecardData.timePeriodTypeId}
           />
         </div>
