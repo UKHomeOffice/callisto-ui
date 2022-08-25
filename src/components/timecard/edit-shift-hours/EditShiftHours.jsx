@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { saveTimecard } from '../../../api/services/timecardService';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 const EditShiftHours = ({ setShowEditShiftHours }) => {
   const {
@@ -22,25 +24,57 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     setSummaryErrors(errorFields);
   };
 
-  const onSubmit = async (data) => {
-    console.log('onSubmit');
+  const onSubmit = async (formData) => {
+    dayjs.extend(utc);
 
-    setSummaryErrors({});
+    const actualStartDate = dayjs(formData['startDate']).format('YYYY-MM-DD');
+    const startTime = formData[`${inputName}-start-time`];
+    const actualStartDateTime = dayjs(actualStartDate + ' ' + startTime)
+      .utc()
+      .format();
 
+    const endTime = formData[`${inputName}-finish-time`] || null;
+    let actualEndDateTime;
+    if (endTime) {
+      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime)
+        .utc()
+        .format();
+    }
+    const tempNow = dayjs(new Date()).format();
     const timecardPayload = {
-      startTime: data[`${inputName}-start-time`],
-      finishTime: data[`${inputName}-finish-time`] || undefined,
-      startDate: data['startDate'],
-      timePeriodType: 1, // TODO: Ref data?
+      ownerId: 1,
+      timePeriodTypeId: formData['timePeriodTypeId'],
+      actualStartTime: actualStartDateTime,
+      actualEndTime: actualEndDateTime,
+      createdAt: tempNow,
+      updatedAt: tempNow,
     };
 
     try {
-      const response = await saveTimecard(timecardPayload);
+      const params = new URLSearchParams([
+        ['tenantId', '00000000-0000-0000-0000-000000000000'],
+      ]);
+
+      const response = await saveTimecard(timecardPayload, params);
+
       if (response && response.data) {
-        console.log('Response: ' + response.data);
-        /* TODO: Set state from GET, or as below? */
-        setTimecardData(timecardPayload);
-        setShowEditShiftHours(false);
+        const timecardResponseData = response.data;
+
+        if (
+          timecardResponseData.items &&
+          timecardResponseData.items.length > 0
+        ) {
+          setTimecardData({
+            ...timecardData,
+            startTime: formData[`${inputName}-start-time`],
+            finishTime: formData[`${inputName}-finish-time`] || '',
+            id: timecardResponseData.items[0].id,
+          });
+          setSummaryErrors({});
+          setShowEditShiftHours(false);
+        } else {
+          //no items returned, something went wrong
+        }
       }
     } catch (error) {
       /* TODO: Error handling when server raises error, similar to:
@@ -68,6 +102,11 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
             type="hidden"
             {...register('startDate')}
             defaultValue={timecardData.startDate}
+          />
+          <input
+            type="hidden"
+            {...register('timePerdiodTypeId')}
+            defaultValue={timecardData.timePeriodTypeId}
           />
         </div>
       </form>
