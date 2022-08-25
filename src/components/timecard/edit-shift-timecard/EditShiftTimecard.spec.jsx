@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
+import { newTimeCardEntry } from '../../../../mocks/mockData';
 import { saveTimecard } from '../../../api/services/timecardService';
 
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
@@ -26,7 +27,7 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
-    saveTimecard.mockResolvedValue({ data: [] });
+    saveTimecard.mockResolvedValue({ data: newTimeCardEntry });
 
     renderWithTimecardContext(<EditShiftTimecard />);
 
