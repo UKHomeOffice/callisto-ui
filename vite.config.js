@@ -36,7 +36,6 @@ export default defineConfig((config) => {
           target: apiUrl,
           changeOrigin: true,
           xfwd: true,
-          rewrite: (path) => path.replace(/^\/resources/, '/resources'),
         },
       },
     },
