@@ -1,33 +1,30 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { axios } from 'axios';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
+import { getTimePeriodTypes } from '../../../api/services/timecardService';
+import { useEffect, useState } from 'react';
 
 const SelectTimecardPeriodType = () => {
-  axios
-    .get(
-      'http://localhost:9090/resources/time-period-type/00000000-0000-0000-0000-000000000001?tenantId=00000000-0000-0000-0000-000000000000'
-    )
-    .then((response) => console.log(response));
-
-  const timePeriods = [
-    'Shift',
-    'Scheduled rest day',
-    'Non-working day',
-    'On call',
-    'Absence',
-    'Training',
-    'Overtime',
-  ];
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     reValidateMode: 'onSubmit',
+  });
+
+  const [timePeriods, setTimePeriods] = useState([]);
+  useEffect(() => {
+    const getResponse = async () => {
+      const response = await getTimePeriodTypes({
+        tenantId: '00000000-0000-0000-0000-000000000000',
+      });
+      setTimePeriods(response.data.items.map((item) => item.name));
+    };
+
+    getResponse();
   });
 
   const radioName = 'timePeriod';

@@ -18,3 +18,14 @@ export const getTimecard = async (params) => {
     throw new Error(serviceName + ' getTimecard function threw ' + error);
   }
 };
+
+export const getTimePeriodTypes = async (params) => {
+  try {
+    return await api.get(
+      'http://localhost:9090/resources/time-period-type',
+      params
+    );
+  } catch (error) {
+    throw new Error(serviceName + ' getTimePeriodType function threw ' + error);
+  }
+};
