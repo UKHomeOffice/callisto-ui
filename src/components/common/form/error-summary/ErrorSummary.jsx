@@ -2,6 +2,21 @@ import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 
 const ErrorSummary = ({ errors, keys }) => {
+  const callbackRef = (summaryErrorList) => {
+    if (summaryErrorList) {
+      const firstSummaryError =
+        summaryErrorList.children['summary-error-0'].children[
+          'summary-error-0-message'
+        ];
+      firstSummaryError.scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behaviour: 'smooth',
+      });
+      firstSummaryError.focus();
+    }
+  };
+
   return (
     <div
       className="govuk-error-summary"
@@ -13,10 +28,12 @@ const ErrorSummary = ({ errors, keys }) => {
         There is a problem
       </h2>
       <div className="govuk-error-summary__body">
-        <ul className="govuk-list govuk-error-summary__list">
+        <ul className="govuk-list govuk-error-summary__list" ref={callbackRef}>
           {keys.map((key, i) => (
-            <li key={i}>
-              <HashLink to={`#${key}`}>{errors[key].message}</HashLink>
+            <li key={i} id={`summary-error-${i}`}>
+              <HashLink id={`summary-error-${i}-message`} to={`#${key}`}>
+                {errors[key].message}
+              </HashLink>
             </li>
           ))}
         </ul>

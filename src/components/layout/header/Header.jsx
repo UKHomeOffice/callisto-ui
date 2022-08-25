@@ -21,7 +21,7 @@ const Header = () => {
           className="govuk-header__container govuk-width-container"
           style={{ borderBottom: 0 }}
         >
-          <div className="govuk-header__logo">
+          <div className="govuk-header__logo govuk-!-margin-top-1 govuk-!-margin-bottom-0">
             <HomeOfficeLogo />
           </div>
           <div className="govuk-header__content">
@@ -41,7 +41,7 @@ const Header = () => {
             </button>
             <Link
               to="/"
-              className="govuk-header__link govuk-header__link--service-name"
+              className="govuk-header__link govuk-header__link--service-name govuk-!-margin-top-2"
               style={{ color: '#000' }}
             >
               Callisto

@@ -4,6 +4,7 @@ import { renderWithRouter } from '../../../../test/helpers/Helpers';
 import ErrorSummary from './ErrorSummary';
 
 describe('ErrorSummary', () => {
+  window.HTMLElement.prototype.scrollIntoView = jest.fn();
   it('should render an error summary component with all error messages', () => {
     const testErrors = {
       test: { inputName: 'test', message: 'Date cannot be blank' },
@@ -27,5 +28,6 @@ describe('ErrorSummary', () => {
     expect(dayErrorMessage).toBeTruthy();
     expect(monthErrorMessage).toBeTruthy();
     expect(yearErrorMessage).toBeTruthy();
+    expect(overallErrorMessage).toHaveFocus();
   });
 });
