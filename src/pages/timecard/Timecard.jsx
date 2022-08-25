@@ -19,7 +19,6 @@ const Timecard = () => {
   const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
 
   useEffect(() => {
-    console.log('set utcDate ' + utcDate);
     document.title = generateDocumentTitle('Timecard ');
     setTimecardData({
       ...timecardData,
