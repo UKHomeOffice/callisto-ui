@@ -19,10 +19,10 @@ export const getTimecard = async (params) => {
   }
 };
 
-export const saveTimecard = async (payload, params) => {
+export const saveTimeEntry = async (payload, params) => {
   try {
     return await api.post(baseUrl + 'resources/time-entry', params, payload);
   } catch (error) {
-    throw new Error(serviceName + ' saveTimecard function threw ' + error);
+    throw new Error(serviceName + ' saveTimeEntry function threw ' + error);
   }
 };
