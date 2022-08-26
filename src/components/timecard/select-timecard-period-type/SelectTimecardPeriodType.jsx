@@ -25,7 +25,7 @@ const SelectTimecardPeriodType = () => {
     };
 
     getResponse();
-  });
+  }, []);
 
   const radioName = 'timePeriod';
 
