@@ -100,8 +100,8 @@ describe('StartFinishTimeInput', () => {
         'You must enter a start time in the HH:MM 24 hour clock format';
       const finishTimeErrorMessage =
         'You must enter a finish time in the HH:MM 24 hour clock format';
-      const expectedErrorMessage = 
-        'Error:You must enter a start time in the HH:MM 24 hour clock format'
+      const expectedErrorMessage =
+        'Error:You must enter a start time in the HH:MM 24 hour clock format';
 
       render(
         <div>
@@ -119,7 +119,7 @@ describe('StartFinishTimeInput', () => {
 
       const firstError = screen.getByTestId('error-box').firstChild.textContent;
 
-      expect(firstError).toEqual(expectedErrorMessage)
+      expect(firstError).toEqual(expectedErrorMessage);
     });
   });
 });

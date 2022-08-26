@@ -38,17 +38,17 @@ const StartFinishTimeInput = ({
         errorMessages.length > 0 && 'govuk-form-group--error'
       }`}
     >
-      <div className="govuk-grid-row" data-testid='error-box'>
+      <div className="govuk-grid-row" data-testid="error-box">
         {sortErrors(errors, desiredErrorOrder).map((error, i) => (
-            <p
-              id={`${name}-${i}-error`}
-              key={i}
-              className="govuk-error-message govuk-!-margin-left-3"
-            >
-              <span className="govuk-visually-hidden">Error:</span>
-              {errors[error]?.message}
-            </p>
-          ))}
+          <p
+            id={`${name}-${i}-error`}
+            key={i}
+            className="govuk-error-message govuk-!-margin-left-3"
+          >
+            <span className="govuk-visually-hidden">Error:</span>
+            {errors[error]?.message}
+          </p>
+        ))}
       </div>
 
       <div className="govuk-grid-row">
