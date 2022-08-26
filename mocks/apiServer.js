@@ -18,10 +18,6 @@ server.use(function (req, res, next) {
 ///
 // Add this before server.use(router)
 
-server.get('/hello', (req, res) => {
-  res.jsonp('Hello World');
-});
-
 server.use(
   jsonServer.rewriter({
     '/resources/artists?filter=:searchstring%3E:searchval':
