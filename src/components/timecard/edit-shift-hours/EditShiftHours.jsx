@@ -38,14 +38,12 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     if (endTime) {
       actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
     }
-    const tempNow = dayjs(new Date()).format();
+
     const timecardPayload = {
       ownerId: 1,
       timePeriodTypeId: formData['timePeriodTypeId'],
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
-      createdAt: tempNow,
-      updatedAt: tempNow,
     };
 
     try {
