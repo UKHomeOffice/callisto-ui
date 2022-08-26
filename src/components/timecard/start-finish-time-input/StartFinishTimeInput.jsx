@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
+import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 
 const StartFinishTimeInput = ({
   name,
@@ -12,9 +13,10 @@ const StartFinishTimeInput = ({
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
+  const desiredErrorOrder = ['shift-start-time', 'shift-finish-time'];
+
   useEffect(() => {
     updateErrorMessages();
-    sortErrors();
   }, [formState]);
 
   const updateErrorMessages = () => {
@@ -30,27 +32,14 @@ const StartFinishTimeInput = ({
     setErrorMessages(relevantErrorMessages);
   };
 
-  const sortErrors = () => {
-    const errorKeys = [];
-    const errorMessageKeys = Object.keys(errors);
-    if (errorMessageKeys.includes('shift-start-time')) {
-      errorKeys.push('shift-start-time');
-    }
-    if (errorMessageKeys.includes('shift-finish-time')) {
-      errorKeys.push('shift-finish-time');
-    }
-    return errorKeys;
-  };
-
   return (
     <div
       className={`govuk-form-group ${
         errorMessages.length > 0 && 'govuk-form-group--error'
       }`}
     >
-      <div className="govuk-grid-row">
-        {sortErrors() &&
-          sortErrors().map((error, i) => (
+      <div className="govuk-grid-row" data-testid='error-box'>
+        {sortErrors(errors, desiredErrorOrder).map((error, i) => (
             <p
               id={`${name}-${i}-error`}
               key={i}
