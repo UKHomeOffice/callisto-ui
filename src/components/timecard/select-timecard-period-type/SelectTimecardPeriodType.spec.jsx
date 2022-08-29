@@ -1,25 +1,62 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import * as timecardService from '../../../api/services/timecardService';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = {};
+const mockResponse = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      name: 'Shift',
+    },
+    {
+      name: 'Scheduled rest day',
+    },
+    {
+      name: 'Non-working day',
+    },
+    {
+      name: 'On call',
+    },
+    {
+      name: 'Absence',
+    },
+    {
+      name: 'Training',
+    },
+    {
+      name: 'Overtime',
+    },
+  ],
+};
+const timePeriods = [
+  'Shift',
+  'Scheduled rest day',
+  'Non-working day',
+  'On call',
+  'Absence',
+  'Training',
+  'Overtime',
+];
+
+const mockGetTimePeriodTypes = jest.spyOn(
+  timecardService,
+  'getTimePeriodTypes'
+);
 
 describe('SelectTimecardPeriodType', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('should render a radios component with the correct time periods', () => {
-    const timePeriods = [
-      'Shift',
-      'Scheduled rest day',
-      'Non-working day',
-      'On call',
-      'Absence',
-      'Training',
-      'Overtime',
-    ];
-
+    mockGetTimePeriodTypes.mockResolvedValue(mockResponse);
     renderWithTimecardContext(
       <SelectTimecardPeriodType
         register={mockRegister}
@@ -29,7 +66,7 @@ describe('SelectTimecardPeriodType', () => {
     );
 
     timePeriods.map((option) => {
-      expect(screen.getByText(option)).toBeTruthy();
+      expect(screen.findByText(option)).toBeTruthy();
     });
   });
 
