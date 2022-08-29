@@ -2,6 +2,7 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
+const { timeCardPeriodTypes } = require('./mockData');
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 const db = router.db;
@@ -44,6 +45,10 @@ server.post('/timecard/', function (req, res, next) {
     // createId();
     next();
   }
+});
+
+server.get('/resources/time-period-type', function (req, res) {
+  res.jsonp(timeCardPeriodTypes);
 });
 
 // Wrap all responses
