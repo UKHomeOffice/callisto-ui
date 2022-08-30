@@ -9,7 +9,7 @@ import generateDocumentTitle from '../../utils/generate-document-title/generateD
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 
-import { sortErrors } from '../../utils/sort-errors/sortErrors';
+import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const Timecard = () => {
   const { date } = useParams();
@@ -40,7 +40,7 @@ const Timecard = () => {
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
         <ErrorSummary
           errors={summaryErrors}
-          keys={sortErrors(summaryErrors, desiredErrorOrder)}
+          keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
         />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>

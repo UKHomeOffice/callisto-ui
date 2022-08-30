@@ -1,4 +1,4 @@
-export const sortErrors = (errors, desiredOrder) => {
+export const sortErrorKeys = (errors, desiredOrder) => {
   var orderedKeys = [];
   const errorKeys = new Set(Object.keys(errors));
   desiredOrder.forEach((key) => {
