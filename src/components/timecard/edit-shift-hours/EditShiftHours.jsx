@@ -5,6 +5,9 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { TimeEntryQueryParams } from '../../../utils/timeEntryUtils/TimeEntryQueryParams';
+import { formatDate } from '../../../utils/timeEntryUtils/timeEntryUtils';
+
 
 const EditShiftHours = ({ setShowEditShiftHours }) => {
   const {
@@ -27,7 +30,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = dayjs(formData['startDate']).format('YYYY-MM-DD');
+    const actualStartDate = formatDate(formData['startDate']);
     const startTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(actualStartDate + ' ' + startTime)
       //.utc()
@@ -51,9 +54,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     };
 
     try {
-      const params = new URLSearchParams([
-        ['tenantId', '00000000-0000-0000-0000-000000000000'],
-      ]);
+      const params = new TimeEntryQueryParams()
+        .setTenantId('00000000-0000-0000-0000-000000000000').getUrlSearchParams();
 
       const response = !timecardData.id ? await saveTimecard(timecardPayload, params) 
       : await updateTimeEntry(timecardData.id, timecardPayload, params);      

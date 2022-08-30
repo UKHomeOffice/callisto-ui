@@ -19,6 +19,15 @@ export const getTimeEntry = async (id, params) => {
   }
 };
 
+
+export const getTimeEntries = async (params) => {
+  try {
+    return await api.get(baseUrl + 'resources/time-entry/', params);
+  } catch (error) {
+    throw new Error(serviceName + ' getTimeEntries function threw ' + error);
+  }
+};
+
 export const getTimecard = async (params) => {
   try {
     return await api.get(baseUrl + 'api/v1/timecard', params);
@@ -39,6 +48,6 @@ export const updateTimeEntry = async (id, payload, params) => {
   try {
     return await api.put(baseUrl + 'resources/time-entry/' + id, params, payload);
   } catch (error) {
-    throw new Error(serviceName + ' updateTimecard function threw ' + error);
+    throw new Error(serviceName + ' updateTimeEntry function threw ' + error);
   }
 };
