@@ -13,10 +13,12 @@ import { sortErrors } from '../../utils/sort-errors/sortErrors';
 
 const Timecard = () => {
   const { date } = useParams();
+  const utcDate = dayjs(date).format();
+
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const { summaryErrors, timecardData } = useTimecardContext();
+  const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
 
   const desiredErrorOrder = [
     'shift-start-time',
@@ -25,8 +27,12 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
-    document.title = generateDocumentTitle('Timecard');
-  });
+    document.title = generateDocumentTitle('Timecard ');
+    setTimecardData({
+      ...timecardData,
+      startDate: utcDate,
+    });
+  }, [date]);
 
   return (
     <>

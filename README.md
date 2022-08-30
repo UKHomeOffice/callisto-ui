@@ -16,6 +16,7 @@ Create an .env.local file in the root and add the following:
 VITE_KC_URL="http://localhost:8080/auth/"
 VITE_KC_REALM="callistorealm"
 VITE_KC_CLIENTID="callistoreactclientid"
+VITE_TIMECARD_API_URL="http://localhost:3000/"
 ```
 
 Before running the application for the first time, install the node packages
@@ -28,11 +29,11 @@ Before running the application for the first time, install the node packages
 
 Navigate to http://localhost:3000
 
-### Run the application using local (or remote) services
+### Run the application using local services
 
 `npm run start:dev`
 
-Note: To override the default url http://localhost:5000, add the following to .env.local:
+The default url will be http://localhost:5000 to override, add the following to .env.local:
 `VITE_LOCAL_API_URL="http://{url:port}"`
 
 Then run:
