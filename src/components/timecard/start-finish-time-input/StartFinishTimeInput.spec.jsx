@@ -95,5 +95,31 @@ describe('StartFinishTimeInput', () => {
       expect(radioError).toBeFalsy();
       expect(startTimeError).toBeTruthy();
     });
+    it('should display error messages in the correct order', () => {
+      const startTimeErrorMessage =
+        'You must enter a start time in the HH:MM 24 hour clock format';
+      const finishTimeErrorMessage =
+        'You must enter a finish time in the HH:MM 24 hour clock format';
+      const expectedErrorMessage =
+        'Error:You must enter a start time in the HH:MM 24 hour clock format';
+
+      render(
+        <div>
+          <StartFinishTimeInput
+            name={'shift'}
+            errors={{
+              'radio-error': { message: 'Select a radio button' }, // error message for another component
+              'shift-finish-time': { message: finishTimeErrorMessage },
+              'shift-start-time': { message: startTimeErrorMessage },
+            }}
+            register={mockRegister}
+          />
+        </div>
+      );
+
+      const firstError = screen.getByTestId('error-box').firstChild.textContent;
+
+      expect(firstError).toEqual(expectedErrorMessage);
+    });
   });
 });
