@@ -2,6 +2,7 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
+const { newTimeCardEntry } = require('./mockData');
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 const db = router.db;
@@ -17,10 +18,6 @@ server.use(function (req, res, next) {
 ///
 // Add this before server.use(router)
 
-server.get('/api/v1/', (req, res) => {
-  res.jsonp('Hello World');
-});
-
 server.use(
   jsonServer.rewriter({
     '/resources/artists?filter=:searchstring%3E:searchval':
@@ -35,14 +32,12 @@ server.use((req, res, next) => {
   next();
 });
 
-server.post('/timecard/', function (req, res, next) {
+server.post('/resources/time-entry', function (req, res) {
   const error = validateTimecard(req.body);
   if (error) {
     res.status(400).send(error);
   } else {
-    // Generate id
-    // createId();
-    next();
+    res.jsonp(newTimeCardEntry);
   }
 });
 
@@ -68,9 +63,7 @@ server.listen(port, () => {
 //
 
 function validateTimecard(timecard) {
-  if (!timecard.startTime) return 'Start time is required.';
-  if (!timecard.finishTime) return 'Finish time is required.';
-  if (!timecard.startDate) return 'Start date is required.';
-  if (!timecard.endDate) return 'End date is required.';
+  if (!timecard.actualStartTime) return 'Start time is required.';
+  if (!timecard.actualEndTime) return 'Finish time is required.';
   return '';
 }

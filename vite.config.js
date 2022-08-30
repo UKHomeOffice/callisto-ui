@@ -1,26 +1,25 @@
-import { defineConfig, loadEnv } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig((config) => {
   process.env = { ...process.env, ...loadEnv(config.mode, process.cwd()) };
-  const mockUrl = "http://localhost:3001/";
-  const localDev = "http://localhost:5000/";
+  const mockUrl = 'http://localhost:3001/';
+  const localDev = 'http://localhost:5000/';
 
   let apiUrl = process.env.VITE_LOCAL_API_URL
     ? process.env.VITE_LOCAL_API_URL
     : localDev;
 
-  console.log("mode: " + config.mode);
-  if (config.mode === "mock") {
+  console.log('mode: ' + config.mode);
+  if (config.mode === 'mock') {
     apiUrl = mockUrl;
   }
-  console.log("apiUrl: " + apiUrl);
+  console.log('apiUrl: ' + apiUrl);
 
   return {
     plugins: [react()],
     resolve: {
-      dedupe: ["react", "react-dom"],
+      dedupe: ['react', 'react-dom'],
     },
     esbuild: {},
     css: {
@@ -32,11 +31,10 @@ export default defineConfig((config) => {
     },
     server: {
       proxy: {
-        "/api": {
+        '/resources': {
           target: apiUrl,
           changeOrigin: true,
           xfwd: true,
-          rewrite: (path) => path.replace(/^\/api\/v1/, ""),
         },
       },
     },
