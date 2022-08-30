@@ -43,7 +43,6 @@ const Timecard = () => {
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
   const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
-  
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');    

@@ -21,6 +21,7 @@ const SelectTimecardPeriodType = () => {
     formState: { errors },
   } = useForm({
     reValidateMode: 'onSubmit',
+    shouldFocusError: false,
   });
 
   const radioName = 'timePeriod';

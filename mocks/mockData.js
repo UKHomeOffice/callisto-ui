@@ -192,7 +192,7 @@ const newTimeCardEntry = {
       version: 0,
       ownerId: 1,
       timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      shiftType: 'string',
+      shiftType: '',
       actualStartTime: '2022-08-24T12:01:43.786+00:00',
       actualEndTime: '2022-08-24T22:01:43.786+00:00',
       plannedStartTime: null,

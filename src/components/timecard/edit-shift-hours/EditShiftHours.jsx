@@ -8,7 +8,6 @@ import utc from 'dayjs/plugin/utc';
 import { TimeEntryQueryParams } from '../../../utils/timeEntryUtils/TimeEntryQueryParams';
 import { formatDate } from '../../../utils/timeEntryUtils/timeEntryUtils';
 
-
 const EditShiftHours = ({ setShowEditShiftHours }) => {
   const {
     register,
@@ -17,6 +16,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     formState,
   } = useForm({
     reValidateMode: 'onSubmit',
+    shouldFocusError: false,
   });
 
   const inputName = 'shift';
@@ -32,25 +32,21 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
     const actualStartDate = formatDate(formData['startDate']);
     const startTime = formData[`${inputName}-start-time`];
-    const actualStartDateTime = dayjs(actualStartDate + ' ' + startTime)
-      //.utc()
-      .format();
+    const actualStartDateTime = dayjs(
+      actualStartDate + ' ' + startTime
+    ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime;
     if (endTime) {
-      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime)
-        //.utc()
-        .format();
+      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
     }
-    const tempNow = dayjs(new Date()).format();
+
     const timecardPayload = {
       ownerId: 1,
       timePeriodTypeId: formData['timePeriodTypeId'],
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
-      createdAt: tempNow,
-      updatedAt: tempNow,
     };
 
     try {
