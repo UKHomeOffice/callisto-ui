@@ -35,6 +35,8 @@ const updateTimeEntryContextData = async (timecardData, setTimecardData) => {
 }
 
 
+import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
+
 const Timecard = () => {
   const { date } = useParams();
   const utcDate = dayjs(date).format();
@@ -43,6 +45,12 @@ const Timecard = () => {
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
   const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
+
+  const desiredErrorOrder = [
+    'shift-start-time',
+    'shift-finish-time',
+    'timePeriod',
+  ];
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');    
@@ -58,7 +66,10 @@ const Timecard = () => {
     <>
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
-        <ErrorSummary errors={summaryErrors} />
+        <ErrorSummary
+          errors={summaryErrors}
+          keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
+        />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
