@@ -1,7 +1,4 @@
-import {
-  getTimecard,
-  getTimePeriodTypes,
-} from './timecardService';
+import { getTimecard, getTimePeriodTypes } from './timecardService';
 import api from '../core';
 
 jest.mock('../core');
