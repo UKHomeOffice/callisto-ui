@@ -23,6 +23,8 @@ export const getTimePeriodTypes = async (params) => {
   try {
     return await api.get(baseUrl + 'resources/time-period-type', params);
   } catch (error) {
-    throw new Error(serviceName + ' getTimePeriodType function threw ' + error);
+    throw new Error(
+      serviceName + ' getTimePeriodTypes function threw ' + error
+    );
   }
 };

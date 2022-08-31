@@ -1,4 +1,8 @@
-import { getTimecard, getHelloWorld } from './timecardService';
+import {
+  getTimecard,
+  getTimePeriodTypes,
+  getHelloWorld,
+} from './timecardService';
 import api from '../core';
 
 jest.mock('../core');
@@ -16,6 +20,17 @@ const timecard = [
     ],
   },
 ];
+
+const TIME_PERIOD_TYPES = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      name: 'Scheduled rest day',
+    },
+  ],
+};
 
 describe('Timecard Service', () => {
   test('getTimecard returns data correctly on success', async () => {
@@ -56,6 +71,37 @@ describe('Timecard Service', () => {
       expect(error).toBeDefined();
       expect(error.message).toContain('Timecard Service');
       expect(error.message).toContain('getTimecard');
+      expect(error.message).toContain('xyz');
+    }
+  });
+
+  test('getTimePeriodTypes uses correct endpoint resources/time-period-type', async () => {
+    api.get.mockImplementation(() =>
+      Promise.resolve({ data: TIME_PERIOD_TYPES })
+    );
+
+    const timePeriodTypes = await getTimePeriodTypes();
+
+    expect(api.get).toHaveBeenCalledWith(
+      expect.stringContaining('resources/time-period-type'),
+      undefined
+    );
+    expect(timePeriodTypes.data.items.length).toBe(1);
+    expect(timePeriodTypes.data.items[0].name).toBe('Scheduled rest day');
+  });
+
+  test('getTimePeriodTypes throws useful error containing throwing service and function', async () => {
+    api.get.mockImplementation(() => {
+      throw new Error('xyz');
+    });
+
+    try {
+      const response = await getTimePeriodTypes();
+      expect(response).toBeUndefined();
+    } catch (error) {
+      expect(error).toBeDefined();
+      expect(error.message).toContain('Timecard Service');
+      expect(error.message).toContain('getTimePeriodTypes');
       expect(error.message).toContain('xyz');
     }
   });
