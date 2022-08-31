@@ -1,7 +1,6 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-// import { act } from 'react-test-renderer';
+import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import * as timecardService from '../../../api/services/timecardService';
 
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
@@ -48,17 +47,15 @@ const timePeriods = [
   'Overtime',
 ];
 
-const mockGetTimePeriodTypes = jest.spyOn(
-  timecardService,
-  'getTimePeriodTypes'
-);
+jest.mock('../../../api/services/timecardService', () => ({
+  getTimePeriodTypes: () => mockResponse,
+}));
 
 describe('SelectTimecardPeriodType', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('should render a radios component with the correct time periods', () => {
-    mockGetTimePeriodTypes.mockResolvedValue(mockResponse);
+  it('should render a radios component with the correct time periods', async () => {
     renderWithTimecardContext(
       <SelectTimecardPeriodType
         register={mockRegister}
@@ -67,18 +64,15 @@ describe('SelectTimecardPeriodType', () => {
       />
     );
 
-    timePeriods.map(async (option) => {
-      let radioButton;
-      await waitFor(() => {
-        radioButton = screen.getByText(option);
+    await waitFor(() => {
+      timePeriods.map((option) => {
+        expect(screen.getByText(option)).toBeTruthy();
       });
-      expect(radioButton).toBeTruthy();
     });
   });
 
-  it('should display an error message when pressing submit with nothing selected', () => {
-    mockGetTimePeriodTypes.mockResolvedValue(mockResponse);
-    const { getByText } = renderWithTimecardContext(
+  it('should display an error message when pressing submit with nothing selected', async () => {
+    renderWithTimecardContext(
       <SelectTimecardPeriodType
         register={mockRegister}
         handleSubmit={handleSubmit}
@@ -86,15 +80,17 @@ describe('SelectTimecardPeriodType', () => {
       />
     );
 
-    const continueButton = getByText('Continue');
-    // act(() => {
-    fireEvent.click(continueButton);
-    // });
+    // Wait a little bit longer
+    await waitFor(() => {});
 
-    waitFor(() => getByText('You must select a time period')).then(
-      (errorMessage) => {
-        expect(errorMessage).toBeTruthy();
-      }
-    );
+    act(() => {
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
+    });
+
+    await waitFor(() => {
+      const errorMessage = screen.getByText('You must select a time period');
+      expect(errorMessage).toBeTruthy();
+    });
   });
 });
