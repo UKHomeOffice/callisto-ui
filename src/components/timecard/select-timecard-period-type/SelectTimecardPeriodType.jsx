@@ -13,6 +13,7 @@ const SelectTimecardPeriodType = () => {
     formState: { errors },
   } = useForm({
     reValidateMode: 'onSubmit',
+    shouldFocusError: false,
   });
 
   const [timePeriods, setTimePeriods] = useState([]);
