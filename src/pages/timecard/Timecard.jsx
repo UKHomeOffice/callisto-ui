@@ -11,31 +11,23 @@ import { useTimecardContext } from '../../context/TimecardContext';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { getSingleTimeEntryResponseItem, formatTime, formatDate } from '../../utils/timeEntryUtils/timeEntryUtils';
 import { TimeEntryQueryParams } from '../../utils/timeEntryUtils/TimeEntryQueryParams';
-
+import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const updateTimeEntryContextData = async (timecardData, setTimecardData) => {
-  try {
-    const timeEntriesResponse = await getTimeEntries(new TimeEntryQueryParams()
-      .setTenantId('00000000-0000-0000-0000-000000000000').setFilter('ownerId==1').getUrlSearchParams());
+  const timeEntriesResponse = await getTimeEntries(new TimeEntryQueryParams()
+    .setTenantId('00000000-0000-0000-0000-000000000000').setFilter('ownerId==1').getUrlSearchParams());
 
-    if (timeEntriesResponse && timeEntriesResponse.data) {
-      const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
-      setTimecardData({
-        ...timecardData,
-        startDate: formatDate(timeEntry.actualStartTime),
-        startTime: formatTime(timeEntry.actualStartTime),
-        finishTime: timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-        id: timeEntry.id
-      });
-    }
-  } catch (error) {
-    /* TODO: Error handling when server raises error*/
-    console.log(error);
+  if (timeEntriesResponse && timeEntriesResponse.data) {
+    const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
+    setTimecardData({
+      ...timecardData,
+      startDate: formatDate(timeEntry.actualStartTime),
+      startTime: formatTime(timeEntry.actualStartTime),
+      finishTime: timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+      id: timeEntry.id
+    });
   }
 }
-
-
-import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const Timecard = () => {
   const { date } = useParams();

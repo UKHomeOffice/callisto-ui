@@ -204,8 +204,32 @@ const newTimeCardEntry = {
   ],
 };
 
+const updatedTimeCardEntryStartTime = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      version: 0,
+      ownerId: 1,
+      timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+      shiftType: '',
+      actualStartTime: '2022-08-24T12:05:12.786+00:00',
+      actualEndTime: '2022-08-24T22:01:43.786+00:00',
+      plannedStartTime: null,
+      plannedEndTime: null,
+      createdAt: '2022-08-24T12:01:43.786+00:00',
+      updatedAt: '2022-08-24T12:01:43.786+00:00',
+      deleted: false,
+    },
+  ],
+};
+
 module.exports = {
   newTimeCardEntry,
+  updatedTimeCardEntryStartTime,
   accruals,
   people,
   artists,

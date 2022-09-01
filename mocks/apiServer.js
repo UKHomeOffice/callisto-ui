@@ -2,7 +2,7 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
-const { newTimeCardEntry } = require('./mockData');
+const { newTimeCardEntry, updatedTimeCardEntryStartTime } = require('./mockData');
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 const db = router.db;
@@ -32,12 +32,25 @@ server.use((req, res, next) => {
   next();
 });
 
+server.get('/resources/time-entry', function (req, res) {
+  res.jsonp(newTimeCardEntry);
+});
+
 server.post('/resources/time-entry', function (req, res) {
   const error = validateTimecard(req.body);
   if (error) {
     res.status(400).send(error);
   } else {
     res.jsonp(newTimeCardEntry);
+  }
+});
+
+server.put('/resources/time-entry/' + newTimeCardEntry.items[0].id, function (req, res) {
+  const error = validateTimecard(req.body);
+  if (error) {
+    res.status(400).send(error);
+  } else {
+    res.jsonp(updatedTimeCardEntryStartTime);
   }
 });
 
