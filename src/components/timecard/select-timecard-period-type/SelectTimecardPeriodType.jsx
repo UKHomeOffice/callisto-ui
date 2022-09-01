@@ -18,10 +18,16 @@ const SelectTimecardPeriodType = () => {
 
   const [timePeriods, setTimePeriods] = useState([]);
   const getTimePeriodTypeData = async () => {
-    const response = await getTimePeriodTypes({
-      tenantId: '00000000-0000-0000-0000-000000000000',
-    });
-    setTimePeriods(response.data.items.map((item) => item.name));
+    try {
+      const response = await getTimePeriodTypes({
+        tenantId: '00000000-0000-0000-0000-000000000000',
+      });
+      if (response?.data?.items) {
+        setTimePeriods(response.data.items.map((item) => item.name));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getTimePeriodTypeData();
