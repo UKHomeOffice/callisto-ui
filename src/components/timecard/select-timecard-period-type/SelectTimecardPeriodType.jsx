@@ -17,14 +17,14 @@ const SelectTimecardPeriodType = () => {
   });
 
   const [timePeriods, setTimePeriods] = useState([]);
-  const getResponse = async () => {
+  const getTimePeriodTypeData = async () => {
     const response = await getTimePeriodTypes({
       tenantId: '00000000-0000-0000-0000-000000000000',
     });
     setTimePeriods(response.data.items.map((item) => item.name));
   };
   useEffect(() => {
-    getResponse();
+    getTimePeriodTypeData();
   }, []);
 
   const radioName = 'timePeriod';

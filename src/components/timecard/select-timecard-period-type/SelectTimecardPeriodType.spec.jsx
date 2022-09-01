@@ -37,7 +37,7 @@ const mockResponse = {
     ],
   },
 };
-const timePeriods = [
+const expectedTimePeriodTypes = [
   'Shift',
   'Scheduled rest day',
   'Non-working day',
@@ -65,7 +65,7 @@ describe('SelectTimecardPeriodType', () => {
     );
 
     await waitFor(() => {
-      timePeriods.map((option) => {
+      expectedTimePeriodTypes.map((option) => {
         expect(screen.getByText(option)).toBeTruthy();
       });
     });
@@ -80,7 +80,7 @@ describe('SelectTimecardPeriodType', () => {
       />
     );
 
-    // Wait a little bit longer
+    // Without this extra waitFor() the test fails
     await waitFor(() => {});
 
     act(() => {
