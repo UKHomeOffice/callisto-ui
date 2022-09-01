@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
-
+import { newTimeCardEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 
 const mockNavigate = jest.fn();
@@ -10,6 +10,11 @@ jest.mock('react-router-dom', () => ({
     date: '2022-07-01',
   }),
   useNavigate: () => mockNavigate,
+}));
+
+const mockTimeEntry = newTimeCardEntry;
+jest.mock('../../api/services/timecardService', () => ({
+  getTimeEntries: () => mockTimeEntry,
 }));
 
 describe('Timecard', () => {
@@ -27,6 +32,24 @@ describe('Timecard', () => {
     expect(heading).toBeTruthy();
   });
 
+  it('should render the EditShiftTimecard component when time entry id exists', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timecardData: {
+        id: '1',
+        timePeriodType: 'Shift',
+        startTime: '',
+        finishTime: '',
+      },
+      setTimecardData: jest.fn(),
+    });
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.getByText('Start time')).toBeTruthy();
+    expect(screen.getByText('Finish time')).toBeTruthy();
+  });
+
   it('should render the EditShiftTimecard component when time period type exists', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
@@ -42,6 +65,14 @@ describe('Timecard', () => {
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
     expect(screen.getByText('Start time')).toBeTruthy();
     expect(screen.getByText('Finish time')).toBeTruthy();
+  });
+
+  it('should render the time entry when time entry exists', async () => {
+    renderWithTimecardContext(<Timecard />);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    });
   });
 
   it('should display error summary messages when summary errors exist', async () => {

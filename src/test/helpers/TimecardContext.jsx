@@ -13,6 +13,7 @@ export const renderWithTimecardContext = (
       startTime: '',
       finishTime: '',
       startDate: '',
+      id: '',
     },
     setTimecardData: jest.fn(),
   }
