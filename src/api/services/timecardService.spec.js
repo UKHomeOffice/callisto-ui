@@ -1,6 +1,13 @@
-import { getTimecard, getTimeEntries } from './timecardService';
+import {
+  getTimecard,
+  getTimeEntries,
+  updateTimeEntry,
+} from './timecardService';
 import api from '../core';
-import { newTimeCardEntry } from '../../../mocks/mockData';
+import {
+  newTimeCardEntry,
+  updatedTimeCardEntryStartTime,
+} from '../../../mocks/mockData';
 
 jest.mock('../core');
 
@@ -91,6 +98,40 @@ describe('Timecard Service', () => {
         expect(error).toBeDefined();
         expect(error.message).toContain('Timecard Service');
         expect(error.message).toContain('getTimeEntries');
+        expect(error.message).toContain('xyz');
+      }
+    });
+  });
+
+  describe('updateTimeEntry', () => {
+    it('should return data correctly on success', async () => {
+      api.put.mockImplementation(() =>
+        Promise.resolve({ data: [updatedTimeCardEntryStartTime] })
+      );
+
+      const response = await updateTimeEntry(
+        1,
+        updatedTimeCardEntryStartTime.items[0]
+      );
+
+      expect(response.data[0].meta).toBeDefined();
+      expect(response.data[0].items).toBeDefined();
+      expect(response.data[0].items.length).toBeGreaterThan(0);
+      expect(response.data).toStrictEqual([updatedTimeCardEntryStartTime]);
+    });
+
+    it('should throws useful error containing throwing service and function', async () => {
+      api.put.mockImplementation(() => {
+        throw new Error('xyz');
+      });
+
+      try {
+        const response = await updateTimeEntry();
+        expect(response).toBeUndefined();
+      } catch (error) {
+        expect(error).toBeDefined();
+        expect(error.message).toContain('Timecard Service');
+        expect(error.message).toContain('updateTimeEntry');
         expect(error.message).toContain('xyz');
       }
     });

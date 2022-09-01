@@ -29,7 +29,11 @@ export const saveTimeEntry = async (payload, params) => {
 
 export const updateTimeEntry = async (id, payload, params) => {
   try {
-    return await api.put(baseUrl + 'resources/time-entry/' + id, params, payload);
+    return await api.put(
+      baseUrl + 'resources/time-entry/' + id,
+      params,
+      payload
+    );
   } catch (error) {
     throw new Error(serviceName + ' updateTimeEntry function threw ' + error);
   }
