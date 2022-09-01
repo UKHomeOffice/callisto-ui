@@ -1,6 +1,9 @@
 import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { saveTimeEntry, updateTimeEntry } from '../../../api/services/timecardService';
+import {
+  saveTimeEntry,
+  updateTimeEntry,
+} from '../../../api/services/timecardService';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
@@ -51,10 +54,12 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
     try {
       const params = new TimeEntryQueryParams()
-        .setTenantId('00000000-0000-0000-0000-000000000000').getUrlSearchParams();
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
 
-      const response = !timecardData.id ? await saveTimeEntry(timecardPayload, params) 
-      : await updateTimeEntry(timecardData.id, timecardPayload, params);      
+      const response = !timecardData.id
+        ? await saveTimeEntry(timecardPayload, params)
+        : await updateTimeEntry(timecardData.id, timecardPayload, params);
 
       if (response && response.data) {
         const timecardResponseData = response.data;

@@ -14,7 +14,11 @@ jest.mock('react-router-dom', () => ({
 
 const mockTimeEntry = newTimeCardEntry;
 jest.mock('../../api/services/timecardService', () => ({
-  getTimeEntries: () => mockTimeEntry,
+  getTimeEntries: () => {
+    return {
+      data: mockTimeEntry,
+    };
+  },
 }));
 
 describe('Timecard', () => {
@@ -68,10 +72,28 @@ describe('Timecard', () => {
   });
 
   it('should render the time entry when time entry exists', async () => {
-    renderWithTimecardContext(<Timecard />);
+    const setTimecardDataSpy = jest.fn();
+
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timecardData: {
+        id: '',
+        timePeriodType: '',
+        startTime: '',
+        finishTime: '',
+      },
+      setTimecardData: setTimecardDataSpy,
+    });
 
     await waitFor(() => {
-      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(setTimecardDataSpy).toHaveBeenCalledWith({
+        id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+        startDate: '2022-08-24',
+        startTime: '13:01',
+        finishTime: '23:01',
+        timePeriodType: 'Shift',
+      });
     });
   });
 
