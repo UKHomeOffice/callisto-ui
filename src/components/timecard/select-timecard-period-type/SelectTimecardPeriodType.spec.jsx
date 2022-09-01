@@ -1,13 +1,12 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = {};
-const mockResponse = {
+const mockTimePeriodTypesResponse = {
   data: {
     meta: {
       next: null,
@@ -48,7 +47,7 @@ const expectedTimePeriodTypes = [
 ];
 
 jest.mock('../../../api/services/timecardService', () => ({
-  getTimePeriodTypes: () => mockResponse,
+  getTimePeriodTypes: () => mockTimePeriodTypesResponse,
 }));
 
 describe('SelectTimecardPeriodType', () => {
