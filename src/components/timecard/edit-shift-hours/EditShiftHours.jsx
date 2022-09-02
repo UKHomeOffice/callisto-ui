@@ -33,7 +33,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = formatDate(formData['startDate']);
+    const actualStartDate = formatDate(timecardData.startDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(
       actualStartDate + ' ' + actualStartTime
@@ -47,7 +47,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
     const timecardPayload = {
       ownerId: 1,
-      timePeriodTypeId: formData['timePeriodTypeId'],
+      timePeriodTypeId: timecardData.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
     };
@@ -106,16 +106,6 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           <button className="govuk-button" type="submit">
             Save
           </button>
-          <input
-            type="hidden"
-            {...register('startDate')}
-            defaultValue={timecardData.startDate}
-          />
-          <input
-            type="hidden"
-            {...register('timePeriodTypeId')}
-            defaultValue={timecardData.timePeriodTypeId}
-          />
         </div>
       </form>
     </div>
