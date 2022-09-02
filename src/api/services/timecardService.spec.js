@@ -28,6 +28,10 @@ const TIME_PERIOD_TYPES = {
   ],
 };
 
+const TENANT_ID_PARAM = {
+  tenantId: '00000000-0000-0000-0000-000000000000',
+};
+
 describe('Timecard Service', () => {
   test('getTimecard returns data correctly on success', async () => {
     api.get.mockImplementation(() => Promise.resolve({ data: timecard }));
@@ -76,11 +80,11 @@ describe('Timecard Service', () => {
       Promise.resolve({ data: TIME_PERIOD_TYPES })
     );
 
-    const timePeriodTypes = await getTimePeriodTypes();
+    const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
 
     expect(api.get).toHaveBeenCalledWith(
       expect.stringContaining('resources/time-period-type'),
-      undefined
+      TENANT_ID_PARAM
     );
     expect(timePeriodTypes.data.items.length).toBe(1);
     expect(timePeriodTypes.data.items[0].name).toBe('Scheduled rest day');
@@ -92,7 +96,11 @@ describe('Timecard Service', () => {
     });
 
     try {
-      const response = await getTimePeriodTypes();
+      const response = await getTimePeriodTypes(TENANT_ID_PARAM);
+      expect(api.get).toHaveBeenCalledWith(
+        expect.stringContaining('resources/time-period-type'),
+        TENANT_ID_PARAM
+      );
       expect(response).toBeUndefined();
     } catch (error) {
       expect(error).toBeDefined();

@@ -71,16 +71,15 @@ describe('SelectTimecardPeriodType', () => {
   });
 
   it('should display an error message when pressing submit with nothing selected', async () => {
-    renderWithTimecardContext(
-      <SelectTimecardPeriodType
-        register={mockRegister}
-        handleSubmit={handleSubmit}
-        errors={errors}
-      />
-    );
-
-    // Without this extra waitFor() the test fails
-    await waitFor(() => {});
+    await waitFor(() => {
+      renderWithTimecardContext(
+        <SelectTimecardPeriodType
+          register={mockRegister}
+          handleSubmit={handleSubmit}
+          errors={errors}
+        />
+      );
+    });
 
     act(() => {
       const continueButton = screen.getByText('Continue');
