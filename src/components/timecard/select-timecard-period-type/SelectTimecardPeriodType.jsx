@@ -3,18 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
+import { getTimePeriodTypes } from '../../../api/services/timecardService';
+import { useEffect, useState } from 'react';
 
 const SelectTimecardPeriodType = () => {
-  const timePeriods = [
-    'Shift',
-    'Scheduled rest day',
-    'Non-working day',
-    'On call',
-    'Absence',
-    'Training',
-    'Overtime',
-  ];
-
   const {
     register,
     handleSubmit,
@@ -23,6 +15,24 @@ const SelectTimecardPeriodType = () => {
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
   });
+
+  const [timePeriods, setTimePeriods] = useState([]);
+  const getTimePeriodTypeData = async () => {
+    try {
+      const params = new URLSearchParams([
+        ['tenantId', '00000000-0000-0000-0000-000000000000'],
+      ]);
+      const response = await getTimePeriodTypes(params);
+      if (response?.data?.items) {
+        setTimePeriods(response.data.items.map((item) => item.name));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getTimePeriodTypeData();
+  }, []);
 
   const radioName = 'timePeriod';
 

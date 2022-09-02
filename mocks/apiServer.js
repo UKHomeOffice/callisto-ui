@@ -3,6 +3,7 @@ const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
 const { newTimeCardEntry } = require('./mockData');
+const { timeCardPeriodTypes } = require('./mockData');
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 const db = router.db;
@@ -39,6 +40,10 @@ server.post('/resources/time-entry', function (req, res) {
   } else {
     res.jsonp(newTimeCardEntry);
   }
+});
+
+server.get('/resources/time-period-type', function (req, res) {
+  res.jsonp(timeCardPeriodTypes);
 });
 
 // Wrap all responses
