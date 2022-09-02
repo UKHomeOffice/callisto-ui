@@ -17,35 +17,43 @@ import {
 import { TimeEntryQueryParams } from '../../utils/timeEntryUtils/TimeEntryQueryParams';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
-const updateTimeEntryContextData = async (setTimecardData) => {
-  const timeEntriesResponse = await getTimeEntries(
-    new TimeEntryQueryParams()
-      .setTenantId('00000000-0000-0000-0000-000000000000')
-      .setFilter('ownerId==1')
-      .getUrlSearchParams()
-  );
+const updateTimeEntryContextData = async (timecardData, date, setTimecardData) => {
+  
+  if (!timecardData.id) {
+    const timeEntriesResponse = await getTimeEntries(
+      new TimeEntryQueryParams()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .setFilter('ownerId==1')
+        .getUrlSearchParams()
+    );
+    
+    if (timeEntriesResponse?.data) {
+      const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
 
-  if (timeEntriesResponse?.data) {
-    const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
+      if (timeEntry) {
+        setTimecardData({
+          id: timeEntry.id,
+          timePeriodType: timeEntry.shiftType,
+          startDate: formatDate(timeEntry.actualStartTime),
+          startTime: formatTime(timeEntry.actualStartTime),
+          finishTime: timeEntry.actualEndTime
+            ? formatTime(timeEntry.actualEndTime)
+            : '',
+          timePeriodTypeId: timeEntry.timePeriodTypeId
+        });
+        return;
+      }
 
-    if (timeEntry) {
       setTimecardData({
-        id: timeEntry.id,
-        timePeriodType: timeEntry.shiftType,
-        startDate: formatDate(timeEntry.actualStartTime),
-        startTime: formatTime(timeEntry.actualStartTime),
-        finishTime: timeEntry.actualEndTime
-          ? formatTime(timeEntry.actualEndTime)
-          : '',
-        timePeriodTypeId: timeEntry.timePeriodTypeId
+        ...timecardData,
+        startDate: dayjs(date).format(),
       });
-    }
+    }  
   }
 };
 
 const Timecard = () => {
   const { date } = useParams();
-  const utcDate = dayjs(date).format();
 
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -60,12 +68,7 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    if (!timecardData.id) updateTimeEntryContextData(setTimecardData);
-
-    setTimecardData({
-      ...timecardData,
-      startDate: utcDate,
-    });
+    updateTimeEntryContextData(timecardData, date, setTimecardData);
   }, [date]);
 
   return (
