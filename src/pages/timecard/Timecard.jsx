@@ -22,7 +22,7 @@ const updateTimeEntryContextData = async (
   date,
   setTimecardData
 ) => {
-  if (!timecardData.id) {
+  if (!timecardData.timeEntryId) {
     const timeEntriesResponse = await getTimeEntries(
       new TimeEntryQueryParams()
         .setTenantId('00000000-0000-0000-0000-000000000000')
@@ -36,9 +36,8 @@ const updateTimeEntryContextData = async (
       );
 
       if (timeEntry) {
-        console.log('here');
         setTimecardData({
-          id: timeEntry.id,
+          timeEntryId: timeEntry.id,
           timePeriodType: timeEntry.shiftType,
           startDate: formatDate(timeEntry.actualStartTime),
           startTime: formatTime(timeEntry.actualStartTime),
@@ -109,7 +108,7 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timecardData.id || timecardData.timePeriodType ? (
+      {timecardData.timeEntryId || timecardData.timePeriodType ? (
         <EditShiftTimecard />
       ) : (
         <SelectTimecardPeriodType />

@@ -34,9 +34,9 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     dayjs.extend(utc);
 
     const actualStartDate = formatDate(formData['startDate']);
-    const startTime = formData[`${inputName}-start-time`];
+    const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(
-      actualStartDate + ' ' + startTime
+      actualStartDate + ' ' + actualStartTime
     ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
@@ -57,9 +57,13 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
 
-      const response = !timecardData.id
+      const response = !timecardData.timeEntryId
         ? await saveTimeEntry(timecardPayload, params)
-        : await updateTimeEntry(timecardData.id, timecardPayload, params);
+        : await updateTimeEntry(
+            timecardData.timeEntryId,
+            timecardPayload,
+            params
+          );
 
       if (response && response.data) {
         const timecardResponseData = response.data;
@@ -72,7 +76,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
             ...timecardData,
             startTime: formData[`${inputName}-start-time`],
             finishTime: formData[`${inputName}-finish-time`] || '',
-            id: timecardResponseData.items[0].id,
+            timeEntryId: timecardResponseData.items[0].id,
           });
           setSummaryErrors({});
           setShowEditShiftHours(false);

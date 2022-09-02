@@ -6,7 +6,7 @@ export const TimecardContext = createContext();
 export const TimecardProvider = ({ children }) => {
   const [summaryErrors, setSummaryErrors] = useState({});
   const [timecardData, setTimecardData] = useState({
-    id: '',
+    timeEntryId: '',
     timePeriodType: '',
     startTime: '',
     finishTime: '',

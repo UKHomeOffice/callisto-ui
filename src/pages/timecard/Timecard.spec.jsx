@@ -41,7 +41,7 @@ describe('Timecard', () => {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timecardData: {
-        id: '1',
+        timeEntryId: '1',
         timePeriodType: 'Shift',
         startTime: '',
         finishTime: '',
@@ -78,7 +78,7 @@ describe('Timecard', () => {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timecardData: {
-        id: '',
+        timeEntryId: '',
         timePeriodType: '',
         startTime: '',
         finishTime: '',
@@ -88,7 +88,7 @@ describe('Timecard', () => {
 
     await waitFor(() => {
       expect(setTimecardDataSpy).toHaveBeenCalledWith({
-        id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+        timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
         startDate: '2022-08-24',
         startTime: '13:01',
         finishTime: '23:01',
