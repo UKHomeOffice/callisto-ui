@@ -19,9 +19,10 @@ const SelectTimecardPeriodType = () => {
   const [timePeriods, setTimePeriods] = useState([]);
   const getTimePeriodTypeData = async () => {
     try {
-      const response = await getTimePeriodTypes({
-        tenantId: '00000000-0000-0000-0000-000000000000',
-      });
+      const params = new URLSearchParams([
+        ['tenantId', '00000000-0000-0000-0000-000000000000'],
+      ]);
+      const response = await getTimePeriodTypes(params);
       if (response?.data?.items) {
         setTimePeriods(response.data.items.map((item) => item.name));
       }

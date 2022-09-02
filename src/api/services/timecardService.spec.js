@@ -1,6 +1,9 @@
 import { getTimecard, getTimePeriodTypes } from './timecardService';
 import api from '../core';
 
+const {
+  timeCardPeriodTypes: MOCK_TIME_PERIOD_TYPES,
+} = require('../../../mocks/mockData');
 jest.mock('../core');
 
 const timecard = [
@@ -16,17 +19,6 @@ const timecard = [
     ],
   },
 ];
-
-const TIME_PERIOD_TYPES = {
-  meta: {
-    next: null,
-  },
-  items: [
-    {
-      name: 'Scheduled rest day',
-    },
-  ],
-};
 
 const TENANT_ID_PARAM = {
   tenantId: '00000000-0000-0000-0000-000000000000',
@@ -77,7 +69,7 @@ describe('Timecard Service', () => {
 
   test('getTimePeriodTypes uses correct endpoint resources/time-period-type', async () => {
     api.get.mockImplementation(() =>
-      Promise.resolve({ data: TIME_PERIOD_TYPES })
+      Promise.resolve({ data: MOCK_TIME_PERIOD_TYPES })
     );
 
     const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
@@ -86,8 +78,7 @@ describe('Timecard Service', () => {
       expect.stringContaining('resources/time-period-type'),
       TENANT_ID_PARAM
     );
-    expect(timePeriodTypes.data.items.length).toBe(1);
-    expect(timePeriodTypes.data.items[0].name).toBe('Scheduled rest day');
+    expect(timePeriodTypes.data.items.length).toBe(7);
   });
 
   test('getTimePeriodTypes throws useful error containing throwing service and function', async () => {

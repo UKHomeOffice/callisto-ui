@@ -3,38 +3,12 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
+const { timeCardPeriodTypes } = require('../../../../mocks/mockData');
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = {};
 const mockTimePeriodTypesResponse = {
-  data: {
-    meta: {
-      next: null,
-    },
-    items: [
-      {
-        name: 'Shift',
-      },
-      {
-        name: 'Scheduled rest day',
-      },
-      {
-        name: 'Non-working day',
-      },
-      {
-        name: 'On call',
-      },
-      {
-        name: 'Absence',
-      },
-      {
-        name: 'Training',
-      },
-      {
-        name: 'Overtime',
-      },
-    ],
-  },
+  data: timeCardPeriodTypes,
 };
 const expectedTimePeriodTypes = [
   'Shift',
