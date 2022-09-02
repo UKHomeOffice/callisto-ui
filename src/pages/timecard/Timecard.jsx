@@ -28,21 +28,24 @@ const updateTimeEntryContextData = async (setTimecardData) => {
   if (timeEntriesResponse?.data) {
     const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
 
-    setTimecardData({
-      id: timeEntry.id,
-      timePeriodType: timeEntry.shiftType,
-      startDate: formatDate(timeEntry.actualStartTime),
-      startTime: formatTime(timeEntry.actualStartTime),
-      finishTime: timeEntry.actualEndTime
-        ? formatTime(timeEntry.actualEndTime)
-        : '',
-    });
+    if (timeEntry) {
+      setTimecardData({
+        id: timeEntry.id,
+        timePeriodType: timeEntry.shiftType,
+        startDate: formatDate(timeEntry.actualStartTime),
+        startTime: formatTime(timeEntry.actualStartTime),
+        finishTime: timeEntry.actualEndTime
+          ? formatTime(timeEntry.actualEndTime)
+          : '',
+        timePeriodTypeId: timeEntry.timePeriodTypeId
+      });
+    }
   }
 };
 
 const Timecard = () => {
   const { date } = useParams();
-  // const utcDate = dayjs(date).format();
+  const utcDate = dayjs(date).format();
 
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -59,10 +62,10 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     if (!timecardData.id) updateTimeEntryContextData(setTimecardData);
 
-    // setTimecardData({
-    //   ...timecardData,
-    //   startDate: utcDate,
-    // });
+    setTimecardData({
+      ...timecardData,
+      startDate: utcDate,
+    });
   }, [date]);
 
   return (
