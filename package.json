@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "start": "run-p docker start:jsonserver serve:mocks",
-    "start:dev": "vite",
-    "docker": "cd keycloak && docker compose up",
+    "start": "run-p keycloak start:jsonserver serve:mocks",
+    "start:dev": "run-p keycloak vite",
+    "keycloak": "cd keycloak && docker compose up",
     "prestart:jsonserver": "node mocks/createMockDb.js",
     "start:jsonserver": "node mocks/apiServer.js",
     "serve:mocks": "vite --mode mock",
@@ -14,7 +14,8 @@
     "lint:fix": "eslint --ext .js,.jsx src --fix",
     "lint": "eslint --ext .js,.jsx src",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vite": "vite"
   },
   "jest": {
     "collectCoverageFrom": [
