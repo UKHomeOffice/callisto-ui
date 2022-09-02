@@ -93,7 +93,7 @@ describe('Timecard', () => {
         startDate: '2022-08-24',
         startTime: '13:01',
         finishTime: '23:01',
-        timePeriodType: 'Shift',
+        timePeriodType: '',
         timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
       });
     });
