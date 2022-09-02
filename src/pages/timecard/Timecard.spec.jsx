@@ -71,7 +71,7 @@ describe('Timecard', () => {
     expect(screen.getByText('Finish time')).toBeTruthy();
   });
 
-  it('should render the time entry when time entry exists', async () => {
+  it('should set the timecard context if time entry exists', async () => {
     const setTimecardDataSpy = jest.fn();
 
     renderWithTimecardContext(<Timecard />, {
@@ -93,6 +93,7 @@ describe('Timecard', () => {
         startTime: '13:01',
         finishTime: '23:01',
         timePeriodType: 'Shift',
+        timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
       });
     });
   });

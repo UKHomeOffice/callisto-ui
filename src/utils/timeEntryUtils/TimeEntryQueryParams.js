@@ -1,23 +1,21 @@
 export class TimeEntryQueryParams {
+  params = null;
 
-    params = null;
+  constructor() {
+    this.params = new URLSearchParams();
+  }
 
-    constructor () {
-        this.params = new URLSearchParams();
-    }
+  setTenantId(tenantId) {
+    this.params.append('tenantId', tenantId);
+    return this;
+  }
 
-    setTenantId(tenantId) {
-        this.params.append('tenantId', tenantId);
-        return this;
-    }
-    
-    setFilter(filter) {
-        this.params.append('filter', filter);
-        return this;
-    }
+  setFilter(filter) {
+    this.params.append('filter', filter);
+    return this;
+  }
 
-    getUrlSearchParams() {
-        return this.params;
-    }
-
+  getUrlSearchParams() {
+    return this.params;
+  }
 }

@@ -17,8 +17,11 @@ import {
 import { TimeEntryQueryParams } from '../../utils/timeEntryUtils/TimeEntryQueryParams';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
-const updateTimeEntryContextData = async (timecardData, date, setTimecardData) => {
-  
+const updateTimeEntryContextData = async (
+  timecardData,
+  date,
+  setTimecardData
+) => {
   if (!timecardData.id) {
     const timeEntriesResponse = await getTimeEntries(
       new TimeEntryQueryParams()
@@ -26,11 +29,14 @@ const updateTimeEntryContextData = async (timecardData, date, setTimecardData) =
         .setFilter('ownerId==1')
         .getUrlSearchParams()
     );
-    
+
     if (timeEntriesResponse?.data) {
-      const timeEntry = getSingleTimeEntryResponseItem(timeEntriesResponse.data);
+      const timeEntry = getSingleTimeEntryResponseItem(
+        timeEntriesResponse.data
+      );
 
       if (timeEntry) {
+        console.log('here');
         setTimecardData({
           id: timeEntry.id,
           timePeriodType: timeEntry.shiftType,
@@ -39,7 +45,7 @@ const updateTimeEntryContextData = async (timecardData, date, setTimecardData) =
           finishTime: timeEntry.actualEndTime
             ? formatTime(timeEntry.actualEndTime)
             : '',
-          timePeriodTypeId: timeEntry.timePeriodTypeId
+          timePeriodTypeId: timeEntry.timePeriodTypeId,
         });
         return;
       }
@@ -48,7 +54,7 @@ const updateTimeEntryContextData = async (timecardData, date, setTimecardData) =
         ...timecardData,
         startDate: dayjs(date).format(),
       });
-    }  
+    }
   }
 };
 
