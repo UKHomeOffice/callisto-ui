@@ -3,7 +3,58 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
 
+const mockSaveTimeEntry = jest.fn();
+const mockUpdateTimeEntry = jest.fn();
+jest.mock('../../../api/services/timecardService', () => ({
+  saveTimeEntry: () => mockSaveTimeEntry(),
+  updateTimeEntry: () => mockUpdateTimeEntry(),
+}));
+
 describe('EditShiftHours', () => {
+  it('should call saveTimeEntry when pressing save with no existing time entry', async () => {
+    renderWithTimecardContext(
+      <EditShiftHours setShowEditShiftHours={jest.fn()} />
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockSaveTimeEntry).toHaveBeenCalled();
+    });
+  });
+
+  it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
+    renderWithTimecardContext(
+      <EditShiftHours setShowEditShiftHours={jest.fn()} />,
+      {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timecardData: {
+          timeEntryId: '1',
+        },
+        setTimecardData: jest.fn(),
+      }
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateTimeEntry).toHaveBeenCalled();
+    });
+  });
+
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />

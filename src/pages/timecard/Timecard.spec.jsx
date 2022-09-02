@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
 import { newTimeCardEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
+import { getTimeEntries } from '../../api/services/timecardService';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -12,14 +13,14 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const mockTimeEntry = newTimeCardEntry;
-jest.mock('../../api/services/timecardService', () => ({
-  getTimeEntries: () => {
+jest.mock('../../api/services/timecardService');
+beforeEach(() => {
+  getTimeEntries.mockImplementation(() => {
     return {
-      data: mockTimeEntry,
+      data: newTimeCardEntry,
     };
-  },
-}));
+  });
+});
 
 describe('Timecard', () => {
   it('should render a timecard component with the correct date', () => {
@@ -94,6 +95,37 @@ describe('Timecard', () => {
         finishTime: '23:01',
         timePeriodType: 'Shift',
         timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+      });
+    });
+  });
+
+  it('should set the timecard context for only the date if time entry does not exist', async () => {
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: {
+          meta: {},
+          items: [],
+        },
+      };
+    });
+
+    const setTimecardDataSpy = jest.fn();
+
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timecardData: {
+        timeEntryId: '',
+        timePeriodType: '',
+        startTime: '',
+        finishTime: '',
+      },
+      setTimecardData: setTimecardDataSpy,
+    });
+
+    await waitFor(() => {
+      expect(setTimecardDataSpy).toHaveBeenCalledWith({
+        startDate: '2022-07-01T00:00:00+01:00',
       });
     });
   });

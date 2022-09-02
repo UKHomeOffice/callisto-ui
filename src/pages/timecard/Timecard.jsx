@@ -50,7 +50,6 @@ const updateTimeEntryContextData = async (
       }
 
       setTimecardData({
-        ...timecardData,
         startDate: dayjs(date).format(),
       });
     }
