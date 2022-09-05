@@ -16,7 +16,10 @@ Create an .env.local file in the root and add the following:
 VITE_KC_URL="http://localhost:8080/auth/"
 VITE_KC_REALM="callistorealm"
 VITE_KC_CLIENTID="callistoreactclientid"
-VITE_TIMECARD_API_URL="http://localhost:3000/"
+
+VITE_LOCAL_API_URL="http://localhost:9090/" // the actual timecard API running on its default port
+VITE_TIMECARD_API_URL="http://localhost:3000/" // the mock server for the timecard API
+VITE_REFDATA_API_URL="http://localhost:3001/" // the mock server for ref data
 ```
 
 Before running the application for the first time, install the node packages
