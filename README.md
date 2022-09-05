@@ -75,3 +75,7 @@ Then run:
 | json-server    | Mock API that simulates create, update, delete          |
 | vite           | Bundler with plugin ecosystem and integrated dev server |
 | npm-run-all    | Run parallel npm commands cross O/S                     |
+
+## Troubleshooting
+
+If you’re using an AMD (M1,M2) chip mac, you might encounter problems starting the keycloak docker container. We’ve had some success building a new image locally, as per the instructions in this github thread: https://github.com/docker/for-mac/issues/5310#issuecomment-877653653
