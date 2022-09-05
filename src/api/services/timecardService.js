@@ -38,3 +38,13 @@ export const updateTimeEntry = async (id, payload, params) => {
     throw new Error(serviceName + ' updateTimeEntry function threw ' + error);
   }
 };
+
+export const getTimePeriodTypes = async (params) => {
+  try {
+    return await api.get(baseUrl + 'resources/time-period-type', params);
+  } catch (error) {
+    throw new Error(
+      serviceName + ' getTimePeriodTypes function threw ' + error
+    );
+  }
+};

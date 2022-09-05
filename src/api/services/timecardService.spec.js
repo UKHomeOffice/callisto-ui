@@ -2,6 +2,7 @@ import {
   getTimecard,
   getTimeEntries,
   updateTimeEntry,
+  getTimePeriodTypes,
 } from './timecardService';
 import api from '../core';
 import {
@@ -9,6 +10,9 @@ import {
   updatedTimeCardEntryStartTime,
 } from '../../../mocks/mockData';
 
+const {
+  timeCardPeriodTypes: MOCK_TIME_PERIOD_TYPES,
+} = require('../../../mocks/mockData');
 jest.mock('../core');
 
 const timecard = [
@@ -24,6 +28,10 @@ const timecard = [
     ],
   },
 ];
+
+const TENANT_ID_PARAM = {
+  tenantId: '00000000-0000-0000-0000-000000000000',
+};
 
 describe('Timecard Service', () => {
   test('getTimecard returns data correctly on success', async () => {
@@ -64,6 +72,40 @@ describe('Timecard Service', () => {
       expect(error).toBeDefined();
       expect(error.message).toContain('Timecard Service');
       expect(error.message).toContain('getTimecard');
+      expect(error.message).toContain('xyz');
+    }
+  });
+
+  test('getTimePeriodTypes uses correct endpoint resources/time-period-type', async () => {
+    api.get.mockImplementation(() =>
+      Promise.resolve({ data: MOCK_TIME_PERIOD_TYPES })
+    );
+
+    const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
+
+    expect(api.get).toHaveBeenCalledWith(
+      expect.stringContaining('resources/time-period-type'),
+      TENANT_ID_PARAM
+    );
+    expect(timePeriodTypes.data.items.length).toBe(7);
+  });
+
+  test('getTimePeriodTypes throws useful error containing throwing service and function', async () => {
+    api.get.mockImplementation(() => {
+      throw new Error('xyz');
+    });
+
+    try {
+      const response = await getTimePeriodTypes(TENANT_ID_PARAM);
+      expect(api.get).toHaveBeenCalledWith(
+        expect.stringContaining('resources/time-period-type'),
+        TENANT_ID_PARAM
+      );
+      expect(response).toBeUndefined();
+    } catch (error) {
+      expect(error).toBeDefined();
+      expect(error.message).toContain('Timecard Service');
+      expect(error.message).toContain('getTimePeriodTypes');
       expect(error.message).toContain('xyz');
     }
   });

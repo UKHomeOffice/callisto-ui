@@ -227,9 +227,53 @@ const updatedTimeCardEntryStartTime = {
   ],
 };
 
+const timeCardPeriodTypes = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: '00000000-0000-0000-0000-000000000001',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Shift',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000002',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Scheduled rest day',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000003',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Non-working day',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000004',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'On call',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000005',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Absence',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000006',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Training',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000007',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Overtime',
+    },
+  ],
+};
+
 module.exports = {
   newTimeCardEntry,
   updatedTimeCardEntryStartTime,
+  timeCardPeriodTypes,
   accruals,
   people,
   artists,
