@@ -117,6 +117,7 @@ describe('Timecard', () => {
       timecardData: {
         timeEntryId: '',
         timePeriodType: '',
+        startDate: '',
         startTime: '',
         finishTime: '',
       },
@@ -125,7 +126,11 @@ describe('Timecard', () => {
 
     await waitFor(() => {
       expect(setTimecardDataSpy).toHaveBeenCalledWith({
+        timeEntryId: '',
         startDate: '2022-07-01T00:00:00+00:00',
+        finishTime: '',
+        startTime: '',
+        timePeriodType: '',
       });
     });
   });
