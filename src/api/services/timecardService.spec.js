@@ -86,7 +86,7 @@ describe('Timecard Service', () => {
       expect(response.data).toStrictEqual([newTimeCardEntry]);
     });
 
-    it('should throws useful error containing throwing service and function', async () => {
+    it('should throw a useful error containing throwing service and function', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -120,7 +120,7 @@ describe('Timecard Service', () => {
       expect(response.data).toStrictEqual([updatedTimeCardEntryStartTime]);
     });
 
-    it('should throws useful error containing throwing service and function', async () => {
+    it('should throw a useful error containing throwing service and function', async () => {
       api.put.mockImplementation(() => {
         throw new Error('xyz');
       });
