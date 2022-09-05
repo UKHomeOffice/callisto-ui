@@ -91,8 +91,8 @@ describe('Timecard', () => {
       expect(setTimecardDataSpy).toHaveBeenCalledWith({
         timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
         startDate: '2022-08-24',
-        startTime: '13:01',
-        finishTime: '23:01',
+        startTime: '12:01',
+        finishTime: '22:01',
         timePeriodType: '',
         timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
       });
@@ -125,7 +125,7 @@ describe('Timecard', () => {
 
     await waitFor(() => {
       expect(setTimecardDataSpy).toHaveBeenCalledWith({
-        startDate: '2022-07-01T00:00:00+01:00',
+        startDate: '2022-07-01T00:00:00+00:00',
       });
     });
   });
