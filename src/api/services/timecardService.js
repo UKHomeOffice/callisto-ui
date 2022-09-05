@@ -19,11 +19,11 @@ export const getTimeEntries = async (params) => {
   }
 };
 
-export const saveTimeEntry = async (payload, params) => {
+export const createTimeEntry = async (payload, params) => {
   try {
     return await api.post(baseUrl + 'resources/time-entry', params, payload);
   } catch (error) {
-    throw new Error(serviceName + ' saveTimeEntry function threw ' + error);
+    throw new Error(serviceName + ' createTimeEntry function threw ' + error);
   }
 };
 

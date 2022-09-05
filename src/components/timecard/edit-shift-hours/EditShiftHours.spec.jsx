@@ -3,15 +3,15 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
 
-const mockSaveTimeEntry = jest.fn();
+const mockCreateTimeEntry = jest.fn();
 const mockUpdateTimeEntry = jest.fn();
 jest.mock('../../../api/services/timecardService', () => ({
-  saveTimeEntry: () => mockSaveTimeEntry(),
+  createTimeEntry: () => mockCreateTimeEntry(),
   updateTimeEntry: () => mockUpdateTimeEntry(),
 }));
 
 describe('EditShiftHours', () => {
-  it('should call saveTimeEntry when pressing save with no existing time entry', async () => {
+  it('should call createTimeEntry when pressing save with no existing time entry', async () => {
     renderWithTimecardContext(
       <EditShiftHours setShowEditShiftHours={jest.fn()} />
     );
@@ -25,7 +25,7 @@ describe('EditShiftHours', () => {
     });
 
     await waitFor(() => {
-      expect(mockSaveTimeEntry).toHaveBeenCalled();
+      expect(mockCreateTimeEntry).toHaveBeenCalled();
     });
   });
 

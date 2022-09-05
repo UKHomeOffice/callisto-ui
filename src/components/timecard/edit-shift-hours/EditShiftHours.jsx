@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
 import {
-  saveTimeEntry,
+  createTimeEntry,
   updateTimeEntry,
 } from '../../../api/services/timecardService';
 import { useTimecardContext } from '../../../context/TimecardContext';
@@ -58,7 +58,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
         .getUrlSearchParams();
 
       const response = !timecardData.timeEntryId
-        ? await saveTimeEntry(timecardPayload, params)
+        ? await createTimeEntry(timecardPayload, params)
         : await updateTimeEntry(
             timecardData.timeEntryId,
             timecardPayload,
