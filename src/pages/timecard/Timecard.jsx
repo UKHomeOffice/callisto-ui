@@ -23,12 +23,11 @@ const updateTimeEntryContextData = async (
   setTimecardData
 ) => {
   if (!timecardData.timeEntryId) {
-    const timeEntriesResponse = await getTimeEntries(
-      new TimeEntryQueryParams()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .setFilter('ownerId==1')
-        .getUrlSearchParams()
-    );
+    const params = new TimeEntryQueryParams()
+      .setTenantId('00000000-0000-0000-0000-000000000000')
+      .setFilter('ownerId==1')
+      .getUrlSearchParams();
+    const timeEntriesResponse = await getTimeEntries(params);
 
     if (timeEntriesResponse?.data) {
       const timeEntry = getSingleTimeEntryResponseItem(

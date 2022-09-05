@@ -5,6 +5,7 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import Radios from '../../common/form/radios/Radios';
 import { getTimePeriodTypes } from '../../../api/services/timecardService';
 import { useEffect, useState } from 'react';
+import { TimeEntryQueryParams } from '../../../utils/timeEntryUtils/TimeEntryQueryParams';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -19,9 +20,9 @@ const SelectTimecardPeriodType = () => {
   const [timePeriods, setTimePeriods] = useState([]);
   const getTimePeriodTypeData = async () => {
     try {
-      const params = new URLSearchParams([
-        ['tenantId', '00000000-0000-0000-0000-000000000000'],
-      ]);
+      const params = new TimeEntryQueryParams()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
       const response = await getTimePeriodTypes(params);
       if (response?.data?.items) {
         setTimePeriods(response.data.items.map((item) => item.name));
