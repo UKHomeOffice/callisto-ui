@@ -32,8 +32,10 @@ const Timecard = () => {
       ...timecardData,
       startDate: utcDate,
     });
+    console.log('timecardData', timecardData);
   }, [date]);
 
+  console.log('timeCard before Render', timecardData);
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
@@ -66,11 +68,11 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {!timecardData.timePeriodType ? (
-        <SelectTimecardPeriodType />
-      ) : (
-        <EditShiftTimecard />
-      )}
+      {timecardData.forEach((timecard) => (
+        <div>
+          <EditShiftTimecard timecardData={timecard} />
+        </div>
+      ))}
     </>
   );
 };

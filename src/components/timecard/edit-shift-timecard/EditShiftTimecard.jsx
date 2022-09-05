@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
-const EditShiftTimecard = () => {
+const EditShiftTimecard = (shiftData) => {
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const { timecardData } = useTimecardContext();
-  const timecardDataExists = timecardData.startTime !== '';
+  const shiftDataExists = shiftData.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timecardDataExists
+    !shiftDataExists
   );
+
+  const removeClick = () => {
+    console.log('clicked', shiftData);
+  }
 
   return (
     <div className="select-timecard-period-type">
@@ -27,13 +30,13 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            {timecardDataExists && (
-              <Link
+            {shiftDataExists && (
+              <a
                 className="govuk-link govuk-link--no-visited-state"
-                to={'/'}
+                onClick={removeClick}
               >
                 Remove<span className="govuk-visually-hidden"> shift</span>
-              </Link>
+              </a>
             )}
           </dd>
         </div>
@@ -46,13 +49,13 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
-              timecardDataExists &&
-              `${timecardData.startTime} to ${
-                timecardData.finishTime ? timecardData.finishTime : '-'
+              shiftDataExists &&
+              `${shiftData.startTime} to ${
+                shiftData.finishTime ? shiftData.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
-            {timecardDataExists && (
+            {shiftDataExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -86,7 +89,7 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            {timecardDataExists && (
+            {shiftDataExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}

@@ -6,7 +6,7 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const EditShiftHours = ({ setShowEditShiftHours }) => {
+const EditShiftHours = ({ setShowEditShiftHours, shiftData }) => {
   const {
     register,
     handleSubmit,
@@ -18,7 +18,6 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   });
 
   const inputName = 'shift';
-  const { timecardData, setTimecardData } = useTimecardContext();
   const { setSummaryErrors } = useTimecardContext();
 
   const handleError = (errorFields) => {
@@ -62,7 +61,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           timecardResponseData.items.length > 0
         ) {
           setTimecardData({
-            ...timecardData,
+            ...shiftData,
             startTime: formData[`${inputName}-start-time`],
             finishTime: formData[`${inputName}-finish-time`] || '',
             id: timecardResponseData.items[0].id,
@@ -88,8 +87,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timecardData.startTime}
-          finishTimeValue={timecardData.finishTime}
+          startTimeValue={shiftData.startTime}
+          finishTimeValue={shiftData.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
@@ -98,12 +97,12 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           <input
             type="hidden"
             {...register('startDate')}
-            defaultValue={timecardData.startDate}
+            defaultValue={shiftData.startDate}
           />
           <input
             type="hidden"
             {...register('timePeriodTypeId')}
-            defaultValue={timecardData.timePeriodTypeId}
+            defaultValue={shiftData.timePeriodTypeId}
           />
         </div>
       </form>

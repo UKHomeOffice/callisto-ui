@@ -28,3 +28,11 @@ export const getTimePeriodTypes = async (params) => {
     );
   }
 };
+
+export const deleteTimeEntry = async (params, id) => {
+  try {
+    return await api.delete(baseUrl + `resources/timeEntry/${id}`, params);
+  } catch (error) {
+    throw new Error(serviceName + ' deleteTimeEtry function threw ' + error);
+  }
+};

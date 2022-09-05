@@ -27,4 +27,10 @@ export default {
       params: params,
       data,
     }),
+  delete: (endpoint, params) =>
+    instance({
+      method: 'DELETE',
+      url: endpoint,
+      params: params,
+    }),
 };
