@@ -8,8 +8,8 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { TimeEntryQueryParams } from '../../../utils/timeEntryUtils/TimeEntryQueryParams';
-import { formatDate } from '../../../utils/timeEntryUtils/timeEntryUtils';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { formatDate } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShiftHours = ({ setShowEditShiftHours }) => {
   const {
@@ -53,7 +53,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
     };
 
     try {
-      const params = new TimeEntryQueryParams()
+      const params = new UrlSearchParamBuilder()
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
 

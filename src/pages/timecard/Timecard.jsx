@@ -10,11 +10,10 @@ import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/Edi
 import { useTimecardContext } from '../../context/TimecardContext';
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
-  getSingleTimeEntryResponseItem,
   formatTime,
   formatDate,
-} from '../../utils/timeEntryUtils/timeEntryUtils';
-import { TimeEntryQueryParams } from '../../utils/timeEntryUtils/TimeEntryQueryParams';
+} from '../../utils/time-entry-utils/timeEntryUtils';
+import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const updateTimeEntryContextData = async (
@@ -22,38 +21,35 @@ const updateTimeEntryContextData = async (
   date,
   setTimecardData
 ) => {
-  if (!timecardData.timeEntryId) {
-    const params = new TimeEntryQueryParams()
-      .setTenantId('00000000-0000-0000-0000-000000000000')
-      .setFilter('ownerId==1')
-      .getUrlSearchParams();
-    const timeEntriesResponse = await getTimeEntries(params);
+  const params = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .setFilter('ownerId==1')
+    .getUrlSearchParams();
+  const timeEntriesResponse = await getTimeEntries(params);
 
-    if (timeEntriesResponse?.data) {
-      const timeEntry = getSingleTimeEntryResponseItem(
-        timeEntriesResponse.data
-      );
+  if (
+    timeEntriesResponse?.data?.items &&
+    timeEntriesResponse.data.items.length > 0
+  ) {
+    const timeEntry = timeEntriesResponse.data.items[0];
 
-      if (timeEntry) {
-        setTimecardData({
-          timeEntryId: timeEntry.id,
-          timePeriodType: timeEntry.shiftType,
-          startDate: formatDate(timeEntry.actualStartTime),
-          startTime: formatTime(timeEntry.actualStartTime),
-          finishTime: timeEntry.actualEndTime
-            ? formatTime(timeEntry.actualEndTime)
-            : '',
-          timePeriodTypeId: timeEntry.timePeriodTypeId,
-        });
-        return;
-      }
-
-      setTimecardData({
-        ...timecardData,
-        startDate: dayjs(date).format(),
-      });
-    }
+    setTimecardData({
+      timeEntryId: timeEntry.id,
+      timePeriodType: timeEntry.shiftType,
+      startDate: formatDate(timeEntry.actualStartTime),
+      startTime: formatTime(timeEntry.actualStartTime),
+      finishTime: timeEntry.actualEndTime
+        ? formatTime(timeEntry.actualEndTime)
+        : '',
+      timePeriodTypeId: timeEntry.timePeriodTypeId,
+    });
+    return;
   }
+
+  setTimecardData({
+    ...timecardData,
+    startDate: dayjs(date).format(),
+  });
 };
 
 const Timecard = () => {
@@ -72,7 +68,10 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    updateTimeEntryContextData(timecardData, date, setTimecardData);
+
+    if (!timecardData.timeEntryId) {
+      updateTimeEntryContextData(timecardData, date, setTimecardData);
+    }
   }, [date]);
 
   return (
