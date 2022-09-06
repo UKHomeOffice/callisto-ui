@@ -1,4 +1,4 @@
-export class TimeEntryQueryParams {
+export class UrlSearchParamBuilder {
   params = null;
 
   constructor() {
