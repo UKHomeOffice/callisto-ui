@@ -16,12 +16,18 @@ describe('timeEntryUtils', () => {
       });
     });
 
-    it('should return null if there are no items in the array', () => {
+    it('should throw an error if there is not at least one item in the resposne array', () => {
       const timeEntryResponseData = {
         items: [],
       };
-      const result = getSingleTimeEntryResponseItem(timeEntryResponseData);
-      expect(result).toBeNull();
+
+      try {
+        getSingleTimeEntryResponseItem(timeEntryResponseData);
+      } catch (error) {
+        expect(error).toBeDefined();
+        expect(error.message).toContain('time entry');
+        expect(error.message).toContain('at least one time entry');
+      }
     });
   });
 });

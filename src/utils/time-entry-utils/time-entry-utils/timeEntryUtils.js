@@ -3,7 +3,9 @@ import dayjs from 'dayjs';
 export const getSingleTimeEntryResponseItem = (timeEntryResponseData) => {
   if (timeEntryResponseData.items && timeEntryResponseData.items.length > 0)
     return timeEntryResponseData.items[0];
-  else return null;
+  throw new Error(
+    'The time entry response data did not contain at least one time entry.'
+  );
 };
 
 export const formatTime = (time) => {
