@@ -53,10 +53,7 @@ const updateTimeEntryContextData = async (
 
     setTimeEntries(timeEntriesArray);
   } else {
-    setTimeEntries({
-      ...timeEntries,
-      startDate: dayjs(date).format(),
-    });
+    setTimeEntries([]);
   }
 };
 
@@ -83,9 +80,9 @@ const Timecard = () => {
 
   useEffect(() => {
     setTimecardDate(date);
-    if (timeEntries.length > 0 && !timeEntries[0].timeEntryId) {
-      updateTimeEntryContextData(timeEntries, date, setTimeEntries);
-    }
+    // if (timeEntries.length > 0 && !timeEntries[0].timeEntryId) {
+    updateTimeEntryContextData(timeEntries, date, setTimeEntries);
+    // }
   }, [date]);
 
   return (
@@ -120,8 +117,8 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.forEach((timeEntry, index) => (
-        <div>
+      {timeEntries.map((timeEntry, index) => (
+        <div key={index}>
           <EditShiftTimecard timeEntry={timeEntry} index={index} />
         </div>
       ))}

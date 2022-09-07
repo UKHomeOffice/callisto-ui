@@ -83,8 +83,8 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timeEntries.startTime}
-          finishTimeValue={timeEntries.finishTime}
+          startTimeValue={timeEntry.startTime}
+          finishTimeValue={timeEntry.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
@@ -93,12 +93,12 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
           <input
             type="hidden"
             {...register('startDate')}
-            defaultValue={timeEntries.startDate}
+            defaultValue={timeEntry.startDate}
           />
           <input
             type="hidden"
             {...register('timePeriodTypeId')}
-            defaultValue={timeEntries.timePeriodTypeId}
+            defaultValue={timeEntry.timePeriodTypeId}
           />
         </div>
       </form>
@@ -108,5 +108,7 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
 
 export default EditShiftHours;
 EditShiftHours.propTypes = {
+  timeEntry: PropTypes.object,
+  index: PropTypes.string,
   setShowEditShiftHours: PropTypes.func,
 };

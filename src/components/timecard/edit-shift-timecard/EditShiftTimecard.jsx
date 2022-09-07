@@ -1,15 +1,15 @@
+import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
-const EditShiftTimecard = (timeEntry, index) => {
+const EditShiftTimecard = ({ timeEntry, index }) => {
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const timeEntriesExists = timeEntry.startTime === '';
+  const timeEntriesExists = timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timeEntriesExists
   );
@@ -106,3 +106,8 @@ const EditShiftTimecard = (timeEntry, index) => {
 };
 
 export default EditShiftTimecard;
+
+EditShiftTimecard.propTypes = {
+  timeEntry: PropTypes.object,
+  index: PropTypes.string,
+};
