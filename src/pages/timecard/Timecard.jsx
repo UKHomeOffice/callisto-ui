@@ -59,7 +59,6 @@ const updateTimeEntryContextData = async (
 
 const Timecard = () => {
   const { date } = useParams();
-  const utcDate = dayjs(date).format();
 
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
@@ -68,7 +67,7 @@ const Timecard = () => {
     summaryErrors,
     timeEntries,
     setTimeEntries,
-    timecardDate,
+    // timecardDate,
     setTimecardDate,
   } = useTimecardContext();
 
@@ -79,10 +78,9 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
+    document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    // if (timeEntries.length > 0 && !timeEntries[0].timeEntryId) {
     updateTimeEntryContextData(timeEntries, date, setTimeEntries);
-    // }
   }, [date]);
 
   return (
@@ -117,18 +115,13 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.map((timeEntry, index) => (
-        <div key={index}>
-          <EditShiftTimecard timeEntry={timeEntry} index={index} />
-        </div>
-      ))}
+      {timeEntries.length > 0 &&
+        timeEntries.map((timeEntry, index) => (
+          <div key={index} className="govuk-!-margin-bottom-3">
+            <EditShiftTimecard timeEntry={timeEntry} index={index} />
+          </div>
+        ))}
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
-
-      {/* {timeEntries.timeEntryId || timeEntries.timePeriodType ? (
-        <EditShiftTimecard />
-      ) : (
-        <SelectTimecardPeriodType />
-      )} */}
     </>
   );
 };

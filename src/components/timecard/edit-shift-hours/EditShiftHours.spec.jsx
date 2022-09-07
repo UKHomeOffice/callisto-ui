@@ -3,10 +3,19 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
 
+const newTimeEntry = {
+  timePeriodType: 'Shift',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+};
+
 describe('EditShiftHours', () => {
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
-      <EditShiftHours setShowEditShiftHours={jest.fn()} />
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        index={0}
+      />
     );
 
     act(() => {
@@ -26,7 +35,11 @@ describe('EditShiftHours', () => {
     'should display an error when pressing save with an invalid start time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -50,7 +63,11 @@ describe('EditShiftHours', () => {
     'should not display an error when pressing save with a valid start time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -74,7 +91,11 @@ describe('EditShiftHours', () => {
     'should display an error when pressing save with an invalid finish time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -98,7 +119,11 @@ describe('EditShiftHours', () => {
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {

@@ -9,7 +9,8 @@ const EditShiftTimecard = ({ timeEntry, index }) => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const timeEntriesExists = timeEntry.startTime !== '';
+  const timeEntriesExists =
+    'startTime' in timeEntry && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timeEntriesExists
   );
@@ -109,5 +110,5 @@ export default EditShiftTimecard;
 
 EditShiftTimecard.propTypes = {
   timeEntry: PropTypes.object,
-  index: PropTypes.string,
+  index: PropTypes.number,
 };

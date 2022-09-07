@@ -31,12 +31,16 @@ describe('Timecard', () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timeEntries: {
-        timePeriodType: 'Shift',
-        startTime: '',
-        finishTime: '',
-      },
+      timeEntries: [
+        {
+          timePeriodType: 'Shift',
+          startTime: '',
+          finishTime: '',
+        },
+      ],
       setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
     });
 
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
@@ -54,12 +58,16 @@ describe('Timecard', () => {
         },
       },
       setSummaryErrors: jest.fn(),
-      timeEntries: {
-        timePeriodType: '',
-        startTime: '',
-        finishTime: '',
-      },
+      timeEntries: [
+        {
+          timePeriodType: '',
+          startTime: '',
+          finishTime: '',
+        },
+      ],
       setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
     });
 
     expect(screen.getByText('There is a problem')).toBeTruthy();
