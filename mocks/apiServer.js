@@ -33,6 +33,10 @@ server.use((req, res, next) => {
   next();
 });
 
+server.get('/resources/time-entry', function (req, res) {
+  res.jsonp(newTimeCardEntry);
+});
+
 server.post('/resources/time-entry', function (req, res) {
   const error = validateTimecard(req.body);
   if (error) {
