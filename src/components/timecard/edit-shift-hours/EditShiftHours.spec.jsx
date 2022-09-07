@@ -8,7 +8,42 @@ const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 
+const timecardService = require('../../../api/services/timecardService');
+const mockSaveTimeEntry = jest.spyOn(timecardService, 'saveTimeEntry');
+
 describe('EditShiftHours', () => {
+  it('should call saveTimeEntry when pressing save with no existing time entry', async () => {
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        index={0}
+      />
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockSaveTimeEntry).toHaveBeenCalledWith(
+        {
+          ownerId: 1,
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: '2022-09-07T08:00:00+01:00',
+          actualEndTime: '',
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
+    });
+  });
+
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
       <EditShiftHours

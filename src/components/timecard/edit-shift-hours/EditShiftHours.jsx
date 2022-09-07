@@ -35,10 +35,9 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
     ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime;
-    if (endTime) {
-      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
-    }
+    let actualEndDateTime = endTime
+      ? dayjs(actualStartDate + ' ' + endTime).format()
+      : '';
 
     const timecardPayload = {
       ownerId: 1,
