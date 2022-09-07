@@ -36,7 +36,7 @@ const SelectTimecardPeriodType = () => {
 
   const radioName = 'timePeriod';
 
-  const { timecardData, setTimecardData, setSummaryErrors } =
+  const { timeEntries, setTimeEntries, setSummaryErrors } =
     useTimecardContext();
 
   const handleError = (errorFields) => {
@@ -48,7 +48,7 @@ const SelectTimecardPeriodType = () => {
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
-          setTimecardData({ ...timecardData, timePeriodType: data[radioName] });
+          setTimeEntries({ ...timeEntries, timePeriodType: data[radioName] });
           setSummaryErrors({});
         }, handleError)}
       >

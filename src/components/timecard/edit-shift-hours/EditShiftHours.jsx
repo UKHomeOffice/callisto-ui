@@ -18,7 +18,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   });
 
   const inputName = 'shift';
-  const { timecardData, setTimecardData } = useTimecardContext();
+  const { timeEntries, setTimeEntries } = useTimecardContext();
   const { setSummaryErrors } = useTimecardContext();
 
   const handleError = (errorFields) => {
@@ -61,8 +61,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           timecardResponseData.items &&
           timecardResponseData.items.length > 0
         ) {
-          setTimecardData({
-            ...timecardData,
+          setTimeEntries({
+            ...timeEntries,
             startTime: formData[`${inputName}-start-time`],
             finishTime: formData[`${inputName}-finish-time`] || '',
             id: timecardResponseData.items[0].id,
@@ -88,8 +88,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timecardData.startTime}
-          finishTimeValue={timecardData.finishTime}
+          startTimeValue={timeEntries.startTime}
+          finishTimeValue={timeEntries.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
@@ -98,12 +98,12 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           <input
             type="hidden"
             {...register('startDate')}
-            defaultValue={timecardData.startDate}
+            defaultValue={timeEntries.startDate}
           />
           <input
             type="hidden"
             {...register('timePeriodTypeId')}
-            defaultValue={timecardData.timePeriodTypeId}
+            defaultValue={timeEntries.timePeriodTypeId}
           />
         </div>
       </form>

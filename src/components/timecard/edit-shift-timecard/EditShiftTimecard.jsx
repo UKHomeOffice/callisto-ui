@@ -9,10 +9,10 @@ const EditShiftTimecard = () => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const { timecardData } = useTimecardContext();
-  const timecardDataExists = timecardData.length > 0;
+  const { timeEntries } = useTimecardContext();
+  const timeEntriesExists = timeEntries.length > 0;
   const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timecardDataExists
+    !timeEntriesExists
   );
 
   return (
@@ -27,7 +27,7 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            {timecardDataExists && (
+            {timeEntriesExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
@@ -46,13 +46,13 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
-              timecardDataExists &&
-              `${timecardData.startTime} to ${
-                timecardData.finishTime ? timecardData.finishTime : '-'
+              timeEntriesExists &&
+              `${timeEntries.startTime} to ${
+                timeEntries.finishTime ? timeEntries.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
-            {timecardDataExists && (
+            {timeEntriesExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -86,7 +86,7 @@ const EditShiftTimecard = () => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            {timecardDataExists && (
+            {timeEntriesExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}

@@ -5,7 +5,7 @@ export const TimecardContext = createContext();
 
 export const TimecardProvider = ({ children }) => {
   const [summaryErrors, setSummaryErrors] = useState({});
-  const [timecardData, setTimecardData] = useState([
+  const [timeEntries, setTimeEntries] = useState([
     {
       timeEntryId: '',
       timePeriodType: '',
@@ -20,8 +20,8 @@ export const TimecardProvider = ({ children }) => {
   const value = {
     summaryErrors,
     setSummaryErrors,
-    timecardData,
-    setTimecardData,
+    timeEntries,
+    setTimeEntries,
   };
 
   return (

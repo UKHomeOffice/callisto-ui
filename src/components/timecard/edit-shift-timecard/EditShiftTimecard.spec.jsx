@@ -53,12 +53,12 @@ describe('EditShiftTimecard', () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
+      timeEntries: {
         timePeriodType: 'Shift',
         startTime: '08:00',
         finishTime: '16:00',
       },
-      setTimecardData: jest.fn(),
+      setTimeEntries: jest.fn(),
     });
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
@@ -76,12 +76,12 @@ describe('EditShiftTimecard', () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
+      timeEntries: {
         timePeriodType: 'Shift',
         startTime: '08:00',
         finishTime: '16:00',
       },
-      setTimecardData: jest.fn(),
+      setTimeEntries: jest.fn(),
     });
 
     act(() => {
@@ -99,12 +99,12 @@ describe('EditShiftTimecard', () => {
     renderWithTimecardContext(<EditShiftTimecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
+      timeEntries: {
         timePeriodType: 'Shift',
         startTime: '',
         finishTime: '',
       },
-      setTimecardData: jest.fn(),
+      setTimeEntries: jest.fn(),
     });
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
@@ -123,12 +123,12 @@ describe('EditShiftTimecard', () => {
       renderWithTimecardContext(<EditShiftTimecard />, {
         summaryErrors: {},
         setSummaryErrors: jest.fn(),
-        timecardData: {
+        timeEntries: {
           timePeriodType: 'Shift',
           startTime: '08:00',
           finishTime: '',
         },
-        setTimecardData: jest.fn(),
+        setTimeEntries: jest.fn(),
       });
 
       expect(screen.getByText('08:00 to -')).toBeTruthy();
@@ -138,11 +138,11 @@ describe('EditShiftTimecard', () => {
       renderWithTimecardContext(<EditShiftTimecard />, {
         summaryErrors: {},
         setSummaryErrors: jest.fn(),
-        timecardData: {
+        timeEntries: {
           startTime: '08:00',
           finishTime: '16:00',
         },
-        setTimecardData: jest.fn(),
+        setTimeEntries: jest.fn(),
       });
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
@@ -152,11 +152,11 @@ describe('EditShiftTimecard', () => {
       renderWithTimecardContext(<EditShiftTimecard />, {
         summaryErrors: {},
         setSummaryErrors: jest.fn(),
-        timecardData: {
+        timeEntries: {
           startTime: '',
           finishTime: '',
         },
-        setTimecardData: jest.fn(),
+        setTimeEntries: jest.fn(),
       });
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
@@ -166,11 +166,11 @@ describe('EditShiftTimecard', () => {
       renderWithTimecardContext(<EditShiftTimecard />, {
         summaryErrors: {},
         setSummaryErrors: jest.fn(),
-        timecardData: {
+        timeEntries: {
           startTime: '08:00',
           finishTime: '16:00',
         },
-        setTimecardData: jest.fn(),
+        setTimeEntries: jest.fn(),
       });
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();

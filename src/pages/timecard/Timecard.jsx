@@ -18,9 +18,9 @@ import { useTimecardContext } from '../../context/TimecardContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const updateTimeEntryContextData = async (
-  timecardData,
+  timeEntries,
   date,
-  setTimecardData
+  setTimeEntries
 ) => {
   const params = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
@@ -51,10 +51,10 @@ const updateTimeEntryContextData = async (
       });
     });
 
-    setTimecardData( timeEntriesArray );
+    setTimeEntries(timeEntriesArray);
   } else {
-    setTimecardData({
-      ...timecardData,
+    setTimeEntries({
+      ...timeEntries,
       startDate: dayjs(date).format(),
     });
   }
@@ -67,7 +67,7 @@ const Timecard = () => {
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
+  const { summaryErrors, timeEntries, setTimeEntries } = useTimecardContext();
 
   const desiredErrorOrder = [
     'shift-start-time',
@@ -76,8 +76,8 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
-    if (!timecardData.timeEntryId) {
-      updateTimeEntryContextData(timecardData, date, setTimecardData);
+    if (!timeEntries.timeEntryId) {
+      updateTimeEntryContextData(timeEntries, date, setTimeEntries);
     }
   }, [date]);
 
@@ -113,7 +113,7 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timecardData.timeEntryId || timecardData.timePeriodType ? (
+      {timeEntries.timeEntryId || timeEntries.timePeriodType ? (
         <EditShiftTimecard />
       ) : (
         <SelectTimecardPeriodType />

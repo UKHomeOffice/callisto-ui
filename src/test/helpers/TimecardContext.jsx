@@ -8,13 +8,13 @@ export const renderWithTimecardContext = (
   values = {
     summaryErrors: {},
     setSummaryErrors: jest.fn(),
-    timecardData: {
+    timeEntries: {
       timePeriodType: '',
       startTime: '',
       finishTime: '',
       startDate: '',
     },
-    setTimecardData: jest.fn(),
+    setTimeEntries: jest.fn(),
   }
 ) => {
   return {
