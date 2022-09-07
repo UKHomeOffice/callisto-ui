@@ -6,10 +6,59 @@ import BackLink from '../../components/common/form/navigation/backlink/BackLink'
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
+import { getTimeEntries } from '../../api/services/timecardService';
+import {
+  formatTime,
+  formatDate,
+} from '../../utils/time-entry-utils/timeEntryUtils';
+import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
+
+const updateTimeEntryContextData = async (
+  timecardData,
+  date,
+  setTimecardData
+) => {
+  const params = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .setFilter('ownerId==1')
+    .getUrlSearchParams();
+  const timeEntriesResponse = await getTimeEntries(params);
+
+  if (
+    timeEntriesResponse?.data?.items &&
+    timeEntriesResponse.data.items.length > 0
+  ) {
+    const timeEntriesArray = [];
+    const timeEntries = timeEntriesResponse.data.items;
+
+    timeEntries.map((timeEntry) => {
+      timeEntriesArray.push({
+        timeEntryId: timeEntry.id,
+        timePeriodType: timeEntry.shiftType,
+        startDate: formatDate(timeEntry.actualStartTime),
+        startTime: formatTime(timeEntry.actualStartTime),
+        finishTime: timeEntry.actualEndTime
+          ? formatTime(timeEntry.actualEndTime)
+          : '',
+        finishDate: timeEntry.actualEndTime
+          ? formatDate(timeEntry.actualEndTime)
+          : '',
+        timePeriodTypeId: timeEntry.timePeriodTypeId,
+      });
+    });
+
+    setTimecardData( timeEntriesArray );
+  } else {
+    setTimecardData({
+      ...timecardData,
+      startDate: dayjs(date).format(),
+    });
+  }
+};
 
 const Timecard = () => {
   const { date } = useParams();
@@ -27,11 +76,9 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
-    document.title = generateDocumentTitle('Timecard ');
-    setTimecardData({
-      ...timecardData,
-      startDate: utcDate,
-    });
+    if (!timecardData.timeEntryId) {
+      updateTimeEntryContextData(timecardData, date, setTimecardData);
+    }
   }, [date]);
 
   return (
@@ -66,10 +113,10 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {!timecardData.timePeriodType ? (
-        <SelectTimecardPeriodType />
-      ) : (
+      {timecardData.timeEntryId || timecardData.timePeriodType ? (
         <EditShiftTimecard />
+      ) : (
+        <SelectTimecardPeriodType />
       )}
     </>
   );

@@ -10,7 +10,7 @@ const EditShiftTimecard = () => {
   };
 
   const { timecardData } = useTimecardContext();
-  const timecardDataExists = timecardData.startTime !== '';
+  const timecardDataExists = timecardData.length > 0;
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timecardDataExists
   );
