@@ -18,7 +18,10 @@ describe('EditShiftHours', () => {
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         index={0}
-      />
+      />,
+      {
+        timecardDate: '2022-09-01',
+      }
     );
 
     act(() => {
@@ -34,7 +37,7 @@ describe('EditShiftHours', () => {
         {
           ownerId: 1,
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: '2022-09-07T08:00:00+01:00',
+          actualStartTime: '2022-09-01T08:00:00+00:00',
           actualEndTime: '',
         },
         new URLSearchParams([

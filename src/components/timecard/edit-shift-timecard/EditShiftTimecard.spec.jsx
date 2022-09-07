@@ -14,9 +14,7 @@ beforeEach(() => {
     timeEntryId: '00000000-0000-0000-0000-000000000001',
     timePeriodType: 'Shift',
     startTime: '08:00',
-    startDate: '2022-09-01',
     finishTime: '16:00',
-    finishDate: '2022-09-01',
     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
   };
 });
