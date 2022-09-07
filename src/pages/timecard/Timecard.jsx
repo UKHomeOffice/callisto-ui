@@ -68,11 +68,19 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timecardData.forEach((timecard) => (
+      {Object.values(timecardData).forEach((timecard) => (
         <div>
           <EditShiftTimecard timecardData={timecard} />
         </div>
       ))}
+
+      {Object.values(timecardData).length === 0
+        &&
+        <SelectTimecardPeriodType />
+      }
+      <button>
+          Add
+      </button>
     </>
   );
 };
