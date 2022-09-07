@@ -67,7 +67,13 @@ const Timecard = () => {
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
-  const { summaryErrors, timeEntries, setTimeEntries } = useTimecardContext();
+  const {
+    summaryErrors,
+    timeEntries,
+    setTimeEntries,
+    timecardDate,
+    setTimecardDate,
+  } = useTimecardContext();
 
   const desiredErrorOrder = [
     'shift-start-time',
@@ -76,7 +82,8 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
-    if (!timeEntries.timeEntryId) {
+    setTimecardDate(date);
+    if (timeEntries.length > 0 && !timeEntries[0].timeEntryId) {
       updateTimeEntryContextData(timeEntries, date, setTimeEntries);
     }
   }, [date]);
@@ -113,11 +120,18 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.timeEntryId || timeEntries.timePeriodType ? (
+      {timeEntries.forEach((timeEntry, index) => (
+        <div>
+          <EditShiftTimecard timeEntry={timeEntry} index={index} />
+        </div>
+      ))}
+      {timeEntries.length === 0 && <SelectTimecardPeriodType />}
+
+      {/* {timeEntries.timeEntryId || timeEntries.timePeriodType ? (
         <EditShiftTimecard />
       ) : (
         <SelectTimecardPeriodType />
-      )}
+      )} */}
     </>
   );
 };

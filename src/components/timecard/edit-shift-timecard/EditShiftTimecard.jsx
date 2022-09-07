@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
-const EditShiftTimecard = () => {
+const EditShiftTimecard = (timeEntry, index) => {
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const { timeEntries } = useTimecardContext();
-  const timeEntriesExists = timeEntries.length > 0;
+  const timeEntriesExists = timeEntry.startTime === '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timeEntriesExists
   );
@@ -47,8 +46,8 @@ const EditShiftTimecard = () => {
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
               timeEntriesExists &&
-              `${timeEntries.startTime} to ${
-                timeEntries.finishTime ? timeEntries.finishTime : '-'
+              `${timeEntry.startTime} to ${
+                timeEntry.finishTime ? timeEntry.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
@@ -67,7 +66,11 @@ const EditShiftTimecard = () => {
         {showEditShiftHours && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
-              <EditShiftHours setShowEditShiftHours={setShowEditShiftHours} />
+              <EditShiftHours
+                setShowEditShiftHours={setShowEditShiftHours}
+                timeEntry={timeEntry}
+                index={index}
+              />
             </dt>
           </div>
         )}

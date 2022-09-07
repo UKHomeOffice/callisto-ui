@@ -6,7 +6,7 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const EditShiftHours = ({ setShowEditShiftHours }) => {
+const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
   const {
     register,
     handleSubmit,
@@ -54,24 +54,19 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
       const response = await saveTimeEntry(timecardPayload, params);
 
-      if (response && response.data) {
-        const timecardResponseData = response.data;
-
-        if (
-          timecardResponseData.items &&
-          timecardResponseData.items.length > 0
-        ) {
-          setTimeEntries({
-            ...timeEntries,
-            startTime: formData[`${inputName}-start-time`],
-            finishTime: formData[`${inputName}-finish-time`] || '',
-            id: timecardResponseData.items[0].id,
-          });
-          setSummaryErrors({});
-          setShowEditShiftHours(false);
-        } else {
-          //no items returned, something went wrong
-        }
+      if (response?.data?.items && response?.data?.items.length > 0) {
+        const existingTimeEntries = timeEntries;
+        existingTimeEntries[index] = {
+          ...timeEntry,
+          startTime: formData[`${inputName}-start-time`],
+          finishTime: formData[`${inputName}-finish-time`] || '',
+          id: response.data.items[0].id,
+        };
+        setTimeEntries(existingTimeEntries);
+        setSummaryErrors({});
+        setShowEditShiftHours(false);
+      } else {
+        //no items returned, something went wrong
       }
     } catch (error) {
       /* TODO: Error handling when server raises error, similar to:
