@@ -54,13 +54,8 @@ const Timecard = () => {
     useTimecardContext();
 
   const { date } = useParams();
-  const selectedDate = date ? date : formatDate(dayjs());
-
-  const previousDay = dayjs(selectedDate)
-    .subtract(1, 'day')
-    .format('YYYY-MM-DD');
-  const nextDay = dayjs(selectedDate).add(1, 'day').format('YYYY-MM-DD');
-  setTimecardDate(selectedDate);
+  const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+  const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
   const desiredErrorOrder = [
     'shift-start-time',
@@ -70,6 +65,7 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
+    setTimecardDate(date ? date : formatDate(dayjs()));
     updateTimeEntryContextData(setTimeEntries);
   }, [date]);
 
@@ -83,9 +79,7 @@ const Timecard = () => {
         />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
-      <h2 className="govuk-heading-m">
-        {dayjs(selectedDate).format('DD MMMM YYYY')}
-      </h2>
+      <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
           className="govuk-link govuk-link--no-visited-state"
