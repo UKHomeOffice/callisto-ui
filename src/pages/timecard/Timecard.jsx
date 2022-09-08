@@ -8,7 +8,7 @@ import ErrorSummary from '../../components/common/form/error-summary/ErrorSummar
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import {
   getTimeEntries,
-  getTimePeriodTypes,
+  getTimePeriodTypeById,
 } from '../../api/services/timecardService';
 import {
   formatTime,
@@ -33,9 +33,11 @@ const updateTimeEntryContextData = async (setTimeEntries) => {
     timeEntriesResponse.data.items.map(async (timeEntry) => {
       const timePeriodTypeParams = new UrlSearchParamBuilder()
         .setTenantId('00000000-0000-0000-0000-000000000000')
-        .setId(timeEntry.timePeriodTypeId)
         .getUrlSearchParams();
-      const timePeriodType = await getTimePeriodTypes(timePeriodTypeParams);
+      const timePeriodType = await getTimePeriodTypeById(
+        '00000000-0000-0000-0000-000000000001',
+        timePeriodTypeParams
+      );
 
       existingTimeEntries.push({
         timeEntryId: timeEntry.id,
