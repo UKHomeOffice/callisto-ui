@@ -15,15 +15,16 @@ import {
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
+import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 
 const updateTimeEntryContextData = async (
-  timecardData,
   date,
   setTimecardData
 ) => {
+
   const params = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilter('ownerId==1')
+    .setFilters("ownerId==1", ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
   const timeEntriesResponse = await getTimeEntries(params);
 
@@ -47,16 +48,20 @@ const updateTimeEntryContextData = async (
   }
 
   setTimecardData({
-    ...timecardData,
+    timeEntryId: '',
+    timePeriodType: '',
+    startTime: '',
+    finishTime: '',
     startDate: dayjs(date).format(),
+    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
   });
 };
 
 const Timecard = () => {
   const { date } = useParams();
 
-  const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
-  const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
+  const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
+  const nextDay = formatDate(dayjs(date).add(1, 'day'));
 
   const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
 
@@ -68,10 +73,7 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-
-    if (!timecardData.timeEntryId) {
-      updateTimeEntryContextData(timecardData, date, setTimecardData);
-    }
+    updateTimeEntryContextData(date, setTimecardData);
   }, [date]);
 
   return (

@@ -3,9 +3,11 @@ import PhaseBanner from '../phase-banner/PhaseBanner';
 import { useState } from 'react';
 import SignIn from './SignIn';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { formatDate } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const Header = () => {
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const [toggleMenu, setToggleMenu] = useState(false);  
 
   return (
     <>
@@ -74,7 +76,7 @@ const Header = () => {
               <li className="govuk-header__navigation-item govuk-header__navigation-item">
                 <Link
                   className="govuk-header__link"
-                  to="/timecard"
+                  to={`/timecard/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
                 >
                   Record my time
