@@ -25,9 +25,6 @@ jest.mock('../../../api/services/timecardService', () => ({
 }));
 
 describe('SelectTimecardPeriodType', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
   it('should render a radios component with the correct time periods', async () => {
     renderWithTimecardContext(
       <SelectTimecardPeriodType

@@ -6,7 +6,10 @@ import BackLink from '../../components/common/form/navigation/backlink/BackLink'
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
-import { getTimeEntries } from '../../api/services/timecardService';
+import {
+  getTimeEntries,
+  getTimePeriodTypeById,
+} from '../../api/services/timecardService';
 import {
   formatTime,
   formatDate,
@@ -18,32 +21,36 @@ import { useTimecardContext } from '../../context/TimecardContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const updateTimeEntryContextData = async (setTimeEntries) => {
-  const params = new UrlSearchParamBuilder()
+  const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilter('ownerId==1')
     .getUrlSearchParams();
-  const timeEntriesResponse = await getTimeEntries(params);
+  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-  if (
-    timeEntriesResponse?.data?.items &&
-    timeEntriesResponse.data.items.length > 0
-  ) {
-    const timeEntriesArray = [];
-    const timeEntries = timeEntriesResponse.data.items;
+  if (timeEntriesResponse.data.items?.length > 0) {
+    const existingTimeEntries = await Promise.all(
+      timeEntriesResponse.data.items.map(async (timeEntry) => {
+        const timePeriodTypeParams = new UrlSearchParamBuilder()
+          .setTenantId('00000000-0000-0000-0000-000000000000')
+          .getUrlSearchParams();
+        const timePeriodType = await getTimePeriodTypeById(
+          '00000000-0000-0000-0000-000000000001',
+          timePeriodTypeParams
+        );
 
-    timeEntries.map((timeEntry) => {
-      timeEntriesArray.push({
-        timeEntryId: timeEntry.id,
-        timePeriodType: timeEntry.shiftType,
-        startTime: formatTime(timeEntry.actualStartTime),
-        finishTime: timeEntry.actualEndTime
-          ? formatTime(timeEntry.actualEndTime)
-          : '',
-        timePeriodTypeId: timeEntry.timePeriodTypeId,
-      });
-    });
+        return {
+          timeEntryId: timeEntry.id,
+          timePeriodType: timePeriodType,
+          startTime: formatTime(timeEntry.actualStartTime),
+          finishTime: timeEntry.actualEndTime
+            ? formatTime(timeEntry.actualEndTime)
+            : '',
+          timePeriodTypeId: timeEntry.timePeriodTypeId,
+        };
+      })
+    );
 
-    setTimeEntries(timeEntriesArray);
+    setTimeEntries(existingTimeEntries);
   } else {
     setTimeEntries([]);
   }

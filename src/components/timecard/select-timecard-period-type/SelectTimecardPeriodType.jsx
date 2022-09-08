@@ -27,7 +27,7 @@ const SelectTimecardPeriodType = () => {
         setTimePeriods(response.data.items.map((item) => item.name));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {

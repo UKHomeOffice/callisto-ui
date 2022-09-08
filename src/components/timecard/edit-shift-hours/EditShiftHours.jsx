@@ -53,24 +53,25 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
 
       const response = await saveTimeEntry(timecardPayload, params);
 
-      if (response?.data?.items && response?.data?.items.length > 0) {
-        const existingTimeEntries = timeEntries;
-        existingTimeEntries[index] = {
+      if (response?.data?.items?.length > 0) {
+        const newTimeEntries = timeEntries;
+        newTimeEntries[index] = {
           ...timeEntry,
           startTime: formData[`${inputName}-start-time`],
           finishTime: formData[`${inputName}-finish-time`] || '',
           id: response.data.items[0].id,
         };
-        setTimeEntries(existingTimeEntries);
+
+        setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       } else {
-        //no items returned, something went wrong
+        throw new Error('No data returned - something went wrong');
       }
     } catch (error) {
       /* TODO: Error handling when server raises error, similar to:
       setSummaryErrors(error); */
-      console.log(error);
+      console.error(error);
     }
   };
 
