@@ -48,12 +48,13 @@ const SelectTimecardPeriodType = () => {
       <form
         className="select-timecard-period-type"
         onSubmit={handleSubmit((data) => {
-          const newTimeEntries = timeEntries;
-          newTimeEntries.push({
-            timePeriodType: data[radioName],
-            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          });
-          setTimeEntries(newTimeEntries);
+          setTimeEntries([
+            ...timeEntries,
+            {
+              timePeriodType: data[radioName],
+              timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            },
+          ]);
           setSummaryErrors({});
         }, handleError)}
       >
