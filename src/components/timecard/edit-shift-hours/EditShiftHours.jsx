@@ -6,7 +6,7 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
+const EditShiftHours = ({ setShowEditShiftHours, timeEntry, timeEntriesIndex }) => {
   const {
     register,
     handleSubmit,
@@ -54,15 +54,14 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
       const response = await saveTimeEntry(timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        const newTimeEntries = timeEntries;
-        newTimeEntries[index] = {
+        timeEntries[timeEntriesIndex] = {
           ...timeEntry,
           startTime: formData[`${inputName}-start-time`],
           finishTime: formData[`${inputName}-finish-time`] || '',
           id: response.data.items[0].id,
         };
 
-        setTimeEntries(newTimeEntries);
+        setTimeEntries(timeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       } else {
@@ -99,6 +98,6 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
 export default EditShiftHours;
 EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
-  index: PropTypes.number,
+  timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
 };
