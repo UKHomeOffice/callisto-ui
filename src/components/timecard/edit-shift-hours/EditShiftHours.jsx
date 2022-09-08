@@ -6,7 +6,11 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const EditShiftHours = ({ setShowEditShiftHours, timeEntry, timeEntriesIndex }) => {
+const EditShiftHours = ({
+  setShowEditShiftHours,
+  timeEntry,
+  timeEntriesIndex,
+}) => {
   const {
     register,
     handleSubmit,
