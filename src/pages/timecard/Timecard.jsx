@@ -28,27 +28,27 @@ const updateTimeEntryContextData = async (setTimeEntries) => {
   const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
   if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = [];
+    const existingTimeEntries = await Promise.all(
+      timeEntriesResponse.data.items.map(async (timeEntry) => {
+        const timePeriodTypeParams = new UrlSearchParamBuilder()
+          .setTenantId('00000000-0000-0000-0000-000000000000')
+          .getUrlSearchParams();
+        const timePeriodType = await getTimePeriodTypeById(
+          '00000000-0000-0000-0000-000000000001',
+          timePeriodTypeParams
+        );
 
-    timeEntriesResponse.data.items.map(async (timeEntry) => {
-      const timePeriodTypeParams = new UrlSearchParamBuilder()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .getUrlSearchParams();
-      const timePeriodType = await getTimePeriodTypeById(
-        '00000000-0000-0000-0000-000000000001',
-        timePeriodTypeParams
-      );
-
-      existingTimeEntries.push({
-        timeEntryId: timeEntry.id,
-        timePeriodType: timePeriodType,
-        startTime: formatTime(timeEntry.actualStartTime),
-        finishTime: timeEntry.actualEndTime
-          ? formatTime(timeEntry.actualEndTime)
-          : '',
-        timePeriodTypeId: timeEntry.timePeriodTypeId,
-      });
-    });
+        return {
+          timeEntryId: timeEntry.id,
+          timePeriodType: timePeriodType,
+          startTime: formatTime(timeEntry.actualStartTime),
+          finishTime: timeEntry.actualEndTime
+            ? formatTime(timeEntry.actualEndTime)
+            : '',
+          timePeriodTypeId: timeEntry.timePeriodTypeId,
+        };
+      })
+    );
 
     setTimeEntries(existingTimeEntries);
   } else {
