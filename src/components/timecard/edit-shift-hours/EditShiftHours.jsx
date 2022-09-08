@@ -18,8 +18,8 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
   });
 
   const inputName = 'shift';
-  const { timeEntries, setTimeEntries } = useTimecardContext();
-  const { setSummaryErrors } = useTimecardContext();
+  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
+    useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -28,21 +28,20 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = dayjs(formData['startDate']).format('YYYY-MM-DD');
+    const actualStartDate = dayjs(timecardDate).format('YYYY-MM-DD');
     const startTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(
       actualStartDate + ' ' + startTime
     ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime;
-    if (endTime) {
-      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
-    }
+    let actualEndDateTime = endTime
+      ? dayjs(actualStartDate + ' ' + endTime).format()
+      : '';
 
     const timecardPayload = {
       ownerId: 1,
-      timePeriodTypeId: formData['timePeriodTypeId'],
+      timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
     };
@@ -90,16 +89,6 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
           <button className="govuk-button" type="submit">
             Save
           </button>
-          <input
-            type="hidden"
-            {...register('startDate')}
-            defaultValue={timeEntry.startDate}
-          />
-          <input
-            type="hidden"
-            {...register('timePeriodTypeId')}
-            defaultValue={timeEntry.timePeriodTypeId}
-          />
         </div>
       </form>
     </div>
@@ -109,6 +98,6 @@ const EditShiftHours = ({ setShowEditShiftHours, timeEntry, index }) => {
 export default EditShiftHours;
 EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
-  index: PropTypes.string,
+  index: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
 };
