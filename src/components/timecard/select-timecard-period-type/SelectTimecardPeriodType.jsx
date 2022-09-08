@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
-import { getTimePeriodTypes } from '../../../api/services/timecardService';
 import { useEffect, useState } from 'react';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -16,23 +16,13 @@ const SelectTimecardPeriodType = () => {
     shouldFocusError: false,
   });
 
-  const [timePeriods, setTimePeriods] = useState([]);
-  const getTimePeriodTypeData = async () => {
-    try {
-      const params = new URLSearchParams([
-        ['tenantId', '00000000-0000-0000-0000-000000000000'],
-      ]);
-      const response = await getTimePeriodTypes(params);
-      if (response?.data?.items) {
-        setTimePeriods(response.data.items.map((item) => item.name));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    getTimePeriodTypeData();
-  }, []);
+  const { timePeriodTypes } = useApplicationContext();
+
+  useEffect(() => {}, []);
+
+  const timePeriodTypeNames = timePeriodTypes.map((timePeriodType) => {
+    return timePeriodType.name;
+  });
 
   const radioName = 'timePeriod';
 
@@ -62,7 +52,7 @@ const SelectTimecardPeriodType = () => {
           name={radioName}
           heading="Add a new time period"
           headingSize="s"
-          options={timePeriods}
+          options={timePeriodTypeNames}
           errors={errors}
           {...register(radioName, {
             required: {

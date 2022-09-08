@@ -72,7 +72,7 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    setTimecardDate(date ? date : formatDate(dayjs()));
+    setTimecardDate(date);
     updateTimeEntryContextData(setTimeEntries);
   }, [date]);
 

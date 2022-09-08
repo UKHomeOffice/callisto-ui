@@ -10,6 +10,7 @@ import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
 import { TimecardProvider } from './context/TimecardContext';
+import { ApplicationProvider } from './context/ApplicationContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,34 +26,26 @@ ReactDOM.render(
     >
       <HashRouter>
         <Routes>
-          <Route path="/" element={<App />}>
-            <Route index="true" element={<Home />} />
-            <Route
-              path="/timecard/:date"
-              element={
-                <TimecardProvider>
-                  <Timecard />
-                </TimecardProvider>
-              }
-            />
-            <Route
-              path="/timecard"
-              element={
-                <TimecardProvider>
-                  <Timecard />
-                </TimecardProvider>
-              }
-            />
-            <Route path="/forms" element={<FormsExample />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: '1rem' }}>
-                  <h3>There&apos;s nothing here!</h3>
-                </main>
-              }
-            />
-          </Route>
+            <Route path="/" element={<App />}>
+              <Route index="true" element={<Home />} />
+              <Route
+                path="/timecard/:date"
+                element={
+                  <TimecardProvider>
+                    <Timecard />
+                  </TimecardProvider>
+                }
+              />
+              <Route path="/forms" element={<FormsExample />} />
+              <Route
+                path="*"
+                element={
+                  <main style={{ padding: '1rem' }}>
+                    <h3>There&apos;s nothing here!</h3>
+                  </main>
+                }
+              />
+            </Route>
         </Routes>
       </HashRouter>
     </ReactKeycloakProvider>
