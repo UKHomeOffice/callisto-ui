@@ -15,8 +15,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
-const updateTimeEntryContextData = async (setTimeEntries) => {
-  const { timePeriodTypes } = useApplicationContext();
+const updateTimeEntryContextData = async (setTimeEntries, timePeriodTypes) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilter('ownerId==1')
@@ -25,8 +24,7 @@ const updateTimeEntryContextData = async (setTimeEntries) => {
 
   if (timeEntriesResponse.data.items?.length > 0) {
     const existingTimeEntries = await Promise.all(
-      timeEntriesResponse.data.items.map(async (timeEntry) => {
-        console.log(timePeriodTypes[timeEntry.timePeriodTypeId]);
+      timeEntriesResponse.data.items.map((timeEntry) => {
         return {
           timeEntryId: timeEntry.id,
           timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
@@ -48,6 +46,7 @@ const updateTimeEntryContextData = async (setTimeEntries) => {
 const Timecard = () => {
   const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
     useTimecardContext();
+  const { timePeriodTypes } = useApplicationContext();
 
   const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
@@ -62,7 +61,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(setTimeEntries);
+    updateTimeEntryContextData(setTimeEntries, timePeriodTypes);
   }, [date]);
 
   return (
@@ -97,8 +96,7 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.length > 0 &&
-        timeEntries.map((timeEntry, index) => (
+      {timeEntries.map((timeEntry, index) => (
           <div key={index} className="govuk-!-margin-bottom-6">
             <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
           </div>

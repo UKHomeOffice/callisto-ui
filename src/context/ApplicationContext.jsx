@@ -11,12 +11,11 @@ const fetchTimePeriodTypesData = async () => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
     const response = await getTimePeriodTypes(params);
-    if (response.data?.items) {
-      return response.data.items;
-    }
+    return response.data?.items;
   } catch (error) {
+    /* TODO: Error handling when server raises error, similar to:
+      setSummaryErrors(error); */
     console.error(error);
-    return [];
   }
 };
 
