@@ -36,13 +36,3 @@ export const getTimePeriodTypes = async (params) => {
     );
   }
 };
-
-export const getTimePeriodTypeById = async (id, params) => {
-  try {
-    return await api.get(baseUrl + 'resources/time-period-type/' + id, params);
-  } catch (error) {
-    throw new Error(
-      serviceName + ' getTimePeriodTypeById function threw ' + error
-    );
-  }
-};

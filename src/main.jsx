@@ -10,7 +10,6 @@ import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
 import { TimecardProvider } from './context/TimecardContext';
-import { ApplicationProvider } from './context/ApplicationContext';
 
 ReactDOM.render(
   <React.StrictMode>
