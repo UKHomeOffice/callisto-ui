@@ -54,4 +54,28 @@ describe('SelectTimecardPeriodType', () => {
       expect(errorMessage).toBeTruthy();
     });
   });
+
+  it('should not display an error message when pressing submit with something selected', async () => {
+    await waitFor(() => {
+      renderWithTimecardContext(
+        <SelectTimecardPeriodType
+          register={mockRegister}
+          handleSubmit={handleSubmit}
+          errors={errors}
+        />
+      );
+    });
+
+    act(() => {
+      const radioButton = screen.getByText('Shift');
+      fireEvent.click(radioButton);
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
+    });
+
+    await waitFor(() => {
+      const errorMessage = screen.queryByText('You must select a time period');
+      expect(errorMessage).toBeFalsy();
+    });
+  });
 });

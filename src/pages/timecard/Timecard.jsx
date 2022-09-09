@@ -23,20 +23,17 @@ const updateTimeEntryContextData = async (setTimeEntries, timePeriodTypes) => {
   const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
   if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = await Promise.all(
-      timeEntriesResponse.data.items.map((timeEntry) => {
-        return {
-          timeEntryId: timeEntry.id,
-          timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
-          startTime: formatTime(timeEntry.actualStartTime),
-          finishTime: timeEntry.actualEndTime
-            ? formatTime(timeEntry.actualEndTime)
-            : '',
-          timePeriodTypeId: timeEntry.timePeriodTypeId,
-        };
+    const existingTimeEntries = timeEntriesResponse.data.items.map(
+      (timeEntry) => ({
+        timeEntryId: timeEntry.id,
+        timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
+        startTime: formatTime(timeEntry.actualStartTime),
+        finishTime: timeEntry.actualEndTime
+          ? formatTime(timeEntry.actualEndTime)
+          : '',
+        timePeriodTypeId: timeEntry.timePeriodTypeId,
       })
     );
-
     setTimeEntries(existingTimeEntries);
   } else {
     setTimeEntries([]);
