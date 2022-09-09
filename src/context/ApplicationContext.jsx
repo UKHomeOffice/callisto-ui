@@ -11,7 +11,6 @@ const fetchTimePeriodTypesData = async () => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
     const response = await getTimePeriodTypes(params);
-    console.log(response);
     if (response.data?.items) {
       return response.data.items;
     }
@@ -28,7 +27,11 @@ export const ApplicationProvider = ({ children }) => {
     timePeriodTypes,
     setTimePeriodTypes,
   };
-  
+
+  useEffect(async () => {
+    setTimePeriodTypes(await fetchTimePeriodTypesData());
+  }, []);
+
   return (
     <ApplicationContext.Provider value={value}>
       {children}
