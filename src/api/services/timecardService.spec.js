@@ -1,14 +1,12 @@
 import {
   getTimecard,
   getTimeEntries,
-  getTimePeriodTypeById,
   getTimePeriodTypes,
 } from './timecardService';
 import { newTimeCardEntry } from '../../../mocks/mockData';
 import api from '../core';
 
 const {
-  shiftTimeCardPeriodType: MOCK_SHIFT_TIME_PERIOD_TYPE,
   timeCardPeriodTypes: MOCK_TIME_PERIOD_TYPES,
 } = require('../../../mocks/mockData');
 jest.mock('../core');

@@ -97,10 +97,10 @@ const Timecard = () => {
       </div>
 
       {timeEntries.map((timeEntry, index) => (
-          <div key={index} className="govuk-!-margin-bottom-6">
-            <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-          </div>
-        ))}
+        <div key={index} className="govuk-!-margin-bottom-6">
+          <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+        </div>
+      ))}
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
     </>
   );
