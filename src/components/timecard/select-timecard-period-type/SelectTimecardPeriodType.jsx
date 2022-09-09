@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const SelectTimecardPeriodType = () => {
@@ -17,8 +17,6 @@ const SelectTimecardPeriodType = () => {
   });
 
   const { timePeriodTypes } = useApplicationContext();
-
-  useEffect(() => {}, []);
 
   const timePeriodTypeNames = timePeriodTypes.map((timePeriodType) => {
     return timePeriodType.name;
