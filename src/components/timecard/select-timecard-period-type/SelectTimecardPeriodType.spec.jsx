@@ -3,13 +3,9 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
 
-const { timeCardPeriodTypes } = require('../../../../mocks/mockData');
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
 const errors = {};
-const mockTimePeriodTypesResponse = {
-  data: timeCardPeriodTypes,
-};
 const expectedTimePeriodTypes = [
   'Shift',
   'Scheduled rest day',
@@ -19,10 +15,6 @@ const expectedTimePeriodTypes = [
   'Training',
   'Overtime',
 ];
-
-jest.mock('../../../api/services/timecardService', () => ({
-  getTimePeriodTypes: () => mockTimePeriodTypesResponse,
-}));
 
 describe('SelectTimecardPeriodType', () => {
   it('should render a radios component with the correct time periods', async () => {

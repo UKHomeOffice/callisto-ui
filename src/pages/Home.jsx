@@ -3,8 +3,6 @@ import generateDocumentTitle from '../utils/generate-document-title/generateDocu
 import { useApplicationContext } from '../context/ApplicationContext';
 
 const Home = () => {
-  const { timePeriodTypes, setTimePeriodTypes } = useApplicationContext()
-  
   useEffect(() => {
     document.title = generateDocumentTitle('Home');
   });

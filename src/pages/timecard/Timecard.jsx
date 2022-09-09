@@ -6,21 +6,17 @@ import BackLink from '../../components/common/form/navigation/backlink/BackLink'
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
-import {
-  getTimeEntries,
-  getTimePeriodTypeById,
-} from '../../api/services/timecardService';
-import {
-  formatTime,
-  formatDate,
-} from '../../utils/time-entry-utils/timeEntryUtils';
+import { getTimeEntries } from '../../api/services/timecardService';
+import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
+import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
 const updateTimeEntryContextData = async (setTimeEntries) => {
+  const { timePeriodTypes } = useApplicationContext();
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilter('ownerId==1')
@@ -30,17 +26,10 @@ const updateTimeEntryContextData = async (setTimeEntries) => {
   if (timeEntriesResponse.data.items?.length > 0) {
     const existingTimeEntries = await Promise.all(
       timeEntriesResponse.data.items.map(async (timeEntry) => {
-        const timePeriodTypeParams = new UrlSearchParamBuilder()
-          .setTenantId('00000000-0000-0000-0000-000000000000')
-          .getUrlSearchParams();
-        const timePeriodType = await getTimePeriodTypeById(
-          '00000000-0000-0000-0000-000000000001',
-          timePeriodTypeParams
-        );
-
+        console.log(timePeriodTypes[timeEntry.timePeriodTypeId]);
         return {
           timeEntryId: timeEntry.id,
-          timePeriodType: timePeriodType,
+          timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
           startTime: formatTime(timeEntry.actualStartTime),
           finishTime: timeEntry.actualEndTime
             ? formatTime(timeEntry.actualEndTime)

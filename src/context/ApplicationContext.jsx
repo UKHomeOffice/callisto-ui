@@ -28,12 +28,7 @@ export const ApplicationProvider = ({ children }) => {
     timePeriodTypes,
     setTimePeriodTypes,
   };
-
-  useEffect(async () => {
-    const a = await fetchTimePeriodTypesData();
-    setTimePeriodTypes(a);
-  }, []);
-
+  
   return (
     <ApplicationContext.Provider value={value}>
       {children}
