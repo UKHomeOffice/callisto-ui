@@ -6,19 +6,48 @@ import BackLink from '../../components/common/form/navigation/backlink/BackLink'
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
+import { getTimeEntries } from '../../api/services/timecardService';
+import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
+import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
+import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
-const Timecard = () => {
-  const { date } = useParams();
-  const utcDate = dayjs(date).format();
+const updateTimeEntryContextData = async (setTimeEntries, timePeriodTypes) => {
+  const timeEntriesParams = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .setFilter('ownerId==1')
+    .getUrlSearchParams();
+  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
+  if (timeEntriesResponse.data.items?.length > 0) {
+    const existingTimeEntries = timeEntriesResponse.data.items.map(
+      (timeEntry) => ({
+        timeEntryId: timeEntry.id,
+        timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
+        startTime: formatTime(timeEntry.actualStartTime),
+        finishTime: timeEntry.actualEndTime
+          ? formatTime(timeEntry.actualEndTime)
+          : '',
+        timePeriodTypeId: timeEntry.timePeriodTypeId,
+      })
+    );
+    setTimeEntries(existingTimeEntries);
+  } else {
+    setTimeEntries([]);
+  }
+};
+
+const Timecard = () => {
+  const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
+    useTimecardContext();
+  const { timePeriodTypes } = useApplicationContext();
+
+  const { date } = useParams();
   const previousDay = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
   const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
-
-  const { summaryErrors, timecardData, setTimecardData } = useTimecardContext();
 
   const desiredErrorOrder = [
     'shift-start-time',
@@ -28,10 +57,8 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    setTimecardData({
-      ...timecardData,
-      startDate: utcDate,
-    });
+    setTimecardDate(date);
+    updateTimeEntryContextData(setTimeEntries, timePeriodTypes);
   }, [date]);
 
   return (
@@ -66,11 +93,12 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {!timecardData.timePeriodType ? (
-        <SelectTimecardPeriodType />
-      ) : (
-        <EditShiftTimecard />
-      )}
+      {timeEntries.map((timeEntry, index) => (
+        <div key={index} className="govuk-!-margin-bottom-6">
+          <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+        </div>
+      ))}
+      {timeEntries.length === 0 && <SelectTimecardPeriodType />}
     </>
   );
 };

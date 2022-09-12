@@ -35,14 +35,6 @@ ReactDOM.render(
                 </TimecardProvider>
               }
             />
-            <Route
-              path="/timecard"
-              element={
-                <TimecardProvider>
-                  <Timecard />
-                </TimecardProvider>
-              }
-            />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"

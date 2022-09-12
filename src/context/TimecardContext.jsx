@@ -5,20 +5,16 @@ export const TimecardContext = createContext();
 
 export const TimecardProvider = ({ children }) => {
   const [summaryErrors, setSummaryErrors] = useState({});
-  const [timecardData, setTimecardData] = useState({
-    id: '',
-    timePeriodType: '',
-    startTime: '',
-    finishTime: '',
-    startDate: '',
-    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-  });
+  const [timeEntries, setTimeEntries] = useState([]);
+  const [timecardDate, setTimecardDate] = useState();
 
   const value = {
     summaryErrors,
     setSummaryErrors,
-    timecardData,
-    setTimecardData,
+    timeEntries,
+    setTimeEntries,
+    timecardDate,
+    setTimecardDate,
   };
 
   return (

@@ -6,7 +6,11 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const EditShiftHours = ({ setShowEditShiftHours }) => {
+const EditShiftHours = ({
+  setShowEditShiftHours,
+  timeEntry,
+  timeEntriesIndex,
+}) => {
   const {
     register,
     handleSubmit,
@@ -18,8 +22,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   });
 
   const inputName = 'shift';
-  const { timecardData, setTimecardData } = useTimecardContext();
-  const { setSummaryErrors } = useTimecardContext();
+  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
+    useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -28,21 +32,20 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = dayjs(formData['startDate']).format('YYYY-MM-DD');
+    const actualStartDate = dayjs(timecardDate).format('YYYY-MM-DD');
     const startTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(
       actualStartDate + ' ' + startTime
     ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime;
-    if (endTime) {
-      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
-    }
+    let actualEndDateTime = endTime
+      ? dayjs(actualStartDate + ' ' + endTime).format()
+      : '';
 
     const timecardPayload = {
       ownerId: 1,
-      timePeriodTypeId: formData['timePeriodTypeId'],
+      timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
     };
@@ -54,29 +57,24 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
       const response = await saveTimeEntry(timecardPayload, params);
 
-      if (response && response.data) {
-        const timecardResponseData = response.data;
+      if (response?.data?.items?.length > 0) {
+        timeEntries[timeEntriesIndex] = {
+          ...timeEntry,
+          startTime: formData[`${inputName}-start-time`],
+          finishTime: formData[`${inputName}-finish-time`] || '',
+          id: response.data.items[0].id,
+        };
 
-        if (
-          timecardResponseData.items &&
-          timecardResponseData.items.length > 0
-        ) {
-          setTimecardData({
-            ...timecardData,
-            startTime: formData[`${inputName}-start-time`],
-            finishTime: formData[`${inputName}-finish-time`] || '',
-            id: timecardResponseData.items[0].id,
-          });
-          setSummaryErrors({});
-          setShowEditShiftHours(false);
-        } else {
-          //no items returned, something went wrong
-        }
+        setTimeEntries(timeEntries);
+        setSummaryErrors({});
+        setShowEditShiftHours(false);
+      } else {
+        throw new Error('No data returned - something went wrong');
       }
     } catch (error) {
       /* TODO: Error handling when server raises error, similar to:
       setSummaryErrors(error); */
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -88,23 +86,13 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timecardData.startTime}
-          finishTimeValue={timecardData.finishTime}
+          startTimeValue={timeEntry.startTime}
+          finishTimeValue={timeEntry.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
             Save
           </button>
-          <input
-            type="hidden"
-            {...register('startDate')}
-            defaultValue={timecardData.startDate}
-          />
-          <input
-            type="hidden"
-            {...register('timePeriodTypeId')}
-            defaultValue={timecardData.timePeriodTypeId}
-          />
         </div>
       </form>
     </div>
@@ -113,5 +101,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
 export default EditShiftHours;
 EditShiftHours.propTypes = {
+  timeEntry: PropTypes.object,
+  timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
 };

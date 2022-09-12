@@ -1,7 +1,10 @@
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../test/helpers/Helpers';
-
 import Header from './Header';
+
+jest.mock('../../../utils/time-entry-utils/timeEntryUtils', () => ({
+  formatDate: () => '2022-09-01',
+}));
 
 describe('Header component', () => {
   const authClientStub = createAuthClientStub();
@@ -15,7 +18,7 @@ describe('Header component', () => {
   it('should link to /timecard when pressing the Timecard button', () => {
     renderWithProviders(<Header />, authClientStub);
     const timecardButton = screen.getByText('Record my time');
-    expect(timecardButton.pathname).toBe('/timecard');
+    expect(timecardButton.pathname).toBe('/timecard/2022-09-01');
   });
 
   function createAuthClientStub() {
