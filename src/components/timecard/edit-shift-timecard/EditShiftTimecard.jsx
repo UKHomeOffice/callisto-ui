@@ -1,17 +1,18 @@
+import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 
-const EditShiftTimecard = (shiftData) => {
+const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const shiftDataExists = shiftData.startTime !== '';
+  const timeEntryIsEmpty =
+    'startTime' in timeEntry && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !shiftDataExists
+    !timeEntryIsEmpty
   );
 
   const removeClick = () => {
@@ -30,8 +31,8 @@ const EditShiftTimecard = (shiftData) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            {shiftDataExists && (
-              <a
+            {timeEntryIsEmpty && (
+              <Link
                 className="govuk-link govuk-link--no-visited-state"
                 onClick={removeClick}
               >
@@ -49,13 +50,13 @@ const EditShiftTimecard = (shiftData) => {
           </dt>
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
-              shiftDataExists &&
-              `${shiftData.startTime} to ${
-                shiftData.finishTime ? shiftData.finishTime : '-'
+              timeEntryIsEmpty &&
+              `${timeEntry.startTime} to ${
+                timeEntry.finishTime ? timeEntry.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
-            {shiftDataExists && (
+            {timeEntryIsEmpty && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -70,7 +71,11 @@ const EditShiftTimecard = (shiftData) => {
         {showEditShiftHours && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
-              <EditShiftHours setShowEditShiftHours={setShowEditShiftHours} />
+              <EditShiftHours
+                setShowEditShiftHours={setShowEditShiftHours}
+                timeEntry={timeEntry}
+                timeEntriesIndex={timeEntriesIndex}
+              />
             </dt>
           </div>
         )}
@@ -89,7 +94,7 @@ const EditShiftTimecard = (shiftData) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            {shiftDataExists && (
+            {timeEntryIsEmpty && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
@@ -106,3 +111,8 @@ const EditShiftTimecard = (shiftData) => {
 };
 
 export default EditShiftTimecard;
+
+EditShiftTimecard.propTypes = {
+  timeEntry: PropTypes.object,
+  timeEntriesIndex: PropTypes.number,
+};
