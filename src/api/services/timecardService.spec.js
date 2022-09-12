@@ -38,45 +38,43 @@ describe('Timecard Service', () => {
     it('should return data correctly on success', async () => {
       api.get.mockImplementation(() => Promise.resolve({ data: timecard }));
 
-        const response = await getTimecard();
+      const response = await getTimecard();
 
-        expect(api.get).toHaveBeenCalledWith(
-          expect.stringContaining('api/v1/timecard'),
-          undefined
-        );
-        expect(response.data[0].meta).toBeDefined();
-        expect(response.data[0].items).toBeDefined();
-        expect(response.data[0].items.length).toBeGreaterThan(0);
-        expect(response.data).toStrictEqual(timecard);
-      });
+      expect(api.get).toHaveBeenCalledWith(
+        expect.stringContaining('api/v1/timecard'),
+        undefined
+      );
+      expect(response.data[0].meta).toBeDefined();
+      expect(response.data[0].items).toBeDefined();
+      expect(response.data[0].items.length).toBeGreaterThan(0);
+      expect(response.data).toStrictEqual(timecard);
+    });
 
     it('should use correct endpoint api/v1/timecard', async () => {
       api.get.mockImplementation(() => Promise.resolve({ data: timecard }));
-<<<<<<< HEAD
 
-        await getTimecard();
+      await getTimecard();
 
-        expect(api.get).toHaveBeenCalledWith(
-          expect.stringContaining('api/v1/timecard'),
-          undefined
-        );
-      });
+      expect(api.get).toHaveBeenCalledWith(
+        expect.stringContaining('api/v1/timecard'),
+        undefined
+      );
+    });
 
     it('should throw useful error containing throwing service and function', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
 
-        try {
-          const response = await getTimecard();
-          expect(response).toBeUndefined();
-        } catch (error) {
-          expect(error).toBeDefined();
-          expect(error.message).toContain('Timecard Service');
-          expect(error.message).toContain('getTimecard');
-          expect(error.message).toContain('xyz');
-        }
-    });
+      try {
+        const response = await getTimecard();
+        expect(response).toBeUndefined();
+      } catch (error) {
+        expect(error).toBeDefined();
+        expect(error.message).toContain('Timecard Service');
+        expect(error.message).toContain('getTimecard');
+        expect(error.message).toContain('xyz');
+      }
     });
   });
 
@@ -86,7 +84,7 @@ describe('Timecard Service', () => {
         Promise.resolve({ data: MOCK_TIME_PERIOD_TYPES })
       );
 
-        const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
+      const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
 
       expect(api.get).toHaveBeenCalledWith(
         expect.stringContaining('resources/time-period-type'),

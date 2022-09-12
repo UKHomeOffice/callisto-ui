@@ -38,7 +38,7 @@ describe('EditShiftHours', () => {
         {
           ownerId: 1,
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: '2022-09-01T08:00:00+00:00',
+          actualStartTime: '2022-09-01T08:00:00+01:00',
           actualEndTime: '',
         },
         new URLSearchParams([
@@ -50,15 +50,11 @@ describe('EditShiftHours', () => {
 
   it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
     renderWithTimecardContext(
-      <EditShiftHours setShowEditShiftHours={jest.fn()} />,
-      {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timecardData: {
-          timeEntryId: '1',
-        },
-        setTimecardData: jest.fn(),
-      }
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={{...newTimeEntry, timeEntryId: '1'}}
+        index={0}
+      />
     );
 
     act(() => {
@@ -79,9 +75,6 @@ describe('EditShiftHours', () => {
       <EditShiftHours
        
         setShowEditShiftHours={jest.fn()}
-        timeEntry={newTimeEntry}
-        index={0}
-     
         timeEntry={newTimeEntry}
         index={0}
       />

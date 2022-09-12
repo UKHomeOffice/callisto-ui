@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { formatDate } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const Header = () => {
-  const [toggleMenu, setToggleMenu] = useState(false);  
+  const [toggleMenu, setToggleMenu] = useState(false);
 
   return (
     <>

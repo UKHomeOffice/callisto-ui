@@ -3,12 +3,14 @@ import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
 import { newTimeCardEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
+import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
 
+const date = '2022-07-01';
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
-    date: '2022-07-01',
+    date: date,
   }),
   useNavigate: () => mockNavigate,
 }));
@@ -26,8 +28,8 @@ describe('Timecard', () => {
   it('should render a timecard component with the correct date', () => {
     renderWithTimecardContext(<Timecard />);
 
-    const date = screen.getByText('01 July 2022');
-    expect(date).toBeTruthy();
+    const screenDate = screen.getByText('01 July 2022');
+    expect(screenDate).toBeTruthy();
   });
 
   it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
@@ -79,34 +81,32 @@ describe('Timecard', () => {
     expect(screen.getByText('Finish time')).toBeTruthy();
   });
 
-  it('should set the timecard context if time entry exists', async () => {
-    const setTimecardDataSpy = jest.fn();
+  it('should set the time entries in the context if time entries exist for that date', async () => {
+    const setTimeEntriesSpy = jest.fn();
+    const setTimecardDateSpy = jest.fn();
 
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
-        timeEntryId: '',
-        timePeriodType: '',
-        startTime: '',
-        finishTime: '',
-      },
-      setTimecardData: setTimecardDataSpy,
+      timeEntries: [],
+      setTimeEntries: setTimeEntriesSpy,
+      timecardDate: '',
+      setTimecardDate: setTimecardDateSpy,
     });
 
     await waitFor(() => {
-      expect(setTimecardDataSpy).toHaveBeenCalledWith({
+      expect(setTimeEntriesSpy).toHaveBeenCalledWith([{
         timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-        startDate: '2022-08-24',
-        startTime: '12:01',
-        finishTime: '22:01',
-        timePeriodType: '',
+        timePeriodType: undefined, //TODO: expect real type once timePeriodType context issue sorted
+        startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
+        finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
         timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      });
+      }]);
+      expect(setTimecardDateSpy).toHaveBeenCalledWith(date);
     });
   });
 
-  it('should set the timecard context for only the date if time entry does not exist', async () => {
+  it('should set the date and an empty time entries array in the context if time entries do not exist for that date', async () => {
     getTimeEntries.mockImplementation(() => {
       return {
         data: {
@@ -116,29 +116,21 @@ describe('Timecard', () => {
       };
     });
 
-    const setTimecardDataSpy = jest.fn();
+    const setTimeEntriesSpy = jest.fn();
+    const setTimecardDateSpy = jest.fn();
 
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
-        timeEntryId: '',
-        timePeriodType: '',
-        startDate: '',
-        startTime: '',
-        finishTime: '',
-      },
-      setTimecardData: setTimecardDataSpy,
+      timeEntries: [{}, {}],
+      setTimeEntries: setTimeEntriesSpy,
+      timecardDate: '',
+      setTimecardDate: setTimecardDateSpy,
     });
 
     await waitFor(() => {
-      expect(setTimecardDataSpy).toHaveBeenCalledWith({
-        timeEntryId: '',
-        startDate: '2022-07-01T00:00:00+00:00',
-        finishTime: '',
-        startTime: '',
-        timePeriodType: '',
-      });
+      expect(setTimeEntriesSpy).toHaveBeenCalledWith([]);
+      expect(setTimecardDateSpy).toHaveBeenCalledWith(date);
     });
   });
 
