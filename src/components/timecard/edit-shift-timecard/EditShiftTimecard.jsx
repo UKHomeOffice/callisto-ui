@@ -2,6 +2,9 @@ import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
+import { deleteTimeEntry } from '../../../api/services/timecardService';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { useTimecardContext } from '../../../context/TimecardContext';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const toggleEditShiftHours = (event) => {
@@ -9,11 +12,28 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
+  const { timeEntries, setTimeEntries } = useTimecardContext();
+
   const timeEntryIsEmpty =
     'startTime' in timeEntry && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timeEntryIsEmpty
   );
+
+  const clickRemoveShiftButton = async (event) => {
+    event.preventDefault();
+    const params = new UrlSearchParamBuilder()
+      .setTenantId('00000000-0000-0000-0000-000000000000')
+      .getUrlSearchParams();
+    const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
+
+    console.log('response', response);
+    if (response.status === 200) {
+      timeEntries.splice(timeEntriesIndex, 1);
+      setTimeEntries(timeEntries);
+      console.log(timeEntries);
+    }
+  };
 
   return (
     <div className="select-timecard-period-type">
@@ -29,6 +49,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
             {timeEntryIsEmpty && (
               <Link
+                onClick={clickRemoveShiftButton}
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
               >
