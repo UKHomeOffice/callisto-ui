@@ -29,9 +29,12 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
 
     console.log('response', response);
     if (response.status === 200) {
-      timeEntries.splice(timeEntriesIndex, 1);
-      setTimeEntries(timeEntries);
-      console.log(timeEntries);
+      const newTimeEntries = timeEntries;
+      console.log('index', timeEntriesIndex);
+      newTimeEntries.splice(timeEntriesIndex, 1);
+      console.log('newTimeEntries', newTimeEntries);
+      setTimeEntries(newTimeEntries);
+      
     }
   };
 
