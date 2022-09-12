@@ -270,10 +270,24 @@ const timeCardPeriodTypes = {
   ],
 };
 
+const shiftTimeCardPeriodType = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: '00000000-0000-0000-0000-000000000001',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Shift',
+    },
+  ],
+};
+
 module.exports = {
   newTimeCardEntry,
   updatedTimeCardEntryStartTime,
   timeCardPeriodTypes,
+  shiftTimeCardPeriodType,
   accruals,
   people,
   artists,

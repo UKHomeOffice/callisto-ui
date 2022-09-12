@@ -8,9 +8,27 @@ import EditShiftTimecard from './EditShiftTimecard';
 
 jest.mock('../../../api/services/timecardService');
 
+let existingTimeEntry;
+beforeEach(() => {
+  existingTimeEntry = {
+    timeEntryId: '00000000-0000-0000-0000-000000000001',
+    timePeriodType: 'Shift',
+    startTime: '08:00',
+    finishTime: '16:00',
+    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  };
+});
+
+const newTimeEntry = {
+  timePeriodType: 'Shift',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+};
+
 describe('EditShiftTimecard', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
-    renderWithTimecardContext(<EditShiftTimecard />);
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+    );
 
     const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
 
@@ -20,7 +38,9 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when first directed to page', async () => {
-    renderWithTimecardContext(<EditShiftTimecard />);
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={newTimeEntry} index={0} />
+    );
 
     expect(screen.getByText('Start time')).toBeTruthy();
     expect(screen.getByText('Finish time')).toBeTruthy();
@@ -29,7 +49,9 @@ describe('EditShiftTimecard', () => {
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
     createTimeEntry.mockResolvedValue({ data: newTimeCardEntry });
 
-    renderWithTimecardContext(<EditShiftTimecard />);
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={newTimeEntry} index={0} />
+    );
 
     const startTimeInput = screen.getByTestId('shift-start-time');
     const finishTimeInput = screen.getByTestId('shift-finish-time');
@@ -50,16 +72,9 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should render the "Remove" and "Change" buttons when there is timecard data', async () => {
-    renderWithTimecardContext(<EditShiftTimecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timecardData: {
-        timePeriodType: 'Shift',
-        startTime: '08:00',
-        finishTime: '16:00',
-      },
-      setTimecardData: jest.fn(),
-    });
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+    );
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
     const removeShiftButton = screen.queryByText('Remove');
@@ -73,16 +88,9 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
-    renderWithTimecardContext(<EditShiftTimecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timecardData: {
-        timePeriodType: 'Shift',
-        startTime: '08:00',
-        finishTime: '16:00',
-      },
-      setTimecardData: jest.fn(),
-    });
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+    );
 
     act(() => {
       const changeButton = screen.getByTestId('hours-change-button');
@@ -96,16 +104,9 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should not render the "Remove" or "Change" buttons when there is no timecard data', async () => {
-    renderWithTimecardContext(<EditShiftTimecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timecardData: {
-        timePeriodType: 'Shift',
-        startTime: '',
-        finishTime: '',
-      },
-      setTimecardData: jest.fn(),
-    });
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={newTimeEntry} index={0} />
+    );
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
     const removeShiftButton = screen.queryByText('Remove');
@@ -120,58 +121,36 @@ describe('EditShiftTimecard', () => {
 
   describe('hours summary text', () => {
     it('should display start time on timecard when start time has been entered', async () => {
-      renderWithTimecardContext(<EditShiftTimecard />, {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timecardData: {
-          timePeriodType: 'Shift',
-          startTime: '08:00',
-          finishTime: '',
-        },
-        setTimecardData: jest.fn(),
-      });
+      existingTimeEntry.finishTime = '';
+      existingTimeEntry.finishDate = '';
+
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+      );
 
       expect(screen.getByText('08:00 to -')).toBeTruthy();
     });
 
     it('should display start and finish time on timecard when both times have been entered', async () => {
-      renderWithTimecardContext(<EditShiftTimecard />, {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timecardData: {
-          startTime: '08:00',
-          finishTime: '16:00',
-        },
-        setTimecardData: jest.fn(),
-      });
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+      );
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
     });
 
     it('should not display start and finish time on timecard when nothing has been entered', async () => {
-      renderWithTimecardContext(<EditShiftTimecard />, {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timecardData: {
-          startTime: '',
-          finishTime: '',
-        },
-        setTimecardData: jest.fn(),
-      });
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={newTimeEntry} index={0} />
+      );
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
     });
 
     it('should not display start and finish time on timecard when edit hours toggle is open', async () => {
-      renderWithTimecardContext(<EditShiftTimecard />, {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timecardData: {
-          startTime: '08:00',
-          finishTime: '16:00',
-        },
-        setTimecardData: jest.fn(),
-      });
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
+      );
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
 

@@ -3,17 +3,26 @@ import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
 
-const mockCreateTimeEntry = jest.fn();
-const mockUpdateTimeEntry = jest.fn();
-jest.mock('../../../api/services/timecardService', () => ({
-  createTimeEntry: () => mockCreateTimeEntry(),
-  updateTimeEntry: () => mockUpdateTimeEntry(),
-}));
+const newTimeEntry = {
+  timePeriodType: 'Shift',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+};
+
+const timecardService = require('../../../api/services/timecardService');
+const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
+const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
 describe('EditShiftHours', () => {
   it('should call createTimeEntry when pressing save with no existing time entry', async () => {
     renderWithTimecardContext(
-      <EditShiftHours setShowEditShiftHours={jest.fn()} />
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        index={0}
+      />,
+      {
+        timecardDate: '2022-09-01',
+      }
     );
 
     act(() => {
@@ -25,7 +34,17 @@ describe('EditShiftHours', () => {
     });
 
     await waitFor(() => {
-      expect(mockCreateTimeEntry).toHaveBeenCalled();
+      expect(mockCreateTimeEntry).toHaveBeenCalledWith(
+        {
+          ownerId: 1,
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: '2022-09-01T08:00:00+00:00',
+          actualEndTime: '',
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
     });
   });
 
@@ -57,7 +76,11 @@ describe('EditShiftHours', () => {
 
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
-      <EditShiftHours setShowEditShiftHours={jest.fn()} />
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        index={0}
+      />
     );
 
     act(() => {
@@ -77,7 +100,11 @@ describe('EditShiftHours', () => {
     'should display an error when pressing save with an invalid start time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -101,7 +128,11 @@ describe('EditShiftHours', () => {
     'should not display an error when pressing save with a valid start time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -125,7 +156,11 @@ describe('EditShiftHours', () => {
     'should display an error when pressing save with an invalid finish time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {
@@ -149,7 +184,11 @@ describe('EditShiftHours', () => {
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
       renderWithTimecardContext(
-        <EditShiftHours setShowEditShiftHours={jest.fn()} />
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />
       );
 
       act(() => {

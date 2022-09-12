@@ -11,7 +11,11 @@ import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { formatDate } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const EditShiftHours = ({ setShowEditShiftHours }) => {
+const EditShiftHours = ({
+  setShowEditShiftHours,
+  timeEntry,
+  timeEntriesIndex,
+}) => {
   const {
     register,
     handleSubmit,
@@ -23,8 +27,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   });
 
   const inputName = 'shift';
-  const { timecardData, setTimecardData } = useTimecardContext();
-  const { setSummaryErrors } = useTimecardContext();
+  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
+    useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -33,21 +37,20 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = formatDate(timecardData.startDate);
+    const actualStartDate = formatDate(dayjs(timecardDate));
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = dayjs(
       actualStartDate + ' ' + actualStartTime
     ).format();
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime;
-    if (endTime) {
-      actualEndDateTime = dayjs(actualStartDate + ' ' + endTime).format();
-    }
+    let actualEndDateTime = endTime
+      ? dayjs(actualStartDate + ' ' + endTime).format()
+      : '';
 
     const timecardPayload = {
       ownerId: 1,
-      timePeriodTypeId: timecardData.timePeriodTypeId,
+      timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
     };
@@ -57,37 +60,32 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
 
-      const response = !timecardData.timeEntryId
+      const response = !timeEntry.timeEntryId
         ? await createTimeEntry(timecardPayload, params)
         : await updateTimeEntry(
-            timecardData.timeEntryId,
+          timeEntry.timeEntryId,
             timecardPayload,
             params
           );
 
-      if (response && response.data) {
-        const timecardResponseData = response.data;
+      if (response?.data?.items?.length > 0) {
+        timeEntries[timeEntriesIndex] = {
+          ...timeEntry,
+          startTime: formData[`${inputName}-start-time`],
+          finishTime: formData[`${inputName}-finish-time`] || '',
+          id: response.data.items[0].id,
+        };
 
-        if (
-          timecardResponseData.items &&
-          timecardResponseData.items.length > 0
-        ) {
-          setTimecardData({
-            ...timecardData,
-            startTime: formData[`${inputName}-start-time`],
-            finishTime: formData[`${inputName}-finish-time`] || '',
-            timeEntryId: timecardResponseData.items[0].id,
-          });
-          setSummaryErrors({});
-          setShowEditShiftHours(false);
-        } else {
-          //no items returned, something went wrong
-        }
+        setTimeEntries(timeEntries);
+        setSummaryErrors({});
+        setShowEditShiftHours(false);
+      } else {
+        throw new Error('No data returned - something went wrong');
       }
     } catch (error) {
       /* TODO: Error handling when server raises error, similar to:
       setSummaryErrors(error); */
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -99,8 +97,8 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
           errors={errors}
           register={register}
           formState={formState}
-          startTimeValue={timecardData.startTime}
-          finishTimeValue={timecardData.finishTime}
+          startTimeValue={timeEntry.startTime}
+          finishTimeValue={timeEntry.finishTime}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
@@ -114,5 +112,7 @@ const EditShiftHours = ({ setShowEditShiftHours }) => {
 
 export default EditShiftHours;
 EditShiftHours.propTypes = {
+  timeEntry: PropTypes.object,
+  timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
 };
