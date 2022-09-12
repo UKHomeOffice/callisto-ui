@@ -7,7 +7,10 @@ import SelectTimecardPeriodType from '../../components/timecard/select-timecard-
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import { getTimeEntries } from '../../api/services/timecardService';
-import { formatTime, formatDate } from '../../utils/time-entry-utils/timeEntryUtils';
+import {
+  formatTime,
+  formatDate,
+} from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
@@ -16,11 +19,14 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 
-
-const updateTimeEntryContextData = async (date, setTimeEntries, timePeriodTypes) => {
+const updateTimeEntryContextData = async (
+  date,
+  setTimeEntries,
+  timePeriodTypes
+) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters("ownerId==1", ...filterTimeEntriesOnDate(date))
+    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
   const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 

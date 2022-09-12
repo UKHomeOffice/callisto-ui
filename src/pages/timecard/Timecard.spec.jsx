@@ -95,13 +95,15 @@ describe('Timecard', () => {
     });
 
     await waitFor(() => {
-      expect(setTimeEntriesSpy).toHaveBeenCalledWith([{
-        timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-        timePeriodType: undefined, //TODO: expect real type once timePeriodType context issue sorted
-        startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
-        finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
-        timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      }]);
+      expect(setTimeEntriesSpy).toHaveBeenCalledWith([
+        {
+          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+          timePeriodType: undefined, //TODO: expect real type once timePeriodType context issue sorted
+          startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
+          finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+        },
+      ]);
       expect(setTimecardDateSpy).toHaveBeenCalledWith(date);
     });
   });

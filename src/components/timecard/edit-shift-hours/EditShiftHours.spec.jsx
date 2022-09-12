@@ -52,7 +52,7 @@ describe('EditShiftHours', () => {
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
-        timeEntry={{...newTimeEntry, timeEntryId: '1'}}
+        timeEntry={{ ...newTimeEntry, timeEntryId: '1' }}
         index={0}
       />
     );
@@ -73,7 +73,6 @@ describe('EditShiftHours', () => {
   it('should display an error when pressing save with no start time added', async () => {
     renderWithTimecardContext(
       <EditShiftHours
-       
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         index={0}

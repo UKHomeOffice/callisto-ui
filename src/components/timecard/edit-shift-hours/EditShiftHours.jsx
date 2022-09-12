@@ -62,11 +62,7 @@ const EditShiftHours = ({
 
       const response = !timeEntry.timeEntryId
         ? await createTimeEntry(timecardPayload, params)
-        : await updateTimeEntry(
-          timeEntry.timeEntryId,
-            timecardPayload,
-            params
-          );
+        : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
         timeEntries[timeEntriesIndex] = {
