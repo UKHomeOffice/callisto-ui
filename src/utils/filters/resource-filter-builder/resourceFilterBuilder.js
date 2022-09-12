@@ -1,20 +1,14 @@
 import dayjs from 'dayjs';
+import { formatDateTimeISO } from '../../time-entry-utils/timeEntryUtils';
 
 export const filterOnOrAfterDate = (resourceDateProperty, date) => {
-  let dateMidnight = dayjs(date)
-    .hour(0)
-    .minute(0)
-    .second(0)
-    .format('YYYY-MM-DDTHH:mm:ssZ');
+  let dateMidnight = formatDateTimeISO(dayjs(date).startOf('day'));
   return resourceDateProperty + ">='" + dateMidnight + "'";
 };
 
 export const filterBeforeDate = (resourceDateProperty, date) => {
-  let beforeDate = dayjs(date)
-    .hour(0)
-    .minute(0)
-    .second(0)
-    .subtract(1, 'minute')
-    .format('YYYY-MM-DDTHH:mm:ssZ');
+  let beforeDate = formatDateTimeISO(
+    dayjs(date).startOf('day').subtract(1, 'minute')
+  );
   return resourceDateProperty + "<='" + beforeDate + "'";
 };

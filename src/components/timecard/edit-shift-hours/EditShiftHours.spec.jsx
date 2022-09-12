@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { formatDateTimeISO } from '../../../utils/time-entry-utils/timeEntryUtils';
 import EditShiftHours from './EditShiftHours';
 
 const newTimeEntry = {
@@ -14,6 +15,9 @@ const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
 describe('EditShiftHours', () => {
   it('should call createTimeEntry when pressing save with no existing time entry', async () => {
+
+    let timecardDate = '2022-09-01';
+    let inputtedStartTime = '08:00';
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
@@ -21,13 +25,13 @@ describe('EditShiftHours', () => {
         index={0}
       />,
       {
-        timecardDate: '2022-09-01',
+        timecardDate: timecardDate,
       }
     );
 
     act(() => {
       const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+      fireEvent.change(startTimeInput, { target: { value: inputtedStartTime } });
 
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
@@ -38,7 +42,7 @@ describe('EditShiftHours', () => {
         {
           ownerId: 1,
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: '2022-09-01T08:00:00+01:00',
+          actualStartTime: formatDateTimeISO(timecardDate + ' ' + inputtedStartTime),
           actualEndTime: '',
         },
         new URLSearchParams([
