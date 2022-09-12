@@ -9,7 +9,10 @@ import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInpu
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
-import { formatDate, formatDateTimeISO } from '../../../utils/time-entry-utils/timeEntryUtils';
+import {
+  formatDate,
+  formatDateTimeISO,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -39,7 +42,9 @@ const EditShiftHours = ({
 
     const actualStartDate = formatDate(timecardDate);
     const actualStartTime = formData[`${inputName}-start-time`];
-    const actualStartDateTime = formatDateTimeISO(actualStartDate + ' ' + actualStartTime);
+    const actualStartDateTime = formatDateTimeISO(
+      actualStartDate + ' ' + actualStartTime
+    );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = endTime
