@@ -41,10 +41,9 @@ const updateTimeEntryContextData = async (
     if (existingTimeEntries !== currentTimeEntries) {
       setTimeEntries(existingTimeEntries);
     }
-  } 
-  // else {
-  //   setTimeEntries([]);
-  // }
+  } else {
+    setTimeEntries([]);
+  }
 };
 
 const Timecard = () => {
@@ -66,8 +65,7 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(setTimeEntries, timePeriodTypes, timeEntries);
-    console.log('timeEntries', timeEntries);
-  }, [date, timeEntries]);
+  }, [date]);
 
   return (
     <>
