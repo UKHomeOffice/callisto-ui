@@ -41,13 +41,16 @@ describe('Timecard', () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timecardData: {
-        timeEntryId: '1',
-        timePeriodType: 'Shift',
-        startTime: '',
-        finishTime: '',
-      },
-      setTimecardData: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodType: 'Shift',
+          startTime: '',
+          finishTime: '',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
     });
 
     expect(screen.queryByText('Add a new time period')).toBeFalsy();

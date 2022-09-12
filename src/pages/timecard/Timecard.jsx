@@ -48,7 +48,6 @@ const Timecard = () => {
   const { timePeriodTypes } = useApplicationContext();
 
   const { date } = useParams();
-
   const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(date).add(1, 'day'));
 
