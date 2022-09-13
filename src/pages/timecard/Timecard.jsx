@@ -48,6 +48,14 @@ const updateTimeEntryContextData = async (
   }
 };
 
+const getTimePeriodTypesMap = (timePeriodTypes) => {
+  let timePeriodTypesMap = {};
+  timePeriodTypes.map(
+    (timePeriodType) => (timePeriodTypesMap[timePeriodType.id] = timePeriodType)
+  );
+  return timePeriodTypesMap;
+};
+
 const Timecard = () => {
   const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
     useTimecardContext();
@@ -66,8 +74,12 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries, timePeriodTypes);
-  }, [date]);
+    updateTimeEntryContextData(
+      date,
+      setTimeEntries,
+      getTimePeriodTypesMap(timePeriodTypes)
+    );
+  }, [date, timePeriodTypes]);
 
   return (
     <>

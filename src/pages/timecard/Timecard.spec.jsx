@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
-import { newTimeCardEntry } from '../../../mocks/mockData';
+import { newTimeCardEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
@@ -98,7 +98,10 @@ describe('Timecard', () => {
       expect(setTimeEntriesSpy).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          timePeriodType: undefined, //TODO: expect real type once timePeriodType context issue sorted
+          timePeriodType: timeCardPeriodTypes.items.find(
+            (timePeriodType) =>
+              timePeriodType.id === '00000000-0000-0000-0000-000000000001'
+          ),
           startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
           finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
