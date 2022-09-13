@@ -83,7 +83,7 @@ describe('EditShiftHours', () => {
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
-        
+
         const endTimeInput = screen.getByTestId('shift-finish-time');
         fireEvent.change(endTimeInput, {
           target: { value: inputtedEndTime },
