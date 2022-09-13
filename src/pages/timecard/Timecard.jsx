@@ -15,11 +15,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 
-const updateTimeEntryContextData = async (
-  setTimeEntries,
-  timePeriodTypes,
-  currentTimeEntries
-) => {
+const updateTimeEntryContextData = async (setTimeEntries, timePeriodTypes) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilter('ownerId==1')
@@ -38,9 +34,7 @@ const updateTimeEntryContextData = async (
         timePeriodTypeId: timeEntry.timePeriodTypeId,
       })
     );
-    if (existingTimeEntries !== currentTimeEntries) {
-      setTimeEntries(existingTimeEntries);
-    }
+    setTimeEntries(existingTimeEntries);
   } else {
     setTimeEntries([]);
   }
@@ -64,7 +58,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(setTimeEntries, timePeriodTypes, timeEntries);
+    updateTimeEntryContextData(setTimeEntries, timePeriodTypes);
   }, [date]);
 
   return (
@@ -99,12 +93,11 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.length > 0 &&
-        timeEntries.map((timeEntry, index) => (
-          <div key={index} className="govuk-!-margin-bottom-6">
-            <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-          </div>
-        ))}
+      {timeEntries.map((timeEntry, index) => (
+        <div key={index} className="govuk-!-margin-bottom-6">
+          <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+        </div>
+      ))}
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
     </>
   );

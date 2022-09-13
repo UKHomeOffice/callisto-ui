@@ -28,7 +28,6 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       .getUrlSearchParams();
     const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
 
-    console.log('response', response);
     if (response.status === 200) {
       const newTimeEntries = deepClone(timeEntries);
       newTimeEntries.splice(timeEntriesIndex, 1);
