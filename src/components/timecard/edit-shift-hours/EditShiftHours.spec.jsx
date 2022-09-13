@@ -58,10 +58,13 @@ describe('EditShiftHours', () => {
 
     it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
       const timeEntryId = '1';
+      const inputtedEndTime = '06:00';
+
       const existingTimeEntry = {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
         startTime: '01:00',
+        endTime: '05:00',
       };
       renderWithTimecardContext(
         <EditShiftHours
@@ -80,6 +83,11 @@ describe('EditShiftHours', () => {
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
+        
+        const endTimeInput = screen.getByTestId('shift-finish-time');
+        fireEvent.change(endTimeInput, {
+          target: { value: inputtedEndTime },
+        });
 
         const saveButton = screen.getByText('Save');
         fireEvent.click(saveButton);
@@ -92,7 +100,7 @@ describe('EditShiftHours', () => {
             ownerId: 1,
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
             actualStartTime: expectedActualStartTime,
-            actualEndTime: '',
+            actualEndTime: timecardDate + 'T' + inputtedEndTime + ':00+00:00',
           },
           new URLSearchParams([
             ['tenantId', '00000000-0000-0000-0000-000000000000'],
