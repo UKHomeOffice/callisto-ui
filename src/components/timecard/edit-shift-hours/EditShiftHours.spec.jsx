@@ -13,10 +13,11 @@ const timecardService = require('../../../api/services/timecardService');
 const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
 const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
+const timecardDate = '2022-09-01';
+const inputtedStartTime = '08:00';
+
 describe('EditShiftHours', () => {
   it('should call createTimeEntry when pressing save with no existing time entry', async () => {
-    let timecardDate = '2022-09-01';
-    let inputtedStartTime = '08:00';
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
@@ -56,24 +57,49 @@ describe('EditShiftHours', () => {
   });
 
   it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
+    const timeEntryId = '1';
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '01:00',
+    };
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
-        timeEntry={{ ...newTimeEntry, timeEntryId: '1' }}
+        timeEntry={existingTimeEntry}
         index={0}
-      />
+      />,
+      {
+        timecardDate: timecardDate,
+        timeEntries: [existingTimeEntry],
+      }
     );
 
     act(() => {
       const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+      fireEvent.change(startTimeInput, {
+        target: { value: inputtedStartTime },
+      });
 
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
     });
 
     await waitFor(() => {
-      expect(mockUpdateTimeEntry).toHaveBeenCalled();
+      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+        timeEntryId,
+        {
+          ownerId: 1,
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: formatDateTimeISO(
+            timecardDate + ' ' + inputtedStartTime
+          ),
+          actualEndTime: '',
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
     });
   });
 
