@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import { formatDateTimeISO } from '../../../utils/time-entry-utils/timeEntryUtils';
 import EditShiftHours from './EditShiftHours';
 
 const newTimeEntry = {
@@ -13,93 +12,93 @@ const timecardService = require('../../../api/services/timecardService');
 const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
 const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
-const timecardDate = '2022-09-01';
-const inputtedStartTime = '08:00';
-
 describe('EditShiftHours', () => {
-  it('should call createTimeEntry when pressing save with no existing time entry', async () => {
-    renderWithTimecardContext(
-      <EditShiftHours
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={newTimeEntry}
-        index={0}
-      />,
-      {
-        timecardDate: timecardDate,
-      }
-    );
+  describe('given time entries are to be persisted', () => {
+    const timecardDate = '2022-09-01';
+    const inputtedStartTime = '08:00';
+    const expectedActualStartTime =
+      timecardDate + 'T' + inputtedStartTime + ':00+00:00';
 
-    act(() => {
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, {
-        target: { value: inputtedStartTime },
+    it('should call createTimeEntry when pressing save with no existing time entry', async () => {
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />,
+        {
+          timecardDate: timecardDate,
+        }
+      );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: inputtedStartTime },
+        });
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
       });
 
-      const saveButton = screen.getByText('Save');
-      fireEvent.click(saveButton);
+      await waitFor(() => {
+        expect(mockCreateTimeEntry).toHaveBeenCalledWith(
+          {
+            ownerId: 1,
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: expectedActualStartTime,
+            actualEndTime: '',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
     });
 
-    await waitFor(() => {
-      expect(mockCreateTimeEntry).toHaveBeenCalledWith(
+    it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
+      const timeEntryId = '1';
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '01:00',
+      };
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          index={0}
+        />,
         {
-          ownerId: 1,
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: formatDateTimeISO(
-            timecardDate + ' ' + inputtedStartTime
-          ),
-          actualEndTime: '',
-        },
-        new URLSearchParams([
-          ['tenantId', '00000000-0000-0000-0000-000000000000'],
-        ])
+          timecardDate: timecardDate,
+          timeEntries: [existingTimeEntry],
+        }
       );
-    });
-  });
 
-  it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
-    const timeEntryId = '1';
-    const existingTimeEntry = {
-      ...newTimeEntry,
-      timeEntryId: timeEntryId,
-      startTime: '01:00',
-    };
-    renderWithTimecardContext(
-      <EditShiftHours
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={existingTimeEntry}
-        index={0}
-      />,
-      {
-        timecardDate: timecardDate,
-        timeEntries: [existingTimeEntry],
-      }
-    );
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: inputtedStartTime },
+        });
 
-    act(() => {
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, {
-        target: { value: inputtedStartTime },
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
       });
 
-      const saveButton = screen.getByText('Save');
-      fireEvent.click(saveButton);
-    });
-
-    await waitFor(() => {
-      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
-        timeEntryId,
-        {
-          ownerId: 1,
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: formatDateTimeISO(
-            timecardDate + ' ' + inputtedStartTime
-          ),
-          actualEndTime: '',
-        },
-        new URLSearchParams([
-          ['tenantId', '00000000-0000-0000-0000-000000000000'],
-        ])
-      );
+      await waitFor(() => {
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 1,
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: expectedActualStartTime,
+            actualEndTime: '',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
     });
   });
 
