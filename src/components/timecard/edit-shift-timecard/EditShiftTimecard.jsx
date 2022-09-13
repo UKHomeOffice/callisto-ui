@@ -68,10 +68,10 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
 
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
-  const timeEntryIsEmpty =
+  const timeEntryExists =
     'startTime' in timeEntry && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timeEntryIsEmpty
+    !timeEntryExists
   );
 
   const handleOpen = (event) => {
@@ -107,7 +107,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
                 onClick={handleOpen}
                 className="govuk-link govuk-link--no-visited-state"
@@ -127,13 +127,13 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
-              timeEntryIsEmpty &&
+              timeEntryExists &&
               `${timeEntry.startTime} to ${
                 timeEntry.finishTime ? timeEntry.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -171,7 +171,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
