@@ -1,10 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { newTimeCardEntry } from '../../../../mocks/mockData';
-import {
-  saveTimeEntry,
-  deleteTimeEntry,
-} from '../../../api/services/timecardService';
+import { saveTimeEntry } from '../../../api/services/timecardService';
 
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftTimecard from './EditShiftTimecard';
@@ -120,66 +117,6 @@ describe('EditShiftTimecard', () => {
     expect(hoursChangeButton).toBeFalsy();
     expect(removeShiftButton).toBeFalsy();
     expect(mealBreakChangeButton).toBeFalsy();
-  });
-
-  describe('Remove shift', () => {
-    it('should display the delete confirmation modal when clicking the "Remove" button', () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
-      );
-
-      const modalTitle = 'Are you sure you want to remove this time period?';
-      expect(screen.queryByText(modalTitle)).toBeFalsy();
-
-      const removeShiftButton = screen.getByText('Remove');
-      fireEvent.click(removeShiftButton);
-
-      expect(screen.getByText(modalTitle)).toBeTruthy();
-    });
-
-    it('should close the modal when clicking the "No, cancel" button', () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />
-      );
-
-      const removeShiftButton = screen.getByText('Remove');
-      fireEvent.click(removeShiftButton);
-
-      const cancelButton = screen.getByText('No, cancel');
-      fireEvent.click(cancelButton);
-
-      const modalTitle = 'Are you sure you want to remove this time period?';
-      expect(screen.queryByText(modalTitle)).toBeFalsy();
-    });
-
-    it('should close the modal and delete time entry when clicking the "Yes, remove" button', async () => {
-      deleteTimeEntry.mockResolvedValue({ status: 200 });
-      const mockSetTimeEntries = jest.fn();
-
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />,
-        {
-          summaryErrors: {},
-          setSummaryErrors: jest.fn(),
-          timeEntries: [existingTimeEntry],
-          setTimeEntries: mockSetTimeEntries,
-          timecardDate: '2022-09-01',
-          setTimecardDate: jest.fn(),
-        }
-      );
-
-      const removeShiftButton = screen.getByText('Remove');
-      fireEvent.click(removeShiftButton);
-
-      const confirmRemoveButton = screen.getByText('Yes, remove');
-      fireEvent.click(confirmRemoveButton);
-
-      await waitFor(() => {
-        const modalTitle = 'Are you sure you want to remove this time period?';
-        expect(screen.queryByText(modalTitle)).toBeFalsy();
-        expect(mockSetTimeEntries).toHaveBeenCalledWith([]);
-      });
-    });
   });
 
   describe('hours summary text', () => {
