@@ -75,7 +75,7 @@ describe('Timecard Service', () => {
   });
 
   describe('getTimePeriodTypes', () => {
-    it('should use correct endpoint resources/time-period-type', async () => {
+    it('should use correct endpoint resources/time-period-types', async () => {
       api.get.mockImplementation(() =>
         Promise.resolve({ data: MOCK_TIME_PERIOD_TYPES })
       );
@@ -83,7 +83,7 @@ describe('Timecard Service', () => {
       const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
 
       expect(api.get).toHaveBeenCalledWith(
-        expect.stringContaining('resources/time-period-type'),
+        expect.stringContaining('resources/time-period-types'),
         TENANT_ID_PARAM
       );
       expect(timePeriodTypes.data.items.length).toBe(7);
@@ -97,7 +97,7 @@ describe('Timecard Service', () => {
       try {
         const response = await getTimePeriodTypes(TENANT_ID_PARAM);
         expect(api.get).toHaveBeenCalledWith(
-          expect.stringContaining('resources/time-period-type'),
+          expect.stringContaining('resources/time-period-types'),
           TENANT_ID_PARAM
         );
         expect(response).toBeUndefined();

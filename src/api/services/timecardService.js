@@ -13,7 +13,7 @@ export const getTimecard = async (params) => {
 
 export const getTimeEntries = async (params) => {
   try {
-    return await api.get(baseUrl + 'resources/time-entry/', params);
+    return await api.get(baseUrl + 'resources/time-entries/', params);
   } catch (error) {
     throw new Error(serviceName + ' getTimeEntries function threw ' + error);
   }
@@ -21,7 +21,7 @@ export const getTimeEntries = async (params) => {
 
 export const saveTimeEntry = async (payload, params) => {
   try {
-    return await api.post(baseUrl + 'resources/time-entry', params, payload);
+    return await api.post(baseUrl + 'resources/time-entries', params, payload);
   } catch (error) {
     throw new Error(serviceName + ' saveTimeEntry function threw ' + error);
   }
@@ -29,7 +29,7 @@ export const saveTimeEntry = async (payload, params) => {
 
 export const getTimePeriodTypes = async (params) => {
   try {
-    return await api.get(baseUrl + 'resources/time-period-type', params);
+    return await api.get(baseUrl + 'resources/time-period-types', params);
   } catch (error) {
     throw new Error(
       serviceName + ' getTimePeriodTypes function threw ' + error
