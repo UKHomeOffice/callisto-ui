@@ -1,7 +1,10 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { newTimeCardEntry } from '../../../../mocks/mockData';
-import { saveTimeEntry } from '../../../api/services/timecardService';
+import {
+  saveTimeEntry,
+  deleteTimeEntry,
+} from '../../../api/services/timecardService';
 
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftTimecard from './EditShiftTimecard';
@@ -117,6 +120,32 @@ describe('EditShiftTimecard', () => {
     expect(hoursChangeButton).toBeFalsy();
     expect(removeShiftButton).toBeFalsy();
     expect(mealBreakChangeButton).toBeFalsy();
+  });
+
+  describe('Remove shift', () => {
+    it('should delete time entry when clicking the "Remove" button', async () => {
+      deleteTimeEntry.mockResolvedValue({ status: 200 });
+      const mockSetTimeEntries = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />,
+        {
+          summaryErrors: {},
+          setSummaryErrors: jest.fn(),
+          timeEntries: [existingTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const removeShiftButton = screen.getByText('Remove');
+      fireEvent.click(removeShiftButton);
+
+      await waitFor(() => {
+        expect(mockSetTimeEntries).toHaveBeenCalledWith([]);
+      });
+    });
   });
 
   describe('hours summary text', () => {
