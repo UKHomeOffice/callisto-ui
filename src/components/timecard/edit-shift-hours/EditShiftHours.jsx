@@ -13,6 +13,7 @@ import {
   formatDate,
   formatDateTimeISO,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -68,12 +69,10 @@ const EditShiftHours = ({
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        timeEntries[timeEntriesIndex] = {
-          ...timeEntry,
-          startTime: formData[`${inputName}-start-time`],
-          finishTime: formData[`${inputName}-finish-time`] || '',
-          id: response.data.items[0].id,
-        };
+        timeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
+          .setStartTime(formData[`${inputName}-start-time`])
+          .setFinishTime(formData[`${inputName}-finish-time`] || '')
+          .setTimeEntryId(response.data.items[0].id);
 
         setTimeEntries(timeEntries);
         setSummaryErrors({});

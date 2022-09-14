@@ -18,6 +18,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
+import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 
 const updateTimeEntryContextData = async (
   date,
@@ -32,15 +33,14 @@ const updateTimeEntryContextData = async (
 
   if (timeEntriesResponse.data.items?.length > 0) {
     const existingTimeEntries = timeEntriesResponse.data.items.map(
-      (timeEntry) => ({
-        timeEntryId: timeEntry.id,
-        timePeriodType: timePeriodTypes[timeEntry.timePeriodTypeId],
-        startTime: formatTime(timeEntry.actualStartTime),
-        finishTime: timeEntry.actualEndTime
-          ? formatTime(timeEntry.actualEndTime)
-          : '',
-        timePeriodTypeId: timeEntry.timePeriodTypeId,
-      })
+      (timeEntry) =>
+        new ContextTimeEntry(
+          timeEntry.id,
+          timePeriodTypes[timeEntry.timePeriodTypeId],
+          formatTime(timeEntry.actualStartTime),
+          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+          timeEntry.timePeriodTypeId
+        )
     );
     setTimeEntries(existingTimeEntries);
   } else {
