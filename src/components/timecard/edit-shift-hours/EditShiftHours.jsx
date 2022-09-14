@@ -48,7 +48,7 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime = endTime
+    const actualEndDateTime = endTime
       ? formatDateTimeISO(actualStartDate + ' ' + endTime)
       : '';
 
