@@ -27,6 +27,14 @@ const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 
+const otherTimeEntry = {
+  timeEntryId: '00000000-0000-0000-0000-000000000002',
+  timePeriodType: 'Shift',
+  startTime: '07:00',
+  finishTime: '10:00',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+};
+
 describe('EditShiftTimecard', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
     renderWithTimecardContext(
@@ -144,6 +152,30 @@ describe('EditShiftTimecard', () => {
 
       await waitFor(() => {
         expect(mockSetTimeEntries).toHaveBeenCalledWith([]);
+      });
+    });
+
+    it('should delete time entry when clicking the "Remove" button with multiple time entries', async () => {
+      deleteTimeEntry.mockResolvedValue({ status: 200 });
+      const mockSetTimeEntries = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} index={0} />,
+        {
+          summaryErrors: {},
+          setSummaryErrors: jest.fn(),
+          timeEntries: [existingTimeEntry, otherTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const removeShiftButton = screen.getByText('Remove');
+      fireEvent.click(removeShiftButton);
+
+      await waitFor(() => {
+        expect(mockSetTimeEntries).toHaveBeenCalledWith([otherTimeEntry]);
       });
     });
   });
