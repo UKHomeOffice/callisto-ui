@@ -9,16 +9,14 @@ const resourceDateProperty = 'startTime';
 describe('resourceFilterBuilder', () => {
   it('should create a filter specifying that the resource property is greater or equal to midnight of the date', () => {
     expect(filterOnOrAfterDate(resourceDateProperty, dateTime)).toEqual(
-      resourceDateProperty + ">='" + date + "T00:00:00+00:00'"
+      `${resourceDateProperty}>='${date}T00:00:00+00:00'`
     );
   });
 
   it('should create a filter specifying that the resource property is less than or equal to the end of the date', () => {
+    const yesterday = formatDate(dayjs(date).subtract(1, 'minute'));
     expect(filterBeforeDate(resourceDateProperty, dateTime)).toEqual(
-      resourceDateProperty +
-        "<='" +
-        formatDate(dayjs(date).subtract(1, 'minute')) +
-        "T23:59:00+00:00'"
+      `${resourceDateProperty}<='${yesterday}T23:59:00+00:00'`
     );
   });
 });

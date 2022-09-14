@@ -16,8 +16,7 @@ describe('EditShiftHours', () => {
   describe('given time entries are to be persisted', () => {
     const timecardDate = '2022-09-01';
     const inputtedStartTime = '08:00';
-    const expectedActualStartTime =
-      timecardDate + 'T' + inputtedStartTime + ':00+00:00';
+    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
 
     it('should call createTimeEntry when pressing save with no existing time entry', async () => {
       renderWithTimecardContext(
@@ -100,7 +99,7 @@ describe('EditShiftHours', () => {
             ownerId: 1,
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
             actualStartTime: expectedActualStartTime,
-            actualEndTime: timecardDate + 'T' + inputtedEndTime + ':00+00:00',
+            actualEndTime: `${timecardDate}T${inputtedEndTime}:00+00:00`,
           },
           new URLSearchParams([
             ['tenantId', '00000000-0000-0000-0000-000000000000'],
