@@ -93,6 +93,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       newTimeEntries.splice(timeEntriesIndex, 1);
       setTimeEntries(newTimeEntries);
     }
+    setOpen(false);
   };
 
   return (
@@ -191,19 +192,28 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
         components={{ Backdrop }}
       >
         <Box sx={style}>
-          <h2 id="unstyled-modal-title">
-            Are you sure you want to remove this time period?
-          </h2>
-          <p id="unstyled-modal-description">
-            Once you remove it you cannot undo this action
-          </p>
-          <button
-            onClick={handleClickRemoveShiftButton}
-            className="govuk-button--link govuk-link"
-          >
-            Yes, remove it
-          </button>
-          <button className="govuk-button--link govuk-link">No, Cancel</button>
+          <div>
+            <h2 className="govuk-heading-m">
+              Are you sure you want to remove this time period?
+            </h2>
+            <p className="govuk-body">
+              Once you remove it, you cannot undo this action.
+            </p>
+            <div className="govuk-button-group govuk-!-margin-bottom-0">
+              <button
+                onClick={handleClickRemoveShiftButton}
+                className="govuk-button"
+              >
+                Yes, remove
+              </button>
+              <button
+                className="govuk-button govuk-button--secondary"
+                onClick={handleClose}
+              >
+                No, cancel
+              </button>
+            </div>
+          </div>
         </Box>
       </Modal>
     </div>
