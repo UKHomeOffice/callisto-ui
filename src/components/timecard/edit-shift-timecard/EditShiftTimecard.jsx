@@ -81,7 +81,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
 
   const handleClose = () => setOpen(false);
 
-  const clickRemoveShiftButton = async (event) => {
+  const handleClickRemoveShiftButton = async (event) => {
     event.preventDefault();
     const params = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
@@ -198,7 +198,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
             Once you remove it you cannot undo this action
           </p>
           <button
-            onClick={clickRemoveShiftButton}
+            onClick={handleClickRemoveShiftButton}
             className="govuk-button--link govuk-link"
           >
             Yes, remove it

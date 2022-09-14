@@ -58,7 +58,7 @@ describe('Timecard Service', () => {
       );
     });
 
-    it('should throw useful error containing throwing service and function', async () => {
+    it('should throw useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -90,7 +90,7 @@ describe('Timecard Service', () => {
       expect(timePeriodTypes.data.items.length).toBe(7);
     });
 
-    it('should throw useful error containing throwing service and function', async () => {
+    it('should throw useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -129,7 +129,7 @@ describe('Timecard Service', () => {
       expect(response.data).toStrictEqual([newTimeCardEntry]);
     });
 
-    it('should throw a useful error containing throwing service and function', async () => {
+    it('should throw a useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -159,7 +159,7 @@ describe('Timecard Service', () => {
       expect(response.status).toBeDefined();
     });
 
-    it('should throw a useful error containing throwing service and function', async () => {
+    it('should throw a useful error containing throwing service and function when an error occurs', async () => {
       api.delete.mockImplementation(() => {
         throw new Error('xyz');
       });
