@@ -19,11 +19,23 @@ export const getTimeEntries = async (params) => {
   }
 };
 
-export const saveTimeEntry = async (payload, params) => {
+export const createTimeEntry = async (payload, params) => {
   try {
     return await api.post(baseUrl + 'resources/time-entries', params, payload);
   } catch (error) {
-    throw new Error(serviceName + ' saveTimeEntry function threw ' + error);
+    throw new Error(serviceName + ' createTimeEntry function threw ' + error);
+  }
+};
+
+export const updateTimeEntry = async (id, payload, params) => {
+  try {
+    return await api.put(
+      baseUrl + 'resources/time-entries/' + id,
+      params,
+      payload
+    );
+  } catch (error) {
+    throw new Error(serviceName + ' updateTimeEntry function threw ' + error);
   }
 };
 
@@ -34,5 +46,13 @@ export const getTimePeriodTypes = async (params) => {
     throw new Error(
       serviceName + ' getTimePeriodTypes function threw ' + error
     );
+  }
+};
+
+export const deleteTimeEntry = async (id, params) => {
+  try {
+    return await api.delete(baseUrl + `resources/time-entry/${id}`, params);
+  } catch (error) {
+    throw new Error(serviceName + ' deleteTimeEntry function threw ' + error);
   }
 };

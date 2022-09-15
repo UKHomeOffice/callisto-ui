@@ -1,10 +1,20 @@
 import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { saveTimeEntry } from '../../../api/services/timecardService';
+import {
+  createTimeEntry,
+  updateTimeEntry,
+} from '../../../api/services/timecardService';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import {
+  formatDate,
+  formatDateTimeISO,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
+import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
+import { deepClone } from '../../../utils/common-utils/common-utils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -32,15 +42,15 @@ const EditShiftHours = ({
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = dayjs(timecardDate).format('YYYY-MM-DD');
-    const startTime = formData[`${inputName}-start-time`];
-    const actualStartDateTime = dayjs(
-      actualStartDate + ' ' + startTime
-    ).format();
+    const actualStartDate = formatDate(timecardDate);
+    const actualStartTime = formData[`${inputName}-start-time`];
+    const actualStartDateTime = formatDateTimeISO(
+      actualStartDate + ' ' + actualStartTime
+    );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDateTime = endTime
-      ? dayjs(actualStartDate + ' ' + endTime).format()
+    const actualEndDateTime = endTime
+      ? formatDateTimeISO(actualStartDate + ' ' + endTime)
       : '';
 
     const timecardPayload = {
@@ -51,21 +61,24 @@ const EditShiftHours = ({
     };
 
     try {
-      const params = new URLSearchParams([
-        ['tenantId', '00000000-0000-0000-0000-000000000000'],
-      ]);
+      const params = new UrlSearchParamBuilder()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
 
-      const response = await saveTimeEntry(timecardPayload, params);
+      const response = !timeEntry.timeEntryId
+        ? await createTimeEntry(timecardPayload, params)
+        : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        timeEntries[timeEntriesIndex] = {
-          ...timeEntry,
-          startTime: formData[`${inputName}-start-time`],
-          finishTime: formData[`${inputName}-finish-time`] || '',
-          id: response.data.items[0].id,
-        };
+        const newTimeEntries = deepClone(timeEntries);
+        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+          timeEntry
+        )
+          .setStartTime(formData[`${inputName}-start-time`])
+          .setFinishTime(formData[`${inputName}-finish-time`] || '')
+          .setTimeEntryId(response.data.items[0].id);
 
-        setTimeEntries(timeEntries);
+        setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       } else {

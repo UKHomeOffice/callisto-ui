@@ -4,6 +4,7 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
 import { useApplicationContext } from '../../../context/ApplicationContext';
+import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -40,10 +41,9 @@ const SelectTimecardPeriodType = () => {
           ).id;
           setTimeEntries([
             ...timeEntries,
-            {
-              timePeriodType: data[radioName],
-              timePeriodTypeId: timePeriodTypeId,
-            },
+            ContextTimeEntry.create()
+              .setTimePeriodType(data[radioName])
+              .setTimePeriodTypeId(timePeriodTypeId),
           ]);
           setSummaryErrors({});
         }, handleError)}

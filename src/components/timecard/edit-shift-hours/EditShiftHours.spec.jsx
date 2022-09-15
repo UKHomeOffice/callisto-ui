@@ -9,41 +9,103 @@ const newTimeEntry = {
 };
 
 const timecardService = require('../../../api/services/timecardService');
-const mockSaveTimeEntry = jest.spyOn(timecardService, 'saveTimeEntry');
+const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
+const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
 describe('EditShiftHours', () => {
-  it('should call saveTimeEntry when pressing save with no existing time entry', async () => {
-    renderWithTimecardContext(
-      <EditShiftHours
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={newTimeEntry}
-        index={0}
-      />,
-      {
-        timecardDate: '2022-09-01',
-      }
-    );
+  describe('given time entries are to be persisted', () => {
+    const timecardDate = '2022-09-01';
+    const inputtedStartTime = '08:00';
+    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
 
-    act(() => {
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+    it('should call createTimeEntry when pressing save with no existing time entry', async () => {
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          index={0}
+        />,
+        {
+          timecardDate: timecardDate,
+        }
+      );
 
-      const saveButton = screen.getByText('Save');
-      fireEvent.click(saveButton);
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: inputtedStartTime },
+        });
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockCreateTimeEntry).toHaveBeenCalledWith(
+          {
+            ownerId: 1,
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: expectedActualStartTime,
+            actualEndTime: '',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
     });
 
-    await waitFor(() => {
-      expect(mockSaveTimeEntry).toHaveBeenCalledWith(
+    it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
+      const timeEntryId = '1';
+      const inputtedEndTime = '06:00';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '01:00',
+        endTime: '05:00',
+      };
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          index={0}
+        />,
         {
-          ownerId: 1,
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: '2022-09-01T08:00:00+00:00',
-          actualEndTime: '',
-        },
-        new URLSearchParams([
-          ['tenantId', '00000000-0000-0000-0000-000000000000'],
-        ])
+          timecardDate: timecardDate,
+          timeEntries: [existingTimeEntry],
+        }
       );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: inputtedStartTime },
+        });
+
+        const endTimeInput = screen.getByTestId('shift-finish-time');
+        fireEvent.change(endTimeInput, {
+          target: { value: inputtedEndTime },
+        });
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 1,
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: expectedActualStartTime,
+            actualEndTime: `${timecardDate}T${inputtedEndTime}:00+00:00`,
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
     });
   });
 
