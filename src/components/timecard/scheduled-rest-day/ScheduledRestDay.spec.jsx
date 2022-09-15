@@ -120,10 +120,10 @@ describe('ScheduledRestDay', () => {
           setTimeEntries: mockSetTimeEntries,
         }
       );
-  
+
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
-  
+
       await waitFor(() => {
         expect(mockSetTimeEntries).toHaveBeenCalledWith([
           {
@@ -143,10 +143,7 @@ describe('ScheduledRestDay', () => {
       const mockSetTimeEntries = jest.fn();
 
       renderWithTimecardContext(
-        <ScheduledRestDay
-          timeEntry={newTimeEntry}
-          timeEntriesIndex={0}
-        />,
+        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
@@ -167,10 +164,7 @@ describe('ScheduledRestDay', () => {
       const mockSetTimeEntries = jest.fn();
 
       renderWithTimecardContext(
-        <ScheduledRestDay
-          timeEntry={newTimeEntry}
-          timeEntriesIndex={1}
-        />,
+        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={1} />,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
