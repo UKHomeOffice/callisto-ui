@@ -1,7 +1,6 @@
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-// import utc from 'dayjs/plugin/utc';
 
 import {
   formatDate,
@@ -15,6 +14,7 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 
 const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
+  const timeEntryExists = !!timeEntry.timeEntryId;
 
   const handleClickRemoveShiftButton = async (event) => {
     event.preventDefault();
@@ -23,8 +23,6 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-
-    // dayjs.extend(utc);
 
     const actualStartDate = formatDate(timecardDate);
     const actualStartDateTime = formatDateTimeISO(actualStartDate + ' 00:00');
@@ -44,7 +42,6 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
       .getUrlSearchParams();
 
     const response = await createTimeEntry(timecardPayload, params);
-    console.log(response);
 
     if (response?.data?.items?.length > 0) {
       const newTimeEntries = deepClone(timeEntries);
@@ -80,24 +77,26 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
             </Link>
           </dd>
         </div>
-        <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
-          <dt className="govuk-summary-list__key">
-            <form onSubmit={onSubmit}>
-              <div className="govuk-button-group govuk-!-margin-bottom-0">
-                <button className="govuk-button" type="submit">
-                  Save
-                </button>
-                <button
-                  className="govuk-button govuk-button--secondary"
-                  type="button"
-                  onClick={onCancel}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </dt>
-        </div>
+        {!timeEntryExists && (
+          <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
+            <dt className="govuk-summary-list__key">
+              <form onSubmit={onSubmit}>
+                <div className="govuk-button-group govuk-!-margin-bottom-0">
+                  <button className="govuk-button" type="submit">
+                    Save
+                  </button>
+                  <button
+                    className="govuk-button govuk-button--secondary"
+                    type="button"
+                    onClick={onCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </dt>
+          </div>
+        )}
       </dl>
     </div>
   );
