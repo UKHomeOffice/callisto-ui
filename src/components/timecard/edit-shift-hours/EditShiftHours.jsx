@@ -71,10 +71,12 @@ const EditShiftHours = ({
 
       if (response?.data?.items?.length > 0) {
         const newTimeEntries = deepClone(timeEntries);
-        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-        .setStartTime(formData[`${inputName}-start-time`])
-        .setFinishTime(formData[`${inputName}-finish-time`] || '')
-        .setTimeEntryId(response.data.items[0].id);
+        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+          timeEntry
+        )
+          .setStartTime(formData[`${inputName}-start-time`])
+          .setFinishTime(formData[`${inputName}-finish-time`] || '')
+          .setTimeEntryId(response.data.items[0].id);
 
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});

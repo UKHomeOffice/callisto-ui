@@ -1,9 +1,9 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { newTimeCardEntry } from '../../../../mocks/mockData';
-import { 
+import {
   createTimeEntry,
-  deleteTimeEntry, 
+  deleteTimeEntry,
 } from '../../../api/services/timecardService';
 
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
