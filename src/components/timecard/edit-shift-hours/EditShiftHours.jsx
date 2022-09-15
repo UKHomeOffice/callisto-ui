@@ -14,6 +14,7 @@ import {
   formatDateTimeISO,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
+import { deepClone } from '../../../utils/common-utils/common-utils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -69,12 +70,13 @@ const EditShiftHours = ({
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        timeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-          .setStartTime(formData[`${inputName}-start-time`])
-          .setFinishTime(formData[`${inputName}-finish-time`] || '')
-          .setTimeEntryId(response.data.items[0].id);
+        const newTimeEntries = deepClone(timeEntries);
+        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
+        .setStartTime(formData[`${inputName}-start-time`])
+        .setFinishTime(formData[`${inputName}-finish-time`] || '')
+        .setTimeEntryId(response.data.items[0].id);
 
-        setTimeEntries(timeEntries);
+        setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       } else {

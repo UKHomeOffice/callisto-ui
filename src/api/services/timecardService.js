@@ -48,3 +48,11 @@ export const getTimePeriodTypes = async (params) => {
     );
   }
 };
+
+export const deleteTimeEntry = async (id, params) => {
+  try {
+    return await api.delete(baseUrl + `resources/time-entry/${id}`, params);
+  } catch (error) {
+    throw new Error(serviceName + ' deleteTimeEntry function threw ' + error);
+  }
+};

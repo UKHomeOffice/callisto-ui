@@ -2,6 +2,10 @@ import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
+import { deleteTimeEntry } from '../../../api/services/timecardService';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { useTimecardContext } from '../../../context/TimecardContext';
+import { deepClone } from '../../../utils/common-utils/common-utils';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const toggleEditShiftHours = (event) => {
@@ -9,11 +13,26 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const timeEntryIsEmpty =
-    'startTime' in timeEntry && timeEntry.startTime !== '';
+  const { timeEntries, setTimeEntries } = useTimecardContext();
+
+  const timeEntryExists = !!timeEntry?.startTime;
   const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timeEntryIsEmpty
+    !timeEntryExists
   );
+
+  const handleClickRemoveShiftButton = async (event) => {
+    event.preventDefault();
+    const params = new UrlSearchParamBuilder()
+      .setTenantId('00000000-0000-0000-0000-000000000000')
+      .getUrlSearchParams();
+    const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
+
+    if (response.status === 200) {
+      const newTimeEntries = deepClone(timeEntries);
+      newTimeEntries.splice(timeEntriesIndex, 1);
+      setTimeEntries(newTimeEntries);
+    }
+  };
 
   return (
     <div className="select-timecard-period-type">
@@ -27,8 +46,9 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
+                onClick={handleClickRemoveShiftButton}
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
               >
@@ -46,13 +66,13 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value">
             {!showEditShiftHours &&
-              timeEntryIsEmpty &&
+              timeEntryExists &&
               `${timeEntry.startTime} to ${
                 timeEntry.finishTime ? timeEntry.finishTime : '-'
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
                 onClick={toggleEditShiftHours}
                 className="govuk-link govuk-link--no-visited-state"
@@ -90,7 +110,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           </dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
-            {timeEntryIsEmpty && (
+            {timeEntryExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
