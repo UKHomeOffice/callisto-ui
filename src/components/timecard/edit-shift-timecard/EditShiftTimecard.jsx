@@ -15,8 +15,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
 
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
-  const timeEntryExists =
-    'startTime' in timeEntry && timeEntry.startTime !== '';
+  const timeEntryExists = !!timeEntry?.startTime;
   const [showEditShiftHours, setShowEditShiftHours] = useState(
     !timeEntryExists
   );
