@@ -5,7 +5,7 @@ import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { deepClone } from '../../../utils/common-utils/common-utils';
+import { removeTimecardContextEntry } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const toggleEditShiftHours = (event) => {
@@ -28,9 +28,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
     const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
 
     if (response.status === 200) {
-      const newTimeEntries = deepClone(timeEntries);
-      newTimeEntries.splice(timeEntriesIndex, 1);
-      setTimeEntries(newTimeEntries);
+      removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
     }
   };
 

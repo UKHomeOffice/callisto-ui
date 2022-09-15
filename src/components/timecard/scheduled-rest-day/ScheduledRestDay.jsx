@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import {
   formatDate,
   formatDateTimeISO,
+  removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
@@ -56,9 +57,7 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
 
   const onCancel = (event) => {
     event.preventDefault();
-    const newTimeEntries = deepClone(timeEntries);
-    newTimeEntries.splice(timeEntriesIndex, 1);
-    setTimeEntries(newTimeEntries);
+    removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
   };
 
   return (
