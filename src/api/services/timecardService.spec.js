@@ -1,4 +1,5 @@
 import {
+  deleteTimeEntry,
   getTimecard,
   getTimeEntries,
   getTimePeriodTypes,
@@ -57,7 +58,7 @@ describe('Timecard Service', () => {
       );
     });
 
-    it('should throw useful error containing throwing service and function', async () => {
+    it('should throw useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -89,7 +90,7 @@ describe('Timecard Service', () => {
       expect(timePeriodTypes.data.items.length).toBe(7);
     });
 
-    it('should throw useful error containing throwing service and function', async () => {
+    it('should throw useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -109,6 +110,7 @@ describe('Timecard Service', () => {
       }
     });
   });
+
   describe('getTimeEntries', () => {
     it('should return data correctly on success', async () => {
       api.get.mockImplementation(() =>
@@ -127,7 +129,7 @@ describe('Timecard Service', () => {
       expect(response.data).toStrictEqual([newTimeCardEntry]);
     });
 
-    it('should throw a useful error containing throwing service and function', async () => {
+    it('should throw a useful error containing throwing service and function when an error occurs', async () => {
       api.get.mockImplementation(() => {
         throw new Error('xyz');
       });
@@ -139,6 +141,36 @@ describe('Timecard Service', () => {
         expect(error).toBeDefined();
         expect(error.message).toContain('Timecard Service');
         expect(error.message).toContain('getTimeEntries');
+        expect(error.message).toContain('xyz');
+      }
+    });
+  });
+
+  describe('deleteTimeEntry', () => {
+    it('should return 200 on success', async () => {
+      api.delete.mockImplementation(() => Promise.resolve({ status: 200 }));
+
+      const response = await deleteTimeEntry(123, TENANT_ID_PARAM);
+
+      expect(api.delete).toHaveBeenCalledWith(
+        expect.stringContaining('resources/time-entry/123'),
+        TENANT_ID_PARAM
+      );
+      expect(response.status).toBeDefined();
+    });
+
+    it('should throw a useful error containing throwing service and function when an error occurs', async () => {
+      api.delete.mockImplementation(() => {
+        throw new Error('xyz');
+      });
+
+      try {
+        const response = await deleteTimeEntry(123, TENANT_ID_PARAM);
+        expect(response).toBeUndefined();
+      } catch (error) {
+        expect(error).toBeDefined();
+        expect(error.message).toContain('Timecard Service');
+        expect(error.message).toContain('deleteTimeEntry');
         expect(error.message).toContain('xyz');
       }
     });

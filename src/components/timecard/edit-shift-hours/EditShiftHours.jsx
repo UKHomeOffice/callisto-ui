@@ -5,6 +5,8 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { deepClone } from '../../../utils/common-utils/common-utils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -51,21 +53,22 @@ const EditShiftHours = ({
     };
 
     try {
-      const params = new URLSearchParams([
-        ['tenantId', '00000000-0000-0000-0000-000000000000'],
-      ]);
+      const params = new UrlSearchParamBuilder()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
 
       const response = await saveTimeEntry(timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        timeEntries[timeEntriesIndex] = {
+        const newTimeEntries = deepClone(timeEntries);
+        newTimeEntries[timeEntriesIndex] = {
           ...timeEntry,
           startTime: formData[`${inputName}-start-time`],
           finishTime: formData[`${inputName}-finish-time`] || '',
-          id: response.data.items[0].id,
+          timeEntryId: response.data.items[0].id,
         };
 
-        setTimeEntries(timeEntries);
+        setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       } else {
