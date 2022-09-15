@@ -56,7 +56,9 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
 
   const onCancel = (event) => {
     event.preventDefault();
-    console.log('cancelled');
+    const newTimeEntries = deepClone(timeEntries);
+    newTimeEntries.splice(timeEntriesIndex, 1);
+    setTimeEntries(newTimeEntries);
   };
 
   return (

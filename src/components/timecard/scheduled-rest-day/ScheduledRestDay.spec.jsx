@@ -110,31 +110,81 @@ describe('ScheduledRestDay', () => {
         );
       });
     });
+
+    it('should update timecard context when pressing "Save" button', async () => {
+      const mockSetTimeEntries = jest.fn();
+      renderWithTimecardContext(
+        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        {
+          timeEntries: [newTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+        }
+      );
+  
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+  
+      await waitFor(() => {
+        expect(mockSetTimeEntries).toHaveBeenCalledWith([
+          {
+            timeEntryId: '7f000001-8340-1495-8183-416288370009',
+            timePeriodType: 'Scheduled rest day',
+            startTime: '00:00',
+            finishTime: '00:00',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+          },
+        ]);
+      });
+    });
   });
 
-  it('should update timecard context when pressing "Save" button', async () => {
-    const mockSetTimeEntries = jest.fn();
-    renderWithTimecardContext(
-      <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
-      {
-        timeEntries: [newTimeEntry],
-        setTimeEntries: mockSetTimeEntries,
-      }
-    );
+  describe('Cancel button', () => {
+    it('should delete time entry when clicking the "Cancel" button', async () => {
+      const mockSetTimeEntries = jest.fn();
 
-    const saveButton = screen.getByText('Save');
-    fireEvent.click(saveButton);
-
-    await waitFor(() => {
-      expect(mockSetTimeEntries).toHaveBeenCalledWith([
+      renderWithTimecardContext(
+        <ScheduledRestDay
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
         {
-          timeEntryId: '7f000001-8340-1495-8183-416288370009',
-          timePeriodType: 'Scheduled rest day',
-          startTime: '00:00',
-          finishTime: '00:00',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
-        },
-      ]);
+          summaryErrors: {},
+          setSummaryErrors: jest.fn(),
+          timeEntries: [newTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const cancelButton = screen.getByText('Cancel');
+      fireEvent.click(cancelButton);
+
+      expect(mockSetTimeEntries).toHaveBeenCalledWith([]);
+    });
+
+    it('should delete time entry when clicking the "Cancel" button with multiple time entries', async () => {
+      const mockSetTimeEntries = jest.fn();
+
+      renderWithTimecardContext(
+        <ScheduledRestDay
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={1}
+        />,
+        {
+          summaryErrors: {},
+          setSummaryErrors: jest.fn(),
+          timeEntries: [existingTimeEntry, newTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const cancelButton = screen.getByText('Cancel');
+      fireEvent.click(cancelButton);
+
+      expect(mockSetTimeEntries).toHaveBeenCalledWith([existingTimeEntry]);
     });
   });
 });
