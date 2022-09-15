@@ -19,6 +19,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
+import ScheduledRestDay from '../../components/timecard/scheduled-rest-day/ScheduledRestDay';
 
 const updateTimeEntryContextData = async (
   date,
@@ -36,7 +37,7 @@ const updateTimeEntryContextData = async (
       (timeEntry) =>
         new ContextTimeEntry(
           timeEntry.id,
-          timePeriodTypes[timeEntry.timePeriodTypeId],
+          timePeriodTypes[timeEntry.timePeriodTypeId].name,
           formatTime(timeEntry.actualStartTime),
           timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
           timeEntry.timePeriodTypeId
@@ -115,7 +116,11 @@ const Timecard = () => {
 
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
-          <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+          {timeEntry.timePeriodType === 'Shift' ? (
+            <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+          ) : (
+            <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
+          )}
         </div>
       ))}
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
