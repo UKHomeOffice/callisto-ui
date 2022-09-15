@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { newTimeCardEntry } from '../../../../mocks/mockData';
 import {
-  saveTimeEntry,
+  createTimeEntry,
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
 
@@ -58,7 +58,7 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
-    saveTimeEntry.mockResolvedValue({ data: newTimeCardEntry });
+    createTimeEntry.mockResolvedValue({ data: newTimeCardEntry });
 
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
@@ -78,7 +78,7 @@ describe('EditShiftTimecard', () => {
     await waitFor(() => {
       expect(screen.queryByText('Start time')).toBeFalsy();
       expect(screen.queryByText('Finish time')).toBeFalsy();
-      expect(saveTimeEntry).toHaveBeenCalled();
+      expect(createTimeEntry).toHaveBeenCalled();
     });
   });
 

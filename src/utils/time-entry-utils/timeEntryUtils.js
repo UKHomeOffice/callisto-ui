@@ -15,3 +15,7 @@ export const formatTime = (time) => {
 export const formatDate = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DD');
 };
+
+export const formatDateTimeISO = (dateTime) => {
+  return dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ssZ');
+};
