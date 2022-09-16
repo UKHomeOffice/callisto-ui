@@ -15,7 +15,6 @@ let existingTimeEntry;
 beforeEach(() => {
   existingTimeEntry = {
     timeEntryId: '00000000-0000-0000-0000-000000000001',
-    timePeriodType: 'Shift',
     startTime: '08:00',
     finishTime: '16:00',
     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -23,13 +22,11 @@ beforeEach(() => {
 });
 
 const newTimeEntry = {
-  timePeriodType: 'Shift',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 
 const otherTimeEntry = {
   timeEntryId: '00000000-0000-0000-0000-000000000002',
-  timePeriodType: 'Shift',
   startTime: '07:00',
   finishTime: '10:00',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',

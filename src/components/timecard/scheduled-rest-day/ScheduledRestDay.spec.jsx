@@ -6,7 +6,6 @@ const timecardDate = '2022-09-01';
 const timecardDateNextDay = '2022-09-02';
 const newTimeEntry = {
   timeEntryId: '',
-  timePeriodType: 'Scheduled rest day',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
   startTime: '',
   finishTime: '',
@@ -14,7 +13,6 @@ const newTimeEntry = {
 
 const existingTimeEntry = {
   timeEntryId: 'id',
-  timePeriodType: 'Scheduled rest day',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
   startTime: '00:00',
   finishTime: '00:00',

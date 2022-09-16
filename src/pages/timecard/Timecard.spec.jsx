@@ -148,7 +148,6 @@ describe('Timecard', () => {
       setSummaryErrors: jest.fn(),
       timeEntries: [
         {
-          timePeriodType: '',
           startTime: '',
           finishTime: '',
         },
