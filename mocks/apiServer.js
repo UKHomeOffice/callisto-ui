@@ -36,11 +36,11 @@ server.use((req, res, next) => {
   next();
 });
 
-server.get('/resources/time-entry', function (req, res) {
+server.get('/resources/time-entries', function (req, res) {
   res.jsonp(newTimeCardEntry);
 });
 
-server.post('/resources/time-entry', function (req, res) {
+server.post('/resources/time-entries', function (req, res) {
   const error = validateTimecard(req.body);
   if (error) {
     res.status(400).send(error);
@@ -50,7 +50,7 @@ server.post('/resources/time-entry', function (req, res) {
 });
 
 server.put(
-  '/resources/time-entry/' + newTimeCardEntry.items[0].id,
+  '/resources/time-entries/' + newTimeCardEntry.items[0].id,
   function (req, res) {
     const error = validateTimecard(req.body);
     if (error) {
@@ -61,7 +61,7 @@ server.put(
   }
 );
 
-server.get('/resources/time-period-type', function (req, res) {
+server.get('/resources/time-period-types', function (req, res) {
   res.jsonp(timeCardPeriodTypes);
 });
 
