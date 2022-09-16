@@ -37,7 +37,7 @@ const updateTimeEntryContextData = async (
       (timeEntry) =>
         new ContextTimeEntry(
           timeEntry.id,
-          timePeriodTypes[timeEntry.timePeriodTypeId].name,
+          timePeriodTypes[timeEntry.timePeriodTypeId],
           formatTime(timeEntry.actualStartTime),
           timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
           timeEntry.timePeriodTypeId
@@ -51,9 +51,7 @@ const updateTimeEntryContextData = async (
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {
   let timePeriodTypesMap = {};
-  timePeriodTypes.map(
-    (timePeriodType) => (timePeriodTypesMap[timePeriodType.id] = timePeriodType)
-  );
+  timePeriodTypes.forEach((type) => (timePeriodTypesMap[type.id] = type.name));
   return timePeriodTypesMap;
 };
 
@@ -61,6 +59,7 @@ const Timecard = () => {
   const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
     useTimecardContext();
   const { timePeriodTypes } = useApplicationContext();
+  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
   const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
@@ -75,11 +74,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(
-      date,
-      setTimeEntries,
-      getTimePeriodTypesMap(timePeriodTypes)
-    );
+    updateTimeEntryContextData(date, setTimeEntries, timePeriodTypesMap);
   }, [date, timePeriodTypes]);
 
   return (
@@ -116,7 +111,7 @@ const Timecard = () => {
 
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
-          {timeEntry.timePeriodType === 'Shift' ? (
+          {timePeriodTypesMap[timeEntry.timePeriodTypeId] === 'Shift' ? (
             <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
           ) : (
             <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
