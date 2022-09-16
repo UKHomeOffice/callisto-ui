@@ -34,7 +34,7 @@ const SelectTimecardPeriodType = () => {
   return (
     <>
       <form
-        className="select-timecard-period-type"
+        className="grey-border"
         onSubmit={handleSubmit((data) => {
           const timePeriodTypeId = timePeriodTypes.find(
             (timePeriodType) => timePeriodType.name === data[radioName]

@@ -33,7 +33,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   };
 
   return (
-    <div className="select-timecard-period-type">
+    <div className="grey-border">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
           <dt
