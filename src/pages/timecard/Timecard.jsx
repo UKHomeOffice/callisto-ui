@@ -77,9 +77,9 @@ const Timecard = () => {
 
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
-          {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}      
+          {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
         </div>
-      ))}      
+      ))}
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
     </>
   );
@@ -88,11 +88,15 @@ const Timecard = () => {
 const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
   switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
     case 'Shift':
-      return <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+      return (
+        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+      );
     case 'Scheduled rest day':
-      return <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
-  }  
-}
+      return (
+        <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
+      );
+  }
+};
 
 const updateTimeEntryContextData = async (
   date,
