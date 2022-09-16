@@ -39,34 +39,13 @@ describe('Timecard', () => {
     expect(heading).toBeTruthy();
   });
 
-  it('should render the EditShiftTimecard component when time entry id exists', async () => {
+  it('should render the EditShiftTimecard component when time period type id exists', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timeEntries: [
         {
-          timePeriodType: 'Shift',
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Start time')).toBeTruthy();
-    expect(screen.getByText('Finish time')).toBeTruthy();
-  });
-
-  it('should render the EditShiftTimecard component when time period type exists', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodType: 'Shift',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '',
           finishTime: '',
         },
