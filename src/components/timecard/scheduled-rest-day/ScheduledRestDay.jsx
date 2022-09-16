@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import {
-  formatDate,
   formatDateTimeISO,
+  midnight,
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
@@ -35,11 +35,12 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const actualStartDate = formatDate(timecardDate);
-    const actualStartDateTime = formatDateTimeISO(actualStartDate + ' 00:00');
-
-    const actualEndDate = formatDate(dayjs(timecardDate).add(1, 'day'));
-    const actualEndDateTime = formatDateTimeISO(actualEndDate + ' 00:00');
+    const actualStartDateTime = formatDateTimeISO(
+      dayjs(timecardDate).startOf('day')
+    );
+    const actualEndDateTime = formatDateTimeISO(
+      dayjs(timecardDate).startOf('day').add(1, 'day')
+    );
 
     const timecardPayload = {
       ownerId: 1,
@@ -57,8 +58,8 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
     if (response?.data?.items?.length > 0) {
       const newTimeEntries = deepClone(timeEntries);
       newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-        .setStartTime('00:00')
-        .setFinishTime('00:00')
+        .setStartTime(midnight)
+        .setFinishTime(midnight)
         .setTimeEntryId(response.data.items[0].id);
 
       setTimeEntries(newTimeEntries);

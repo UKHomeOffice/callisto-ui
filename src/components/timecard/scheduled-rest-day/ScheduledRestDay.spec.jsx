@@ -1,5 +1,6 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { midnight } from '../../../utils/time-entry-utils/timeEntryUtils';
 import ScheduledRestDay from './ScheduledRestDay';
 
 const timecardDate = '2022-09-01';
@@ -14,8 +15,8 @@ const newTimeEntry = {
 const existingTimeEntry = {
   timeEntryId: 'id',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
-  startTime: '00:00',
-  finishTime: '00:00',
+  startTime: midnight,
+  finishTime: midnight,
 };
 
 jest.mock('../../../api/services/timecardService', () => ({
@@ -127,8 +128,8 @@ describe('ScheduledRestDay', () => {
         expect(mockSetTimeEntries).toHaveBeenCalledWith([
           {
             timeEntryId: '7f000001-8340-1495-8183-416288370009',
-            startTime: '00:00',
-            finishTime: '00:00',
+            startTime: midnight,
+            finishTime: midnight,
             timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
           },
         ]);
