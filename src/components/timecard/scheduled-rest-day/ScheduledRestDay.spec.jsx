@@ -35,6 +35,7 @@ jest.mock('../../../api/services/timecardService', () => ({
       ],
     },
   }),
+  deleteTimeEntry: jest.fn().mockResolvedValue({ status: 200 }),
 }));
 
 describe('ScheduledRestDay', () => {
@@ -179,6 +180,77 @@ describe('ScheduledRestDay', () => {
       fireEvent.click(cancelButton);
 
       expect(mockSetTimeEntries).toHaveBeenCalledWith([existingTimeEntry]);
+    });
+  });
+
+  describe('Remove button', () => {
+    it('should delete time entry when clicking the "Remove" button', async () => {
+      const mockSetTimeEntries = jest.fn();
+
+      renderWithTimecardContext(
+        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        {
+          timeEntries: [existingTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const removeButton = screen.getByText('Remove');
+      fireEvent.click(removeButton);
+
+      await waitFor(() => {
+        expect(mockSetTimeEntries).toHaveBeenCalledWith([]);
+      });
+    });
+
+    it('should not delete time entry when clicking the "Remove" button if deleteTimeEntry errors', async () => {
+      jest.mock('../../../api/services/timecardService', () => ({
+        deleteTimeEntry: jest.fn().mockResolvedValue({ status: 404 }),
+      }));
+
+      const mockSetTimeEntries = jest.fn();
+      renderWithTimecardContext(
+        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        {
+          timeEntries: [existingTimeEntry],
+          setTimeEntries: mockSetTimeEntries,
+          timecardDate: '2022-09-01',
+          setTimecardDate: jest.fn(),
+        }
+      );
+
+      const removeButton = screen.getByText('Remove');
+      fireEvent.click(removeButton);
+
+      await waitFor(() => {
+        expect(mockSetTimeEntries).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should not render the "Remove" button if time entry does not exist', () => {
+      renderWithTimecardContext(
+        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        {
+          timeEntries: [newTimeEntry],
+        }
+      );
+
+      const removeButton = screen.queryByText('Remove');
+      expect(removeButton).toBeFalsy();
+    });
+
+    it('should render the "Remove" button if time entry exists', () => {
+      renderWithTimecardContext(
+        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        {
+          timeEntries: [existingTimeEntry],
+        }
+      );
+
+      const removeButton = screen.getByText('Remove');
+      expect(removeButton).toBeTruthy();
     });
   });
 });

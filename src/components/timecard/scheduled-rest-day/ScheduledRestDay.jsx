@@ -10,16 +10,26 @@ import {
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import { deepClone } from '../../../utils/common-utils/common-utils';
-import { createTimeEntry } from '../../../api/services/timecardService';
+import {
+  createTimeEntry,
+  deleteTimeEntry,
+} from '../../../api/services/timecardService';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 
 const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
-  const handleClickRemoveShiftButton = async (event) => {
+  const handleClickRemoveButton = async (event) => {
     event.preventDefault();
-    console.log('deleted');
+    const params = new UrlSearchParamBuilder()
+      .setTenantId('00000000-0000-0000-0000-000000000000')
+      .getUrlSearchParams();
+    const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
+
+    if (response.status === 200) {
+      removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
+    }
   };
 
   const onSubmit = async (event) => {
@@ -68,14 +78,19 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
             Scheduled rest day
           </dt>
           <dd className="govuk-summary-list__actions">
-            <Link
-              onClick={handleClickRemoveShiftButton}
-              className="govuk-link govuk-link--no-visited-state"
-              to={'/'}
-            >
-              Remove
-              <span className="govuk-visually-hidden"> scheduled rest day</span>
-            </Link>
+            {timeEntryExists && (
+              <Link
+                onClick={handleClickRemoveButton}
+                className="govuk-link govuk-link--no-visited-state"
+                to={'/'}
+              >
+                Remove
+                <span className="govuk-visually-hidden">
+                  {' '}
+                  scheduled rest day
+                </span>
+              </Link>
+            )}
           </dd>
         </div>
         {!timeEntryExists && (
