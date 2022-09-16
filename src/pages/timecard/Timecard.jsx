@@ -21,40 +21,6 @@ import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/t
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import ScheduledRestDay from '../../components/timecard/scheduled-rest-day/ScheduledRestDay';
 
-const updateTimeEntryContextData = async (
-  date,
-  setTimeEntries,
-  timePeriodTypes
-) => {
-  const timeEntriesParams = new UrlSearchParamBuilder()
-    .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
-    .getUrlSearchParams();
-  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
-
-  if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = timeEntriesResponse.data.items.map(
-      (timeEntry) =>
-        new ContextTimeEntry(
-          timeEntry.id,
-          timePeriodTypes[timeEntry.timePeriodTypeId],
-          formatTime(timeEntry.actualStartTime),
-          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-          timeEntry.timePeriodTypeId
-        )
-    );
-    setTimeEntries(existingTimeEntries);
-  } else {
-    setTimeEntries([]);
-  }
-};
-
-const getTimePeriodTypesMap = (timePeriodTypes) => {
-  let timePeriodTypesMap = {};
-  timePeriodTypes.forEach((type) => (timePeriodTypesMap[type.id] = type.name));
-  return timePeriodTypesMap;
-};
-
 const Timecard = () => {
   const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
     useTimecardContext();
@@ -111,16 +77,55 @@ const Timecard = () => {
 
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
-          {timePeriodTypesMap[timeEntry.timePeriodTypeId] === 'Shift' ? (
-            <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-          ) : (
-            <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
-          )}
+          {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}      
         </div>
-      ))}
+      ))}      
       {timeEntries.length === 0 && <SelectTimecardPeriodType />}
     </>
   );
+};
+
+const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
+  switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
+    case 'Shift':
+      return <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+    case 'Scheduled rest day':
+      return <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
+  }  
+}
+
+const updateTimeEntryContextData = async (
+  date,
+  setTimeEntries,
+  timePeriodTypes
+) => {
+  const timeEntriesParams = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
+    .getUrlSearchParams();
+  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+
+  if (timeEntriesResponse.data.items?.length > 0) {
+    const existingTimeEntries = timeEntriesResponse.data.items.map(
+      (timeEntry) =>
+        new ContextTimeEntry(
+          timeEntry.id,
+          timePeriodTypes[timeEntry.timePeriodTypeId],
+          formatTime(timeEntry.actualStartTime),
+          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+          timeEntry.timePeriodTypeId
+        )
+    );
+    setTimeEntries(existingTimeEntries);
+  } else {
+    setTimeEntries([]);
+  }
+};
+
+const getTimePeriodTypesMap = (timePeriodTypes) => {
+  let timePeriodTypesMap = {};
+  timePeriodTypes.forEach((type) => (timePeriodTypesMap[type.id] = type.name));
+  return timePeriodTypesMap;
 };
 
 export default Timecard;
