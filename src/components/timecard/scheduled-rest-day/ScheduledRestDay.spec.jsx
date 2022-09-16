@@ -129,7 +129,6 @@ describe('ScheduledRestDay', () => {
         expect(mockSetTimeEntries).toHaveBeenCalledWith([
           {
             timeEntryId: '7f000001-8340-1495-8183-416288370009',
-            timePeriodType: 'Scheduled rest day',
             startTime: '00:00',
             finishTime: '00:00',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000002',

@@ -99,7 +99,6 @@ describe('Timecard', () => {
       expect(setTimeEntriesSpy).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          timePeriodType: 'Shift',
           startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
           finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',

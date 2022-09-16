@@ -41,9 +41,7 @@ const SelectTimecardPeriodType = () => {
           ).id;
           setTimeEntries([
             ...timeEntries,
-            ContextTimeEntry.create()
-              .setTimePeriodType(data[radioName])
-              .setTimePeriodTypeId(timePeriodTypeId),
+            ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
           ]);
           setSummaryErrors({});
         }, handleError)}
