@@ -25,9 +25,7 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
             <p className="govuk-heading-s govuk-!-width-two-thirds">
               {addPeriodTitle}
             </p>
-            <div
-              className="govuk-summary-list__actions"
-            >
+            <div className="govuk-summary-list__actions">
               <Link
                 onClick={handleAddTimePeriod}
                 className="govuk-link govuk-link--no-visited-state"
@@ -37,7 +35,9 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
               </Link>
             </div>
           </div>
-          <p className="govuk-body-m" style={{ color:'darkslategray' }}>{addPeriodDescription}</p>
+          <p className="govuk-body-m" style={{ color: 'darkslategray' }}>
+            {addPeriodDescription}
+          </p>
         </dl>
       </div>
     </div>
