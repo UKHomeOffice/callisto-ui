@@ -16,8 +16,8 @@ export const TimecardProvider = ({ children }) => {
     setTimeEntries,
     timecardDate,
     setTimecardDate,
-    newTimeEntry, 
-    setNewTimeEntry
+    newTimeEntry,
+    setNewTimeEntry,
   };
 
   return (
