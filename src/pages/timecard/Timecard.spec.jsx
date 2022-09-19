@@ -32,13 +32,6 @@ describe('Timecard', () => {
     expect(screenDate).toBeTruthy();
   });
 
-  it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
-    renderWithTimecardContext(<Timecard />);
-
-    const heading = screen.getByText('Add a new time period');
-    expect(heading).toBeTruthy();
-  });
-
   it('should render the EditShiftTimecard component when time entry id exists', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},

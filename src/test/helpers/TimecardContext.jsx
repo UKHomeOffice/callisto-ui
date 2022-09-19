@@ -13,6 +13,8 @@ export const renderWithTimecardContext = (
     setTimeEntries: jest.fn(),
     timecardDate: '',
     setTimecardDate: jest.fn(),
+    newTimeEntry: false, 
+    setNewTimeEntry: jest.fn(),
   },
 
   applicationContextValues = {

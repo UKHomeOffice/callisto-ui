@@ -19,6 +19,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
+import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const updateTimeEntryContextData = async (
   date,
@@ -57,8 +58,13 @@ const getTimePeriodTypesMap = (timePeriodTypes) => {
 };
 
 const Timecard = () => {
-  const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
-    useTimecardContext();
+  const {
+    summaryErrors,
+    timeEntries,
+    setTimeEntries,
+    setTimecardDate,
+    newTimeEntry,
+  } = useTimecardContext();
   const { timePeriodTypes } = useApplicationContext();
 
   const { date } = useParams();
@@ -113,12 +119,25 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.map((timeEntry, index) => (
-        <div key={index} className="govuk-!-margin-bottom-6">
-          <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-        </div>
-      ))}
-      {timeEntries.length === 0 && <SelectTimecardPeriodType />}
+      {newTimeEntry && <SelectTimecardPeriodType />}
+      {!newTimeEntry && (
+        <>
+          {timeEntries.map((timeEntry, index) => (
+            <div key={index} className="govuk-!-margin-bottom-6">
+              <EditShiftTimecard
+                timeEntry={timeEntry}
+                timeEntriesIndex={index}
+              />
+            </div>
+          ))}
+          {timeEntries.length === 0 && (
+            <AddTimeCardPeriod timecardEmpty={true} />
+          )}
+          {timeEntries.length > 0 && (
+            <AddTimeCardPeriod timecardEmpty={false} />
+          )}
+        </>
+      )}
     </>
   );
 };

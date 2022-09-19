@@ -7,6 +7,7 @@ export const TimecardProvider = ({ children }) => {
   const [summaryErrors, setSummaryErrors] = useState({});
   const [timeEntries, setTimeEntries] = useState([]);
   const [timecardDate, setTimecardDate] = useState();
+  const [newTimeEntry, setNewTimeEntry] = useState();
 
   const value = {
     summaryErrors,
@@ -15,6 +16,8 @@ export const TimecardProvider = ({ children }) => {
     setTimeEntries,
     timecardDate,
     setTimecardDate,
+    newTimeEntry, 
+    setNewTimeEntry
   };
 
   return (
