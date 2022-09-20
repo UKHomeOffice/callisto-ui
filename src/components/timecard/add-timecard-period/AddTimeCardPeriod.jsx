@@ -32,10 +32,11 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
                 to={'/'}
               >
                 Add
+                <span className="govuk-visually-hidden"> timecard period</span>
               </Link>
             </div>
           </div>
-          <p className="govuk-body-m" style={{ color: 'darkslategray' }}>
+          <p className="govuk-body-m add-timecard-period-type-description">
             {addPeriodDescription}
           </p>
         </dl>

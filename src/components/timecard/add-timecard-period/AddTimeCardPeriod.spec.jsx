@@ -1,5 +1,6 @@
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-test-renderer';
 
 import AddTimeCardPeriod from './AddTimeCardPeriod';
 
@@ -29,6 +30,24 @@ describe('AddTimeCardPeriod component', () => {
 
       expect(addTimePeriodTitle).toBeTruthy();
       expect(addTimePeriodDescription).toBeTruthy();
+    });
+  });
+
+  it('should call setNewTimeEntry when the add button is clicked', async () => {
+    const setNewTimeEntrySpy = jest.fn();
+    
+    renderWithTimecardContext(<AddTimeCardPeriod timecardEmpty={false} />, {
+      newTimeEntry: true,
+      setNewTimeEntry: setNewTimeEntrySpy,
+    });
+
+    act(() => {
+      const addTimeCardPeriodButton = screen.getByText('Add');
+      fireEvent.click(addTimeCardPeriodButton);
+    });
+    
+    await waitFor(() => {
+      expect(setNewTimeEntrySpy).toHaveBeenCalledWith(true);
     });
   });
 });

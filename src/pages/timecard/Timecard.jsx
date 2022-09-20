@@ -140,12 +140,7 @@ const Timecard = () => {
               />
             </div>
           ))}
-          {timeEntries.length === 0 && (
-            <AddTimeCardPeriod timecardEmpty={true} />
-          )}
-          {timeEntries.length > 0 && (
-            <AddTimeCardPeriod timecardEmpty={false} />
-          )}
+          <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
         </>
       )}
     </>
