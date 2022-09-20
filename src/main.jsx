@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import App from './App';
 import { initAll } from 'govuk-frontend';
@@ -13,17 +13,8 @@ import { TimecardProvider } from './context/TimecardContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={{
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/silent-check-sso.html',
-
-        responseMode: 'query',
-      }}
-    >
-      <HashRouter>
+    <ReactKeycloakProvider authClient={keycloak}>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
@@ -46,7 +37,7 @@ ReactDOM.render(
             />
           </Route>
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </ReactKeycloakProvider>
   </React.StrictMode>,
   document.getElementById('root')
