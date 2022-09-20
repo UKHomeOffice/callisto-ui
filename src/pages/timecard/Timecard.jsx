@@ -64,6 +64,7 @@ const Timecard = () => {
     setTimeEntries,
     setTimecardDate,
     newTimeEntry,
+    setNewTimeEntry,
   } = useTimecardContext();
   const { timePeriodTypes } = useApplicationContext();
 
@@ -100,18 +101,27 @@ const Timecard = () => {
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
         >
           Previous day
         </Link>
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
         >
           Next day
         </Link>
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"
         >
