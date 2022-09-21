@@ -69,8 +69,6 @@ steps:
       target: dev/main
     when:
       event: push
-      branch:
-        - main
     depends_on:
       - build project
 
