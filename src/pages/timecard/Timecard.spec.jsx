@@ -179,7 +179,7 @@ describe('Timecard', () => {
       const calendarLink = screen.getByText('Select another date');
       expect(calendarLink.pathname).toBe('/calendar');
     });
-    
+
     it('should render the SelectTimecardPeriodType component if newTimeEntry is true have been added', () => {
       renderWithTimecardContext(<Timecard />, {
         summaryErrors: {},
@@ -188,9 +188,9 @@ describe('Timecard', () => {
         setTimeEntries: jest.fn(),
         timecardDate: '',
         setTimecardDate: jest.fn(),
-        newTimeEntry: true
+        newTimeEntry: true,
       });
-  
+
       const heading = screen.getByText('Add a new time period');
       expect(heading).toBeTruthy();
     });

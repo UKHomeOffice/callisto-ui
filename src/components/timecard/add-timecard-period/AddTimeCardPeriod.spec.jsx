@@ -35,7 +35,7 @@ describe('AddTimeCardPeriod component', () => {
 
   it('should call setNewTimeEntry when the add button is clicked', async () => {
     const setNewTimeEntrySpy = jest.fn();
-    
+
     renderWithTimecardContext(<AddTimeCardPeriod timecardEmpty={false} />, {
       newTimeEntry: true,
       setNewTimeEntry: setNewTimeEntrySpy,
@@ -45,7 +45,7 @@ describe('AddTimeCardPeriod component', () => {
       const addTimeCardPeriodButton = screen.getByText('Add');
       fireEvent.click(addTimeCardPeriodButton);
     });
-    
+
     await waitFor(() => {
       expect(setNewTimeEntrySpy).toHaveBeenCalledWith(true);
     });
