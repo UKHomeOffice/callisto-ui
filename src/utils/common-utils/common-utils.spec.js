@@ -1,10 +1,10 @@
-import { deepClone } from './common-utils';
+import { deepCloneJson } from './common-utils';
 
 describe('common-utils', () => {
   describe('deepClone', () => {
     it('should deep clone an object', () => {
       const input = { test: 'test' };
-      const result = deepClone(input);
+      const result = deepCloneJson(input);
 
       expect(result).not.toBe(input);
       expect(result).toEqual(input);
@@ -12,7 +12,7 @@ describe('common-utils', () => {
 
     it('should deep clone an array of objects', () => {
       const input = [{ test: 'test' }, { secondTest: 'hello' }];
-      const result = deepClone(input);
+      const result = deepCloneJson(input);
 
       expect(result).not.toBe(input);
       expect(result).toEqual(input);
