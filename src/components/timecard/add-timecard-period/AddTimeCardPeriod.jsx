@@ -36,7 +36,7 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
               </Link>
             </div>
           </div>
-          <p className="govuk-body-m add-timecard-period-type-description">
+          <p className="govuk-body-m govuk-secondary-text-colour">
             {addPeriodDescription}
           </p>
         </div>
