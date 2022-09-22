@@ -9,7 +9,7 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { deepClone } from '../../../utils/common-utils/common-utils';
+import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
   createTimeEntry,
   deleteTimeEntry,
@@ -61,7 +61,7 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
       );
       const formattedEndTime = formatTime(response.data.items[0].actualEndTime);
 
-      const newTimeEntries = deepClone(timeEntries);
+      const newTimeEntries = deepCloneJson(timeEntries);
       newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
         .setStartTime(formattedStartTime)
         .setFinishTime(formattedEndTime)

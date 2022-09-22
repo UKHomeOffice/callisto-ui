@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { deepClone } from '../common-utils/common-utils';
+import { deepCloneJson } from '../common-utils/common-utils';
 
 export const getSingleTimeEntryResponseItem = (timeEntryResponseData) => {
   if (timeEntryResponseData.items && timeEntryResponseData.items.length > 0)
@@ -26,7 +26,7 @@ export const removeTimecardContextEntry = (
   setTimeEntries,
   removeAtIndex
 ) => {
-  const newTimeEntries = deepClone(timeEntries);
+  const newTimeEntries = deepCloneJson(timeEntries);
   newTimeEntries.splice(removeAtIndex, 1);
   setTimeEntries(newTimeEntries);
 };
