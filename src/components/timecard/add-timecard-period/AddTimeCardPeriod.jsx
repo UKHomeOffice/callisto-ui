@@ -19,7 +19,7 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
 
   return (
     <div className="govuk-!-margin-bottom-6">
-      <div className="add-timecard-period-type">
+      <div className="grey-border">
         <div className="govuk-summary-list govuk-!-margin-bottom-0">
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <p className="govuk-heading-s govuk-!-width-two-thirds">
