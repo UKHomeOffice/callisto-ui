@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import {
   formatDateTimeISO,
-  midnight,
+  formatTime,
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
@@ -56,10 +56,15 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
     const response = await createTimeEntry(timecardPayload, params);
 
     if (response?.data?.items?.length > 0) {
+      const formattedStartTime = formatTime(
+        response.data.items[0].actualStartTime
+      );
+      const formattedEndTime = formatTime(response.data.items[0].actualEndTime);
+
       const newTimeEntries = deepClone(timeEntries);
       newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-        .setStartTime(midnight)
-        .setFinishTime(midnight)
+        .setStartTime(formattedStartTime)
+        .setFinishTime(formattedEndTime)
         .setTimeEntryId(response.data.items[0].id);
 
       setTimeEntries(newTimeEntries);

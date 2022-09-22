@@ -1,10 +1,11 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import { midnight } from '../../../utils/time-entry-utils/timeEntryUtils';
 import ScheduledRestDay from './ScheduledRestDay';
 
 const timecardDate = '2022-09-01';
 const timecardDateNextDay = '2022-09-02';
+const midnight = '00:00';
+
 const newTimeEntry = {
   timeEntryId: '',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
