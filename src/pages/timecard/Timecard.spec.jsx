@@ -1,9 +1,10 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
-import { newTimeCardEntry } from '../../../mocks/mockData';
+import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
+import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 
 const date = '2022-07-01';
 const mockNavigate = jest.fn();
@@ -15,11 +16,13 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
+const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
+
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
   getTimeEntries.mockImplementation(() => {
     return {
-      data: newTimeCardEntry,
+      data: shiftTimeEntryApiResponse,
     };
   });
 });
@@ -99,8 +102,12 @@ describe('Timecard', () => {
       expect(setTimeEntriesSpy).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
-          finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
+          startTime: formatTime(
+            shiftTimeEntryApiResponse.items[0].actualStartTime
+          ),
+          finishTime: formatTime(
+            shiftTimeEntryApiResponse.items[0].actualEndTime
+          ),
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
         },
       ]);
