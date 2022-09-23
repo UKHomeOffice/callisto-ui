@@ -2,9 +2,11 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
+const { getApiResponseWithItems, createTimeEntry } = require('./mock-utils');
 const {
-  newTimeCardEntry,
-  updatedTimeCardEntryStartTime,
+  shiftTimeEntry,
+  srdEntry,
+  timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
 } = require('./mockData');
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
@@ -37,7 +39,7 @@ server.use((req, res, next) => {
 });
 
 server.get('/resources/time-entries', function (req, res) {
-  res.jsonp(newTimeCardEntry);
+  res.jsonp(getApiResponseWithItems(shiftTimeEntry, srdEntry));
 });
 
 server.post('/resources/time-entries', function (req, res) {
@@ -45,24 +47,37 @@ server.post('/resources/time-entries', function (req, res) {
   if (error) {
     res.status(400).send(error);
   } else {
-    res.jsonp(newTimeCardEntry);
+    const responseTimeEntry =
+      timePeriodIdForTimeEntry[req.body.timePeriodTypeId];
+    res.jsonp(getApiResponseWithItems(createTimeEntry(responseTimeEntry)));
   }
 });
 
-server.put(
-  '/resources/time-entries/' + newTimeCardEntry.items[0].id,
+server.put('/resources/time-entries/' + shiftTimeEntry.id, function (req, res) {
+  const error = validateTimecard(req.body);
+  if (error) {
+    res.status(400).send(error);
+  } else {
+    const responseTimeEntry =
+      timePeriodIdForTimeEntry[req.body.timePeriodTypeId];
+    responseTimeEntry.actualStartTime = req.body.actualStartTime;
+    res.jsonp(getApiResponseWithItems(createTimeEntry(responseTimeEntry)));
+  }
+});
+
+server.delete(
+  '/resources/time-entries/' + shiftTimeEntry.id,
   function (req, res) {
-    const error = validateTimecard(req.body);
-    if (error) {
-      res.status(400).send(error);
-    } else {
-      res.jsonp(updatedTimeCardEntryStartTime);
-    }
+    res.jsonp();
   }
 );
 
+server.delete('/resources/time-entries/' + srdEntry.id, function (req, res) {
+  res.jsonp();
+});
+
 server.get('/resources/time-period-types', function (req, res) {
-  res.jsonp(timeCardPeriodTypes);
+  res.jsonp(getApiResponseWithItems(...timeCardPeriodTypes));
 });
 
 // Wrap all responses
@@ -88,6 +103,5 @@ server.listen(port, () => {
 
 function validateTimecard(timecard) {
   if (!timecard.actualStartTime) return 'Start time is required.';
-  if (!timecard.actualEndTime) return 'Finish time is required.';
   return '';
 }

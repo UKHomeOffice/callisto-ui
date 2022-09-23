@@ -34,16 +34,14 @@ const SelectTimecardPeriodType = () => {
   return (
     <>
       <form
-        className="select-timecard-period-type"
+        className="grey-border"
         onSubmit={handleSubmit((data) => {
           const timePeriodTypeId = timePeriodTypes.find(
             (timePeriodType) => timePeriodType.name === data[radioName]
           ).id;
           setTimeEntries([
             ...timeEntries,
-            ContextTimeEntry.create()
-              .setTimePeriodType(data[radioName])
-              .setTimePeriodTypeId(timePeriodTypeId),
+            ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
           ]);
           setSummaryErrors({});
         }, handleError)}

@@ -6,16 +6,15 @@ import {
   getTimePeriodTypes,
 } from './timecardService';
 import api from '../core';
-import {
-  newTimeCardEntry,
-  updatedTimeCardEntryStartTime,
-} from '../../../mocks/mockData';
+import { shiftTimeEntry } from '../../../mocks/mockData';
+import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 
 const {
   timeCardPeriodTypes: MOCK_TIME_PERIOD_TYPES,
 } = require('../../../mocks/mockData');
 jest.mock('../core');
 
+const timeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 const timecard = [
   {
     meta: {
@@ -82,7 +81,9 @@ describe('Timecard Service', () => {
   describe('getTimePeriodTypes', () => {
     it('should use correct endpoint resources/time-period-types', async () => {
       api.get.mockImplementation(() =>
-        Promise.resolve({ data: MOCK_TIME_PERIOD_TYPES })
+        Promise.resolve({
+          data: getApiResponseWithItems(...MOCK_TIME_PERIOD_TYPES),
+        })
       );
 
       const timePeriodTypes = await getTimePeriodTypes(TENANT_ID_PARAM);
@@ -118,7 +119,7 @@ describe('Timecard Service', () => {
   describe('getTimeEntries', () => {
     it('should return data correctly on success', async () => {
       api.get.mockImplementation(() =>
-        Promise.resolve({ data: [newTimeCardEntry] })
+        Promise.resolve({ data: [timeEntryApiResponse] })
       );
 
       const response = await getTimeEntries();
@@ -130,7 +131,7 @@ describe('Timecard Service', () => {
       expect(response.data[0].meta).toBeDefined();
       expect(response.data[0].items).toBeDefined();
       expect(response.data[0].items.length).toBeGreaterThan(0);
-      expect(response.data).toStrictEqual([newTimeCardEntry]);
+      expect(response.data).toStrictEqual([timeEntryApiResponse]);
     });
 
     it('should throw a useful error containing throwing service and function when an error occurs', async () => {
@@ -153,18 +154,15 @@ describe('Timecard Service', () => {
   describe('updateTimeEntry', () => {
     it('should return data correctly on success', async () => {
       api.put.mockImplementation(() =>
-        Promise.resolve({ data: [updatedTimeCardEntryStartTime] })
+        Promise.resolve({ data: [timeEntryApiResponse] })
       );
 
-      const response = await updateTimeEntry(
-        1,
-        updatedTimeCardEntryStartTime.items[0]
-      );
+      const response = await updateTimeEntry(1, timeEntryApiResponse.items[0]);
 
       expect(response.data[0].meta).toBeDefined();
       expect(response.data[0].items).toBeDefined();
       expect(response.data[0].items.length).toBeGreaterThan(0);
-      expect(response.data).toStrictEqual([updatedTimeCardEntryStartTime]);
+      expect(response.data).toStrictEqual([timeEntryApiResponse]);
     });
 
     it('should throw a useful error containing throwing service and function when an error occurs', async () => {

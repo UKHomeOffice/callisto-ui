@@ -1,19 +1,11 @@
 export class ContextTimeEntry {
   timeEntryId = '';
-  timePeriodType = '';
   startTime = '';
   finishTime = '';
   timePeriodTypeId = '';
 
-  constructor(
-    timeEntryId,
-    timePeriodType,
-    startTime,
-    finishTime,
-    timePeriodTypeId
-  ) {
+  constructor(timeEntryId, startTime, finishTime, timePeriodTypeId) {
     this.timeEntryId = timeEntryId ? timeEntryId : '';
-    this.timePeriodType = timePeriodType ? timePeriodType : '';
     this.startTime = startTime ? startTime : '';
     this.finishTime = finishTime ? finishTime : '';
     this.timePeriodTypeId = timePeriodTypeId ? timePeriodTypeId : '';
@@ -22,7 +14,6 @@ export class ContextTimeEntry {
   static createFrom(contextTimeEntry) {
     return new ContextTimeEntry(
       contextTimeEntry.timeEntryId,
-      contextTimeEntry.timePeriodType,
       contextTimeEntry.startTime,
       contextTimeEntry.finishTime,
       contextTimeEntry.timePeriodTypeId
@@ -35,11 +26,6 @@ export class ContextTimeEntry {
 
   setTimeEntryId(timeEntryId) {
     this.timeEntryId = timeEntryId;
-    return this;
-  }
-
-  setTimePeriodType(timePeriodType) {
-    this.timePeriodType = timePeriodType;
     return this;
   }
 
