@@ -122,9 +122,10 @@ const updateTimeEntryContextData = async (date, setTimeEntries) => {
 };
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {
-  let timePeriodTypesMap = {};
-  timePeriodTypes.forEach((type) => (timePeriodTypesMap[type.id] = type.name));
-  return timePeriodTypesMap;
+  return timePeriodTypes.reduce(
+    (acc, type) => ({ ...acc, [type.id]: type.name }),
+    {}
+  );
 };
 
 export default Timecard;
