@@ -11,17 +11,14 @@ const getBaseTimeEntry = () => {
   return {
     id: '',
     tenantId: '00000000-0000-0000-0000-000000000000',
-    version: 0,
     ownerId: 1,
     timePeriodTypeId: '',
+    timePeriodType: '',
     shiftType: '',
     actualStartTime: '',
     actualEndTime: '',
-    plannedStartTime: null,
-    plannedEndTime: null,
     createdAt: '2022-08-24T12:01:43.786+00:00',
     updatedAt: '2022-08-24T12:01:43.786+00:00',
-    deleted: false,
   };
 };
 
