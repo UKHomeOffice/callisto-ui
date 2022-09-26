@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
-import { shiftTimeEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
+import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
@@ -38,7 +38,7 @@ describe('Timecard', () => {
   it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
     renderWithTimecardContext(<Timecard />);
 
-    const heading = screen.getByText('Add a new time period');
+    const heading = screen.getByText('Add time period');
     expect(heading).toBeTruthy();
   });
 
@@ -189,6 +189,7 @@ describe('Timecard', () => {
       setSummaryErrors: jest.fn(),
       timeEntries: [
         {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '08:00',
           finishTime: '16:00',
         },

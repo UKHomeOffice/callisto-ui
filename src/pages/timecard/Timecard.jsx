@@ -93,14 +93,14 @@ const Timecard = () => {
 
       {newTimeEntry && <SelectTimecardPeriodType />}
       {!newTimeEntry && (
-          <>
-            {timeEntries.map((timeEntry, index) => (
-              <div key={index} className="govuk-!-margin-bottom-6">
-                {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
-              </div>
-            ))}
-            <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
-          </>
+        <>
+          {timeEntries.map((timeEntry, index) => (
+            <div key={index} className="govuk-!-margin-bottom-6">
+              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
+            </div>
+          ))}
+          <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
+        </>
       )}
     </>
   );
