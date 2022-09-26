@@ -3,9 +3,9 @@ $govuk-show-breakpoints: false;
 $govuk-font-family: helvetica, arial, sans-serif;
 
 @import "node_modules/govuk-frontend/govuk/all";
+@import "assets/common";
 
 // Components
 @import "assets/common";
 @import "assets/Timeline";
-@import "assets/SelectTimecardPeriodType";
-@import "assets/StartFinishTimeInput";
+@import "assets/Timecard";

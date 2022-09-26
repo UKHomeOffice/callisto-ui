@@ -1,4 +1,8 @@
-import { getSingleTimeEntryResponseItem } from './timeEntryUtils';
+import { ContextTimeEntry } from './ContextTimeEntry';
+import {
+  getSingleTimeEntryResponseItem,
+  removeTimecardContextEntry,
+} from './timeEntryUtils';
 
 describe('timeEntryUtils', () => {
   describe('getSingleTimeEntryResponseItem', () => {
@@ -29,5 +33,14 @@ describe('timeEntryUtils', () => {
         expect(error.message).toContain('at least one time entry');
       }
     });
+  });
+
+  it('should delete the time entry from the time entries context at the given index', async () => {
+    const timeEntry1 = new ContextTimeEntry();
+    const timeEntry2 = new ContextTimeEntry();
+    const existingTimeEntries = [timeEntry1, timeEntry2];
+    const mockSetTimeEntries = jest.fn();
+    removeTimecardContextEntry(existingTimeEntries, mockSetTimeEntries, 1);
+    expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
   });
 });

@@ -19,43 +19,8 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
+import ScheduledRestDay from '../../components/timecard/scheduled-rest-day/ScheduledRestDay';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
-
-const updateTimeEntryContextData = async (
-  date,
-  setTimeEntries,
-  timePeriodTypes
-) => {
-  const timeEntriesParams = new UrlSearchParamBuilder()
-    .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
-    .getUrlSearchParams();
-  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
-
-  if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = timeEntriesResponse.data.items.map(
-      (timeEntry) =>
-        new ContextTimeEntry(
-          timeEntry.id,
-          timePeriodTypes[timeEntry.timePeriodTypeId],
-          formatTime(timeEntry.actualStartTime),
-          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-          timeEntry.timePeriodTypeId
-        )
-    );
-    setTimeEntries(existingTimeEntries);
-  } else {
-    setTimeEntries([]);
-  }
-};
-
-const getTimePeriodTypesMap = (timePeriodTypes) => {
-  let timePeriodTypesMap = {};
-  timePeriodTypes.map(
-    (timePeriodType) => (timePeriodTypesMap[timePeriodType.id] = timePeriodType)
-  );
-  return timePeriodTypesMap;
-};
 
 const Timecard = () => {
   const {
@@ -67,6 +32,7 @@ const Timecard = () => {
     setNewTimeEntry,
   } = useTimecardContext();
   const { timePeriodTypes } = useApplicationContext();
+  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
   const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
@@ -81,11 +47,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(
-      date,
-      setTimeEntries,
-      getTimePeriodTypesMap(timePeriodTypes)
-    );
+    updateTimeEntryContextData(date, setTimeEntries);
   }, [date, timePeriodTypes]);
 
   return (
@@ -131,19 +93,59 @@ const Timecard = () => {
 
       {newTimeEntry && <SelectTimecardPeriodType />}
       {!newTimeEntry && (
-        <>
-          {timeEntries.map((timeEntry, index) => (
-            <div key={index} className="govuk-!-margin-bottom-6">
-              <EditShiftTimecard
-                timeEntry={timeEntry}
-                timeEntriesIndex={index}
-              />
-            </div>
-          ))}
-          <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
-        </>
+          <>
+            {timeEntries.map((timeEntry, index) => (
+              <div key={index} className="govuk-!-margin-bottom-6">
+                {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
+              </div>
+            ))}
+            <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
+          </>
       )}
     </>
+  );
+};
+
+const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
+  switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
+    case 'Shift':
+      return (
+        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+      );
+    case 'Scheduled rest day':
+      return (
+        <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
+      );
+  }
+};
+
+const updateTimeEntryContextData = async (date, setTimeEntries) => {
+  const timeEntriesParams = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
+    .getUrlSearchParams();
+  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+
+  if (timeEntriesResponse.data.items?.length > 0) {
+    const existingTimeEntries = timeEntriesResponse.data.items.map(
+      (timeEntry) =>
+        new ContextTimeEntry(
+          timeEntry.id,
+          formatTime(timeEntry.actualStartTime),
+          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+          timeEntry.timePeriodTypeId
+        )
+    );
+    setTimeEntries(existingTimeEntries);
+  } else {
+    setTimeEntries([]);
+  }
+};
+
+const getTimePeriodTypesMap = (timePeriodTypes) => {
+  return timePeriodTypes.reduce(
+    (acc, type) => ({ ...acc, [type.id]: type.name }),
+    {}
   );
 };
 

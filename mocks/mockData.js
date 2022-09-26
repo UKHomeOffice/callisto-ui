@@ -1,3 +1,5 @@
+const { createTimeEntry } = require('./mock-utils');
+
 const accruals = [
   {
     endOfAgreementDate: '2022-03-31',
@@ -181,94 +183,62 @@ const people = [
   },
 ];
 
-const newTimeCardEntry = {
-  meta: {
-    next: null,
-  },
-  items: [
-    {
-      id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      version: 0,
-      ownerId: 1,
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      shiftType: '',
-      actualStartTime: '2022-08-24T12:01:43.786+00:00',
-      actualEndTime: '2022-08-24T22:01:43.786+00:00',
-      plannedStartTime: null,
-      plannedEndTime: null,
-      createdAt: '2022-08-24T12:01:43.786+00:00',
-      updatedAt: '2022-08-24T12:01:43.786+00:00',
-      deleted: false,
-    },
-  ],
+const shiftTimeEntry = createTimeEntry({
+  id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  actualStartTime: '2022-08-24T12:01:43.786+00:00',
+  actualEndTime: '2022-08-24T22:01:43.786+00:00',
+});
+
+const srdEntry = createTimeEntry({
+  id: '0a650b0a-8346-158f-8183-471def7e0004',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+  actualStartTime: '2022-08-24T00:00:00.000+00:00',
+  actualEndTime: '2022-08-25T00:00:00.000+00:00',
+});
+
+const timePeriodIdForTimeEntry = {
+  '00000000-0000-0000-0000-000000000001': shiftTimeEntry,
+  '00000000-0000-0000-0000-000000000002': srdEntry,
 };
 
-const updatedTimeCardEntryStartTime = {
-  meta: {
-    next: null,
+const timeCardPeriodTypes = [
+  {
+    id: '00000000-0000-0000-0000-000000000001',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Shift',
   },
-  items: [
-    {
-      id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      version: 0,
-      ownerId: 1,
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      shiftType: '',
-      actualStartTime: '2022-08-24T12:05:12.786+00:00',
-      actualEndTime: '2022-08-24T22:01:43.786+00:00',
-      plannedStartTime: null,
-      plannedEndTime: null,
-      createdAt: '2022-08-24T12:01:43.786+00:00',
-      updatedAt: '2022-08-24T12:01:43.786+00:00',
-      deleted: false,
-    },
-  ],
-};
-
-const timeCardPeriodTypes = {
-  meta: {
-    next: null,
+  {
+    id: '00000000-0000-0000-0000-000000000002',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Scheduled rest day',
   },
-  items: [
-    {
-      id: '00000000-0000-0000-0000-000000000001',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Shift',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000002',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Scheduled rest day',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000003',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Non-working day',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000004',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'On call',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000005',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Absence',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000006',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Training',
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000007',
-      tenantId: '00000000-0000-0000-0000-000000000000',
-      name: 'Overtime',
-    },
-  ],
-};
+  {
+    id: '00000000-0000-0000-0000-000000000003',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Non-working day',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000004',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'On call',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000005',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Absence',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000006',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Training',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000007',
+    tenantId: '00000000-0000-0000-0000-000000000000',
+    name: 'Overtime',
+  },
+];
 
 const shiftTimeCardPeriodType = {
   meta: {
@@ -284,8 +254,9 @@ const shiftTimeCardPeriodType = {
 };
 
 module.exports = {
-  newTimeCardEntry,
-  updatedTimeCardEntryStartTime,
+  shiftTimeEntry,
+  srdEntry,
+  timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
   shiftTimeCardPeriodType,
   accruals,

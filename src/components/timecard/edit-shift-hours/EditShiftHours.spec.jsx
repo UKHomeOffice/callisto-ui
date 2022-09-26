@@ -4,7 +4,6 @@ import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext
 import EditShiftHours from './EditShiftHours';
 
 const newTimeEntry = {
-  timePeriodType: 'Shift',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 

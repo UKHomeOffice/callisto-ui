@@ -1,9 +1,10 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
-import { newTimeCardEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
+import { shiftTimeEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
+import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 
 const date = '2022-07-01';
 const mockNavigate = jest.fn();
@@ -15,11 +16,13 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
+const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
+
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
   getTimeEntries.mockImplementation(() => {
     return {
-      data: newTimeCardEntry,
+      data: shiftTimeEntryApiResponse,
     };
   });
 });
@@ -32,34 +35,20 @@ describe('Timecard', () => {
     expect(screenDate).toBeTruthy();
   });
 
-  it('should render the EditShiftTimecard component when time entry id exists', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodType: 'Shift',
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
+  it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
+    renderWithTimecardContext(<Timecard />);
 
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Start time')).toBeTruthy();
-    expect(screen.getByText('Finish time')).toBeTruthy();
+    const heading = screen.getByText('Add a new time period');
+    expect(heading).toBeTruthy();
   });
 
-  it('should render the EditShiftTimecard component when time period type exists', async () => {
+  it('should render the EditShiftTimecard component when time period type is Shift', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
       timeEntries: [
         {
-          timePeriodType: 'Shift',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '',
           finishTime: '',
         },
@@ -72,6 +61,28 @@ describe('Timecard', () => {
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
     expect(screen.getByText('Start time')).toBeTruthy();
     expect(screen.getByText('Finish time')).toBeTruthy();
+    expect(screen.getByText('Shift')).toBeTruthy();
+  });
+
+  it('should render the ScheduledRestDay component when time period type is SRD', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+          startTime: '',
+          finishTime: '',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.queryByText('Shift')).toBeFalsy();
+    expect(screen.getByText('Scheduled rest day')).toBeTruthy();
   });
 
   it('should set the time entries in the context if time entries exist for that date', async () => {
@@ -91,12 +102,12 @@ describe('Timecard', () => {
       expect(setTimeEntriesSpy).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          timePeriodType: timeCardPeriodTypes.items.find(
-            (timePeriodType) =>
-              timePeriodType.id === '00000000-0000-0000-0000-000000000001'
+          startTime: formatTime(
+            shiftTimeEntryApiResponse.items[0].actualStartTime
           ),
-          startTime: formatTime(newTimeCardEntry.items[0].actualStartTime),
-          finishTime: formatTime(newTimeCardEntry.items[0].actualEndTime),
+          finishTime: formatTime(
+            shiftTimeEntryApiResponse.items[0].actualEndTime
+          ),
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
         },
       ]);
@@ -144,7 +155,6 @@ describe('Timecard', () => {
       setSummaryErrors: jest.fn(),
       timeEntries: [
         {
-          timePeriodType: '',
           startTime: '',
           finishTime: '',
         },

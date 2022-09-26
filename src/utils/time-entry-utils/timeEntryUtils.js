@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { deepCloneJson } from '../common-utils/common-utils';
 
 export const getSingleTimeEntryResponseItem = (timeEntryResponseData) => {
   if (timeEntryResponseData.items && timeEntryResponseData.items.length > 0)
@@ -18,4 +19,14 @@ export const formatDate = (dateTime) => {
 
 export const formatDateTimeISO = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ssZ');
+};
+
+export const removeTimecardContextEntry = (
+  timeEntries,
+  setTimeEntries,
+  removeAtIndex
+) => {
+  const newTimeEntries = deepCloneJson(timeEntries);
+  newTimeEntries.splice(removeAtIndex, 1);
+  setTimeEntries(newTimeEntries);
 };

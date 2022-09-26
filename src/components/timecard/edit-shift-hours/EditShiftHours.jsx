@@ -14,7 +14,7 @@ import {
   formatDateTimeISO,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
-import { deepClone } from '../../../utils/common-utils/common-utils';
+import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -70,7 +70,7 @@ const EditShiftHours = ({
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        const newTimeEntries = deepClone(timeEntries);
+        const newTimeEntries = deepCloneJson(timeEntries);
         newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
           timeEntry
         )

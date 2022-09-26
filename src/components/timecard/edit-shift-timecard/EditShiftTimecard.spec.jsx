@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import { newTimeCardEntry } from '../../../../mocks/mockData';
+import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
+import { shiftTimeEntry } from '../../../../mocks/mockData';
 import {
   createTimeEntry,
   deleteTimeEntry,
@@ -15,7 +16,6 @@ let existingTimeEntry;
 beforeEach(() => {
   existingTimeEntry = {
     timeEntryId: '00000000-0000-0000-0000-000000000001',
-    timePeriodType: 'Shift',
     startTime: '08:00',
     finishTime: '16:00',
     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -23,13 +23,11 @@ beforeEach(() => {
 });
 
 const newTimeEntry = {
-  timePeriodType: 'Shift',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 
 const otherTimeEntry = {
   timeEntryId: '00000000-0000-0000-0000-000000000002',
-  timePeriodType: 'Shift',
   startTime: '07:00',
   finishTime: '10:00',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -58,7 +56,9 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should hide EditShiftHours component when clicking "Save" on success', async () => {
-    createTimeEntry.mockResolvedValue({ data: newTimeCardEntry });
+    createTimeEntry.mockResolvedValue({
+      data: getApiResponseWithItems(shiftTimeEntry),
+    });
 
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
