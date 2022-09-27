@@ -20,10 +20,17 @@ import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import ScheduledRestDay from '../../components/timecard/scheduled-rest-day/ScheduledRestDay';
+import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
-  const { summaryErrors, timeEntries, setTimeEntries, setTimecardDate } =
-    useTimecardContext();
+  const {
+    summaryErrors,
+    timeEntries,
+    setTimeEntries,
+    setTimecardDate,
+    newTimeEntry,
+    setNewTimeEntry,
+  } = useTimecardContext();
   const { timePeriodTypes } = useApplicationContext();
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
@@ -56,18 +63,27 @@ const Timecard = () => {
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
         >
           Previous day
         </Link>
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
         >
           Next day
         </Link>
         <Link
+          onClick={() => {
+            setNewTimeEntry(false);
+          }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"
         >
@@ -75,12 +91,17 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {timeEntries.map((timeEntry, index) => (
-        <div key={index} className="govuk-!-margin-bottom-6">
-          {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
-        </div>
-      ))}
-      {timeEntries.length === 0 && <SelectTimecardPeriodType />}
+      {newTimeEntry && <SelectTimecardPeriodType />}
+      {!newTimeEntry && (
+        <>
+          {timeEntries.map((timeEntry, index) => (
+            <div key={index} className="govuk-!-margin-bottom-6">
+              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
+            </div>
+          ))}
+          <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
+        </>
+      )}
     </>
   );
 };

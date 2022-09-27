@@ -24,7 +24,7 @@ const SelectTimecardPeriodType = () => {
 
   const radioName = 'timePeriod';
 
-  const { timeEntries, setTimeEntries, setSummaryErrors } =
+  const { timeEntries, setTimeEntries, setSummaryErrors, setNewTimeEntry } =
     useTimecardContext();
 
   const handleError = (errorFields) => {
@@ -43,6 +43,7 @@ const SelectTimecardPeriodType = () => {
             ...timeEntries,
             ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
           ]);
+          setNewTimeEntry(false);
           setSummaryErrors({});
         }, handleError)}
       >
