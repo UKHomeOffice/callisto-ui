@@ -12,6 +12,7 @@ import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBu
 import {
   formatDate,
   formatDateTimeISO,
+  formatTime,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
@@ -70,12 +71,19 @@ const EditShiftHours = ({
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
+        const formattedStartTime = formatTime(
+          response.data.items[0].actualStartTime
+        );
+        const formattedEndTime = response.data.items[0].actualEndTime
+          ? formatTime(response.data.items[0].actualEndTime)
+          : '';
+
         const newTimeEntries = deepCloneJson(timeEntries);
         newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
           timeEntry
         )
-          .setStartTime(formData[`${inputName}-start-time`])
-          .setFinishTime(formData[`${inputName}-finish-time`] || '')
+          .setStartTime(formattedStartTime)
+          .setFinishTime(formattedEndTime)
           .setTimeEntryId(response.data.items[0].id);
 
         setTimeEntries(newTimeEntries);

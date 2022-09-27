@@ -1,7 +1,14 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
+
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
+import { createTimeEntry } from '../../../api/services/timecardService';
+import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
+import {
+  shiftTimeEntry,
+  shiftTimeEntryWithoutFinishTime,
+} from '../../../../mocks/mockData';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -105,6 +112,89 @@ describe('EditShiftHours', () => {
           ])
         );
       });
+    });
+  });
+
+  it('should auto insert a colon in time entry using api response when clicking save on success', async () => {
+    createTimeEntry.mockResolvedValue({
+      data: getApiResponseWithItems(shiftTimeEntry),
+    });
+    const mockSetTimeEntries = jest.fn();
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      {
+        timeEntries: [newTimeEntry],
+        setTimeEntries: mockSetTimeEntries,
+        timecardDate: '2022-09-01',
+        setTimecardDate: jest.fn(),
+      }
+    );
+
+    const startTimeInput = screen.getByTestId('shift-start-time');
+    const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+    fireEvent.change(startTimeInput, { target: { value: '1201' } });
+    fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+    act(() => {
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockSetTimeEntries).toHaveBeenCalledWith([
+        {
+          startTime: '12:01',
+          finishTime: '22:01',
+          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+        },
+      ]);
+    });
+  });
+
+  it('should set a blank finish time in timecard context if finish time is not entered', async () => {
+    createTimeEntry.mockResolvedValue({
+      data: getApiResponseWithItems(shiftTimeEntryWithoutFinishTime),
+    });
+    const mockSetTimeEntries = jest.fn();
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      {
+        timeEntries: [newTimeEntry],
+        setTimeEntries: mockSetTimeEntries,
+        timecardDate: '2022-09-01',
+        setTimecardDate: jest.fn(),
+      }
+    );
+
+    const startTimeInput = screen.getByTestId('shift-start-time');
+    fireEvent.change(startTimeInput, { target: { value: '2201' } });
+
+    act(() => {
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockSetTimeEntries).toHaveBeenCalledWith([
+        {
+          startTime: '12:01',
+          finishTime: '',
+          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50004',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+        },
+      ]);
     });
   });
 
