@@ -71,11 +71,10 @@ const EditShiftHours = ({
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
 
       if (response?.data?.items?.length > 0) {
-        const formattedStartTime = formatTime(
-          response.data.items[0].actualStartTime
-        );
-        const formattedEndTime = response.data.items[0].actualEndTime
-          ? formatTime(response.data.items[0].actualEndTime)
+        const responseItem = response.data.items[0];
+        const formattedStartTime = formatTime(responseItem.actualStartTime);
+        const formattedEndTime = responseItem.actualEndTime
+          ? formatTime(responseItem.actualEndTime)
           : '';
 
         const newTimeEntries = deepCloneJson(timeEntries);
@@ -84,7 +83,7 @@ const EditShiftHours = ({
         )
           .setStartTime(formattedStartTime)
           .setFinishTime(formattedEndTime)
-          .setTimeEntryId(response.data.items[0].id);
+          .setTimeEntryId(responseItem.id);
 
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});
