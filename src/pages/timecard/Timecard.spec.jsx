@@ -38,7 +38,7 @@ describe('Timecard', () => {
   it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
     renderWithTimecardContext(<Timecard />);
 
-    const heading = screen.getByText('Add a new time period');
+    const heading = screen.getByText('Add time period');
     expect(heading).toBeTruthy();
   });
 
@@ -168,25 +168,68 @@ describe('Timecard', () => {
     expect(screen.getByText('You must select a time period')).toBeTruthy();
   });
 
+  it('should render the SelectTimecardPeriodType component if newTimeEntry is true have been added', () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+      newTimeEntry: true,
+    });
+
+    const heading = screen.getByText('Add a new time period');
+    expect(heading).toBeTruthy();
+  });
+
+  it('should render the "Edit Shift" component for existing time entry', () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '08:00',
+          finishTime: '16:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+      newTimeEntry: false,
+    });
+
+    expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
+    expect(screen.getByText('Add another time period')).toBeInTheDocument();
+    expect(
+      screen.getByText('Use this to record overtime or another shift')
+    ).toBeInTheDocument();
+  });
+
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
       renderWithTimecardContext(<Timecard />);
 
-      const previousDayLink = screen.getByText('Previous day');
+      const previousDayLink = screen.getByRole('link', {
+        name: 'Previous day',
+      });
       expect(previousDayLink.pathname).toBe('/timecard/2022-06-30');
     });
 
     it('should contain a link to next day', () => {
       renderWithTimecardContext(<Timecard />);
 
-      const nextDayLink = screen.getByText('Next day');
+      const nextDayLink = screen.getByRole('link', { name: 'Next day' });
       expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
     });
 
     it('should contain a link to the calendar', () => {
       renderWithTimecardContext(<Timecard />);
 
-      const calendarLink = screen.getByText('Select another date');
+      const calendarLink = screen.getByRole('link', {
+        name: 'Select another date',
+      });
       expect(calendarLink.pathname).toBe('/calendar');
     });
   });
