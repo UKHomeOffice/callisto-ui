@@ -179,7 +179,7 @@ describe('EditShiftHours', () => {
     );
 
     const startTimeInput = screen.getByTestId('shift-start-time');
-    fireEvent.change(startTimeInput, { target: { value: '2201' } });
+    fireEvent.change(startTimeInput, { target: { value: '1201' } });
 
     act(() => {
       const saveButton = screen.getByText('Save');
