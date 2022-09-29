@@ -82,7 +82,30 @@ describe('Timecard', () => {
 
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
     expect(screen.queryByText('Shift')).toBeFalsy();
+    expect(screen.queryByText('Non-working day')).toBeFalsy();
     expect(screen.getByText('Scheduled rest day')).toBeTruthy();
+  });
+
+  it('should render the NonWorkingDay component when time period type is NWD', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+          startTime: '',
+          finishTime: '',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.queryByText('Shift')).toBeFalsy();
+    expect(screen.queryByText('Scheduled rest day')).toBeFalsy();
+    expect(screen.getByText('Non-working day')).toBeTruthy();
   });
 
   it('should set the time entries in the context if time entries exist for that date', async () => {
