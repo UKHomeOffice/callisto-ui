@@ -19,7 +19,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import ScheduledRestDay from '../../components/timecard/scheduled-rest-day/ScheduledRestDay';
+import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
@@ -112,9 +112,13 @@ const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
       return (
         <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
       );
-    case 'Scheduled rest day':
+    default:
       return (
-        <ScheduledRestDay timeEntry={timeEntry} timeEntriesIndex={index} />
+        <SimpleTimePeriod
+          timeEntry={timeEntry}
+          timeEntriesIndex={index}
+          timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
+        />
       );
   }
 };

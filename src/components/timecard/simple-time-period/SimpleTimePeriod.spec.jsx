@@ -1,6 +1,6 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import ScheduledRestDay from './ScheduledRestDay';
+import SimpleTimePeriod from './SimpleTimePeriod';
 
 const timecardDate = '2022-09-01';
 const timecardDateNextDay = '2022-09-02';
@@ -38,10 +38,10 @@ jest.mock('../../../api/services/timecardService', () => ({
   deleteTimeEntry: jest.fn().mockResolvedValue({ status: 200 }),
 }));
 
-describe('ScheduledRestDay', () => {
+describe('SimpleTimePeriod', () => {
   it('should display the correct time period type', () => {
     renderWithTimecardContext(
-      <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>
     );
 
     const title = screen.getByText('Scheduled rest day');
@@ -50,7 +50,7 @@ describe('ScheduledRestDay', () => {
 
   it('should display the save and cancel buttons when there is no time entry', () => {
     renderWithTimecardContext(
-      <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>
     );
 
     const saveButton = screen.getByText('Save');
@@ -62,7 +62,7 @@ describe('ScheduledRestDay', () => {
 
   it('should not display the save and cancel buttons when there is a time entry', () => {
     renderWithTimecardContext(
-      <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      <SimpleTimePeriod timeEntry={existingTimeEntry} timeEntriesIndex={1} timePeriodTitle='Scheduled rest day'/>,
     );
 
     const saveButton = screen.queryByText('Save');
@@ -84,7 +84,7 @@ describe('ScheduledRestDay', () => {
       );
 
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [newTimeEntry],
           setTimeEntries: jest.fn(),
@@ -115,7 +115,7 @@ describe('ScheduledRestDay', () => {
     it('should update timecard context when pressing "Save" button', async () => {
       const mockSetTimeEntries = jest.fn();
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [newTimeEntry],
           setTimeEntries: mockSetTimeEntries,
@@ -143,7 +143,7 @@ describe('ScheduledRestDay', () => {
       const mockSetTimeEntries = jest.fn();
 
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
@@ -164,7 +164,7 @@ describe('ScheduledRestDay', () => {
       const mockSetTimeEntries = jest.fn();
 
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={1} />,
+        <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={1} timePeriodTitle='Scheduled rest day'/>,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
@@ -187,7 +187,7 @@ describe('ScheduledRestDay', () => {
       const mockSetTimeEntries = jest.fn();
 
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={existingTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [existingTimeEntry],
           setTimeEntries: mockSetTimeEntries,
@@ -211,7 +211,7 @@ describe('ScheduledRestDay', () => {
 
       const mockSetTimeEntries = jest.fn();
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={existingTimeEntry} timeEntriesIndex={1} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [existingTimeEntry],
           setTimeEntries: mockSetTimeEntries,
@@ -230,7 +230,7 @@ describe('ScheduledRestDay', () => {
 
     it('should not render the "Remove" button if time entry does not exist', () => {
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={newTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={newTimeEntry} timeEntriesIndex={0} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [newTimeEntry],
         }
@@ -242,7 +242,7 @@ describe('ScheduledRestDay', () => {
 
     it('should render the "Remove" button if time entry exists', () => {
       renderWithTimecardContext(
-        <ScheduledRestDay timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
+        <SimpleTimePeriod timeEntry={existingTimeEntry} timeEntriesIndex={1} timePeriodTitle='Scheduled rest day'/>,
         {
           timeEntries: [existingTimeEntry],
         }
