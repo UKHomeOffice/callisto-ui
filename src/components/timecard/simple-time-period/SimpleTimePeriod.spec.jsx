@@ -20,6 +20,8 @@ const existingTimeEntry = {
   finishTime: midnight,
 };
 
+const timePeriodTitleSWD = 'Scheduled Rest Day';
+
 jest.mock('../../../api/services/timecardService', () => ({
   createTimeEntry: jest.fn().mockResolvedValue({
     data: {
@@ -44,7 +46,7 @@ describe('SimpleTimePeriod', () => {
       <SimpleTimePeriod
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
-        timePeriodTitle="Scheduled rest day"
+        timePeriodTitle={timePeriodTitleSWD}
       />
     );
 
@@ -57,7 +59,7 @@ describe('SimpleTimePeriod', () => {
       <SimpleTimePeriod
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
-        timePeriodTitle="Scheduled rest day"
+        timePeriodTitle={timePeriodTitleSWD}
       />
     );
 
@@ -73,7 +75,7 @@ describe('SimpleTimePeriod', () => {
       <SimpleTimePeriod
         timeEntry={existingTimeEntry}
         timeEntriesIndex={1}
-        timePeriodTitle="Scheduled rest day"
+        timePeriodTitle={timePeriodTitleSWD}
       />
     );
 
@@ -99,7 +101,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [newTimeEntry],
@@ -134,7 +136,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [newTimeEntry],
@@ -166,7 +168,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           summaryErrors: {},
@@ -191,7 +193,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={newTimeEntry}
           timeEntriesIndex={1}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           summaryErrors: {},
@@ -218,7 +220,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [existingTimeEntry],
@@ -246,7 +248,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={existingTimeEntry}
           timeEntriesIndex={1}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [existingTimeEntry],
@@ -269,7 +271,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [newTimeEntry],
@@ -285,7 +287,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timeEntry={existingTimeEntry}
           timeEntriesIndex={1}
-          timePeriodTitle="Scheduled rest day"
+          timePeriodTitle={timePeriodTitleSWD}
         />,
         {
           timeEntries: [existingTimeEntry],

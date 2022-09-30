@@ -64,7 +64,7 @@ describe('Timecard', () => {
     expect(screen.getByText('Shift')).toBeTruthy();
   });
 
-  it('should render the ScheduledRestDay component when time period type is SRD', async () => {
+  it('should render the SimpleTimePeriod component when time period type is SRD', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
@@ -86,7 +86,7 @@ describe('Timecard', () => {
     expect(screen.getByText('Scheduled rest day')).toBeTruthy();
   });
 
-  it('should render the NonWorkingDay component when time period type is NWD', async () => {
+  it('should render the SimpleTimePeriod component when time period type is NWD', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
