@@ -5,6 +5,7 @@ import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
+import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
 const date = '2022-07-01';
 const mockNavigate = jest.fn();
@@ -64,49 +65,38 @@ describe('Timecard', () => {
     expect(screen.getByText('Shift')).toBeTruthy();
   });
 
-  it('should render the SimpleTimePeriod component when time period type is SRD', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
+  test.each([
+    '00000000-0000-0000-0000-000000000002',
+    '00000000-0000-0000-0000-000000000003',
+  ])(
+    'should render the SimpleTimePeriod component when time period type is correct',
+    async (testValue) => {
+      renderWithTimecardContext(<Timecard />, {
+        summaryErrors: {},
+        setSummaryErrors: jest.fn(),
+        timeEntries: [
+          {
+            timePeriodTypeId: testValue,
+            startTime: '',
+            finishTime: '',
+          },
+        ],
+        setTimeEntries: jest.fn(),
+        timecardDate: '',
+        setTimecardDate: jest.fn(),
+      });
 
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.queryByText('Shift')).toBeFalsy();
-    expect(screen.queryByText('Non-working day')).toBeFalsy();
-    expect(screen.getByText('Scheduled rest day')).toBeTruthy();
-  });
-
-  it('should render the SimpleTimePeriod component when time period type is NWD', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.queryByText('Shift')).toBeFalsy();
-    expect(screen.queryByText('Scheduled rest day')).toBeFalsy();
-    expect(screen.getByText('Non-working day')).toBeTruthy();
-  });
+      await waitFor(() => {
+        expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        timeCardPeriodTypes.forEach((type) => {
+          if (type.id != testValue)
+            expect(screen.queryByText(type.name)).toBeFalsy();
+          else if (type.id === testValue)
+            expect(screen.queryByText(type.name)).toBeTruthy();
+        });
+      });
+    }
+  );
 
   it('should set the time entries in the context if time entries exist for that date', async () => {
     const setTimeEntriesSpy = jest.fn();

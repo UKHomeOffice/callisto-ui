@@ -20,7 +20,7 @@ const existingTimeEntry = {
   finishTime: midnight,
 };
 
-const timePeriodTitleSWD = 'Scheduled Rest Day';
+const timePeriodTitleSWD = 'Scheduled rest day';
 
 jest.mock('../../../api/services/timecardService', () => ({
   createTimeEntry: jest.fn().mockResolvedValue({
