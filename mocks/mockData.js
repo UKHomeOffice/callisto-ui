@@ -204,9 +204,17 @@ const srdEntry = createTimeEntry({
   actualEndTime: '2022-08-25T00:00:00.000+00:00',
 });
 
+const nwdEntry = createTimeEntry({
+  id: 'fea873ad-147b-4e2d-92ac-f36c47015eaf',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+  actualStartTime: '2022-08-24T00:00:00.000+00:00',
+  actualEndTime: '2022-08-25T00:00:00.000+00:00',
+});
+
 const timePeriodIdForTimeEntry = {
   '00000000-0000-0000-0000-000000000001': shiftTimeEntry,
   '00000000-0000-0000-0000-000000000002': srdEntry,
+  '00000000-0000-0000-0000-000000000003': nwdEntry,
 };
 
 const timeCardPeriodTypes = [
@@ -264,6 +272,7 @@ module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
   srdEntry,
+  nwdEntry,
   timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
   shiftTimeCardPeriodType,
