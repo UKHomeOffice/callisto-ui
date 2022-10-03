@@ -18,10 +18,13 @@ const fetchTimePeriodTypesData = async () => {
 
 export const ApplicationProvider = ({ children }) => {
   const [timePeriodTypes, setTimePeriodTypes] = useState([]);
+  const [serviceError, setServiceError] = useState(false);
 
   const value = {
     timePeriodTypes,
     setTimePeriodTypes,
+    serviceError,
+    setServiceError,
   };
 
   useEffect(async () => {

@@ -16,6 +16,7 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -33,6 +34,7 @@ const EditShiftHours = ({
   });
 
   const inputName = 'shift';
+  const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
     useTimecardContext();
 
@@ -85,6 +87,7 @@ const EditShiftHours = ({
           .setFinishTime(formattedEndTime)
           .setTimeEntryId(responseItem.id);
 
+        setServiceError(false);
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
@@ -95,6 +98,7 @@ const EditShiftHours = ({
       /* TODO: Error handling when server raises error, similar to:
       setSummaryErrors(error); */
       console.error(error);
+      setServiceError(true);
     }
   };
 

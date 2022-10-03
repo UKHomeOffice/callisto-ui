@@ -31,7 +31,7 @@ const Timecard = () => {
     newTimeEntry,
     setNewTimeEntry,
   } = useTimecardContext();
-  const { timePeriodTypes } = useApplicationContext();
+  const { timePeriodTypes, setServiceError } = useApplicationContext();
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
@@ -47,7 +47,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries);
+    updateTimeEntryContextData(date, setTimeEntries, setServiceError);
   }, [date, timePeriodTypes]);
 
   return (
@@ -119,26 +119,37 @@ const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
   }
 };
 
-const updateTimeEntryContextData = async (date, setTimeEntries) => {
+const updateTimeEntryContextData = async (
+  date,
+  setTimeEntries,
+  setServiceError
+) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
-  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+  try {
+    const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-  if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = timeEntriesResponse.data.items.map(
-      (timeEntry) =>
-        new ContextTimeEntry(
-          timeEntry.id,
-          formatTime(timeEntry.actualStartTime),
-          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-          timeEntry.timePeriodTypeId
-        )
-    );
-    setTimeEntries(existingTimeEntries);
-  } else {
-    setTimeEntries([]);
+    if (timeEntriesResponse.data.items?.length > 0) {
+      const existingTimeEntries = timeEntriesResponse.data.items.map(
+        (timeEntry) =>
+          new ContextTimeEntry(
+            timeEntry.id,
+            formatTime(timeEntry.actualStartTime),
+            timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+            timeEntry.timePeriodTypeId
+          )
+      );
+      setServiceError(false);
+      setTimeEntries(existingTimeEntries);
+    } else {
+      setServiceError(false);
+      setTimeEntries([]);
+    }
+  } catch (error) {
+    console.error(error);
+    setServiceError(true);
   }
 };
 
