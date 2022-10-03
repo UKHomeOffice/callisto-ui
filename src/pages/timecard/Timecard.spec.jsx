@@ -1,5 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
+import {
+  defaultApplicationContext,
+  renderWithTimecardContext,
+  defaultTimecardContext,
+} from '../../test/helpers/TimecardContext';
 import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
@@ -99,20 +103,14 @@ describe('Timecard', () => {
   );
 
   it('should set the time entries in the context if time entries exist for that date', async () => {
-    const setTimeEntriesSpy = jest.fn();
-    const setTimecardDateSpy = jest.fn();
-
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [],
-      setTimeEntries: setTimeEntriesSpy,
-      timecardDate: '',
-      setTimecardDate: setTimecardDateSpy,
-    });
+    renderWithTimecardContext(
+      <Timecard />,
+      defaultTimecardContext,
+      defaultApplicationContext
+    );
 
     await waitFor(() => {
-      expect(setTimeEntriesSpy).toHaveBeenCalledWith([
+      expect(defaultTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
           startTime: formatTime(
@@ -124,7 +122,10 @@ describe('Timecard', () => {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
         },
       ]);
-      expect(setTimecardDateSpy).toHaveBeenCalledWith(date);
+      expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(date);
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
+        false
+      );
     });
   });
 
@@ -138,21 +139,39 @@ describe('Timecard', () => {
       };
     });
 
-    const setTimeEntriesSpy = jest.fn();
-    const setTimecardDateSpy = jest.fn();
+    const timeCardContextValues = defaultTimecardContext;
+    timeCardContextValues['timeEntries'] = [{}, {}];
 
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [{}, {}],
-      setTimeEntries: setTimeEntriesSpy,
-      timecardDate: '',
-      setTimecardDate: setTimecardDateSpy,
-    });
+    renderWithTimecardContext(
+      <Timecard />,
+      timeCardContextValues,
+      defaultApplicationContext
+    );
 
     await waitFor(() => {
-      expect(setTimeEntriesSpy).toHaveBeenCalledWith([]);
-      expect(setTimecardDateSpy).toHaveBeenCalledWith(date);
+      expect(timeCardContextValues.setTimeEntries).toHaveBeenCalledWith([]);
+      expect(timeCardContextValues.setTimecardDate).toHaveBeenCalledWith(date);
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
+        false
+      );
+    });
+  });
+
+  it('should display an error banner when getting time entries throws an error', async () => {
+    getTimeEntries.mockImplementation(() => {
+      throw Error();
+    });
+
+    renderWithTimecardContext(
+      <Timecard />,
+      defaultTimecardContext,
+      defaultApplicationContext
+    );
+
+    await waitFor(() => {
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
+        true
+      );
     });
   });
 

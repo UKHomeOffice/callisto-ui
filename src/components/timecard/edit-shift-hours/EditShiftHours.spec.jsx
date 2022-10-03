@@ -1,9 +1,16 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import {
+  defaultApplicationContext,
+  defaultTimecardContext,
+  renderWithTimecardContext,
+} from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
-import { createTimeEntry } from '../../../api/services/timecardService';
+import {
+  createTimeEntry,
+  updateTimeEntry,
+} from '../../../api/services/timecardService';
 import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
 import {
   shiftTimeEntry,
@@ -113,6 +120,79 @@ describe('EditShiftHours', () => {
         );
       });
     });
+
+    test.each([createTimeEntry, updateTimeEntry])(
+      'should not display any service errors when submitting a time entry is successful',
+      async (ajaxRequest) => {
+        ajaxRequest.mockResolvedValue({
+          data: {
+            meta: {},
+            items: [newTimeEntry],
+          },
+        });
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={newTimeEntry}
+            index={0}
+          />,
+          defaultTimecardContext,
+          defaultApplicationContext
+        );
+
+        act(() => {
+          const startTimeInput = screen.getByTestId('shift-start-time');
+          fireEvent.change(startTimeInput, {
+            target: { value: inputtedStartTime },
+          });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultApplicationContext.setServiceError
+          ).toHaveBeenCalledWith(false);
+        });
+      }
+    );
+
+    test.each([createTimeEntry, updateTimeEntry])(
+      'should display an error banner when submitting a time entry is unsuccessful',
+      async (ajaxRequest) => {
+        ajaxRequest.mockImplementation(() => {
+          throw Error();
+        });
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={newTimeEntry}
+            index={0}
+          />,
+          defaultTimecardContext,
+          defaultApplicationContext
+        );
+
+        act(() => {
+          const startTimeInput = screen.getByTestId('shift-start-time');
+          fireEvent.change(startTimeInput, {
+            target: { value: inputtedStartTime },
+          });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultApplicationContext.setServiceError
+          ).toHaveBeenCalledWith(true);
+        });
+      }
+    );
   });
 
   it('should auto insert a colon in time entry using api response when clicking save on success', async () => {

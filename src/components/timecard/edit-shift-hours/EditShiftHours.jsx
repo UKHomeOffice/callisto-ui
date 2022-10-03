@@ -91,12 +91,8 @@ const EditShiftHours = ({
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
-      } else {
-        throw new Error('No data returned - something went wrong');
       }
     } catch (error) {
-      /* TODO: Error handling when server raises error, similar to:
-      setSummaryErrors(error); */
       console.error(error);
       setServiceError(true);
     }
