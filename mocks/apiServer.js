@@ -6,6 +6,7 @@ const { getApiResponseWithItems, createTimeEntry } = require('./mock-utils');
 const {
   shiftTimeEntry,
   srdEntry,
+  nwdEntry,
   timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
 } = require('./mockData');
@@ -39,7 +40,7 @@ server.use((req, res, next) => {
 });
 
 server.get('/resources/time-entries', function (req, res) {
-  res.jsonp(getApiResponseWithItems(shiftTimeEntry, srdEntry));
+  res.jsonp(getApiResponseWithItems(shiftTimeEntry, srdEntry, nwdEntry));
 });
 
 server.post('/resources/time-entries', function (req, res) {
@@ -73,6 +74,10 @@ server.delete(
 );
 
 server.delete('/resources/time-entries/' + srdEntry.id, function (req, res) {
+  res.jsonp();
+});
+
+server.delete('/resources/time-entries/' + nwdEntry.id, function (req, res) {
   res.jsonp();
 });
 

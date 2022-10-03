@@ -16,7 +16,7 @@ import {
 } from '../../../api/services/timecardService';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 
-const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
+const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
@@ -81,7 +81,7 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
       <dl className="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
-            Scheduled rest day
+            {timePeriodTitle}
           </dt>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
@@ -93,7 +93,7 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
                 Remove
                 <span className="govuk-visually-hidden">
                   {' '}
-                  scheduled rest day
+                  {timePeriodTitle.toLowerCase()}
                 </span>
               </Link>
             )}
@@ -124,9 +124,10 @@ const ScheduledRestDay = ({ timeEntry, timeEntriesIndex }) => {
   );
 };
 
-export default ScheduledRestDay;
+export default SimpleTimePeriod;
 
-ScheduledRestDay.propTypes = {
+SimpleTimePeriod.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
+  timePeriodTitle: PropTypes.string,
 };
