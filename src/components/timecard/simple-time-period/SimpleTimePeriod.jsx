@@ -93,7 +93,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
                 Remove
                 <span className="govuk-visually-hidden">
                   {' '}
-                  {timePeriodTitle.toLowerCase()}
+                  {timePeriodTitle?.toLowerCase()}
                 </span>
               </Link>
             )}
