@@ -1,7 +1,7 @@
 import React from 'react';
-import { ApplicationContext } from '../../context/ApplicationContext';
-import ApplicationError from './ApplicationError';
-import ServiceError from './ServiceError';
+import { ApplicationContext } from '../../../context/ApplicationContext';
+import ApplicationError from '../ApplicationError';
+import ServiceError from '../ServiceError';
 
 export class ErrorBoundary extends React.Component {
   static contextType = ApplicationContext;

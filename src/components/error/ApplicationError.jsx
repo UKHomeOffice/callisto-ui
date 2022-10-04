@@ -6,7 +6,7 @@ const ApplicationError = () => {
 
   const onGoBack = (event) => {
     event.preventDefault();
-    window.location = document.referrer;
+    window.location.replace(document.referrer);
   };
 
   return (
@@ -14,7 +14,10 @@ const ApplicationError = () => {
       <h1 className="govuk-heading-l">
         Sorry, there is a problem with the service
       </h1>
-      <div className="govuk-error-summary__body">
+      <div
+        data-testid="app-error-message"
+        className="govuk-error-summary__body"
+      >
         Any unsaved changes will have been lost. Please try again later. <br />
         <a href="#">Report a problem</a> to help us solve the issue faster.
       </div>

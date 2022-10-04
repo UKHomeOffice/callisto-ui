@@ -5,7 +5,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import { ApplicationProvider } from './context/ApplicationContext';
-import { ErrorBoundary } from './components/error/ErrorBoundary';
+import { ErrorBoundary } from './components/error/error-boundary/ErrorBoundary';
 
 const App = () => {
   const { initialized, keycloak } = useKeycloak();
