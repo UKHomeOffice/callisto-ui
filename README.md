@@ -16,7 +16,8 @@ Create an .env.local file in the root and add the following:
 VITE_KC_URL="http://localhost:8080/auth/"
 VITE_KC_REALM="callistorealm"
 VITE_KC_CLIENTID="callistoreactclientid"
-VITE_TIMECARD_API_URL="http://localhost:3000/"
+VITE_LOCAL_API_URL="http://localhost:9090/"
+VITE_TIMECARD_API_URL = "http://localhost:9090/"
 ```
 
 Before running the application for the first time, install the node packages
