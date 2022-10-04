@@ -12,6 +12,7 @@ import {
   formatDate,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
+import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
@@ -132,7 +133,8 @@ const updateTimeEntryContextData = async (
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
-  try {
+
+  validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     if (timeEntriesResponse.data.items?.length > 0) {
@@ -145,16 +147,11 @@ const updateTimeEntryContextData = async (
             timeEntry.timePeriodTypeId
           )
       );
-      setServiceError(false);
       setTimeEntries(existingTimeEntries);
     } else {
-      setServiceError(false);
       setTimeEntries([]);
     }
-  } catch (error) {
-    console.error(error);
-    setServiceError(true);
-  }
+  });
 };
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {

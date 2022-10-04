@@ -19,7 +19,7 @@ const ApplicationError = () => {
         className="govuk-error-summary__body"
       >
         Any unsaved changes will have been lost. Please try again later. <br />
-        <a href="#">Report a problem</a> to help us solve the issue faster.
+        <a href="/#">Report a problem</a> to help us solve the issue faster.
       </div>
 
       <div className="govuk-summary-list__row govuk-summary-list__row--no-border">

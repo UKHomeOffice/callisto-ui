@@ -11,7 +11,7 @@ const ServiceError = () => {
       </h2>
       <div className="govuk-error-summary__body">
         Please try again later. <br />
-        <a href="#">Report a problem</a> to help us solve the issue faster.
+        <a href="/#">Report a problem</a> to help us solve the issue faster.
       </div>
     </div>
   );

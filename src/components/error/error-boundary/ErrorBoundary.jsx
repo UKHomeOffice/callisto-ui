@@ -2,6 +2,7 @@ import React from 'react';
 import { ApplicationContext } from '../../../context/ApplicationContext';
 import ApplicationError from '../ApplicationError';
 import ServiceError from '../ServiceError';
+import PropTypes from 'prop-types';
 
 export class ErrorBoundary extends React.Component {
   static contextType = ApplicationContext;
@@ -11,7 +12,7 @@ export class ErrorBoundary extends React.Component {
     this.state = { appError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { appError: true };
   }
 
@@ -35,3 +36,11 @@ export class ErrorBoundary extends React.Component {
     );
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
+  render: PropTypes.func.isRequired,
+};

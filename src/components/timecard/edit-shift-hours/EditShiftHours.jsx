@@ -17,6 +17,7 @@ import {
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
+import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -63,7 +64,7 @@ const EditShiftHours = ({
       actualEndTime: actualEndDateTime,
     };
 
-    try {
+    validateServiceErrors(setServiceError, async () => {
       const params = new UrlSearchParamBuilder()
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
@@ -87,15 +88,11 @@ const EditShiftHours = ({
           .setFinishTime(formattedEndTime)
           .setTimeEntryId(responseItem.id);
 
-        setServiceError(false);
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
       }
-    } catch (error) {
-      console.error(error);
-      setServiceError(true);
-    }
+    });
   };
 
   return (
