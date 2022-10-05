@@ -6,6 +6,8 @@ import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import { removeTimecardContextEntry } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const toggleEditShiftHours = (event) => {
@@ -13,6 +15,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
     setShowEditShiftHours(!showEditShiftHours);
   };
 
+  const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime;
@@ -25,11 +28,11 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
     const params = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
-    const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
 
-    if (response.status === 200) {
+    validateServiceErrors(setServiceError, async () => {
+      await deleteTimeEntry(timeEntry.timeEntryId, params);
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
-    }
+    });
   };
 
   return (
