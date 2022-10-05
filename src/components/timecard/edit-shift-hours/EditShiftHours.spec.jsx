@@ -154,7 +154,9 @@ describe('EditShiftHours', () => {
         await waitFor(() => {
           expect(
             defaultApplicationContext.setServiceError
-          ).toHaveBeenCalledWith(false);
+          ).toHaveBeenCalledWith({
+            hasError: false,
+          });
         });
       }
     );
@@ -189,7 +191,10 @@ describe('EditShiftHours', () => {
         await waitFor(() => {
           expect(
             defaultApplicationContext.setServiceError
-          ).toHaveBeenCalledWith(true);
+          ).toHaveBeenCalledWith({
+            hasError: true,
+            recoverable: true,
+          });
         });
       }
     );

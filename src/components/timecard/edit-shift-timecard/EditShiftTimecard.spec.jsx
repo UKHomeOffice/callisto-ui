@@ -205,9 +205,9 @@ describe('EditShiftTimecard', () => {
       fireEvent.click(removeShiftButton);
 
       await waitFor(() => {
-        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
-          false
-        );
+        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+          hasError: false,
+        });
       });
     });
 
@@ -229,9 +229,10 @@ describe('EditShiftTimecard', () => {
       fireEvent.click(removeShiftButton);
 
       await waitFor(() => {
-        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
-          true
-        );
+        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+          hasError: true,
+          recoverable: true,
+        });
       });
     });
   });

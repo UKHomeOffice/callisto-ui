@@ -84,11 +84,11 @@ describe('ErrorBoundary', () => {
   });
 
   describe('Given there is a service error', () => {
-    it('should render the service error component and the child components', () => {
+    it('should render the service error component and the child components if the error is recoverable', () => {
       render(
         <ApplicationContext.Provider value={defaultApplicationContext}>
           <ErrorBoundary fallback={<ErrorBoundary />}>
-            {(defaultApplicationContext.serviceError = true)}
+            {(defaultApplicationContext.serviceError.hasError = true)}
             <div data-testid="test-div">test</div>
           </ErrorBoundary>
         </ApplicationContext.Provider>
@@ -100,6 +100,27 @@ describe('ErrorBoundary', () => {
       expect(screen.queryByTestId('app-error-message')).toBeNull();
       expect(screen.queryByTestId('test-div').textContent).toEqual('test');
     });
+
+    it('should render the service error component and should not render the child components if the error is not recoverable', () => {
+      render(
+        <ApplicationContext.Provider value={defaultApplicationContext}>
+          <ErrorBoundary fallback={<ErrorBoundary />}>
+            {
+              (defaultApplicationContext.serviceError = {
+                hasError: true,
+                recoverable: false,
+              })
+            }
+            <div data-testid="test-div">test</div>
+          </ErrorBoundary>
+        </ApplicationContext.Provider>
+      );
+
+      expect(screen.getByTestId('app-error-message').textContent).toContain(
+        'Any unsaved changes will have been lost'
+      );
+      expect(screen.queryByTestId('test-div')).toBeNull();
+    });
   });
 
   describe('Given there is no error', () => {
@@ -107,7 +128,7 @@ describe('ErrorBoundary', () => {
       render(
         <ApplicationContext.Provider value={defaultApplicationContext}>
           <ErrorBoundary fallback={<ErrorBoundary />}>
-            {(defaultApplicationContext.serviceError = false)}
+            {(defaultApplicationContext.serviceError.hasError = false)}
             <div data-testid="test-div">test</div>
           </ErrorBoundary>
         </ApplicationContext.Provider>

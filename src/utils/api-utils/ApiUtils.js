@@ -1,12 +1,18 @@
 export const validateServiceErrors = async (
   setServiceError,
-  serviceFunction
+  serviceFunction,
+  isRecoverable
 ) => {
   try {
     await serviceFunction();
-    setServiceError(false);
+    setServiceError({
+      hasError: false,
+    });
   } catch (error) {
     console.error(error);
-    setServiceError(true);
+    setServiceError({
+      hasError: true,
+      recoverable: isRecoverable !== undefined ? isRecoverable : true,
+    });
   }
 };

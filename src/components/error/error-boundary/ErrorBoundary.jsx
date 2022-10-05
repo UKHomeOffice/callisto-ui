@@ -21,12 +21,23 @@ export class ErrorBoundary extends React.Component {
     console.error(errorInfo);
   }
 
+  componentDidUpdate() {
+    const { serviceError } = this.context;
+    if (
+      !this.state.appError &&
+      serviceError.hasError &&
+      !serviceError.recoverable
+    ) {
+      this.setState({ appError: true });
+    }
+  }
+
   render() {
     const { serviceError } = this.context;
-
     let error;
+
     if (this.state.appError) error = <ApplicationError />;
-    else if (serviceError) error = <ServiceError />;
+    else if (serviceError.hasError) error = <ServiceError />;
 
     return (
       <>

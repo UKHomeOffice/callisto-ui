@@ -46,9 +46,14 @@ const Timecard = () => {
   ];
 
   useEffect(() => {
+    let isMounted = true;
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError);
+    if (isMounted)
+      updateTimeEntryContextData(date, setTimeEntries, setServiceError);
+    return () => {
+      isMounted = false;
+    };
   }, [date, timePeriodTypes]);
 
   return (

@@ -35,6 +35,8 @@ export const defaultTimecardContext = {
 export const defaultApplicationContext = {
   timePeriodTypes: timeCardPeriodTypes,
   setTimePeriodTypes: jest.fn(),
-  serviceError: false,
+  serviceError: {
+    hasError: false,
+  },
   setServiceError: jest.fn(),
 };

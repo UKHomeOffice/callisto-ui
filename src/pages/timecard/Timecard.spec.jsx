@@ -123,9 +123,9 @@ describe('Timecard', () => {
         },
       ]);
       expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(date);
-      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
-        false
-      );
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+        hasError: false,
+      });
     });
   });
 
@@ -151,9 +151,9 @@ describe('Timecard', () => {
     await waitFor(() => {
       expect(timeCardContextValues.setTimeEntries).toHaveBeenCalledWith([]);
       expect(timeCardContextValues.setTimecardDate).toHaveBeenCalledWith(date);
-      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
-        false
-      );
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+        hasError: false,
+      });
     });
   });
 
@@ -169,9 +169,10 @@ describe('Timecard', () => {
     );
 
     await waitFor(() => {
-      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith(
-        true
-      );
+      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+        hasError: true,
+        recoverable: true,
+      });
     });
   });
 
