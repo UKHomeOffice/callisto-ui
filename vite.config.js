@@ -3,18 +3,36 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig((config) => {
   process.env = { ...process.env, ...loadEnv(config.mode, process.cwd()) };
-  const mockUrl = 'http://localhost:3001/';
-  const localDev = 'http://localhost:5000/';
 
-  let apiUrl = process.env.VITE_LOCAL_API_URL
-    ? process.env.VITE_LOCAL_API_URL
-    : localDev;
+  const viteServerUrl = 'http://localhost:3000/';
 
-  console.log('mode: ' + config.mode);
-  if (config.mode === 'mock') {
-    apiUrl = mockUrl;
-  }
-  console.log('apiUrl: ' + apiUrl);
+  const localTimecardUrl = process.env['VITE_TIMECARD_API_URL'];
+  const localAccrualsUrl = process.env['VITE_ACCRUALS_API_URL'];
+
+  // Reset Vite local api urls to the same url and port the Vite Server is running on e.g. http://localhost:3000
+  // otherwise API requests will be made directly to the url specified e.g. http://localhost:3001 and not the Vite Server
+  // Vite Server is set up to proxy API requests based on the path requested e.g. http://localhost:3000/resources/time-entry maps to the timecardConfig (configured below in server > proxy)
+  Object.keys(process.env).forEach((key) => {
+    if (key.startsWith('VITE_') && key.indexOf('API_URL') > -1) {
+      process.env[key] = viteServerUrl;
+    }
+  });
+
+  const getUrl = (proxyToLocalUrl) => {
+    return proxyToLocalUrl;
+  };
+
+  const timecardConfig = {
+    target: getUrl(localTimecardUrl),
+    changeOrigin: true,
+    xfwd: true,
+  };
+
+  const accrualsConfig = {
+    target: getUrl(localAccrualsUrl),
+    changeOrigin: true,
+    xfwd: true,
+  };
 
   return {
     plugins: [react()],
@@ -31,11 +49,9 @@ export default defineConfig((config) => {
     },
     server: {
       proxy: {
-        '/resources': {
-          target: apiUrl,
-          changeOrigin: true,
-          xfwd: true,
-        },
+        '/resources/time-period-types': timecardConfig,
+        '/resources/time-entries': timecardConfig,
+        '/resources/accruals': accrualsConfig, // TODO: configure Accruals URLs accordingly
       },
     },
   };
