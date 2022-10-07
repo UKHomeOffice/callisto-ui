@@ -1,56 +1,39 @@
-import React from 'react';
-import { ApplicationContext } from '../../../context/ApplicationContext';
+import { useEffect, useState } from 'react';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 import ApplicationError from '../ApplicationError';
 import ServiceError from '../ServiceError';
+import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 import PropTypes from 'prop-types';
 
-export class ErrorBoundary extends React.Component {
-  static contextType = ApplicationContext;
+/**
+ * A wrapper for the ReactErrorBoundary functional component that also captures service errors.
+ */
+const ErrorBoundary = (props) => {
+  const { serviceError } = useApplicationContext();
+  const [appError, setAppError] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = { appError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { appError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error(error);
-    console.error(errorInfo);
-  }
-
-  componentDidUpdate() {
-    const { serviceError } = this.context;
-    if (
-      !this.state.appError &&
-      serviceError.hasError &&
-      !serviceError.recoverable
-    ) {
-      this.setState({ appError: true });
+  useEffect(() => {
+    if (!appError && serviceError.hasError && !serviceError.recoverable) {
+      setAppError(true);
     }
-  }
+  }, [serviceError]);
 
-  render() {
-    const { serviceError } = this.context;
-    let error;
+  let error;
+  if (appError) error = <ApplicationError />;
+  else if (serviceError.hasError) error = <ServiceError />;
 
-    if (this.state.appError) error = <ApplicationError />;
-    else if (serviceError.hasError) error = <ServiceError />;
-
-    return (
-      <>
+  return (
+    <>
+      <ReactErrorBoundary FallbackComponent={ApplicationError}>
         {error}
-        {!this.state.appError && this.props.children}
-      </>
-    );
-  }
-}
+        {!appError && props.children}
+      </ReactErrorBoundary>
+    </>
+  );
+};
+
+export default ErrorBoundary;
 
 ErrorBoundary.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
+  children: PropTypes.any,
 };

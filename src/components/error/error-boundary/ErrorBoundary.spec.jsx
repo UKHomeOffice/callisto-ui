@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-test-renderer';
 import { ApplicationContext } from '../../../context/ApplicationContext';
 import { defaultApplicationContext } from '../../../test/helpers/TimecardContext';
-import { ErrorBoundary } from './ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary';
 import PropTypes from 'prop-types';
 
 describe('ErrorBoundary', () => {
@@ -13,6 +13,7 @@ describe('ErrorBoundary', () => {
         <MemoryRouter>
           <ErrorBoundary fallback={<ErrorBoundary />}>
             {props.children}
+            <div data-testid="test-div">test</div>
           </ErrorBoundary>
         </MemoryRouter>
       </ApplicationContext.Provider>
@@ -20,10 +21,7 @@ describe('ErrorBoundary', () => {
   }
 
   TestApplication.propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]).isRequired,
+    children: PropTypes.any,
   };
 
   describe('Given there is an application error', () => {
@@ -53,7 +51,6 @@ describe('ErrorBoundary', () => {
       render(
         <TestApplication>
           <ThrowError />
-          <div data-testid="test-div">test</div>
         </TestApplication>
       );
     };
@@ -104,12 +101,11 @@ describe('ErrorBoundary', () => {
 
   describe('Given there is a service error', () => {
     it('should render the service error component and the child components if the error is recoverable', () => {
-      render(
-        <TestApplication>
-          {(defaultApplicationContext.serviceError.hasError = true)}
-          <div data-testid="test-div">test</div>
-        </TestApplication>
-      );
+      defaultApplicationContext.serviceError = {
+        hasError: true,
+        recoverable: true,
+      };
+      render(<TestApplication />);
 
       expect(
         screen.getByText('Sorry, there is a problem with the service')
@@ -119,17 +115,11 @@ describe('ErrorBoundary', () => {
     });
 
     it('should render the service error component and should not render the child components if the error is not recoverable', () => {
-      render(
-        <TestApplication>
-          {
-            (defaultApplicationContext.serviceError = {
-              hasError: true,
-              recoverable: false,
-            })
-          }
-          <div data-testid="test-div">test</div>
-        </TestApplication>
-      );
+      defaultApplicationContext.serviceError = {
+        hasError: true,
+        recoverable: false,
+      };
+      render(<TestApplication />);
 
       expect(screen.getByTestId('app-error-message').textContent).toContain(
         'Any unsaved changes will have been lost'
@@ -140,12 +130,8 @@ describe('ErrorBoundary', () => {
 
   describe('Given there is no error', () => {
     it('should not render any error component and only render the child components', () => {
-      render(
-        <TestApplication>
-          {(defaultApplicationContext.serviceError.hasError = false)}
-          <div data-testid="test-div">test</div>
-        </TestApplication>
-      );
+      defaultApplicationContext.serviceError.hasError = false;
+      render(<TestApplication />);
 
       expect(
         screen.queryByText('Sorry, there is a problem with the service')
