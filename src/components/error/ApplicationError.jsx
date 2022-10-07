@@ -20,15 +20,12 @@ const ApplicationError = () => {
         data-testid="app-error-message"
         className="govuk-error-summary__body"
       >
-        <p>
-          {' '}
-          Any unsaved changes will have been lost. Please try again later.{' '}
-        </p>
+        <p>Any unsaved changes will have been lost. Please try again later.</p>
         <p className="govuk-body-m">
-          <Link to={'/#'} className="govuk-link">
+          <Link to={'/'} className="govuk-link">
             Report a problem
-          </Link>
-          &nbsp;to help us solve the issue faster.
+          </Link>{' '}
+          to help us solve the issue faster.
         </p>
       </div>
 
