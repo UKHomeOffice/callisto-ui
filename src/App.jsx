@@ -28,11 +28,11 @@ const App = () => {
         </HashLink>
         <Header />
         <div className="govuk-width-container ">
-          <ErrorBoundary>
-            <main className="govuk-main-wrapper " id="main-content" role="main">
+          <main className="govuk-main-wrapper " id="main-content" role="main">
+            <ErrorBoundary>
               <Outlet />
-            </main>
-          </ErrorBoundary>
+            </ErrorBoundary>
+          </main>
         </div>
         <Footer />
       </div>

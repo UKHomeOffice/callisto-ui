@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const ServiceError = () => {
   return (
     <div
@@ -10,8 +12,13 @@ const ServiceError = () => {
         Sorry, there is a problem with the service
       </h2>
       <div className="govuk-error-summary__body">
-        Please try again later. <br />
-        <a href="/#">Report a problem</a> to help us solve the issue faster.
+        <p> Please try again later. </p>
+        <p className="govuk-body-m">
+          <Link to={'/#'} className="govuk-link">
+            Report a problem
+          </Link>
+          &nbsp;to help us solve the issue faster.
+        </p>
       </div>
     </div>
   );

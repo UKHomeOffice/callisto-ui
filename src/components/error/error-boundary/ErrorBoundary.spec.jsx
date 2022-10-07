@@ -1,10 +1,31 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-test-renderer';
 import { ApplicationContext } from '../../../context/ApplicationContext';
 import { defaultApplicationContext } from '../../../test/helpers/TimecardContext';
 import { ErrorBoundary } from './ErrorBoundary';
+import PropTypes from 'prop-types';
 
 describe('ErrorBoundary', () => {
+  function TestApplication(props) {
+    return (
+      <ApplicationContext.Provider value={defaultApplicationContext}>
+        <MemoryRouter>
+          <ErrorBoundary fallback={<ErrorBoundary />}>
+            {props.children}
+          </ErrorBoundary>
+        </MemoryRouter>
+      </ApplicationContext.Provider>
+    );
+  }
+
+  TestApplication.propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]).isRequired,
+  };
+
   describe('Given there is an application error', () => {
     const originalWindowLocation = window.location;
     beforeEach(() => {
@@ -30,12 +51,10 @@ describe('ErrorBoundary', () => {
       };
 
       render(
-        <ApplicationContext.Provider value={defaultApplicationContext}>
-          <ErrorBoundary fallback={<ErrorBoundary />}>
-            <ThrowError />
-            <div data-testid="test-div">test</div>
-          </ErrorBoundary>
-        </ApplicationContext.Provider>
+        <TestApplication>
+          <ThrowError />
+          <div data-testid="test-div">test</div>
+        </TestApplication>
       );
     };
 
@@ -86,12 +105,10 @@ describe('ErrorBoundary', () => {
   describe('Given there is a service error', () => {
     it('should render the service error component and the child components if the error is recoverable', () => {
       render(
-        <ApplicationContext.Provider value={defaultApplicationContext}>
-          <ErrorBoundary fallback={<ErrorBoundary />}>
-            {(defaultApplicationContext.serviceError.hasError = true)}
-            <div data-testid="test-div">test</div>
-          </ErrorBoundary>
-        </ApplicationContext.Provider>
+        <TestApplication>
+          {(defaultApplicationContext.serviceError.hasError = true)}
+          <div data-testid="test-div">test</div>
+        </TestApplication>
       );
 
       expect(
@@ -103,17 +120,15 @@ describe('ErrorBoundary', () => {
 
     it('should render the service error component and should not render the child components if the error is not recoverable', () => {
       render(
-        <ApplicationContext.Provider value={defaultApplicationContext}>
-          <ErrorBoundary fallback={<ErrorBoundary />}>
-            {
-              (defaultApplicationContext.serviceError = {
-                hasError: true,
-                recoverable: false,
-              })
-            }
-            <div data-testid="test-div">test</div>
-          </ErrorBoundary>
-        </ApplicationContext.Provider>
+        <TestApplication>
+          {
+            (defaultApplicationContext.serviceError = {
+              hasError: true,
+              recoverable: false,
+            })
+          }
+          <div data-testid="test-div">test</div>
+        </TestApplication>
       );
 
       expect(screen.getByTestId('app-error-message').textContent).toContain(
@@ -126,12 +141,10 @@ describe('ErrorBoundary', () => {
   describe('Given there is no error', () => {
     it('should not render any error component and only render the child components', () => {
       render(
-        <ApplicationContext.Provider value={defaultApplicationContext}>
-          <ErrorBoundary fallback={<ErrorBoundary />}>
-            {(defaultApplicationContext.serviceError.hasError = false)}
-            <div data-testid="test-div">test</div>
-          </ErrorBoundary>
-        </ApplicationContext.Provider>
+        <TestApplication>
+          {(defaultApplicationContext.serviceError.hasError = false)}
+          <div data-testid="test-div">test</div>
+        </TestApplication>
       );
 
       expect(

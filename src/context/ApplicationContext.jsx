@@ -35,7 +35,7 @@ export const ApplicationProvider = ({ children }) => {
     setServiceError,
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     setTimePeriodTypesData(setTimePeriodTypes, setServiceError);
   }, []);
 
