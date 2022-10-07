@@ -16,29 +16,26 @@ Create an .env.local file in the root and add the following:
 VITE_KC_URL="http://localhost:8080/auth/"
 VITE_KC_REALM="callistorealm"
 VITE_KC_CLIENTID="callistoreactclientid"
-VITE_LOCAL_API_URL="http://localhost:9090/"
-VITE_TIMECARD_API_URL = "http://localhost:9090/"
+
+VITE_TIMECARD_API_URL = "http://localhost:3001/"
+VITE_ACCRUALS_API_URL = "http://localhost:3001/"
 ```
 
 Before running the application for the first time, install the node packages
 
 `npm install`
 
-### Run the application (using mock data)
+### Run the application
 
 `npm start`
 
 Navigate to http://localhost:3000
 
-### Run the application using local services
+### To use your local API e.g. for Timecard
 
-`npm run start:dev`
+Set the appropriate \_API_URL environment variables. Otherwise, set \_API_URL to 'http://localhost:3001' to indicate mock data from JSON Server should be used
 
-The default url will be http://localhost:5000 to override, add the following to .env.local:
-`VITE_LOCAL_API_URL="http://{url:port}"`
-
-Then run:
-`npm run start:dev`
+`VITE_TIMECARD_API_URL = "http://localhost:9090/"
 
 ### Build the application for Production
 
