@@ -23,12 +23,10 @@ const ErrorBoundary = (props) => {
   else if (serviceError.hasError) error = <ServiceError />;
 
   return (
-    <>
-      <ReactErrorBoundary FallbackComponent={ApplicationError}>
-        {error}
-        {!appError && props.children}
-      </ReactErrorBoundary>
-    </>
+    <ReactErrorBoundary FallbackComponent={ApplicationError}>
+      {error}
+      {!appError && props.children}
+    </ReactErrorBoundary>
   );
 };
 
