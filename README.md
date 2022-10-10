@@ -17,8 +17,8 @@ VITE_KC_URL="http://localhost:8080/auth/"
 VITE_KC_REALM="callistorealm"
 VITE_KC_CLIENTID="callistoreactclientid"
 
-VITE_TIMECARD_API_URL = "http://localhost:3001/"
-VITE_ACCRUALS_API_URL = "http://localhost:3001/"
+VITE_TIMECARD_API_URL = "http://localhost:3000/"
+VITE_ACCRUALS_API_URL = "http://localhost:3000/"
 ```
 
 Before running the application for the first time, install the node packages
@@ -31,11 +31,57 @@ Before running the application for the first time, install the node packages
 
 Navigate to http://localhost:3000
 
+The application will serve mock data from JSON server by default
+
 ### To use your local API e.g. for Timecard
 
-Set the appropriate \_API_URL environment variables. Otherwise, set \_API_URL to 'http://localhost:3001' to indicate mock data from JSON Server should be used
+1. Set the \_API_URL environment variables to the local dev server (currently 'http://localhost:3000')
+2. Set the \_API_URL_PROXY to your local API
 
-`VITE_TIMECARD_API_URL = "http://localhost:9090/"
+```
+VITE_TIMECARD_API_URL = "http://localhost:3000/"
+VITE_TIMECARD_API_URL_PROXY = "http://localhost:9090/"
+```
+
+#### How is this working?
+
+The dev server is running on 'http://localhost:3000' and the proxy (see [vite.config.js](https://github.com/UKHomeOffice/callisto-ui/blob/main/vite.config.js) server > proxy) listens for requests based on a particular path. Any requests matching that path e.g. a call from the Timecard Service to http://localhost:3000/resources/time-period-types, will have the appropriate proxy config applied.
+
+```
+server: {
+      proxy: {
+        '/resources/time-period-types': timecardConfig,
+```
+
+The config below 'proxies' the request to the target, which in this case will be the value defined in the timecard '\_PROXY' environment variable
+
+```
+const timecardConfig = {
+   target: getUrl('TIMECARD'),
+   changeOrigin: true,
+   xfwd: true,
+ };
+
+ const getUrl = (apiName) => {
+   const keyName = 'VITE_' + apiName + '_API_URL_PROXY';
+   const proxyToUrl = process.env[keyName];
+   console.log('Proxying ' + apiName + ' to: ' + proxyToUrl);
+   return proxyToUrl;
+ };
+```
+
+Read more about the [Vite Proxy](https://vitejs.dev/config/server-options.html#server-proxy) options
+
+### To use a mix of mock data and a local API
+
+Just set the '\_PROXY' environment variable to the JSON Server url http://localhost:3001. In the example below Timecard will use mock data and Accruals will use local the service running on port 9091
+
+```
+VITE_TIMECARD_API_URL="http://localhost:3000/"
+VITE_ACCRUALS_API_URL="http://localhost:3000/"
+VITE_TIMECARD_API_URL_PROXY="http://localhost:3001/"
+VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
+```
 
 ### Build the application for Production
 
