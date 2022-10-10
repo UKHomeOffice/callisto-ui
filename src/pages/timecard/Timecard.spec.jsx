@@ -171,7 +171,7 @@ describe('Timecard', () => {
     await waitFor(() => {
       expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
         hasError: true,
-        recoverable: true,
+        recoverable: false,
       });
     });
   });

@@ -151,7 +151,7 @@ const updateTimeEntryContextData = async (
     } else {
       setTimeEntries([]);
     }
-  });
+  }, false);
 };
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {
