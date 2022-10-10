@@ -7,7 +7,11 @@ import {
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
 
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import {
+  defaultApplicationContext,
+  defaultTimecardContext,
+  renderWithTimecardContext,
+} from '../../../test/helpers/TimecardContext';
 import EditShiftTimecard from './EditShiftTimecard';
 
 jest.mock('../../../api/services/timecardService');
@@ -182,6 +186,53 @@ describe('EditShiftTimecard', () => {
 
       await waitFor(() => {
         expect(mockSetTimeEntries).toHaveBeenCalledWith([otherTimeEntry]);
+      });
+    });
+
+    it('should not display any service errors when deleting a time entry is successful', async () => {
+      deleteTimeEntry.mockImplementation(() => {});
+
+      renderWithTimecardContext(
+        <EditShiftTimecard
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext,
+        defaultApplicationContext
+      );
+
+      const removeShiftButton = screen.getByText('Remove');
+      fireEvent.click(removeShiftButton);
+
+      await waitFor(() => {
+        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+          hasError: false,
+        });
+      });
+    });
+
+    it('should display an error banner when deleting a time entry is unsuccessful', async () => {
+      deleteTimeEntry.mockImplementation(() => {
+        throw Error();
+      });
+
+      renderWithTimecardContext(
+        <EditShiftTimecard
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext,
+        defaultApplicationContext
+      );
+
+      const removeShiftButton = screen.getByText('Remove');
+      fireEvent.click(removeShiftButton);
+
+      await waitFor(() => {
+        expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
+          hasError: true,
+          recoverable: true,
+        });
       });
     });
   });

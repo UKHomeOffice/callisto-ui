@@ -3,60 +3,12 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { TimecardContext } from '../../context/TimecardContext';
 import { ApplicationContext } from '../../context/ApplicationContext';
+import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
 export const renderWithTimecardContext = (
   Component,
-  timecardContextValues = {
-    summaryErrors: {},
-    setSummaryErrors: jest.fn(),
-    timeEntries: [],
-    setTimeEntries: jest.fn(),
-    timecardDate: '',
-    setTimecardDate: jest.fn(),
-    newTimeEntry: false,
-    setNewTimeEntry: jest.fn(),
-  },
-
-  applicationContextValues = {
-    timePeriodTypes: [
-      {
-        id: '00000000-0000-0000-0000-000000000001',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Shift',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000002',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Scheduled rest day',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000003',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Non-working day',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000004',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'On call',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000005',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Absence',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000006',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Training',
-      },
-      {
-        id: '00000000-0000-0000-0000-000000000007',
-        tenantId: '00000000-0000-0000-0000-000000000000',
-        name: 'Overtime',
-      },
-    ],
-    setTimePeriodTypes: jest.fn(),
-  }
+  timecardContextValues = defaultTimecardContext,
+  applicationContextValues = defaultApplicationContext
 ) => {
   return {
     ...render(
@@ -67,4 +19,24 @@ export const renderWithTimecardContext = (
       </ApplicationContext.Provider>
     ),
   };
+};
+
+export const defaultTimecardContext = {
+  summaryErrors: {},
+  setSummaryErrors: jest.fn(),
+  timeEntries: [],
+  setTimeEntries: jest.fn(),
+  timecardDate: '',
+  setTimecardDate: jest.fn(),
+  newTimeEntry: false,
+  setNewTimeEntry: jest.fn(),
+};
+
+export const defaultApplicationContext = {
+  timePeriodTypes: timeCardPeriodTypes,
+  setTimePeriodTypes: jest.fn(),
+  serviceError: {
+    hasError: false,
+  },
+  setServiceError: jest.fn(),
 };

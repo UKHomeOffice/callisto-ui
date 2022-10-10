@@ -12,6 +12,7 @@ import {
   formatDate,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
+import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
@@ -31,7 +32,7 @@ const Timecard = () => {
     newTimeEntry,
     setNewTimeEntry,
   } = useTimecardContext();
-  const { timePeriodTypes } = useApplicationContext();
+  const { timePeriodTypes, setServiceError } = useApplicationContext();
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
@@ -47,7 +48,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries);
+    updateTimeEntryContextData(date, setTimeEntries, setServiceError);
   }, [date, timePeriodTypes]);
 
   return (
@@ -123,27 +124,34 @@ const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
   }
 };
 
-const updateTimeEntryContextData = async (date, setTimeEntries) => {
+const updateTimeEntryContextData = async (
+  date,
+  setTimeEntries,
+  setServiceError
+) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
-  const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-  if (timeEntriesResponse.data.items?.length > 0) {
-    const existingTimeEntries = timeEntriesResponse.data.items.map(
-      (timeEntry) =>
-        new ContextTimeEntry(
-          timeEntry.id,
-          formatTime(timeEntry.actualStartTime),
-          timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-          timeEntry.timePeriodTypeId
-        )
-    );
-    setTimeEntries(existingTimeEntries);
-  } else {
-    setTimeEntries([]);
-  }
+  validateServiceErrors(setServiceError, async () => {
+    const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+
+    if (timeEntriesResponse.data.items?.length > 0) {
+      const existingTimeEntries = timeEntriesResponse.data.items.map(
+        (timeEntry) =>
+          new ContextTimeEntry(
+            timeEntry.id,
+            formatTime(timeEntry.actualStartTime),
+            timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
+            timeEntry.timePeriodTypeId
+          )
+      );
+      setTimeEntries(existingTimeEntries);
+    } else {
+      setTimeEntries([]);
+    }
+  });
 };
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {

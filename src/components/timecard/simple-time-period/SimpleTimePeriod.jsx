@@ -8,6 +8,7 @@ import {
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 import { useTimecardContext } from '../../../context/TimecardContext';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
@@ -15,8 +16,10 @@ import {
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
+import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
+  const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
@@ -25,11 +28,11 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
     const params = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
-    const response = await deleteTimeEntry(timeEntry.timeEntryId, params);
 
-    if (response.status === 200) {
+    validateServiceErrors(setServiceError, async () => {
+      await deleteTimeEntry(timeEntry.timeEntryId, params);
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
-    }
+    });
   };
 
   const onSubmit = async (event) => {
@@ -53,22 +56,28 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    const response = await createTimeEntry(timecardPayload, params);
+    validateServiceErrors(setServiceError, async () => {
+      const response = await createTimeEntry(timecardPayload, params);
 
-    if (response?.data?.items?.length > 0) {
-      const formattedStartTime = formatTime(
-        response.data.items[0].actualStartTime
-      );
-      const formattedEndTime = formatTime(response.data.items[0].actualEndTime);
+      if (response?.data?.items?.length > 0) {
+        const formattedStartTime = formatTime(
+          response.data.items[0].actualStartTime
+        );
+        const formattedEndTime = formatTime(
+          response.data.items[0].actualEndTime
+        );
 
-      const newTimeEntries = deepCloneJson(timeEntries);
-      newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-        .setStartTime(formattedStartTime)
-        .setFinishTime(formattedEndTime)
-        .setTimeEntryId(response.data.items[0].id);
+        const newTimeEntries = deepCloneJson(timeEntries);
+        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+          timeEntry
+        )
+          .setStartTime(formattedStartTime)
+          .setFinishTime(formattedEndTime)
+          .setTimeEntryId(response.data.items[0].id);
 
-      setTimeEntries(newTimeEntries);
-    }
+        setTimeEntries(newTimeEntries);
+      }
+    });
   };
 
   const onCancel = (event) => {

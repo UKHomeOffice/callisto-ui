@@ -16,6 +16,8 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import { useApplicationContext } from '../../../context/ApplicationContext';
+import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -33,6 +35,7 @@ const EditShiftHours = ({
   });
 
   const inputName = 'shift';
+  const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
     useTimecardContext();
 
@@ -61,7 +64,7 @@ const EditShiftHours = ({
       actualEndTime: actualEndDateTime,
     };
 
-    try {
+    validateServiceErrors(setServiceError, async () => {
       const params = new UrlSearchParamBuilder()
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
@@ -88,14 +91,8 @@ const EditShiftHours = ({
         setTimeEntries(newTimeEntries);
         setSummaryErrors({});
         setShowEditShiftHours(false);
-      } else {
-        throw new Error('No data returned - something went wrong');
       }
-    } catch (error) {
-      /* TODO: Error handling when server raises error, similar to:
-      setSummaryErrors(error); */
-      console.error(error);
-    }
+    });
   };
 
   return (
