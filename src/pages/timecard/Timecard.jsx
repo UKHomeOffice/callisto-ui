@@ -134,24 +134,30 @@ const updateTimeEntryContextData = async (
     .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
 
-  validateServiceErrors(setServiceError, async () => {
-    const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+  validateServiceErrors(
+    setServiceError,
+    async () => {
+      const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-    if (timeEntriesResponse.data.items?.length > 0) {
-      const existingTimeEntries = timeEntriesResponse.data.items.map(
-        (timeEntry) =>
-          new ContextTimeEntry(
-            timeEntry.id,
-            formatTime(timeEntry.actualStartTime),
-            timeEntry.actualEndTime ? formatTime(timeEntry.actualEndTime) : '',
-            timeEntry.timePeriodTypeId
-          )
-      );
-      setTimeEntries(existingTimeEntries);
-    } else {
-      setTimeEntries([]);
-    }
-  }, false);
+      if (timeEntriesResponse.data.items?.length > 0) {
+        const existingTimeEntries = timeEntriesResponse.data.items.map(
+          (timeEntry) =>
+            new ContextTimeEntry(
+              timeEntry.id,
+              formatTime(timeEntry.actualStartTime),
+              timeEntry.actualEndTime
+                ? formatTime(timeEntry.actualEndTime)
+                : '',
+              timeEntry.timePeriodTypeId
+            )
+        );
+        setTimeEntries(existingTimeEntries);
+      } else {
+        setTimeEntries([]);
+      }
+    },
+    false
+  );
 };
 
 const getTimePeriodTypesMap = (timePeriodTypes) => {
