@@ -8,7 +8,9 @@ export default defineConfig((config) => {
   const getUrl = (apiName) => {
     const keyName = 'VITE_' + apiName + '_API_URL_PROXY';
     const proxyToUrl = process.env[keyName] ? process.env[keyName] : jsonServer;
-    console.log('Proxying ' + apiName + ' to: ' + proxyToUrl);
+    if (config.mode === 'development') {
+      console.log('Proxying ' + apiName + ' to: ' + proxyToUrl);
+    }
     return proxyToUrl;
   };
 
