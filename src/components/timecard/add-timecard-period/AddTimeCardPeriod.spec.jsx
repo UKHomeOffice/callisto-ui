@@ -10,12 +10,8 @@ describe('AddTimeCardPeriod component', () => {
 
     await waitFor(() => {
       const addTimePeriodTitle = screen.queryByText('Add time period');
-      const addTimePeriodDescription = screen.queryByText(
-        'Use this to record a shift'
-      );
 
       expect(addTimePeriodTitle).toBeTruthy();
-      expect(addTimePeriodDescription).toBeTruthy();
     });
   });
 
@@ -24,9 +20,6 @@ describe('AddTimeCardPeriod component', () => {
 
     await waitFor(() => {
       const addTimePeriodTitle = screen.queryByText('Add another time period');
-      const addTimePeriodDescription = screen.queryByText(
-        'Use this to record overtime or another shift'
-      );
 
       expect(addTimePeriodTitle).toBeTruthy();
       expect(addTimePeriodDescription).toBeTruthy();
