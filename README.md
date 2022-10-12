@@ -74,12 +74,22 @@ Read more about the [Vite Proxy](https://vitejs.dev/config/server-options.html#s
 
 ### To use a mix of mock data and a local API
 
-Just set the '\_PROXY' environment variable to the JSON Server url http://localhost:3001. In the example below Timecard will use mock data and Accruals will use local the service running on port 9091
+You can explicitly set the '\_PROXY' environment variable to the JSON Server url http://localhost:3001. Or remove the '\_PROXY' environment variable and that API call will use mock data by default.
+
+The below examples are both valid to set Timecard to use mock data and Accruals to use the local service running on port 9091.
 
 ```
+Example 1:
 VITE_TIMECARD_API_URL="http://localhost:3000/"
 VITE_ACCRUALS_API_URL="http://localhost:3000/"
 VITE_TIMECARD_API_URL_PROXY="http://localhost:3001/"
+VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
+```
+
+```
+Example 2:
+VITE_TIMECARD_API_URL="http://localhost:3000/"
+VITE_ACCRUALS_API_URL="http://localhost:3000/"
 VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
 ```
 
