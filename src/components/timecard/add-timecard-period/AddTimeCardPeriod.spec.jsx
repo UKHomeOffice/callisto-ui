@@ -22,7 +22,6 @@ describe('AddTimeCardPeriod component', () => {
       const addTimePeriodTitle = screen.queryByText('Add another time period');
 
       expect(addTimePeriodTitle).toBeTruthy();
-      expect(addTimePeriodDescription).toBeTruthy();
     });
   });
 
