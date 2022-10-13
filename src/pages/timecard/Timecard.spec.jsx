@@ -235,9 +235,6 @@ describe('Timecard', () => {
 
     expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
     expect(screen.getByText('Add another time period')).toBeInTheDocument();
-    expect(
-      screen.getByText('Use this to record overtime or another shift')
-    ).toBeInTheDocument();
   });
 
   describe('navigation', () => {
