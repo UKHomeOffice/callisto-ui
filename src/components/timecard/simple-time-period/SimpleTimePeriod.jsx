@@ -9,6 +9,7 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
+import { useApplicationContext } from '../../../context/ApplicationContext';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
   createTimeEntry,
@@ -17,6 +18,7 @@ import {
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 
 const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
+  const { userId } = useApplicationContext();
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
@@ -43,7 +45,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
     );
 
     const timecardPayload = {
-      ownerId: 1,
+      ownerId: userId,
       timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,

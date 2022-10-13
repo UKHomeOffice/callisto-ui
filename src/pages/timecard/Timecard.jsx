@@ -31,7 +31,7 @@ const Timecard = () => {
     newTimeEntry,
     setNewTimeEntry,
   } = useTimecardContext();
-  const { timePeriodTypes } = useApplicationContext();
+  const { timePeriodTypes, userId } = useApplicationContext();
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
@@ -47,7 +47,7 @@ const Timecard = () => {
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries);
+    updateTimeEntryContextData(date, setTimeEntries, userId);
   }, [date, timePeriodTypes]);
 
   return (
@@ -123,10 +123,10 @@ const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
   }
 };
 
-const updateTimeEntryContextData = async (date, setTimeEntries) => {
+const updateTimeEntryContextData = async (date, setTimeEntries, userId) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters('ownerId==1', ...filterTimeEntriesOnDate(date))
+    .setFilters("ownerId=='" + userId + "'", ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
   const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
