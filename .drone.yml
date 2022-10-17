@@ -14,13 +14,7 @@ steps:
       SONAR_TOKEN:
         from_secret: sonar_token
     commands:
-      - sonar-scanner -Dsonar.projectKey=$${DRONE_REPO}
-        -Dsonar.projectName=$${DRONE_REPO}        
-        -Dsonar.branch.name=$${DRONE_BRANCH}
-        -Dsonar.host.url=https://sonarcloud.io 
-        -Dsonar.organization=ukhomeoffice
-        -Dsonar.sources=./src
-        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info    
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$${DRONE_REPO} -Dsonar.organization=ukhomeoffice -Dsonar.projectName=$${DRONE_REPO} -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info    
 
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
