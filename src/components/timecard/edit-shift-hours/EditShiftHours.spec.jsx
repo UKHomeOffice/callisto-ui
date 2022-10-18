@@ -56,7 +56,7 @@ describe('EditShiftHours', () => {
       await waitFor(() => {
         expect(mockCreateTimeEntry).toHaveBeenCalledWith(
           {
-            ownerId: 1,
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
             actualStartTime: expectedActualStartTime,
             actualEndTime: '',
@@ -109,7 +109,7 @@ describe('EditShiftHours', () => {
         expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
           timeEntryId,
           {
-            ownerId: 1,
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
             actualStartTime: expectedActualStartTime,
             actualEndTime: `${timecardDate}T${inputtedEndTime}:00+00:00`,
