@@ -114,7 +114,7 @@ describe('SimpleTimePeriod', () => {
           timeEntries: [newTimeEntry],
           setTimeEntries: jest.fn(),
           timecardDate,
-        },
+        }
       );
 
       act(() => {
