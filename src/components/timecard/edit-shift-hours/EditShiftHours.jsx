@@ -43,6 +43,15 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
+  const handleTimeEntryClashes = () => {
+    setSummaryErrors({
+      'shift-start-time': {
+        message: 'Time periods must not overlap with another time period',
+      },
+      'shift-finish-time': { message: '' },
+    });
+  };
+
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
@@ -99,13 +108,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
-      true,
-      (errorData) => {
-        setSummaryErrors({
-          'shift-start-time': { message: errorData.message },
-          'shift-finish-time': { message: '' },
-        });
-      }
+      handleTimeEntryClashes()
     );
   };
 
