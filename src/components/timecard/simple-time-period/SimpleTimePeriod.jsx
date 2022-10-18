@@ -10,7 +10,6 @@ import {
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { useApplicationContext } from '../../../context/ApplicationContext';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
   createTimeEntry,
