@@ -67,7 +67,7 @@ steps:
     commands:
       - npm run build
     depends_on:
-      - install dependencies
+      - code analysis
 
   - name: upload to S3
     image: plugins/s3
