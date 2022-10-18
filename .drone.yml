@@ -8,14 +8,6 @@ platform:
   arch: amd64
 
 steps:
-  - name: code analysis
-    image: sonarsource/sonar-scanner-cli
-    environment:
-      SONAR_TOKEN:
-        from_secret: sonar_token
-    commands:
-      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$${DRONE_REPO} -Dsonar.organization=ukhomeoffice -Dsonar.projectName=$${DRONE_REPO} -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info    
-
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
       node:16.15.0
@@ -45,6 +37,19 @@ steps:
       - npm run test
     depends_on:
       - install dependencies
+
+ - name: code analysis
+    image: *node_image
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonar_token        
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
+      - npm install -g sonarqube-scanner
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=$${DRONE_REPO} -Dsonar.organization=ukhomeoffice -Dsonar.projectName=$${DRONE_REPO} -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+    depends_on:
+      - test project
 
   - name: build project
     image: *node_image
