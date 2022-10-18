@@ -38,7 +38,7 @@ steps:
     depends_on:
       - install dependencies
 
- - name: code analysis
+  - name: code analysis
     image: *node_image
     environment:
       SONAR_TOKEN:
