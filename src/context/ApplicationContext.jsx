@@ -20,8 +20,8 @@ const fetchTimePeriodTypesData = async () => {
 export const ApplicationProvider = ({ children }) => {
   const [timePeriodTypes, setTimePeriodTypes] = useState([]);
   const { keycloak } = useKeycloak();
-  const [userId, setUserId] = useState(keycloak.tokenParsed.personId);
-  const [timecardClaim, setTimecardClaim] = useState(keycloak.tokenParsed.timecardClaim);
+  const [userId, setUserId] = useState();
+  const [timecardClaim, setTimecardClaim] = useState();
 
   const value = {
     timePeriodTypes,
@@ -29,11 +29,13 @@ export const ApplicationProvider = ({ children }) => {
     userId,
     setUserId,
     timecardClaim,
-    setTimecardClaim
+    setTimecardClaim,
   };
 
   useEffect(async () => {
     setTimePeriodTypes(await fetchTimePeriodTypesData());
+    setUserId(keycloak.tokenParsed.personId);
+    setTimecardClaim(keycloak.tokenParsed.timecardClaim);
   }, []);
 
   return (

@@ -29,7 +29,7 @@ jest.mock('../../../api/services/timecardService', () => ({
         {
           id: '7f000001-8340-1495-8183-416288370009',
           tenantId: '00000000-0000-0000-0000-000000000000',
-          ownerId: 1,
+          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
           timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
           actualStartTime: '2022-09-01T00:00:00+00:00',
           actualEndTime: '2022-09-01T00:00:00+00:00',
@@ -107,7 +107,7 @@ describe('SimpleTimePeriod', () => {
           timeEntries: [newTimeEntry],
           setTimeEntries: jest.fn(),
           timecardDate,
-        }
+        },
       );
 
       act(() => {
@@ -118,7 +118,7 @@ describe('SimpleTimePeriod', () => {
       await waitFor(() => {
         expect(mockCreateTimeEntry).toHaveBeenCalledWith(
           {
-            ownerId: 1,
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
             actualStartTime: expectedActualStartTime,
             actualEndTime: expectedActualEndTime,
