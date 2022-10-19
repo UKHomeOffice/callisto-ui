@@ -1,7 +1,7 @@
 export const validateServiceErrors = async (
   setServiceError,
   serviceFunction,
-  handleErrors,
+  handleCustomErrors,
   isRecoverable = true
 ) => {
   try {
@@ -11,10 +11,9 @@ export const validateServiceErrors = async (
     });
   } catch (error) {
     console.error(error);
-    console.log(error.response);
-    if (error?.response?.status === 400) {
-      handleErrors();
-    } else {
+    const allErrorsHandled = handleCustomErrors(error.response.data.message);
+
+    if (!allErrorsHandled) {
       setServiceError({
         hasError: true,
         recoverable: isRecoverable,

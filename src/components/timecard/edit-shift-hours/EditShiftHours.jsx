@@ -43,13 +43,29 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
-  const handleTimeEntryClashes = () => {
-    setSummaryErrors({
-      'shift-start-time': {
+  const handleServerErrors = (error) => {
+    console.log(error);
+    const summaryErrors = {};
+    let errorsHandled = true;
+
+    if (
+      error.includes('Time periods must not overlap with another time period')
+    ) {
+      summaryErrors['shift-start-time'] = {
         message: 'Time periods must not overlap with another time period',
-      },
-      'shift-finish-time': { message: '' },
-    });
+      };
+      summaryErrors['shift-finish-time'] = {
+        message: '',
+      };
+    } else {
+      errorsHandled = false;
+    }
+
+    if (errorsHandled) {
+      setSummaryErrors(summaryErrors);
+      return true;
+    }
+    return false;
   };
 
   const onSubmit = async (formData) => {
@@ -108,7 +124,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
-      handleTimeEntryClashes()
+      handleServerErrors
     );
   };
 
