@@ -36,8 +36,13 @@ const EditShiftHours = ({
 
   const inputName = 'shift';
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
-    useTimecardContext();
+  const {
+    timeEntries,
+    setTimeEntries,
+    timecardDate,
+    // summaryErrors,
+    setSummaryErrors,
+  } = useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);

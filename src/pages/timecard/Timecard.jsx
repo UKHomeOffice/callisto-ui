@@ -156,6 +156,7 @@ const updateTimeEntryContextData = async (
         setTimeEntries([]);
       }
     },
+    () => {},
     false
   );
 };
