@@ -38,7 +38,7 @@ steps:
     depends_on:
       - install dependencies
 
-  - name: code analysis
+  - name: sonar analysis
     image: *node_image
     environment:
       SONAR_TOKEN:
@@ -67,7 +67,7 @@ steps:
     commands:
       - npm run build
     depends_on:
-      - code analysis
+      - sonar analysis
 
   - name: upload to S3
     image: plugins/s3
