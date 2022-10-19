@@ -6,9 +6,6 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
   const addPeriodTitle = timecardEmpty
     ? 'Add time period'
     : 'Add another time period';
-  const addPeriodDescription = timecardEmpty
-    ? 'Use this to record a shift'
-    : 'Use this to record overtime or another shift';
 
   const { setNewTimeEntry } = useTimecardContext();
 
@@ -36,9 +33,6 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
               </Link>
             </div>
           </div>
-          <p className="govuk-body-m govuk-secondary-text-colour">
-            {addPeriodDescription}
-          </p>
         </div>
       </div>
     </div>
