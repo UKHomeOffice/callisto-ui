@@ -49,7 +49,6 @@ const EditShiftHours = ({
   };
 
   const handleServerErrors = (error) => {
-    console.log(error);
     const summaryErrors = {};
     let errorsHandled = true;
 
