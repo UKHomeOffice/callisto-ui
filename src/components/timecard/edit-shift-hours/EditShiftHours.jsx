@@ -133,20 +133,12 @@ const EditShiftHours = ({
     );
   };
 
-  function jsonConcat(o1, o2) {
-    for (var key in o2) {
-      o1[key] = o2[key];
-    }
-    return o1;
-  }
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <StartFinishTimeInput
           name={inputName}
-          // errors={errors}
-          errors={jsonConcat(errors, summaryErrors)}
+          errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
           register={register}
           formState={formState}
           startTimeValue={timeEntry.startTime}

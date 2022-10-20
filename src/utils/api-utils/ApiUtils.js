@@ -10,14 +10,19 @@ export const validateServiceErrors = async (
       hasError: false,
     });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     const allErrorsHandled = handleCustomErrors(error?.response?.data?.message);
 
-    if (!allErrorsHandled) {
+    if (allErrorsHandled) {
       setServiceError({
-        hasError: true,
-        recoverable: isRecoverable,
+        hasError: false,
       });
+      return;
     }
+
+    setServiceError({
+      hasError: true,
+      recoverable: isRecoverable,
+    });
   }
 };
