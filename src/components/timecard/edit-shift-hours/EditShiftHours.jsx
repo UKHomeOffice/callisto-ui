@@ -54,7 +54,8 @@ const EditShiftHours = ({
     let errorsHandled = true;
 
     if (
-      error.includes('Time periods must not overlap with another time period')
+      error ==
+      ' has the following error(s): Time periods must not overlap with another time period'
     ) {
       summaryErrors['shift-start-time'] = {
         message: 'Time periods must not overlap with another time period',
