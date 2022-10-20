@@ -16,6 +16,7 @@ import {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
+import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -416,4 +417,51 @@ describe('EditShiftHours', () => {
       });
     }
   );
+
+  describe('Service errors', () => {
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: {
+              message:
+                ' has the following error(s): Time periods must not overlap with another time period',
+            },
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+          'shift-start-time': {
+            message: 'Time periods must not overlap with another time period',
+          },
+          'shift-finish-time': { message: '' },
+        });
+      });
+    });
+  });
 });

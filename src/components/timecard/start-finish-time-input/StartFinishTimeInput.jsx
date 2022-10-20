@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrorKeys } from '../../../utils/sort-errors/sortErrors';
-// import { useTimecardContext } from '../../../context/TimecardContext';
 
 const StartFinishTimeInput = ({
   name,
@@ -13,7 +12,6 @@ const StartFinishTimeInput = ({
   formState,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
-  // const { summaryErrors: errors } = useTimecardContext();
 
   const desiredErrorOrder = ['shift-start-time', 'shift-finish-time'];
 
