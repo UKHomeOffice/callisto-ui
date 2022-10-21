@@ -50,6 +50,10 @@ steps:
       - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
     depends_on:
       - test project
+    when:
+      event:
+        exclude:
+        - pull_request      
 
   - name: build project
     image: *node_image
@@ -66,8 +70,6 @@ steps:
       VITE_ACCRUALS_API_URL: "https://accruals.dev.callisto.homeoffice.gov.uk/"                        
     commands:
       - npm run build
-    depends_on:
-      - sonar analysis
 
   - name: upload to S3
     image: plugins/s3
