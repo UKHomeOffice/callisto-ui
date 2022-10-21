@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import api from './core';
 
+const handleClick = () => {
+  event.preventDefault();
+};
+
 const useGetAccrualsForDate = (date, token, id) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  handleClick();
+
   useEffect(() => {
     setLoading(true);
     api
