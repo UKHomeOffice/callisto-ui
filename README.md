@@ -131,4 +131,4 @@ VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
 
 If you’re using an AMD (M1,M2) chip mac, you might encounter problems starting the keycloak docker container. We’ve had some success building a new image locally, as per the instructions in this github thread: https://github.com/docker/for-mac/issues/5310#issuecomment-877653653
 
-#
+##
