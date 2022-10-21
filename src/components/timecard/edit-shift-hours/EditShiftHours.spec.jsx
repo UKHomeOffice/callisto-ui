@@ -234,8 +234,8 @@ describe('EditShiftHours', () => {
     await waitFor(() => {
       expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
-          startTime: '12:01',
-          finishTime: '22:01',
+          startTime: '12:00',
+          finishTime: '22:00',
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
         },
@@ -271,7 +271,7 @@ describe('EditShiftHours', () => {
     await waitFor(() => {
       expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
-          startTime: '12:01',
+          startTime: '12:00',
           finishTime: '',
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50004',
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
