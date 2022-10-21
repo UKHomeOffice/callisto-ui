@@ -1,4 +1,5 @@
 const { createTimeEntry } = require('./mock-utils');
+const dayjs = require('dayjs');
 
 const accruals = [
   {
@@ -186,29 +187,45 @@ const people = [
 const shiftTimeEntry = createTimeEntry({
   id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-  actualStartTime: '2022-08-24T12:01:43.786+00:00',
-  actualEndTime: '2022-08-24T22:01:43.786+00:00',
+  actualStartTime: dayjs().hour(12).minute(0).format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: dayjs().hour(22).minute(0).format('YYYY-MM-DDTHH:mm:ssZ'),
 });
 
 const shiftTimeEntryWithoutFinishTime = createTimeEntry({
   id: 'c0a80040-82cf-1986-8182-cfedbbd50004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-  actualStartTime: '2022-08-24T12:01:43.786+00:00',
+  actualStartTime: dayjs().hour(12).minute(0).format('YYYY-MM-DDTHH:mm:ssZ'),
   actualEndTime: null,
 });
 
 const srdEntry = createTimeEntry({
   id: '0a650b0a-8346-158f-8183-471def7e0004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
-  actualStartTime: '2022-08-24T00:00:00.000+00:00',
-  actualEndTime: '2022-08-25T00:00:00.000+00:00',
+  actualStartTime: dayjs()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: dayjs()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .format('YYYY-MM-DDTHH:mm:ssZ'),
 });
 
 const nwdEntry = createTimeEntry({
   id: 'fea873ad-147b-4e2d-92ac-f36c47015eaf',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
-  actualStartTime: '2022-08-24T00:00:00.000+00:00',
-  actualEndTime: '2022-08-25T00:00:00.000+00:00',
+  actualStartTime: dayjs()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: dayjs()
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .format('YYYY-MM-DDTHH:mm:ssZ'),
 });
 
 const timePeriodIdForTimeEntry = {
