@@ -48,7 +48,7 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
-  const handleServerErrors = (error) => {
+  const handleServerValidationErrors = (error) => {
     const summaryErrors = {};
     let errorsHandled = true;
 
@@ -129,7 +129,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
-      handleServerErrors
+      handleServerValidationErrors 
     );
   };
 
