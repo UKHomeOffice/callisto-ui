@@ -70,6 +70,8 @@ steps:
       VITE_ACCRUALS_API_URL: "https://accruals.dev.callisto.homeoffice.gov.uk/"                        
     commands:
       - npm run build
+    depends_on:
+      - install dependencies      
 
   - name: upload to S3
     image: plugins/s3
