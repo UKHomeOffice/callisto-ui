@@ -1,7 +1,6 @@
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
 
 import {
   formatDateTimeISO,
@@ -21,8 +20,7 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
-    useTimecardContext();
+  const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
   const handleClickRemoveButton = async (event) => {
@@ -35,28 +33,6 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       await deleteTimeEntry(timeEntry.timeEntryId, params);
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
     });
-  };
-
-  const handleServerErrors = (error) => {
-    const summaryErrors = {};
-    let errorsHandled = true;
-
-    if (
-      error ==
-      ' has the following error(s): Time periods must not overlap with another time period'
-    ) {
-      summaryErrors['shift-start-time'] = {
-        message: 'Time periods must not overlap with another time period',
-      };
-    } else {
-      errorsHandled = false;
-    }
-
-    if (errorsHandled) {
-      setSummaryErrors(summaryErrors);
-      return true;
-    }
-    return false;
   };
 
   const onSubmit = async (event) => {
@@ -80,32 +56,28 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    validateServiceErrors(
-      setServiceError,
-      async () => {
-        const response = await createTimeEntry(timecardPayload, params);
+    validateServiceErrors(setServiceError, async () => {
+      const response = await createTimeEntry(timecardPayload, params);
 
-        if (response?.data?.items?.length > 0) {
-          const formattedStartTime = formatTime(
-            response.data.items[0].actualStartTime
-          );
-          const formattedEndTime = formatTime(
-            response.data.items[0].actualEndTime
-          );
+      if (response?.data?.items?.length > 0) {
+        const formattedStartTime = formatTime(
+          response.data.items[0].actualStartTime
+        );
+        const formattedEndTime = formatTime(
+          response.data.items[0].actualEndTime
+        );
 
-          const newTimeEntries = deepCloneJson(timeEntries);
-          newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
-            timeEntry
-          )
-            .setStartTime(formattedStartTime)
-            .setFinishTime(formattedEndTime)
-            .setTimeEntryId(response.data.items[0].id);
+        const newTimeEntries = deepCloneJson(timeEntries);
+        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+          timeEntry
+        )
+          .setStartTime(formattedStartTime)
+          .setFinishTime(formattedEndTime)
+          .setTimeEntryId(response.data.items[0].id);
 
-          setTimeEntries(newTimeEntries);
-        }
-      },
-      handleServerErrors
-    );
+        setTimeEntries(newTimeEntries);
+      }
+    });
   };
 
   const onCancel = (event) => {
@@ -140,7 +112,6 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
               <form onSubmit={onSubmit}>
-                <input id="test" name="test"></input>
                 <div className="govuk-button-group govuk-!-margin-bottom-0">
                   <button className="govuk-button" type="submit">
                     Save
