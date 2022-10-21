@@ -38,6 +38,19 @@ steps:
     depends_on:
       - install dependencies
 
+  - name: sonar analysis
+    image: *node_image
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonar_token        
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
+      - npm install -g sonarqube-scanner
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+    depends_on:
+      - test project
+
   - name: build project
     image: *node_image
     environment:
@@ -54,7 +67,7 @@ steps:
     commands:
       - npm run build
     depends_on:
-      - install dependencies
+      - sonar analysis
 
   - name: upload to S3
     image: plugins/s3
