@@ -129,7 +129,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
-      handleServerValidationErrors 
+      handleServerValidationErrors
     );
   };
 
