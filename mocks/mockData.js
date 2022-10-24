@@ -183,6 +183,8 @@ const people = [
   },
 ];
 
+const userId = "9e47cf29-1598-4269-aa31-db1d2e4e0207";
+
 const shiftTimeEntry = createTimeEntry({
   id: 'c0a80040-82cf-1986-8182-cfedbbd50003',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -193,6 +195,7 @@ const shiftTimeEntry = createTimeEntry({
 const shiftTimeEntryWithoutFinishTime = createTimeEntry({
   id: 'c0a80040-82cf-1986-8182-cfedbbd50004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  ownerId: userId,
   actualStartTime: '2022-08-24T12:01:43.786+00:00',
   actualEndTime: null,
 });
@@ -200,6 +203,7 @@ const shiftTimeEntryWithoutFinishTime = createTimeEntry({
 const srdEntry = createTimeEntry({
   id: '0a650b0a-8346-158f-8183-471def7e0004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+  ownerId: userId,
   actualStartTime: '2022-08-24T00:00:00.000+00:00',
   actualEndTime: '2022-08-25T00:00:00.000+00:00',
 });
@@ -207,6 +211,7 @@ const srdEntry = createTimeEntry({
 const nwdEntry = createTimeEntry({
   id: 'fea873ad-147b-4e2d-92ac-f36c47015eaf',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+  ownerId: userId,
   actualStartTime: '2022-08-24T00:00:00.000+00:00',
   actualEndTime: '2022-08-25T00:00:00.000+00:00',
 });
@@ -271,6 +276,7 @@ const shiftTimeCardPeriodType = {
 module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
+  userId,
   srdEntry,
   nwdEntry,
   timePeriodIdForTimeEntry,

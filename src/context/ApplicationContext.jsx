@@ -1,4 +1,5 @@
 import { useState, useContext, createContext, useEffect } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
 import PropTypes from 'prop-types';
 import { UrlSearchParamBuilder } from '../utils/api-utils/UrlSearchParamBuilder';
 import { getTimePeriodTypes } from '../api/services/timecardService';
@@ -27,16 +28,25 @@ export const ApplicationProvider = ({ children }) => {
     hasError: false,
     recoverable: true,
   });
+  const { keycloak } = useKeycloak();
+  const [userId, setUserId] = useState();
+  const [timecardClaim, setTimecardClaim] = useState();
 
   const value = {
     timePeriodTypes,
     setTimePeriodTypes,
     serviceError,
     setServiceError,
+    userId,
+    setUserId,
+    timecardClaim,
+    setTimecardClaim,
   };
 
   useEffect(() => {
     setTimePeriodTypesData(setTimePeriodTypes, setServiceError);
+    setUserId(keycloak.tokenParsed.personId);
+    setTimecardClaim(keycloak.tokenParsed.timecardClaim);
   }, []);
 
   return (

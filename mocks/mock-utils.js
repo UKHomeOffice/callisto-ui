@@ -11,7 +11,7 @@ const getBaseTimeEntry = () => {
   return {
     id: '',
     tenantId: '00000000-0000-0000-0000-000000000000',
-    ownerId: 1,
+    ownerId: "9e47cf29-1598-4269-aa31-db1d2e4e0207",
     timePeriodTypeId: '',
     timePeriodType: '',
     shiftType: '',
