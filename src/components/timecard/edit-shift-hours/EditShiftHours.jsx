@@ -5,6 +5,8 @@ import {
   updateTimeEntry,
 } from '../../../api/services/timecardService';
 import { useTimecardContext } from '../../../context/TimecardContext';
+import { useApplicationContext } from '../../../context/ApplicationContext';
+
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -16,7 +18,6 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
-import { useApplicationContext } from '../../../context/ApplicationContext';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const EditShiftHours = ({
@@ -43,6 +44,7 @@ const EditShiftHours = ({
     summaryErrors,
     setSummaryErrors,
   } = useTimecardContext();
+  const { userId } = useApplicationContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -88,7 +90,7 @@ const EditShiftHours = ({
       : '';
 
     const timecardPayload = {
-      ownerId: 1,
+      ownerId: userId,
       timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,

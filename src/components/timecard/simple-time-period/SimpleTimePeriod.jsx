@@ -19,7 +19,7 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
 const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
-  const { setServiceError } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
   const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
@@ -46,7 +46,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
     );
 
     const timecardPayload = {
-      ownerId: 1,
+      ownerId: userId,
       timePeriodTypeId: timeEntry.timePeriodTypeId,
       actualStartTime: actualStartDateTime,
       actualEndTime: actualEndDateTime,
