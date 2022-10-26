@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "start": "run-p keycloak start:jsonserver vite",
-    "start:dev": "run-p keycloak vite",    
+    "start:dev": "run-p keycloak vite",
     "keycloak": "cd keycloak && docker compose up",
     "prestart:jsonserver": "node mocks/createMockDb.js",
-    "start:jsonserver": "node mocks/apiServer.js",    
+    "start:jsonserver": "node mocks/apiServer.js",
     "test": "TZ=UTC jest --coverage",
     "monitor": "TZ=UTC jest --watchAll",
     "lint:fix": "eslint --ext .js,.jsx src --fix",
@@ -87,6 +87,8 @@
     "react-test-renderer": "^17.0.2",
     "sass": "^1.49.9",
     "stylelint-config-standard-scss": "^3.0.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
     "vite": "^2.8.0"
   },
   "overrides": {
