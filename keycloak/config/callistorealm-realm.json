@@ -440,6 +440,30 @@
   "webAuthnPolicyPasswordlessCreateTimeout": 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
+  "users": [
+    {
+      "id": "9e47cf29-1598-4269-aa31-db1d2e4e0207",
+      "createdTimestamp": 1651823570603,
+      "username": "callistouser",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "id": "dd3cb255-d5c8-4ca5-b052-bea73d7e1e1c",
+          "type": "password",
+          "createdDate": 1651823586638,
+          "secretData": "{\"value\":\"mA4RjwOuKK48QuujOxaDLrao+dWxFd/q2z4AN8VdmcR25uA86QdYQgtWNVApCD8otJchoGMrQ3hDpfnYmpn7Rg==\",\"salt\":\"52o25tkk7Tx10PU20XdBUg==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-callistorealm"],
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
   "scopeMappings": [
     {
       "clientScope": "offline_access",
@@ -1441,6 +1465,8 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
+          "kid": ["abae76b6-064f-471f-abbc-40e8bcbd507c"],
+          "secret": ["7zNG6zIkH_SCeWf4mrE3OA"],
           "priority": [
             "100"
           ]
@@ -1452,6 +1478,12 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
+          "privateKey": [
+            "MIIEowIBAAKCAQEAo9Kej65BZLJOl+wTtfOHFfB6VePHVzJOTP83fk0z96Sv3Pdvk4FS6NM/NVb9qg17CXTnErw0s6ajPX7vm7qeR6qORqtsoLj63zcOihqO/X2sUHZEKSSwHpeVolZosNJzwSSTq2kHx6GpwVync6S8HflrpGEuJRzA2gG7I290tGMI316MK4S15wu6WyXbsh5azZqyhpzISvMGniXlqQ1ssxWZBp+2Hl1C2t/QAQwYjO9NTLYwNPVbGbXuwU+1txpbPS6sZ7jGhVHP4L3M5HGqm3U9mcrbVEIUG8Ye+OWpNzmyRK0CHkVDR5DVDL83JNfUoeyTLIfVug4PAVlaFu5tiQIDAQABAoIBABK2dkI3R2T3MR8Nalr4TE/nPjIdaKG/L06AQJh+vRbmiugUo3wX456QssGnBCauj4VPAy4SrXpv6GmX3ErPkFDjXIkZ/7iEKLPimBiSXA78kfhG6hZBCJUV/5Ohhyfbgjlnsi58OtVE1B0wNjhxcsOBwBfwudKnbCf61qN/kbchAfR4BqZ/JH4DeHCyIOj+Xe96gibJk7sXDB5HkUiPWL2DEoLVXBM7dc3lcY72LxE+T0ihI3GgM0/qghi+x1V7cBhoI6D6HsSscAwfm1+8kYVzqpAr5g/4YWyf8T3bDCOfgnLMivslmZrvf1CFTMQErUUhf8fyXKFL+Isi4HOsJdkCgYEA3BCdhM97TVZgdK+ui3HecMb7VVNZRnlp6ZunbAQbpB7MAwE06hFe15XSjdFWY9g/JUMEJ5oz3eda5CDwJzXtPjlLXvt21gQnFsmiXZcNaUEbv1Wl445C4PFa9yeWD4TOzA5C5I4/8inkSqZcdOqO8DaX1uqohOMgnovAReg0CkcCgYEAvpLo3Ud1Bv7JAhcq7jQZpmOfpnmDkyr4AfLXrSQRZ9cdeIvihkSuxccG2R5qMpIrlxQCMHPIgGhBqrHaL1vxfOjLtIX7gIQRDOwq1zc73A9qy+Y5It3Ib8wOWVePI46XSOUgzeTPU/hcgr05vxrXp9QVtof4vR6VjttjeMWV4a8CgYEAl2Eumh+HuCmE7H+1V+MamwWl+on9TYdTngke4CTrRriQqjh4R9NvJGnBjyDDhqdIuL8i6oMezrTJR0iJKs/jxPvwpwPgOVRd90T41dyEszTAe5vVI3XG96nPY1jt1vsKrj/ZMBPSVSkQC3HpA9weO4uyY3rENbVvyOBlgTE8Kx0CgYAfIznRDd/dKLwHD2oASZr3SMfJF4mb/iVPjDIZJA+D++3gyFpWvdogjohb6VBIuwFMSgShjglwkZhJH44attcaJZ9C+7FAKlPu3JeTWn75UbuNXSxwufQJ8DlX96p3kNC/JFDb00rc2XOkGO7afrRFw61YiZbmr5yYHth93yrCGQKBgFjzrgtPgdFCUMbp/oJf0yZx3wb7SkdVYZKda1vkwEuCaVr0y6R5j+jH5wpWodM2R7mnz0UrFzSOD987WlvcdcWQItAutzJDhQEBYAzuWHwJTCh7pG+2reheUMS8nntwhOgqrfY6pyOmtTBKgWf14TrzdBClg7MajjPRsJoDy1q6"
+          ],
+          "certificate": [
+            "MIICqTCCAZECBgGAmFjCRzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDDA1jYWxsaXN0b3JlYWxtMB4XDTIyMDUwNjA3NDgxNVoXDTMyMDUwNjA3NDk1NVowGDEWMBQGA1UEAwwNY2FsbGlzdG9yZWFsbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPSno+uQWSyTpfsE7XzhxXwelXjx1cyTkz/N35NM/ekr9z3b5OBUujTPzVW/aoNewl05xK8NLOmoz1+75u6nkeqjkarbKC4+t83Dooajv19rFB2RCkksB6XlaJWaLDSc8Ekk6tpB8ehqcFcp3OkvB35a6RhLiUcwNoBuyNvdLRjCN9ejCuEtecLulsl27IeWs2asoacyErzBp4l5akNbLMVmQafth5dQtrf0AEMGIzvTUy2MDT1Wxm17sFPtbcaWz0urGe4xoVRz+C9zORxqpt1PZnK21RCFBvGHvjlqTc5skStAh5FQ0eQ1Qy/NyTX1KHskyyH1boODwFZWhbubYkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAhtEjbdUMTIVHWRxdojQPNfyj94f5GNnHVbyu6f/+3GY6oc6RmGgn2bj3sR3TnIp1HFAIvmGzXWU/KY1B0heFyKZRz95YxLWp3MA/D4KttuTjdWBUwLd/1yafPx2yWOEEAgz+6ooGUJbYLF1waBWgE38Pdi8kTuGAdXIavoNTLOkQ0SNKCk+VVy5txDNec+zBgNxpmkekH5C8wp0zOYvDRccMBLMS+RdVsaQHQk+H2VS3r169Ljx2MjTieWRuKKYj8ojFk/+WUFx7Ubr/3jdS1wr9sXpRf0nPNYeF72R0LKPzvzUumn3Mn6CG7Y+sMiVMQpaL4Myp3sWxQKTVA4gRzQ=="
+          ],
           "priority": [
             "100"
           ]
