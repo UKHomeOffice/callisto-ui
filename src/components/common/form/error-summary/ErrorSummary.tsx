@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
+import { FieldErrors } from 'react-hook-form';
+import React from 'react';
 
-const ErrorSummary = ({ errors, keys }) => {
+const ErrorSummary = ({ errors, keys }: Props) => {
   const callbackRef = (summaryErrorList) => {
     if (summaryErrorList) {
       const firstSummaryError =
@@ -44,7 +45,13 @@ const ErrorSummary = ({ errors, keys }) => {
 
 export default ErrorSummary;
 
-ErrorSummary.propTypes = {
-  errors: PropTypes.any,
-  keys: PropTypes.array,
-};
+// ErrorSummary.propTypes = {
+//   AOS: array
+//   errors: FieldErrors,
+//   keys: PropTypes.array,
+// };
+
+interface Props {
+  errors: FieldErrors;
+  keys: Array<string>;
+}

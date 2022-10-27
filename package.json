@@ -51,6 +51,10 @@
   },
   "dependencies": {
     "@react-keycloak/web": "^3.4.0",
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.11.6",
+    "@types/react": "^18.0.23",
+    "@types/react-dom": "^18.0.7",
     "axios": "^0.26.0",
     "dayjs": "^1.11.0",
     "govuk-frontend": "^4.0.1",
