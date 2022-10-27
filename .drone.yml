@@ -53,7 +53,22 @@ steps:
     when:
       event:
         exclude:
-        - pull_request      
+        - pull_request
+
+  - name: sonar quality check
+    image: *node_image
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonar_token        
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
+      - npm install -g sonarqube-scanner
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.pullrequest.base=$${DRONE_TARGET_BRANCH} -Dsonar.pullrequest.branch=$${DRONE_SOURCE_BRANCH} -Dsonar.pullrequest.key=$${DRONE_PULL_REQUEST} 
+    when:
+      event: pull_request
+      branch:
+        - main           
 
   - name: build project
     image: *node_image
