@@ -3,12 +3,9 @@ import api from './core';
 
 const handleClick = () => {
   event.preventDefault();
-  event.preventDefault();
-  event.preventDefault();
-  event.preventDefault();
 };
 
-const useGetAccrualsForDate = (date, token, id) => {
+const useGetAccrualsForDate4 = (date, token, id) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,4 +31,4 @@ const useGetAccrualsForDate = (date, token, id) => {
   return { error, loading, data };
 };
 
-export default useGetAccrualsForDate;
+export default useGetAccrualsForDate4;
