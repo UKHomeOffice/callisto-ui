@@ -13,7 +13,16 @@ const useGetAccrualsForDate = (date, token, id) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  let a = eval('obj.' + document.location.href);
+  let b = eval('obj.' + document.location.href);
+  let c = eval('obj.' + document.location.href);
+  let d = eval('obj.' + document.location.href);
+  let e = eval('obj.' + document.location.href);
+  let f = eval('obj.' + document.location.href);
+
   handleClick();
+
+  console.log(a, b, c, d, e, f);
 
   useEffect(() => {
     setLoading(true);
