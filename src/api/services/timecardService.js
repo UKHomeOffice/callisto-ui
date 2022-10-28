@@ -20,23 +20,15 @@ export const getTimeEntries = async (params) => {
 };
 
 export const createTimeEntry = async (payload, params) => {
-  try {
-    return await api.post(baseUrl + 'resources/time-entries', params, payload);
-  } catch (error) {
-    throw new Error(serviceName + ' createTimeEntry function threw ' + error);
-  }
+  return await api.post(baseUrl + 'resources/time-entries', params, payload);
 };
 
 export const updateTimeEntry = async (id, payload, params) => {
-  try {
-    return await api.put(
-      baseUrl + 'resources/time-entries/' + id,
-      params,
-      payload
-    );
-  } catch (error) {
-    throw new Error(serviceName + ' updateTimeEntry function threw ' + error);
-  }
+  return await api.put(
+    baseUrl + 'resources/time-entries/' + id,
+    params,
+    payload
+  );
 };
 
 export const getTimePeriodTypes = async (params) => {
