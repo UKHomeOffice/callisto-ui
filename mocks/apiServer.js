@@ -1,4 +1,7 @@
 /* eslint-disable no-console */
+const isSameOrBefore = require('dayjs/plugin/isSameOrBefore');
+const isSameOrAfter = require('dayjs/plugin/isSameOrAfter');
+const dayjs = require('dayjs');
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 const path = require('path');
@@ -108,5 +111,28 @@ server.listen(port, () => {
 
 function validateTimecard(timecard) {
   if (!timecard.actualStartTime) return 'Start time is required.';
+
+  dayjs.extend(isSameOrBefore);
+  dayjs.extend(isSameOrAfter);
+  for (existingTimeEntryKey in timePeriodIdForTimeEntry) {
+    const newStartTime = dayjs(timecard.actualStartTime);
+    const existingStartTime = dayjs(
+      timePeriodIdForTimeEntry[existingTimeEntryKey].actualStartTime
+    );
+    const existingEndTime = dayjs(
+      timePeriodIdForTimeEntry[existingTimeEntryKey].actualEndTime
+    );
+
+    if (
+      newStartTime.isSameOrAfter(existingStartTime) &&
+      newStartTime.isSameOrBefore(existingEndTime)
+    ) {
+      return {
+        message:
+          ' has the following error(s): Time periods must not overlap with another time period',
+      };
+    }
+  }
+
   return '';
 }

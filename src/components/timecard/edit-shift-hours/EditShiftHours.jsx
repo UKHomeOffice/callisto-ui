@@ -37,12 +37,42 @@ const EditShiftHours = ({
 
   const inputName = 'shift';
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, timecardDate, setSummaryErrors } =
-    useTimecardContext();
+  const {
+    timeEntries,
+    setTimeEntries,
+    timecardDate,
+    summaryErrors,
+    setSummaryErrors,
+  } = useTimecardContext();
   const { userId } = useApplicationContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
+  };
+
+  const handleServerValidationErrors = (error) => {
+    const summaryErrors = {};
+    let errorsHandled = true;
+
+    if (
+      error ==
+      ' has the following error(s): Time periods must not overlap with another time period'
+    ) {
+      summaryErrors['shift-start-time'] = {
+        message: 'Time periods must not overlap with another time period',
+      };
+      summaryErrors['shift-finish-time'] = {
+        message: '',
+      };
+    } else {
+      errorsHandled = false;
+    }
+
+    if (errorsHandled) {
+      setSummaryErrors(summaryErrors);
+      return true;
+    }
+    return false;
   };
 
   const onSubmit = async (formData) => {
@@ -66,35 +96,43 @@ const EditShiftHours = ({
       actualEndTime: actualEndDateTime,
     };
 
-    validateServiceErrors(setServiceError, async () => {
-      const params = new UrlSearchParamBuilder()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .getUrlSearchParams();
+    validateServiceErrors(
+      setServiceError,
+      async () => {
+        const params = new UrlSearchParamBuilder()
+          .setTenantId('00000000-0000-0000-0000-000000000000')
+          .getUrlSearchParams();
 
-      const response = !timeEntry.timeEntryId
-        ? await createTimeEntry(timecardPayload, params)
-        : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
+        const response = !timeEntry.timeEntryId
+          ? await createTimeEntry(timecardPayload, params)
+          : await updateTimeEntry(
+              timeEntry.timeEntryId,
+              timecardPayload,
+              params
+            );
 
-      if (response?.data?.items?.length > 0) {
-        const responseItem = response.data.items[0];
-        const formattedStartTime = formatTime(responseItem.actualStartTime);
-        const formattedEndTime = responseItem.actualEndTime
-          ? formatTime(responseItem.actualEndTime)
-          : '';
+        if (response?.data?.items?.length > 0) {
+          const responseItem = response.data.items[0];
+          const formattedStartTime = formatTime(responseItem.actualStartTime);
+          const formattedEndTime = responseItem.actualEndTime
+            ? formatTime(responseItem.actualEndTime)
+            : '';
 
-        const newTimeEntries = deepCloneJson(timeEntries);
-        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
-          timeEntry
-        )
-          .setStartTime(formattedStartTime)
-          .setFinishTime(formattedEndTime)
-          .setTimeEntryId(responseItem.id);
+          const newTimeEntries = deepCloneJson(timeEntries);
+          newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+            timeEntry
+          )
+            .setStartTime(formattedStartTime)
+            .setFinishTime(formattedEndTime)
+            .setTimeEntryId(responseItem.id);
 
-        setTimeEntries(newTimeEntries);
-        setSummaryErrors({});
-        setShowEditShiftHours(false);
-      }
-    });
+          setTimeEntries(newTimeEntries);
+          setSummaryErrors({});
+          setShowEditShiftHours(false);
+        }
+      },
+      handleServerValidationErrors
+    );
   };
 
   return (
@@ -102,7 +140,7 @@ const EditShiftHours = ({
       <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <StartFinishTimeInput
           name={inputName}
-          errors={errors}
+          errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
           register={register}
           formState={formState}
           startTimeValue={timeEntry.startTime}
