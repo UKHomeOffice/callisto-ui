@@ -51,6 +51,7 @@ const EditShiftHours = ({
   };
 
   const handleServerValidationErrors = (error) => {
+    console.log('***************************************************');
     const summaryErrors = {};
     let errorsHandled = true;
 

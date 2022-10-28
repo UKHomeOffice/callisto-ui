@@ -2,11 +2,17 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
+import { ApplicationProvider } from '../../context/ApplicationContext';
+import { TimecardProvider } from '../../context/TimecardContext';
 
 export const renderWithProviders = (Component, AuthClientStub) =>
   render(
     <ReactKeycloakProvider authClient={AuthClientStub}>
-      <BrowserRouter>{Component}</BrowserRouter>
+      <BrowserRouter>
+        <ApplicationProvider>
+          <TimecardProvider>{Component}</TimecardProvider>
+        </ApplicationProvider>
+      </BrowserRouter>
     </ReactKeycloakProvider>
   );
 

@@ -1,9 +1,10 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
 import {
   defaultApplicationContext,
   defaultTimecardContext,
+  renderWithRealTimecardContext,
   renderWithTimecardContext,
 } from '../../../test/helpers/TimecardContext';
 import EditShiftHours from './EditShiftHours';
@@ -17,6 +18,8 @@ import {
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import { MemoryRouter } from 'react-router-dom';
+import { renderWithProviders } from '../../../test/helpers/Helpers';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -415,6 +418,8 @@ describe('EditShiftHours', () => {
   );
 
   describe('Service errors', () => {
+    const authClientStub = createAuthClientStub();
+
     it('should set time entry clashing errors in summaryErrors when error is returned from the server', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -427,16 +432,13 @@ describe('EditShiftHours', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-
-      renderWithTimecardContext(
+      renderWithProviders(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        authClientStub
       );
 
       const startTimeInput = screen.getByTestId('shift-start-time');
@@ -451,16 +453,15 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-          'shift-start-time': {
-            message: 'Time periods must not overlap with another time period',
-          },
-          'shift-finish-time': { message: '' },
-        });
+        screen.debug();
+        const errorMessage = screen.getByText(
+          'Time periods must not overlap with another time period'
+        );
+        expect(errorMessage).toBeTruthy();
       });
     });
 
-    it('should not set errors in summaryErrors when unhandled error is returned from the server', async () => {
+    it('should not display clashing errors when unhandled error is returned from the server', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
           response: {
@@ -471,16 +472,13 @@ describe('EditShiftHours', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-
-      renderWithTimecardContext(
+      renderWithProviders(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        authClientStub
       );
 
       const startTimeInput = screen.getByTestId('shift-start-time');
@@ -494,9 +492,54 @@ describe('EditShiftHours', () => {
         fireEvent.click(saveButton);
       });
 
-      await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
-      });
+      screen.debug();
+      const errorMessage = screen.queryByText(
+        'Time periods must not overlap with another time period'
+      );
+      expect(errorMessage).toBeFalsy();
     });
   });
 });
+
+function createAuthClientStub() {
+  return {
+    init: jest.fn().mockResolvedValue(true),
+    login: jest.fn(),
+    logout: jest.fn(),
+    authenticated: false,
+    tokenParsed: {
+      personId: '65948f12-a8f3-461d-92a9-1d89ba8be9de',
+      exp: 1666274108,
+      iat: 1666273808,
+      auth_time: 1666273808,
+      jti: 'f0713673-4795-40ee-a724-a13d595cbf6a',
+      iss: 'http://localhost:8080/auth/realms/callistorealm',
+      aud: 'account',
+      sub: '9e47cf29-1598-4269-aa31-db1d2e4e0207',
+      typ: 'Bearer',
+      azp: 'callistoreactclientid',
+      nonce: 'faaae9ae-10f2-4845-a74f-a79af25e5d55',
+      session_state: '65948f12-a8f3-461d-92a9-1d89ba8be9de',
+      acr: '1',
+      'allowed-origins': ['http://localhost:3000'],
+      realm_access: {
+        roles: [
+          'offline_access',
+          'default-roles-callistorealm',
+          'uma_authorization',
+        ],
+      },
+      resource_access: {
+        account: {
+          roles: ['manage-account', 'manage-account-links', 'view-profile'],
+        },
+      },
+      scope: 'openid profile email',
+      sid: '65948f12-a8f3-461d-92a9-1d89ba8be9de',
+      email_verified: false,
+      preferred_username: 'callistouser',
+    },
+    createLogoutUrl: jest.fn(),
+    createLoginUrl: jest.fn(),
+  };
+}

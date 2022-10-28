@@ -11,6 +11,7 @@ export const validateServiceErrors = async (
     });
   } catch (error) {
     console.error(error);
+    console.log(handleCustomErrors);
     const allErrorsHandled = handleCustomErrors(error?.response?.data?.message);
 
     if (allErrorsHandled) {

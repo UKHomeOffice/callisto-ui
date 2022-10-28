@@ -45,8 +45,8 @@ export const ApplicationProvider = ({ children }) => {
 
   useEffect(() => {
     setTimePeriodTypesData(setTimePeriodTypes, setServiceError);
-    setUserId(keycloak.tokenParsed.personId);
-    setTimecardClaim(keycloak.tokenParsed.timecardClaim);
+    // setUserId(keycloak.tokenParsed.personId);
+    // setTimecardClaim(keycloak.tokenParsed.timecardClaim);
   }, []);
 
   return (
