@@ -27,7 +27,7 @@ const ValidatedTimeEntry = ({
         required: {
           value: isRequired,
           message: errorMessage,
-        }
+        },
       })}
     />
   );
