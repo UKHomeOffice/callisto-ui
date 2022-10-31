@@ -6,8 +6,8 @@ describe('ValidatedTimeEntry', () => {
   it('should render correctly', () => {
     const component = render(
       <ValidatedTimeEntry
-        name="start-time"
-        timeType="start time"
+        name="shift-finish-time"
+        timeType="finish time"
         errors={{}}
         register={jest.fn()}
       />

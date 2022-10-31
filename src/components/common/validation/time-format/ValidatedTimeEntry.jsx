@@ -18,13 +18,11 @@ const ValidatedTimeEntry = ({
   }, [formState]);
 
   const isFinishTimeNextDay = () => {
-    if (document.getElementById(`${name}-finish-time`)) {
-      var finishTimeValue = document.getElementById(
-        `${name}-finish-time`
-      ).value;
+    if (document.getElementById(`shift-finish-time`)) {
+      var finishTimeValue = document.getElementById(`shift-finish-time`).value;
     }
-    if (document.getElementById(`${name}-start-time`)) {
-      var startTimeValue = document.getElementById(`${name}-start-time`).value;
+    if (document.getElementById(`shift-start-time`)) {
+      var startTimeValue = document.getElementById(`shift-start-time`).value;
     }
     var answer = calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue);
 
@@ -71,6 +69,7 @@ export default ValidatedTimeEntry;
 ValidatedTimeEntry.propTypes = {
   name: PropTypes.string.isRequired,
   timeType: PropTypes.string.isRequired,
+  timeIndetifier: PropTypes.string.isRequired,
   errors: PropTypes.object.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
