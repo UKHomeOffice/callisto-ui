@@ -97,7 +97,7 @@ const Timecard = () => {
         <>
           {timeEntries.map((timeEntry, index) => (
             <div key={index} className="govuk-!-margin-bottom-6">
-              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
+              {renderTimeEntry(timePeriodTypesMap, timeEntry, index, date)}
             </div>
           ))}
           <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
@@ -107,11 +107,15 @@ const Timecard = () => {
   );
 };
 
-const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
+const renderTimeEntry = (timePeriodTypesMap, timeEntry, index, date) => {
   switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
     case 'Shift':
       return (
-        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
+        <EditShiftTimecard
+          timeEntry={timeEntry}
+          timeEntriesIndex={index}
+          date={date}
+        />
       );
     default:
       return (

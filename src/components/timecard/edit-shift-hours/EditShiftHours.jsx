@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
+  calculateFinishTimeOnNextDay,
   formatDate,
   formatDateTimeISO,
   formatTime,
@@ -50,6 +51,18 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
+  const isFinishTimeNextDay = (
+    actualStartTime,
+    actualEndTime,
+    actualStartDate
+  ) => {
+    if (calculateFinishTimeOnNextDay(actualStartTime, actualEndTime) >= 1) {
+      return formatDate(dayjs(actualStartDate).add(1, 'day'));
+    } else {
+      return actualStartDate;
+    }
+  };
+
   const handleServerValidationErrors = (error) => {
     const summaryErrors = {};
     let errorsHandled = true;
@@ -85,8 +98,18 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
+    var actualEndDate = formatDate(timecardDate);
+
+    if (endTime) {
+      actualEndDate = isFinishTimeNextDay(
+        actualStartTime,
+        endTime,
+        actualStartDate
+      );
+    }
+
     const actualEndDateTime = endTime
-      ? formatDateTimeISO(actualStartDate + ' ' + endTime)
+      ? formatDateTimeISO(actualEndDate + ' ' + endTime)
       : '';
 
     const timecardPayload = {

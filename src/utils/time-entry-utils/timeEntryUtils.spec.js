@@ -1,5 +1,6 @@
 import { ContextTimeEntry } from './ContextTimeEntry';
 import {
+  calculateFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
   removeTimecardContextEntry,
 } from './timeEntryUtils';
@@ -42,5 +43,34 @@ describe('timeEntryUtils', () => {
     const mockSetTimeEntries = jest.fn();
     removeTimecardContextEntry(existingTimeEntries, mockSetTimeEntries, 1);
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
+  });
+
+  describe('calculateFinishTimeOnNextDay', () => {
+    it('should return greater than 1', async () => {
+      const startTime = '12:03';
+      const finishTime = '01:01';
+
+      expect(
+        calculateFinishTimeOnNextDay(startTime, finishTime)
+      ).toBeGreaterThan(1);
+    });
+
+    it('should return less than 1', async () => {
+      const startTime = '12:03';
+      const finishTime = '12:04';
+
+      expect(calculateFinishTimeOnNextDay(startTime, finishTime)).toBeLessThan(
+        1
+      );
+    });
+
+    it('should return nothing', async () => {
+      const startTime = '';
+      const finishTime = '';
+
+      expect(
+        calculateFinishTimeOnNextDay(startTime, finishTime)
+      ).toBeUndefined();
+    });
   });
 });

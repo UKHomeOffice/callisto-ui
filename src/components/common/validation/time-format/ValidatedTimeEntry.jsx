@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { calculateFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 const ValidatedTimeEntry = ({
   name,
@@ -7,8 +9,34 @@ const ValidatedTimeEntry = ({
   defaultValue,
   register,
   isRequired,
+  formState,
 }) => {
   const errorMessage = `You must enter a ${timeType} in the HH:MM 24 hour clock format`;
+
+  useEffect(() => {
+    isFinishTimeNextDay();
+  }, [formState]);
+
+  const isFinishTimeNextDay = () => {
+    if (document.getElementById(`${name}-finish-time`)) {
+      var finishTimeValue = document.getElementById(
+        `${name}-finish-time`
+      ).value;
+    }
+    if (document.getElementById(`${name}-start-time`)) {
+      var startTimeValue = document.getElementById(`${name}-start-time`).value;
+    }
+    var answer = calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+
+    if (document.getElementById('end-next-day')) {
+      if (answer >= 1) {
+        document.getElementById('end-next-day').innerHTML =
+          'Shift ending on next day';
+      } else {
+        document.getElementById('end-next-day').innerHTML = '';
+      }
+    }
+  };
   return (
     <input
       id={name}
@@ -24,6 +52,7 @@ const ValidatedTimeEntry = ({
       defaultValue={defaultValue}
       data-testid={name}
       {...register(name, {
+        onBlur: () => isFinishTimeNextDay(),
         required: {
           value: isRequired,
           message: errorMessage,
@@ -46,4 +75,6 @@ ValidatedTimeEntry.propTypes = {
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,
+  formState: PropTypes.any,
+  onBlur: PropTypes.bool,
 };

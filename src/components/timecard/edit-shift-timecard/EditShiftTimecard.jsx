@@ -1,15 +1,19 @@
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { removeTimecardContextEntry } from '../../../utils/time-entry-utils/timeEntryUtils';
+import {
+  calculateFinishTimeOnNextDay,
+  removeTimecardContextEntry,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
-const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
+const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, date }) => {
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
@@ -33,6 +37,14 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       await deleteTimeEntry(timeEntry.timeEntryId, params);
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
     });
+  };
+
+  const isFinishTimeNextDay = (startTimeValue, finishTimeValue) => {
+    if (calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue) >= 1) {
+      return dayjs(date).add(1, 'day').format('DD MMMM');
+    } else {
+      return dayjs(date).format('DD MMMM');
+    }
   };
 
   return (
@@ -70,7 +82,10 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
               timeEntryExists &&
               `${timeEntry.startTime} to ${
                 timeEntry.finishTime ? timeEntry.finishTime : '-'
-              }`}
+              } on ${isFinishTimeNextDay(
+                timeEntry.startTime,
+                timeEntry.finishTime
+              )}`}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
@@ -132,4 +147,5 @@ export default EditShiftTimecard;
 EditShiftTimecard.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
+  date: PropTypes.string.isRequired,
 };

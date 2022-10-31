@@ -96,6 +96,10 @@ const StartFinishTimeInput = ({
             />
           </div>
         </div>
+        <p
+          id="end-next-day"
+          className="govuk-hint govuk-grid-column-one-third govuk-!-padding-top-8 govuk-!-padding-right-0 govuk-!-padding-left-0"
+        ></p>
       </div>
     </div>
   );

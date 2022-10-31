@@ -30,3 +30,15 @@ export const removeTimecardContextEntry = (
   newTimeEntries.splice(removeAtIndex, 1);
   setTimeEntries(newTimeEntries);
 };
+
+export const calculateFinishTimeOnNextDay = (
+  startTimeValue,
+  finishTimeValue
+) => {
+  if (startTimeValue && finishTimeValue) {
+    return Math.floor(
+      parseFloat(startTimeValue.replace(/:/g, '.')).toFixed(2) /
+        parseFloat(finishTimeValue.replace(/:/g, '.')).toFixed(2)
+    );
+  }
+};
