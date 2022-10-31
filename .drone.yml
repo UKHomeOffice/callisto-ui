@@ -47,33 +47,33 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm install -g sonarqube-scanner
-      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.branch.name=$${DRONE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.qualitygate.wait=true
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.branch.name=$${DRONE_SOURCE_BRANCH} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.qualitygate.wait=true
     depends_on:
       - test project
-    # when:
-    #   event:
-    #     exclude:
-    #     - pull_request
+    when:
+      event:
+        exclude:
+        - pull_request
 
-  # - name: sonar analysis pr
-  #   image: *node_image
-  #   environment:
-  #     SONAR_TOKEN:
-  #       from_secret: sonar_token        
-  #     NPM_AUTH_TOKEN:
-  #       from_secret: npm_auth_token
-  #   commands:
-  #     - echo $${DRONE_BRANCH}
-  #     - echo $${DRONE_SOURCE_BRANCH}
-  #     - echo $${DRONE_TARGET_BRANCH}
-  #     - echo $${DRONE_PULL_REQUEST}
-  #     - npm install -g sonarqube-scanner
-  #     - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.pullrequest.base=$${DRONE_TARGET_BRANCH} -Dsonar.pullrequest.branch=$${DRONE_SOURCE_BRANCH} -Dsonar.pullrequest.key=$${DRONE_PULL_REQUEST} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.qualitygate.wait=true
-  #   depends_on:
-  #     - test project
-  #   when:
-  #     event:
-  #     - pull_request
+  - name: sonar analysis pr
+    image: *node_image
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonar_token        
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+    commands:
+      - echo $${DRONE_BRANCH}
+      - echo $${DRONE_SOURCE_BRANCH}
+      - echo $${DRONE_TARGET_BRANCH}
+      - echo $${DRONE_PULL_REQUEST}
+      - npm install -g sonarqube-scanner
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.projectKey=callisto-ui -Dsonar.organization=ukhomeoffice -Dsonar.projectName=callisto-ui -Dsonar.pullrequest.base=$${DRONE_TARGET_BRANCH} -Dsonar.pullrequest.branch=$${DRONE_SOURCE_BRANCH} -Dsonar.pullrequest.key=$${DRONE_PULL_REQUEST} -Dsonar.sources=./src -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info -Dsonar.qualitygate.wait=true
+    depends_on:
+      - test project
+    when:
+      event:
+      - pull_request
 
   - name: build project
     image: *node_image
