@@ -27,11 +27,7 @@ const ValidatedTimeEntry = ({
         required: {
           value: isRequired,
           message: errorMessage,
-        },
-        pattern: {
-          value: /^([01]\d|2[0-3]):?([0-5]\d)$/,
-          message: errorMessage,
-        },
+        }
       })}
     />
   );
