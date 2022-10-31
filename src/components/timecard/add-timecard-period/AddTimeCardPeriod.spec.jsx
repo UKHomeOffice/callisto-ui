@@ -6,7 +6,6 @@ import AddTimeCardPeriod from './AddTimeCardPeriod';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 describe('AddTimeCardPeriod component', () => {
-
   it('should display an add timecard period component when timecard is empty', async () => {
     renderWithTimecardContext(<AddTimeCardPeriod timecardEmpty={true} />);
 

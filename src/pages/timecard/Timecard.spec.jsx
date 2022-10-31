@@ -7,7 +7,10 @@ import {
 import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
-import { addTimePeriodHeading, formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
+import {
+  addTimePeriodHeading,
+  formatTime,
+} from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
