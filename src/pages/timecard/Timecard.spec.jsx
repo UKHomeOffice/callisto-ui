@@ -7,7 +7,7 @@ import {
 import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
-import { formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
+import { addTimePeriodHeading, formatTime } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
@@ -212,7 +212,7 @@ describe('Timecard', () => {
       newTimeEntry: true,
     });
 
-    const heading = screen.getByText('Add a new time period');
+    const heading = screen.getByText(addTimePeriodHeading);
     expect(heading).toBeTruthy();
   });
 
@@ -234,7 +234,7 @@ describe('Timecard', () => {
     });
 
     expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
-    expect(screen.getByText('Add another time period')).toBeInTheDocument();
+    expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
   });
 
   describe('navigation', () => {
