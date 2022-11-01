@@ -41,9 +41,9 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, date }) => {
 
   const isFinishTimeNextDay = (startTimeValue, finishTimeValue) => {
     if (calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue) >= 1) {
-      return dayjs(date).add(1, 'day').format('DD MMMM');
+      return `on ${dayjs(date).add(1, 'day').format('DD MMMM')}`;
     } else {
-      return dayjs(date).format('DD MMMM');
+      return '';
     }
   };
 
@@ -58,7 +58,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, date }) => {
             Shift
           </dt>
           <dd className="govuk-summary-list__value"></dd>
-          <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
+          <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
             {timeEntryExists && (
               <Link
                 onClick={handleClickRemoveShiftButton}
@@ -81,14 +81,14 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, date }) => {
             Hours
           </dt>
           <dd
-            className="govuk-summary-list__value"
-            style={{ whiteSpace: 'pre-line', textAlign: 'center' }}
+            className="govuk-summary-list__value govuk-!-width-full"
+            style={{ whiteSpace: 'nowrap' }}
           >
             {!showEditShiftHours &&
               timeEntryExists &&
               `${timeEntry.startTime} to ${
                 timeEntry.finishTime ? timeEntry.finishTime : '-'
-              } \n on ${isFinishTimeNextDay(
+              } \n ${isFinishTimeNextDay(
                 timeEntry.startTime,
                 timeEntry.finishTime
               )}`}
