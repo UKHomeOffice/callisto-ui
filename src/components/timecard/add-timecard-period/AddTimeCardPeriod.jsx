@@ -1,12 +1,8 @@
 import { useTimecardContext } from '../../../context/TimecardContext';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AddTimeCardPeriod = ({ timecardEmpty }) => {
-  const addPeriodTitle = timecardEmpty
-    ? 'Add time period'
-    : 'Add another time period';
-
+const AddTimeCardPeriod = () => {
   const { setNewTimeEntry } = useTimecardContext();
 
   const handleAddTimePeriod = (event) => {
@@ -20,7 +16,7 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
         <div className="govuk-summary-list govuk-!-margin-bottom-0">
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <p className="govuk-heading-s govuk-!-width-two-thirds">
-              {addPeriodTitle}
+              {addTimePeriodHeading}
             </p>
             <div className="govuk-summary-list__actions">
               <Link
@@ -40,7 +36,3 @@ const AddTimeCardPeriod = ({ timecardEmpty }) => {
 };
 
 export default AddTimeCardPeriod;
-
-AddTimeCardPeriod.propTypes = {
-  timecardEmpty: PropTypes.bool.isRequired,
-};
