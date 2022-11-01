@@ -10,6 +10,7 @@ import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatTime,
   formatDate,
+  formatDateNoYear,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -155,6 +156,7 @@ const updateTimeEntryContextData = async (
               timeEntry.actualEndTime
                 ? formatTime(timeEntry.actualEndTime)
                 : '',
+              formatDateNoYear(timeEntry.actualEndTime),
               timeEntry.timePeriodTypeId
             )
         );

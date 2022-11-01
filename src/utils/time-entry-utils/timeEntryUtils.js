@@ -19,6 +19,10 @@ export const formatDate = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DD');
 };
 
+export const formatDateNoYear = (dateTime) => {
+  return dayjs(dateTime).format('DD MMMM');
+};
+
 export const formatDateTimeISO = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ssZ');
 };
