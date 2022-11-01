@@ -30,7 +30,9 @@ export const ApplicationProvider = ({ children }) => {
   });
   const { keycloak } = useKeycloak();
   const [userId, setUserId] = useState(keycloak.tokenParsed.personId);
-  const [timecardClaim, setTimecardClaim] = useState(keycloak.tokenParsed.timecardClaim);
+  const [timecardClaim, setTimecardClaim] = useState(
+    keycloak.tokenParsed.timecardClaim
+  );
 
   const value = {
     timePeriodTypes,
