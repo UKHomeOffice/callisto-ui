@@ -29,7 +29,7 @@ const ValidatedTimeEntry = ({
           message: errorMessage,
         },
         pattern: {
-          value: /^([01]?\d?|2[0-3]):?([0-5]?\d?)$|([0]\d|[1][0-2])(am|pm)/,
+          value: /^([01]?\d?|2[0-3]):?([0-5]?\d?)$|(\d|[1][0-2])(am|pm)$/,
           message: errorMessage,
         },
       })}
