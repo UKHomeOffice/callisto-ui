@@ -233,7 +233,7 @@ describe('Timecard', () => {
       newTimeEntry: false,
     });
 
-    expect(screen.getByText('08:00 to 16:00 on 01 July')).toBeInTheDocument();
+    expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
     expect(screen.getByText('Add another time period')).toBeInTheDocument();
   });
 

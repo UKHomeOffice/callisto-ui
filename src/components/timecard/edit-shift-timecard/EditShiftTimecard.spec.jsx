@@ -246,7 +246,7 @@ describe('EditShiftTimecard', () => {
         <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
-      expect(screen.getByText('08:00 to - on 31 October')).toBeTruthy();
+      expect(screen.getByText('08:00 to -')).toBeTruthy();
     });
 
     it('should display start and finish time on timecard when both times have been entered', async () => {
@@ -254,7 +254,7 @@ describe('EditShiftTimecard', () => {
         <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
-      expect(screen.getByText('08:00 to 16:00 on 31 October')).toBeTruthy();
+      expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
     });
 
     it('should not display start and finish time on timecard when nothing has been entered', async () => {
@@ -270,7 +270,7 @@ describe('EditShiftTimecard', () => {
         <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
-      expect(screen.getByText('08:00 to 16:00 on 31 October')).toBeTruthy();
+      expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
 
       act(() => {
         const changeButton = screen.getByTestId('hours-change-button');
