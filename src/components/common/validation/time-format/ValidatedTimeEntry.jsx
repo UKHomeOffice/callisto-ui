@@ -29,7 +29,7 @@ const ValidatedTimeEntry = ({
     if (document.getElementById('end-next-day')) {
       if (answer >= 1) {
         document.getElementById('end-next-day').innerHTML =
-          'Shift ending on next day';
+          'Finishes on next day';
       } else {
         document.getElementById('end-next-day').innerHTML = '';
       }

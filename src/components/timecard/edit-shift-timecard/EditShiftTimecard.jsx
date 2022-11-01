@@ -73,16 +73,22 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, date }) => {
         <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
           <dt
             className="govuk-summary-list__key"
-            style={{ paddingBottom: '20px', paddingTop: '20px' }}
+            style={{
+              paddingBottom: '20px',
+              paddingTop: '20px',
+            }}
           >
             Hours
           </dt>
-          <dd className="govuk-summary-list__value">
+          <dd
+            className="govuk-summary-list__value"
+            style={{ whiteSpace: 'pre-line', textAlign: 'center' }}
+          >
             {!showEditShiftHours &&
               timeEntryExists &&
               `${timeEntry.startTime} to ${
                 timeEntry.finishTime ? timeEntry.finishTime : '-'
-              } on ${isFinishTimeNextDay(
+              } \n on ${isFinishTimeNextDay(
                 timeEntry.startTime,
                 timeEntry.finishTime
               )}`}
