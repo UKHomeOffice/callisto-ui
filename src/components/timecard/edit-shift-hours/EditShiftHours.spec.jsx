@@ -386,7 +386,18 @@ describe('EditShiftHours', () => {
     }
   );
 
-  test.each(['00:00', '08:00', '23:59', '04:26', '0000', '8:00', '9pm', '3am', '8', '2:56'])(
+  test.each([
+    '00:00',
+    '08:00',
+    '23:59',
+    '04:26',
+    '0000',
+    '8:00',
+    '9pm',
+    '3am',
+    '8',
+    '2:56',
+  ])(
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
       renderWithTimecardContext(
