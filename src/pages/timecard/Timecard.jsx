@@ -100,7 +100,7 @@ const Timecard = () => {
               {renderTimeEntry(timePeriodTypesMap, timeEntry, index, date)}
             </div>
           ))}
-          <AddTimeCardPeriod timecardEmpty={timeEntries.length === 0} />
+          <AddTimeCardPeriod />
         </>
       )}
     </>

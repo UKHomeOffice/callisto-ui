@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { deepCloneJson } from '../common-utils/common-utils';
 
+export const addTimePeriodHeading = 'Add time period';
+
 export const getSingleTimeEntryResponseItem = (timeEntryResponseData) => {
   if (timeEntryResponseData.items && timeEntryResponseData.items.length > 0)
     return timeEntryResponseData.items[0];
