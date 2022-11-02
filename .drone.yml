@@ -7,7 +7,16 @@ platform:
   os: linux
   arch: amd64
 
+clone:
+  disable: true
+
 steps:
+  - name: clone
+    image: alpine/git
+    commands:      
+      - git clone https://github.com/UKHomeOffice/callisto-ui.git .
+      - git checkout $DRONE_COMMIT
+
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
       node:16.15.0
@@ -16,6 +25,8 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm install
+    depends_on:
+      - clone      
 
   - name: lint project
     image: *node_image
