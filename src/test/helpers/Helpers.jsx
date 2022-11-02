@@ -24,7 +24,5 @@ export const renderWithRouter = (
 };
 
 export const expectNeverToHappen = async (callable, timeout = 100) => {
-  await expect(waitFor(callable, { timeout })).rejects.toEqual(
-    expect.anything()
-  );
+  await expect(waitFor(callable, { timeout })).rejects.toBeTruthy();
 };
