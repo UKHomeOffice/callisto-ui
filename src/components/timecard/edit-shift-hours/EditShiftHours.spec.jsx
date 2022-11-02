@@ -302,7 +302,7 @@ describe('EditShiftHours', () => {
     });
   });
 
-  test.each(['-00:01', '24:00', 'abcd', '!'])(
+  test.each(['-00:01', '24:00', 'abcd', '!', '25', '13am', '24pm'])(
     'should display an error when pressing save with an invalid start time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -330,7 +330,20 @@ describe('EditShiftHours', () => {
     }
   );
 
-  test.each(['00:00', '08:00', '23:59', '04:26', '0000'])(
+  test.each([
+    '00:00',
+    '08:00',
+    '23:59',
+    '04:26',
+    '0000',
+    '8:00',
+    '9pm',
+    '3am',
+    '8',
+    '2:56',
+    '23',
+    '730',
+  ])(
     'should not display an error when pressing save with a valid start time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -358,7 +371,7 @@ describe('EditShiftHours', () => {
     }
   );
 
-  test.each(['-00:01', '24:00', 'abcd', '!'])(
+  test.each(['-00:01', '24:00', 'abcd', '!', '25', '13am', '24pm'])(
     'should display an error when pressing save with an invalid finish time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -397,6 +410,8 @@ describe('EditShiftHours', () => {
     '3am',
     '8',
     '2:56',
+    '23',
+    '730',
   ])(
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
