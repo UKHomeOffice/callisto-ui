@@ -84,3 +84,21 @@ export const deleteTimeEntry3 = async (id, params) => {
     throw new Error(serviceName + ' deleteTimeEntry function threw ' + error);
   }
 };
+
+export const getTimePeriodTypes4 = async (params) => {
+  try {
+    return await api.get(baseUrl + 'resources/time-period-types', params);
+  } catch (error) {
+    throw new Error(
+      serviceName + ' getTimePeriodTypes function threw ' + error
+    );
+  }
+};
+
+export const deleteTimeEntry5 = async (id, params) => {
+  try {
+    return await api.delete(baseUrl + `resources/time-entries/${id}`, params);
+  } catch (error) {
+    throw new Error(serviceName + ' deleteTimeEntry function threw ' + error);
+  }
+};
