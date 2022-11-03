@@ -19,6 +19,7 @@ import {
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
+import { useState } from 'react';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -36,7 +37,7 @@ const EditShiftHours = ({
   });
 
   const inputName = 'shift';
-  const { setServiceError } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
   const {
     timeEntries,
     setTimeEntries,
@@ -44,7 +45,7 @@ const EditShiftHours = ({
     summaryErrors,
     setSummaryErrors,
   } = useTimecardContext();
-  const { userId } = useApplicationContext();
+  const [wholeShiftClash, setWholeShiftClash] = useState(false);
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -54,12 +55,21 @@ const EditShiftHours = ({
     const summaryErrors = {};
     let errorsHandled = true;
 
-    if (
-      error ==
-      ' has the following error(s): Time periods must not overlap with another time period'
-    ) {
+    var firstError = error[0];
+
+    if (firstError.field == 'startAndEndTime') {
       summaryErrors['shift-start-time'] = {
-        message: 'Time periods must not overlap with another time period',
+        message:
+          'Your start and finish times must not overlap with another time period',
+      };
+      setWholeShiftClash(true);
+    } else if (firstError.field == 'startTime') {
+      summaryErrors['shift-start-time'] = {
+        message: 'Your start time must not overlap with another period',
+      };
+    } else if (firstError.field == 'endTime') {
+      summaryErrors['shift-finish-time'] = {
+        message: 'Your end time must not overlap with another period',
       };
     } else {
       errorsHandled = false;
@@ -132,12 +142,24 @@ const EditShiftHours = ({
     );
   };
 
+  const getCombinedErrors = () => {
+    const combinedErrors = deepCloneJson(
+      Object.keys(errors).length > 0 ? errors : summaryErrors
+    );
+    if (wholeShiftClash) {
+      combinedErrors['shift-finish-time'] = {
+        message: '',
+      };
+    }
+    return combinedErrors;
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <StartFinishTimeInput
           name={inputName}
-          errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
+          errors={getCombinedErrors()}
           register={register}
           formState={formState}
           startTimeValue={timeEntry.startTime}
