@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-
 import {
   defaultApplicationContext,
   defaultTimecardContext,
@@ -17,6 +16,7 @@ import {
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import { formatDateTimeISO } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -209,6 +209,7 @@ describe('EditShiftHours', () => {
     });
 
     const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+    mockTimecardContext.timecardDate = '2022-11-11';
     mockTimecardContext.setTimeEntries = jest.fn();
 
     renderWithTimecardContext(

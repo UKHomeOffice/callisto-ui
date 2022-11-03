@@ -8,9 +8,9 @@ import ErrorSummary from '../../components/common/form/error-summary/ErrorSummar
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
-  formatTime,
   formatDate,
-  formatDateNoYear,
+  formatTime,
+  isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -98,7 +98,7 @@ const Timecard = () => {
         <>
           {timeEntries.map((timeEntry, index) => (
             <div key={index} className="govuk-!-margin-bottom-6">
-              {renderTimeEntry(timePeriodTypesMap, timeEntry, index, date)}
+              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
             </div>
           ))}
           <AddTimeCardPeriod />
@@ -108,15 +108,11 @@ const Timecard = () => {
   );
 };
 
-const renderTimeEntry = (timePeriodTypesMap, timeEntry, index, date) => {
+const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
   switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
     case 'Shift':
       return (
-        <EditShiftTimecard
-          timeEntry={timeEntry}
-          timeEntriesIndex={index}
-          date={date}
-        />
+        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
       );
     default:
       return (
@@ -152,14 +148,16 @@ const updateTimeEntryContextData = async (
           (timeEntry) =>
             new ContextTimeEntry(
               timeEntry.id,
-              formatTime(timeEntry.actualStartTime),
-              timeEntry.actualEndTime
-                ? formatTime(timeEntry.actualEndTime)
-                : '',
-              formatDateNoYear(timeEntry.actualEndTime),
-              timeEntry.timePeriodTypeId
+              timeEntry.actualStartTime,
+              timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+              timeEntry.timePeriodTypeId,
+              (timeEntry.finishNextDay = isFinishTimeOnNextDay(
+                formatTime(timeEntry.actualStartTime),
+                formatTime(timeEntry.actualEndTime)
+              ))
             )
         );
+
         setTimeEntries(existingTimeEntries);
       } else {
         setTimeEntries([]);

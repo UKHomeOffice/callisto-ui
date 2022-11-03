@@ -8,6 +8,9 @@ const StartFinishTimeInput = ({
   errors,
   startTimeValue,
   finishTimeValue,
+  getValues,
+  timeEntry,
+  timeEntriesIndex,
   register,
   formState,
 }) => {
@@ -69,8 +72,9 @@ const StartFinishTimeInput = ({
             defaultValue={startTimeValue}
             register={register}
             isRequired={true}
-            autoComplete="off"
-            type="text"
+            getValues={getValues}
+            timeEntry={timeEntry}
+            timeEntriesIndex={timeEntriesIndex}
           />
         </div>
 
@@ -91,15 +95,18 @@ const StartFinishTimeInput = ({
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
-              autoComplete="off"
-              type="text"
+              getValues={getValues}
+              timeEntry={timeEntry}
+              timeEntriesIndex={timeEntriesIndex}
             />
           </div>
         </div>
         <p
           id="end-next-day"
           className="govuk-hint govuk-grid-column-one-third govuk-!-padding-top-8 govuk-!-padding-right-0 govuk-!-padding-left-0"
-        ></p>
+        >
+          {timeEntry.finishNextDay ? 'Finishes next day' : ''}
+        </p>
       </div>
     </div>
   );
@@ -112,6 +119,9 @@ StartFinishTimeInput.propTypes = {
   errors: PropTypes.any.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
+  getValues: PropTypes.func.isRequired,
+  timeEntry: PropTypes.object.isRequired,
+  timeEntriesIndex: PropTypes.number.isRequired,
   register: PropTypes.any.isRequired,
   formState: PropTypes.any,
 };

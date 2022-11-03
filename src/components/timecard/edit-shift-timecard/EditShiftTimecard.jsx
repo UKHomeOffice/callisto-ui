@@ -5,7 +5,11 @@ import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { removeTimecardContextEntry } from '../../../utils/time-entry-utils/timeEntryUtils';
+import {
+  formatDateNoYear,
+  formatTime,
+  removeTimecardContextEntry,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
@@ -34,14 +38,6 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
     });
   };
-
-  // const isFinishTimeNextDay = (startTimeValue, finishTimeValue) => {
-  //   if (calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue) >= 1) {
-  //     return `on ${dayjs(date).add(1, 'day').format('DD MMMM')}`;
-  //   } else {
-  //     return '';
-  //   }
-  // };
 
   return (
     <div className="grey-border">
@@ -82,9 +78,13 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           >
             {!showEditShiftHours &&
               timeEntryExists &&
-              `${timeEntry.startTime} to ${
-                timeEntry.finishTime ? timeEntry.finishTime : '-'
-              } on ${timeEntry.finishDate}`}
+              `${formatTime(timeEntry.startTime)} to ${
+                timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
+              } on ${
+                timeEntry.finishNextDay
+                  ? formatDateNoYear(timeEntry.finishTime)
+                  : ''
+              }`}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (

@@ -1,6 +1,6 @@
 import { ContextTimeEntry } from './ContextTimeEntry';
 import {
-  calculateFinishTimeOnNextDay,
+  isFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
   removeTimecardContextEntry,
 } from './timeEntryUtils';
@@ -50,27 +50,21 @@ describe('timeEntryUtils', () => {
       const startTime = '12:03';
       const finishTime = '01:01';
 
-      expect(
-        calculateFinishTimeOnNextDay(startTime, finishTime)
-      ).toBeGreaterThan(1);
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
     });
 
     it('should return less than 1', async () => {
       const startTime = '12:03';
       const finishTime = '12:04';
 
-      expect(calculateFinishTimeOnNextDay(startTime, finishTime)).toBeLessThan(
-        1
-      );
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeFalsy();
     });
 
     it('should return nothing', async () => {
       const startTime = '';
       const finishTime = '';
 
-      expect(
-        calculateFinishTimeOnNextDay(startTime, finishTime)
-      ).toBeUndefined();
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeUndefined();
     });
   });
 });

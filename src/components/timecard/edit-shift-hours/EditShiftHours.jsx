@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
-  calculateFinishTimeOnNextDay,
   formatDate,
   formatDateTimeISO,
   formatTime,
@@ -31,6 +30,7 @@ const EditShiftHours = ({
     handleSubmit,
     formState: { errors },
     formState,
+    getValues,
   } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
@@ -51,12 +51,8 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
-  const isFinishTimeNextDay = (
-    actualStartTime,
-    actualEndTime,
-    actualStartDate
-  ) => {
-    if (calculateFinishTimeOnNextDay(actualStartTime, actualEndTime) >= 1) {
+  const setFinishTimeDate = (actualStartDate) => {
+    if (timeEntry.finishNextDay) {
       return formatDate(dayjs(actualStartDate).add(1, 'day'));
     } else {
       return actualStartDate;
@@ -98,14 +94,9 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    var actualEndDate = formatDate(timecardDate);
-
+    let actualEndDate = formatDate(timecardDate);
     if (endTime) {
-      actualEndDate = isFinishTimeNextDay(
-        actualStartTime,
-        endTime,
-        actualStartDate
-      );
+      actualEndDate = setFinishTimeDate(actualStartDate);
     }
 
     const actualEndDateTime = endTime
@@ -136,9 +127,9 @@ const EditShiftHours = ({
 
         if (response?.data?.items?.length > 0) {
           const responseItem = response.data.items[0];
-          const formattedStartTime = formatTime(responseItem.actualStartTime);
+          const formattedStartTime = responseItem.actualStartTime;
           const formattedEndTime = responseItem.actualEndTime
-            ? formatTime(responseItem.actualEndTime)
+            ? responseItem.actualEndTime
             : '';
 
           const newTimeEntries = deepCloneJson(timeEntries);
@@ -147,7 +138,8 @@ const EditShiftHours = ({
           )
             .setStartTime(formattedStartTime)
             .setFinishTime(formattedEndTime)
-            .setTimeEntryId(responseItem.id);
+            .setTimeEntryId(responseItem.id)
+            .setFinishNextDay(timeEntry.finishNextDay);
 
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
@@ -166,8 +158,15 @@ const EditShiftHours = ({
           errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
           register={register}
           formState={formState}
-          startTimeValue={timeEntry.startTime}
-          finishTimeValue={timeEntry.finishTime}
+          getValues={getValues}
+          timeEntry={timeEntry}
+          startTimeValue={
+            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
+          }
+          finishTimeValue={
+            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
+          }
+          timeEntriesIndex={timeEntriesIndex}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">

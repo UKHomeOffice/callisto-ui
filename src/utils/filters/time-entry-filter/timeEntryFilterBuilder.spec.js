@@ -10,7 +10,7 @@ describe('timeEntryFilterBuilder', () => {
       expect(filters).toHaveLength(2);
       expect(
         filters.map((filter) => {
-          expect(filter).toContain('actualStartTime');
+          expect(filter).toContain('actualEndTime');
           expect(filter).toContain(date);
         })
       );

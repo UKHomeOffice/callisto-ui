@@ -37,14 +37,11 @@ export const removeTimecardContextEntry = (
   setTimeEntries(newTimeEntries);
 };
 
-export const calculateFinishTimeOnNextDay = (
-  startTimeValue,
-  finishTimeValue
-) => {
+export const isFinishTimeOnNextDay = (startTimeValue, finishTimeValue) => {
   if (startTimeValue && finishTimeValue) {
-    return Math.floor(
-      parseFloat(startTimeValue.replace(/:/g, '.')).toFixed(2) /
-        parseFloat(finishTimeValue.replace(/:/g, '.')).toFixed(2)
+    return dayjs(dayjs().format('YYYY-MM-DD') + '' + finishTimeValue).isBefore(
+      dayjs(dayjs().format('YYYY-MM-DD') + '' + startTimeValue)
     );
   }
+  return false;
 };

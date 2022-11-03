@@ -119,9 +119,7 @@ describe('Timecard', () => {
           startTime: formatTime(
             shiftTimeEntryApiResponse.items[0].actualStartTime
           ),
-          finishTime: formatTime(
-            shiftTimeEntryApiResponse.items[0].actualEndTime
-          ),
+          finishTime: shiftTimeEntryApiResponse.items[0].actualEndTime,
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
         },
       ]);
@@ -227,7 +225,7 @@ describe('Timecard', () => {
         {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '08:00',
-          finishTime: '16:00',
+          finishTime: '2022-02-02T16:00:00Z',
         },
       ],
       setTimeEntries: jest.fn(),

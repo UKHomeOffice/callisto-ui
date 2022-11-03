@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { calculateFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
+import { useTimecardContext } from '../../../../context/TimecardContext';
+import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
+import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
+import { isFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 const ValidatedTimeEntry = ({
   name,
@@ -10,31 +13,30 @@ const ValidatedTimeEntry = ({
   register,
   isRequired,
   formState,
+  getValues,
+  timeEntry,
+  timeEntriesIndex,
 }) => {
   const errorMessage = `You must enter a ${timeType} in the HH:MM 24 hour clock format`;
 
+  const { timeEntries, setTimeEntries } = useTimecardContext();
+
   useEffect(() => {
-    isFinishTimeNextDay();
+    setFinishTimeText();
   }, [formState]);
 
-  const isFinishTimeNextDay = () => {
-    if (document.getElementById(`shift-finish-time`)) {
-      var finishTimeValue = document.getElementById(`shift-finish-time`).value;
-    }
-    if (document.getElementById(`shift-start-time`)) {
-      var startTimeValue = document.getElementById(`shift-start-time`).value;
-    }
-    var answer = calculateFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+  const setFinishTimeText = () => {
+    const startTimeValue = getValues('shift-start-time');
+    const finishTimeValue = getValues('shift-finish-time');
+    const newTimeEntries = deepCloneJson(timeEntries);
 
-    if (document.getElementById('end-next-day')) {
-      if (answer >= 1) {
-        document.getElementById('end-next-day').innerHTML =
-          'Finishes on next day';
-      } else {
-        document.getElementById('end-next-day').innerHTML = '';
-      }
-    }
+    var answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+
+    newTimeEntries[timeEntriesIndex] =
+      ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
+    // setTimeEntries(newTimeEntries);
   };
+
   return (
     <input
       id={name}
@@ -49,8 +51,10 @@ const ValidatedTimeEntry = ({
       } govuk-input--width-5`}
       defaultValue={defaultValue}
       data-testid={name}
+      autoComplete="off"
+      type="text"
       {...register(name, {
-        onBlur: () => isFinishTimeNextDay(),
+        onBlur: () => setFinishTimeText(),
         required: {
           value: isRequired,
           message: errorMessage,
@@ -74,5 +78,7 @@ ValidatedTimeEntry.propTypes = {
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,
   formState: PropTypes.any,
-  onBlur: PropTypes.bool,
+  getValues: PropTypes.func,
+  timeEntry: PropTypes.object,
+  timeEntriesIndex: PropTypes.number.isRequired,
 };
