@@ -11,10 +11,10 @@ platform:
 #   disable: true
 
 steps:
-  - name: fetch
-    image: alpine/git
-    commands:      
-      - "git fetch origin +refs/heads/main:"
+  # - name: fetch
+  #   image: alpine/git
+  #   commands:      
+  #     - "git fetch origin +refs/heads/main:"
 
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
@@ -24,8 +24,8 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm install
-    depends_on:
-      - fetch      
+    # depends_on:
+    #   - fetch      
 
   - name: lint project
     image: *node_image
@@ -101,37 +101,3 @@ steps:
         - main
     depends_on:
       - build project
-
----
-kind: pipeline
-type: kubernetes
-name: build notifications
-
-trigger:
-  status:
-    - success
-    - failure
-  event:
-    - push
-
-depends_on:
-  - callisto-ui
-
-steps:
-  - name: slack
-    image: plugins/slack
-    settings:
-      webhook:
-        from_secret: SLACK_WEBHOOK_URL
-      channel: callisto-tech-notifications
-      username: Drone
-      template: |
-        {{#success build.status}}
-          Build #{{ build.number }} succeeded! :tada:
-        {{else}}
-          Build #{{ build.number }} failed :alert:
-        {{/success}}
-        Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
-        Repo: {{ repo.name }}
-        Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
-        Author: {{ build.author }}
