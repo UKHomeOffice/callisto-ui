@@ -15,7 +15,7 @@ const ValidatedTimeEntry = ({
     } else if (time.length > 3 && time.length < 6) {
       const timeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
       return timeRegEx.test(time);
-    } else if (time.length == 0 && timeType === 'finish time'){
+    } else if (time.length == 0 && timeType === 'finish time') {
       console.log('here');
       return true;
     } else {

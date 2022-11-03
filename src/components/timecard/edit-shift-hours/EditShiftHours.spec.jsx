@@ -42,16 +42,7 @@ const invalidTimes = [
   '5pm',
 ];
 
-const validTimes = [
-  '00:00',
-  '08:00',
-  '23:59',
-  '04:26',
-  '0000',
-  '0',
-  '8',
-  '23',
-];
+const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
 
 describe('EditShiftHours', () => {
   describe('given time entries are to be persisted', () => {
