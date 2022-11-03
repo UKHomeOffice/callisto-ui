@@ -38,6 +38,8 @@ const invalidTimes = [
   '3p',
   '6m',
   '7a',
+  '4am',
+  '5pm'
 ];
 
 const validTimes = [
@@ -47,12 +49,9 @@ const validTimes = [
   '04:26',
   '0000',
   '8:00',
-  '9pm',
-  '3am',
+  '0',
   '8',
-  '2:56',
   '23',
-  '730',
 ];
 
 describe('EditShiftHours', () => {
