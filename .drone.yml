@@ -57,7 +57,7 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm install -g sonarqube-scanner
-      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN} -Dsonar.branch.name=$${DRONE_SOURCE_BRANCH}
+      - sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$${SONAR_TOKEN}
     depends_on:
       - test project
     when:
