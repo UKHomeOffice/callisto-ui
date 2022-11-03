@@ -39,7 +39,7 @@ const invalidTimes = [
   '6m',
   '7a',
   '4am',
-  '5pm'
+  '5pm',
 ];
 
 const validTimes = [
@@ -48,7 +48,6 @@ const validTimes = [
   '23:59',
   '04:26',
   '0000',
-  '8:00',
   '0',
   '8',
   '23',
@@ -324,7 +323,7 @@ describe('EditShiftHours', () => {
 
     await waitFor(() => {
       const errorMessage = screen.getByText(
-        'You must enter a start time in the HH:MM 24 hour clock format'
+        'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
       );
       expect(errorMessage).toBeTruthy();
     });
@@ -351,7 +350,7 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         const errorMessage = screen.getByText(
-          'You must enter a start time in the HH:MM 24 hour clock format'
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
         );
         expect(errorMessage).toBeTruthy();
       });
@@ -380,7 +379,7 @@ describe('EditShiftHours', () => {
       await expectNeverToHappen(() => {
         expect(
           screen.getByText(
-            'You must enter a start time in the HH:MM 24 hour clock format'
+            'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
           )
         ).toBeInTheDocument();
       });
@@ -408,7 +407,7 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         const errorMessage = screen.getByText(
-          'You must enter a finish time in the HH:MM 24 hour clock format'
+          'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
         );
         expect(errorMessage).toBeTruthy();
       });
@@ -437,7 +436,7 @@ describe('EditShiftHours', () => {
       await expectNeverToHappen(() => {
         expect(
           screen.getByText(
-            'You must enter a finish time in the HH:MM 24 hour clock format'
+            'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
           )
         ).toBeInTheDocument();
       });

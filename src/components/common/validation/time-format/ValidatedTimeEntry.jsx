@@ -1,7 +1,4 @@
-import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-
-const TimeFormatValidator = () => {};
 
 const ValidatedTimeEntry = ({
   name,
@@ -12,19 +9,21 @@ const ValidatedTimeEntry = ({
   isRequired,
 }) => {
   const validateTime = (time) => {
-    if (time.length < 3) {
+    if (time.length < 3 && time.length > 0) {
       const timeRegEx = /^(\d|[01]\d|2[0-3])$/;
       return timeRegEx.test(time);
-    }
-    if (time.length > 3 && time.length < 6) {
+    } else if (time.length > 3 && time.length < 6) {
       const timeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
       return timeRegEx.test(time);
+    } else if (time.length == 0 && timeType === 'finish time'){
+      console.log('here');
+      return true;
     } else {
       return false;
     }
   };
 
-  const errorMessage = `You must enter a ${timeType} in the HH:MM 24 hour clock format`;
+  const errorMessage = `Enter a ${timeType} in the 24 hour clock format, for example, 08:00 or 0800`;
   return (
     <input
       id={name}
