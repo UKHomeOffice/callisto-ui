@@ -62,7 +62,7 @@ steps:
       - test project
     when:
       event:
-        exclude:
+        include:
         - pull_request
 
   - name: build project
