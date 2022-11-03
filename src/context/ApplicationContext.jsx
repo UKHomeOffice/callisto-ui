@@ -29,8 +29,10 @@ export const ApplicationProvider = ({ children }) => {
     recoverable: true,
   });
   const { keycloak } = useKeycloak();
-  const [userId, setUserId] = useState();
-  const [timecardClaim, setTimecardClaim] = useState();
+  const [userId, setUserId] = useState(keycloak.tokenParsed.personId);
+  const [timecardClaim, setTimecardClaim] = useState(
+    keycloak.tokenParsed.timecardClaim
+  );
 
   const value = {
     timePeriodTypes,
@@ -45,8 +47,6 @@ export const ApplicationProvider = ({ children }) => {
 
   useEffect(() => {
     setTimePeriodTypesData(setTimePeriodTypes, setServiceError);
-    setUserId(keycloak.tokenParsed.personId);
-    setTimecardClaim(keycloak.tokenParsed.timecardClaim);
   }, []);
 
   return (
