@@ -7,15 +7,14 @@ platform:
   os: linux
   arch: amd64
 
-clone:
-  disable: true
+# clone:
+#   disable: true
 
 steps:
-  - name: clone
+  - name: fetch
     image: alpine/git
     commands:      
-      - git clone https://github.com/UKHomeOffice/callisto-ui.git .
-      - git checkout $DRONE_COMMIT
+      - "git fetch origin +refs/heads/main:"
 
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
@@ -26,7 +25,7 @@ steps:
     commands:
       - npm install
     depends_on:
-      - clone      
+      - fetch      
 
   - name: lint project
     image: *node_image
