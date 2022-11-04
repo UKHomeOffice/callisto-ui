@@ -20,8 +20,8 @@ let existingTimeEntry;
 beforeEach(() => {
   existingTimeEntry = {
     timeEntryId: '00000000-0000-0000-0000-000000000001',
-    startTime: '08:00',
-    finishTime: '16:00',
+    startTime: '2022-11-01T08:00:00Z',
+    finishTime: '2022-11-01T16:00:00Z',
     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
   };
 });

@@ -8,12 +8,14 @@ describe('timeEntryFilterBuilder', () => {
       const dateTime = dayjs(date + ' 19:18:09');
       const filters = filterTimeEntriesOnDate(dateTime);
       expect(filters).toHaveLength(2);
-      expect(
-        filters.map((filter) => {
-          expect(filter).toContain('actualEndTime');
-          expect(filter).toContain(date);
-        })
-      );
+
+      // startOfDateFilter
+      expect(filters[0]).toContain('actualEndTime');
+      expect(filters[0]).toContain(date);
+
+      // endOfDateFilter
+      expect(filters[1]).toContain('actualStartTime');
+      expect(filters[1]).toContain(date);
     });
   });
 });

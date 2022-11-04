@@ -7,10 +7,7 @@ import {
 import { shiftTimeEntry } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
-import {
-  addTimePeriodHeading,
-  formatTime,
-} from '../../utils/time-entry-utils/timeEntryUtils';
+import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
@@ -116,11 +113,10 @@ describe('Timecard', () => {
       expect(defaultTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          startTime: formatTime(
-            shiftTimeEntryApiResponse.items[0].actualStartTime
-          ),
+          startTime: shiftTimeEntryApiResponse.items[0].actualStartTime,
           finishTime: shiftTimeEntryApiResponse.items[0].actualEndTime,
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          finishNextDay: false,
         },
       ]);
       expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(date);
@@ -224,7 +220,7 @@ describe('Timecard', () => {
       timeEntries: [
         {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '08:00',
+          startTime: '2022-02-02T08:00:00Z',
           finishTime: '2022-02-02T16:00:00Z',
         },
       ],

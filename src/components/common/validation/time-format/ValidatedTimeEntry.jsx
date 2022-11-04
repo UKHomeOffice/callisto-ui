@@ -78,7 +78,7 @@ ValidatedTimeEntry.propTypes = {
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,
   formState: PropTypes.any,
-  getValues: PropTypes.func,
-  timeEntry: PropTypes.object,
+  getValues: PropTypes.func.isRequired,
+  timeEntry: PropTypes.object.isRequired,
   timeEntriesIndex: PropTypes.number.isRequired,
 };
