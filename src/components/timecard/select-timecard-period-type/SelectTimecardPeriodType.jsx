@@ -5,6 +5,7 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import Radios from '../../common/form/radios/Radios';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
+import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -49,7 +50,7 @@ const SelectTimecardPeriodType = () => {
       >
         <Radios
           name={radioName}
-          heading="Add a new time period"
+          heading={addTimePeriodHeading}
           headingSize="s"
           options={timePeriodTypeNames}
           errors={errors}

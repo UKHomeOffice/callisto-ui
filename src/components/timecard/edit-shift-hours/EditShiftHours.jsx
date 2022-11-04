@@ -61,9 +61,6 @@ const EditShiftHours = ({
       summaryErrors['shift-start-time'] = {
         message: 'Time periods must not overlap with another time period',
       };
-      summaryErrors['shift-finish-time'] = {
-        message: '',
-      };
     } else {
       errorsHandled = false;
     }
