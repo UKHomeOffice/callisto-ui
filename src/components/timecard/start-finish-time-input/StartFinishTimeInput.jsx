@@ -40,14 +40,14 @@ const StartFinishTimeInput = ({
     >
       <div className="govuk-grid-row" data-testid="error-box">
         {sortErrorKeys(errors, desiredErrorOrder).map((error, i) => (
-          <p
+          <div
             id={`${name}-${i}-error`}
             key={i}
             className="govuk-error-message govuk-!-margin-left-3"
           >
             <span className="govuk-visually-hidden">Error:</span>
             {errors[error]?.message}
-          </p>
+          </div>
         ))}
       </div>
 

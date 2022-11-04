@@ -45,10 +45,52 @@ const EditShiftHours = ({
     summaryErrors,
     setSummaryErrors,
   } = useTimecardContext();
-  const [wholeShiftClash, setWholeShiftClash] = useState(false);
+  const [clashingProperty, setClashingProperty] = useState(null);
+  const [clashingTimes, setClashingTimes] = useState(null);
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
+  };
+
+  const formatTimeClashes = (timeClashes) => {
+    if (timeClashes.length > 1) {
+      var times = (
+        <div>
+          <p>You are already assigned to the following time periods:</p>
+          <ul>
+            {timeClashes.map((clash) => (
+              <li key="foo">{shiftClashToText(clash)}</li>
+            ))}
+          </ul>
+        </div>
+      );
+      return times;
+    } else {
+      var clash = timeClashes[0];
+      var startTime = Date.parse(clash.startTime);
+      var endTime = Date.parse(clash.endTime);
+      var text;
+      if (clash.timePeriodTypeId == '00000000-0000-0000-0000-000000000001') {
+        text = `You are already assigned to work from ${formatTime(
+          startTime
+        )} to ${formatTime(endTime)} on ${formatDate(startTime)}`;
+      } else {
+        console.log('here');
+        text = `You are already assigned a scheduled rest day on ${formatDate(
+          startTime
+        )}`;
+      }
+      return <p>{text}</p>;
+    }
+  };
+
+  const shiftClashToText = (clash) => {
+    var startTime = Date.parse(clash.startTime);
+    var endTime = Date.parse(clash.endTime);
+    var clashText = `${formatTime(startTime)} to ${formatTime(
+      endTime
+    )} on ${formatDate(startTime)}`;
+    return clashText;
   };
 
   const handleServerValidationErrors = (error) => {
@@ -56,13 +98,14 @@ const EditShiftHours = ({
     let errorsHandled = true;
 
     var firstError = error[0];
+    setClashingTimes(firstError.data);
+    setClashingProperty(firstError.field);
 
     if (firstError.field == 'startAndEndTime') {
       summaryErrors['shift-start-time'] = {
         message:
           'Your start and finish times must not overlap with another time period',
       };
-      setWholeShiftClash(true);
     } else if (firstError.field == 'startTime') {
       summaryErrors['shift-start-time'] = {
         message: 'Your start time must not overlap with another period',
@@ -148,15 +191,48 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    if (wholeShiftClash) {
+    if (clashingProperty == 'startAndEndTime') {
+      combinedErrors['shift-start-time'] = {
+        message: (
+          <div>
+            <p>
+              Your start and finish times must not overlap with another time
+              period
+            </p>
+            {formatTimeClashes(clashingTimes)}
+          </div>
+        ),
+      };
       combinedErrors['shift-finish-time'] = {
         message: '',
       };
     }
 
+    if (clashingProperty == 'startTime') {
+      combinedErrors['shift-start-time'] = {
+        message: (
+          <div>
+            <p>Your start time must not overlap with another period</p>
+            {formatTimeClashes(clashingTimes)}
+          </div>
+        ),
+      };
+    }
+    console.log(clashingProperty);
+    if (clashingProperty == 'endTime') {
+      combinedErrors['shift-finish-time'] = {
+        message: (
+          <div>
+            <p>Your end time must not overlap with another period</p>
+            {formatTimeClashes(clashingTimes)}
+          </div>
+        ),
+      };
+    }
+
     console.log('here');
     console.log(combinedErrors);
-    return combinedErrors; //Object.keys(errors).length > 0 ? errors : summaryErrors;
+    return combinedErrors;
   };
 
   return (
