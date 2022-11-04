@@ -75,7 +75,6 @@ const EditShiftHours = ({
           startTime
         )} to ${formatTime(endTime)} on ${formatDate(startTime)}`;
       } else {
-        console.log('here');
         text = `You are already assigned a scheduled rest day on ${formatDate(
           startTime
         )}`;
@@ -94,12 +93,18 @@ const EditShiftHours = ({
   };
 
   const handleServerValidationErrors = (error) => {
+    console.log(error);
+    if (error == null || !Array.isArray(error)) {
+      return false;
+    }
     const summaryErrors = {};
     let errorsHandled = true;
 
     var firstError = error[0];
     setClashingTimes(firstError.data);
     setClashingProperty(firstError.field);
+
+    console.log(firstError.field);
 
     if (firstError.field == 'startAndEndTime') {
       summaryErrors['shift-start-time'] = {
@@ -218,7 +223,7 @@ const EditShiftHours = ({
         ),
       };
     }
-    console.log(clashingProperty);
+
     if (clashingProperty == 'endTime') {
       combinedErrors['shift-finish-time'] = {
         message: (
@@ -230,8 +235,6 @@ const EditShiftHours = ({
       };
     }
 
-    console.log('here');
-    console.log(combinedErrors);
     return combinedErrors;
   };
 

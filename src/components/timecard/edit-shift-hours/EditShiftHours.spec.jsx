@@ -419,10 +419,12 @@ describe('EditShiftHours', () => {
       createTimeEntry.mockImplementation(() => {
         throw {
           response: {
-            data: {
-              message:
-                ' has the following error(s): Time periods must not overlap with another time period',
-            },
+            data: [
+              {
+                field: 'startTime',
+                data: [{ timePeriodTypeId: 0, startTime: null, endTime: null }],
+              },
+            ],
           },
         };
       });
@@ -453,7 +455,7 @@ describe('EditShiftHours', () => {
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-start-time': {
-            message: 'Time periods must not overlap with another time period',
+            message: 'Your start time must not overlap with another period',
           },
         });
       });
