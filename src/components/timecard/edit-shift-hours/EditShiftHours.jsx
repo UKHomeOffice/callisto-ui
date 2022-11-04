@@ -143,15 +143,20 @@ const EditShiftHours = ({
   };
 
   const getCombinedErrors = () => {
-    const combinedErrors = deepCloneJson(
-      Object.keys(errors).length > 0 ? errors : summaryErrors
-    );
+    var existingErrors =
+      Object.keys(errors).length > 0 ? errors : summaryErrors;
+
+    const combinedErrors = { ...existingErrors };
+
     if (wholeShiftClash) {
       combinedErrors['shift-finish-time'] = {
         message: '',
       };
     }
-    return combinedErrors;
+
+    console.log('here');
+    console.log(combinedErrors);
+    return combinedErrors; //Object.keys(errors).length > 0 ? errors : summaryErrors;
   };
 
   return (
