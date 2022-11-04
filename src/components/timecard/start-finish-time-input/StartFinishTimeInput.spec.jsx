@@ -6,6 +6,9 @@ import StartFinishTimeInput from './StartFinishTimeInput';
 const mockRegister = jest.fn();
 const timeEntry = new ContextTimeEntry();
 
+const timeEntryWithFinishNextDay = new ContextTimeEntry();
+timeEntryWithFinishNextDay.setFinishNextDay(true);
+
 describe('StartFinishTimeInput', () => {
   it('should display titles for each input box', () => {
     renderWithTimecardContext(
@@ -86,6 +89,46 @@ describe('StartFinishTimeInput', () => {
 
     expect(startTimeInput.value).toBe('07:00');
     expect(finishTimeInput.value).toBe('17:00');
+  });
+
+  describe('Finishes next day', () => {
+    it('should display "Finishes next day" text if finishNextDay is true', () => {
+      renderWithTimecardContext(
+        <StartFinishTimeInput
+          name={'shift'}
+          startTimeValue="07:00"
+          finishTimeValue="01:00"
+          errors={{}}
+          register={mockRegister}
+          timeEntry={timeEntryWithFinishNextDay}
+          timeEntriesIndex={0}
+          getValues={jest.fn()}
+        />
+      );
+
+      const finishesNextDayText = screen.getByText('Finishes next day');
+
+      expect(finishesNextDayText).toBeTruthy();
+    });
+
+    it('should not display "Finishes next day" text if finishNextDay is false', () => {
+      renderWithTimecardContext(
+        <StartFinishTimeInput
+          name={'shift'}
+          startTimeValue="07:00"
+          finishTimeValue="17:00"
+          errors={{}}
+          register={mockRegister}
+          timeEntry={timeEntry}
+          timeEntriesIndex={0}
+          getValues={jest.fn()}
+        />
+      );
+
+      const finishesNextDayText = screen.queryByText('Finishes next day');
+
+      expect(finishesNextDayText).toBeFalsy();
+    });
   });
 
   describe('error messages', () => {

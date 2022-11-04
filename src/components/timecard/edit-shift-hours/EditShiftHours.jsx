@@ -94,14 +94,11 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    let actualEndDate = formatDate(timecardDate);
+    let actualEndDateTime = '';
     if (endTime) {
-      actualEndDate = setFinishTimeDate(actualStartDate);
+      const actualEndDate = setFinishTimeDate(actualStartDate);
+      actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
-
-    const actualEndDateTime = endTime
-      ? formatDateTimeISO(actualEndDate + ' ' + endTime)
-      : '';
 
     const timecardPayload = {
       ownerId: userId,
