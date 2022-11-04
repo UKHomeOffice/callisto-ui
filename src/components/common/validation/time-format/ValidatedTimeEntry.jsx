@@ -34,7 +34,7 @@ const ValidatedTimeEntry = ({
 
     newTimeEntries[timeEntriesIndex] =
       ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
-    // setTimeEntries(newTimeEntries);
+    setTimeEntries(newTimeEntries);
   };
 
   return (

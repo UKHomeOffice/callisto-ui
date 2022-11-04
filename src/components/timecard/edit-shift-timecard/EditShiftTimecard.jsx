@@ -80,9 +80,9 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
               timeEntryExists &&
               `${formatTime(timeEntry.startTime)} to ${
                 timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
-              } on ${
+              } ${
                 timeEntry.finishNextDay
-                  ? formatDateNoYear(timeEntry.finishTime)
+                  ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
                   : ''
               }`}
           </dd>

@@ -3,7 +3,7 @@ export class ContextTimeEntry {
   startTime = '';
   finishTime = '';
   timePeriodTypeId = '';
-  finishNextDay = '';
+  finishNextDay = false;
 
   constructor(
     timeEntryId,
@@ -24,8 +24,8 @@ export class ContextTimeEntry {
       contextTimeEntry.timeEntryId,
       contextTimeEntry.startTime,
       contextTimeEntry.finishTime,
-      contextTimeEntry.finishNextDay,
-      contextTimeEntry.timePeriodTypeId
+      contextTimeEntry.timePeriodTypeId,
+      contextTimeEntry.finishNextDay
     );
   }
 
