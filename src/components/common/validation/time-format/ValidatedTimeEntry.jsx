@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { useTimecardContext } from '../../../../context/TimecardContext';
 import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
 import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
@@ -12,7 +11,6 @@ const ValidatedTimeEntry = ({
   defaultValue,
   register,
   isRequired,
-  formState,
   getValues,
   timeEntry,
   timeEntriesIndex,
@@ -20,10 +18,6 @@ const ValidatedTimeEntry = ({
   const errorMessage = `You must enter a ${timeType} in the HH:MM 24 hour clock format`;
 
   const { timeEntries, setTimeEntries } = useTimecardContext();
-
-  useEffect(() => {
-    setFinishTimeText();
-  }, [formState]);
 
   const setFinishTimeText = () => {
     const startTimeValue = getValues('shift-start-time');
