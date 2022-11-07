@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { deepCloneJson } from '../common-utils/common-utils';
+
+dayjs.extend(isSameOrBefore);
 
 export const addTimePeriodHeading = 'Add time period';
 
@@ -39,9 +42,9 @@ export const removeTimecardContextEntry = (
 
 export const isFinishTimeOnNextDay = (startTimeValue, finishTimeValue) => {
   if (startTimeValue && finishTimeValue) {
-    return dayjs(dayjs().format('YYYY-MM-DD') + '' + finishTimeValue).isBefore(
-      dayjs(dayjs().format('YYYY-MM-DD') + '' + startTimeValue)
-    );
+    return dayjs(
+      dayjs().format('YYYY-MM-DD') + '' + finishTimeValue
+    ).isSameOrBefore(dayjs(dayjs().format('YYYY-MM-DD') + '' + startTimeValue));
   }
   return false;
 };

@@ -30,7 +30,7 @@ const ValidatedTimeEntry = ({
     const finishTimeValue = getValues('shift-finish-time');
     const newTimeEntries = deepCloneJson(timeEntries);
 
-    var answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+    let answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
 
     newTimeEntries[timeEntriesIndex] =
       ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);

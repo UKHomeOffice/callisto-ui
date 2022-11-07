@@ -1,5 +1,7 @@
 import { renderWithTimecardContext } from '../../../../test/helpers/TimecardContext';
 import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react-test-renderer';
 
 import ValidatedTimeEntry from './ValidatedTimeEntry';
 
@@ -36,5 +38,31 @@ describe('ValidatedTimeEntry', () => {
     );
 
     expect(component).toBeTruthy();
+  });
+
+  it('should call onblur method', async () => {
+    const setFinishTimeTextSpy = jest.fn();
+
+    const component = renderWithTimecardContext(
+      <ValidatedTimeEntry
+        name="shift-finish-time"
+        timeType="finish time"
+        errors={{}}
+        register={setFinishTimeTextSpy}
+        getValues={jest.fn()}
+        timeEntry={timeEntry}
+        timeEntriesIndex={0}
+      />
+    );
+
+    act(() => {
+      const someElement =
+        component.container.querySelector('#shift-finish-time');
+      fireEvent.blur(someElement);
+    });
+
+    await waitFor(() => {
+      expect(setFinishTimeTextSpy).toBeCalledTimes(1);
+    });
   });
 });

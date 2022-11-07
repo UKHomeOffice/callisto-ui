@@ -45,7 +45,7 @@ describe('timeEntryUtils', () => {
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
   });
 
-  describe('calculateFinishTimeOnNextDay', () => {
+  describe('isFinishTimeOnNextDay', () => {
     it('should return true when finish time is before start time', async () => {
       const startTime = '12:03';
       const finishTime = '01:01';
