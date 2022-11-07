@@ -444,7 +444,6 @@ describe('EditShiftHours', () => {
           'shift-start-time': {
             message: 'Time periods must not overlap with another time period',
           },
-          'shift-finish-time': { message: '' },
         });
       });
     });
