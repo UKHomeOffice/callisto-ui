@@ -8,6 +8,11 @@ platform:
   arch: amd64
 
 steps:
+  - name: fetch
+    image: alpine/git
+    commands:      
+      - "git fetch origin +refs/heads/main:"
+
   - name: install dependencies
     image: &node_image # the version we're targeting for productio
       node:16.15.0
@@ -16,6 +21,8 @@ steps:
         from_secret: npm_auth_token
     commands:
       - npm install
+    depends_on:
+      - fetch      
 
   - name: lint project
     image: *node_image
