@@ -8,7 +8,7 @@ const StartFinishTimeInput = ({
   errors,
   startTimeValue,
   finishTimeValue,
-  getValues,
+  getFormValues,
   timeEntry,
   timeEntriesIndex,
   register,
@@ -72,7 +72,7 @@ const StartFinishTimeInput = ({
             defaultValue={startTimeValue}
             register={register}
             isRequired={true}
-            getValues={getValues}
+            getFormValues={getFormValues}
             timeEntry={timeEntry}
             timeEntriesIndex={timeEntriesIndex}
           />
@@ -95,7 +95,7 @@ const StartFinishTimeInput = ({
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
-              getValues={getValues}
+              getFormValues={getFormValues}
               timeEntry={timeEntry}
               timeEntriesIndex={timeEntriesIndex}
             />
@@ -119,7 +119,7 @@ StartFinishTimeInput.propTypes = {
   errors: PropTypes.any.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
-  getValues: PropTypes.func.isRequired,
+  getFormValues: PropTypes.func.isRequired,
   timeEntry: PropTypes.object.isRequired,
   timeEntriesIndex: PropTypes.number.isRequired,
   register: PropTypes.any.isRequired,

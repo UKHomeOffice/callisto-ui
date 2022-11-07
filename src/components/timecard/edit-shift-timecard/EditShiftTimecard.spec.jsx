@@ -288,6 +288,7 @@ describe('EditShiftTimecard', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+        expect(screen.queryByText('08:00 to 16:00 on 31 October')).toBeFalsy();
       });
     });
 
@@ -305,6 +306,7 @@ describe('EditShiftTimecard', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+        expect(screen.queryByText('08:00 to 16:00 on 31 October')).toBeFalsy();
       });
     });
   });

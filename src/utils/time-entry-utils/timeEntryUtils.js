@@ -42,9 +42,9 @@ export const removeTimecardContextEntry = (
 
 export const isFinishTimeOnNextDay = (startTimeValue, finishTimeValue) => {
   if (startTimeValue && finishTimeValue) {
-    return dayjs(
-      dayjs().format('YYYY-MM-DD') + '' + finishTimeValue
-    ).isSameOrBefore(dayjs(dayjs().format('YYYY-MM-DD') + '' + startTimeValue));
+    return dayjs(formatDate(dayjs()) + finishTimeValue).isSameOrBefore(
+      dayjs(formatDate(dayjs()) + startTimeValue)
+    );
   }
   return false;
 };

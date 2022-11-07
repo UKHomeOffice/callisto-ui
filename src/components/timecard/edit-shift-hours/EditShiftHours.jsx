@@ -30,7 +30,7 @@ const EditShiftHours = ({
     handleSubmit,
     formState: { errors },
     formState,
-    getValues,
+    getFormValues,
   } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
@@ -152,7 +152,7 @@ const EditShiftHours = ({
           errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
           register={register}
           formState={formState}
-          getValues={getValues}
+          getFormValues={getFormValues}
           timeEntry={timeEntry}
           startTimeValue={
             timeEntry.startTime ? formatTime(timeEntry.startTime) : ''

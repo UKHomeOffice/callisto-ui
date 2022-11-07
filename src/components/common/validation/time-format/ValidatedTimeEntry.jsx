@@ -11,7 +11,7 @@ const ValidatedTimeEntry = ({
   defaultValue,
   register,
   isRequired,
-  getValues,
+  getFormValues,
   timeEntry,
   timeEntriesIndex,
 }) => {
@@ -20,11 +20,11 @@ const ValidatedTimeEntry = ({
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
   const setFinishTimeText = () => {
-    const startTimeValue = getValues('shift-start-time');
-    const finishTimeValue = getValues('shift-finish-time');
+    const startTimeValue = getFormValues('shift-start-time');
+    const finishTimeValue = getFormValues('shift-finish-time');
     const newTimeEntries = deepCloneJson(timeEntries);
 
-    let answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+    const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
 
     newTimeEntries[timeEntriesIndex] =
       ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
@@ -72,7 +72,7 @@ ValidatedTimeEntry.propTypes = {
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,
   formState: PropTypes.any,
-  getValues: PropTypes.func.isRequired,
+  getFormValues: PropTypes.func.isRequired,
   timeEntry: PropTypes.object.isRequired,
   timeEntriesIndex: PropTypes.number.isRequired,
 };
