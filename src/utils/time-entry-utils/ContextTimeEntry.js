@@ -1,5 +1,3 @@
-import { isFinishTimeOnNextDay } from './timeEntryUtils';
-
 export class ContextTimeEntry {
   timeEntryId = '';
   startTime = '';
@@ -58,9 +56,5 @@ export class ContextTimeEntry {
   setFinishNextDay(finishNextDay) {
     this.finishNextDay = finishNextDay;
     return this;
-  }
-
-  initFinishNextDay(startTime, endTime) {
-    return isFinishTimeOnNextDay(startTime, endTime);
   }
 }
