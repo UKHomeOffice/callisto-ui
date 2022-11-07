@@ -46,14 +46,28 @@ describe('timeEntryUtils', () => {
   });
 
   describe('isFinishTimeOnNextDay', () => {
-    it('should return true when finish time is before start time', async () => {
+    it('should return true when finish time is midnight', async () => {
       const startTime = '12:03';
-      const finishTime = '01:01';
+      const finishTime = '00:00';
 
       expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
     });
 
-    it('should return false when finish time is after start time', async () => {
+    it('should return true when start time equals finish time', async () => {
+      const startTime = '11:59';
+      const finishTime = '11:59';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+    });
+
+    it('should return true when start time is one minute before finish time', async () => {
+      const startTime = '12:35';
+      const finishTime = '12:34';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+    });
+
+    it('should return false when finish time is one minute after start time', async () => {
       const startTime = '12:03';
       const finishTime = '12:04';
 

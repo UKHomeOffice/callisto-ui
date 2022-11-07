@@ -30,7 +30,7 @@ const EditShiftHours = ({
     handleSubmit,
     formState: { errors },
     formState,
-    getFormValues,
+    getValues,
   } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
@@ -51,7 +51,7 @@ const EditShiftHours = ({
     setSummaryErrors(errorFields);
   };
 
-  const setFinishTimeDate = (actualStartDate) => {
+  const getFinishTimeDate = (actualStartDate) => {
     if (timeEntry.finishNextDay) {
       return formatDate(dayjs(actualStartDate).add(1, 'day'));
     } else {
@@ -93,7 +93,7 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = setFinishTimeDate(actualStartDate);
+      const actualEndDate = getFinishTimeDate(actualStartDate);
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
@@ -152,7 +152,7 @@ const EditShiftHours = ({
           errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
           register={register}
           formState={formState}
-          getFormValues={getFormValues}
+          getFormValues={getValues}
           timeEntry={timeEntry}
           startTimeValue={
             timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
