@@ -77,7 +77,7 @@ describe('TimeInputErrors', () => {
       expect(clashingShiftError).toBeTruthy();
     });
 
-    it('should display a single error for scheduled rest day clash', () => {
+    it('should display a single error for scheduled rest day clash test', () => {
       render(
         <TimeInputErrors
           clashingProperty={'startTime'}
