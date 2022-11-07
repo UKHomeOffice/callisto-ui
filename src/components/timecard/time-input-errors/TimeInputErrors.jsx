@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import {
-  formatDate,
   formatTime,
   getTimePeriodTypesMap,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
@@ -57,7 +56,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
         <p>You are already assigned to the following time periods:</p>
         <ul>
           {clashes.map((clash, index) => (
-            <li key={index}>{shiftClashToText(clash)}</li>
+            <li key={index}>{timePeriodClashToText(clash)}</li>
           ))}
         </ul>
       </div>
@@ -65,13 +64,21 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     return times;
   };
 
-  const shiftClashToText = (clash) => {
+  const timePeriodClashToText = (clash) => {
     var startTime = Date.parse(clash.startTime);
     var endTime = Date.parse(clash.endTime);
-    var clashText = `${formatTime(startTime)} to ${formatTime(
-      endTime
-    )} on ${dayjs(startTime).format('D MMMM YYYY')}`;
-    return clashText;
+
+    const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
+    switch (timePeriodType) {
+      case 'Shift':
+        return `${formatTime(startTime)} to ${formatTime(endTime)} on ${dayjs(
+          startTime
+        ).format('D MMMM YYYY')}`;
+      default:
+        return `${timePeriodType.toLowerCase()} on ${dayjs(startTime).format(
+          'D MMMM YYYY'
+        )}`;
+    }
   };
 
   return (

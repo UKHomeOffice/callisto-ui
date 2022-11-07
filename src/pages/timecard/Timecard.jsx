@@ -10,6 +10,7 @@ import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatTime,
   formatDate,
+  getTimePeriodTypesMap,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -161,13 +162,6 @@ const updateTimeEntryContextData = async (
     },
     handleCustomErrors,
     false
-  );
-};
-
-const getTimePeriodTypesMap = (timePeriodTypes) => {
-  return timePeriodTypes.reduce(
-    (acc, type) => ({ ...acc, [type.id]: type.name }),
-    {}
   );
 };
 

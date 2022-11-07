@@ -11,35 +11,6 @@ describe('TimeInputErrors', () => {
     },
   ];
 
-  const singleScheduledRestDayClash = [
-    {
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
-      startTime: '2022-11-03T00:00:00.000+00:00',
-      endTime: '2022-11-04T00:00:00.000+00:00',
-    },
-  ];
-
-  const singleNonWorkingDayClash = [
-    {
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
-      startTime: '2022-11-03T00:00:00.000+00:00',
-      endTime: '2022-11-04T00:00:00.000+00:00',
-    },
-  ];
-
-  const twoShiftClashes = [
-    {
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      startTime: '2022-11-03T08:00:00.000+00:00',
-      endTime: '2022-11-03T12:00:00.000+00:00',
-    },
-    {
-      timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-      startTime: '2022-11-03T17:00:00.000+00:00',
-      endTime: '2022-11-03T18:00:00.000+00:00',
-    },
-  ];
-
   describe('Clashing properties', () => {
     it('should display a single error for start time clash', () => {
       renderWithTimecardContext(
@@ -100,6 +71,14 @@ describe('TimeInputErrors', () => {
     });
 
     it('should display a single error for scheduled rest day clash', () => {
+      const singleScheduledRestDayClash = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+          startTime: '2022-11-03T00:00:00.000+00:00',
+          endTime: '2022-11-04T00:00:00.000+00:00',
+        },
+      ];
+
       renderWithTimecardContext(
         <TimeInputErrors
           clashingProperty={'startTime'}
@@ -114,6 +93,14 @@ describe('TimeInputErrors', () => {
     });
 
     it('should display a single error for non-working day clash', () => {
+      const singleNonWorkingDayClash = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+          startTime: '2022-11-03T00:00:00.000+00:00',
+          endTime: '2022-11-04T00:00:00.000+00:00',
+        },
+      ];
+
       renderWithTimecardContext(
         <TimeInputErrors
           clashingProperty={'startTime'}
@@ -130,6 +117,19 @@ describe('TimeInputErrors', () => {
 
   describe('Multiple time clashes', () => {
     it('should display both errors for two shift clashes', () => {
+      const twoShiftClashes = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+          endTime: '2022-11-03T12:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T17:00:00.000+00:00',
+          endTime: '2022-11-03T18:00:00.000+00:00',
+        },
+      ];
+
       renderWithTimecardContext(
         <TimeInputErrors
           clashingProperty={'startTime'}
@@ -140,17 +140,88 @@ describe('TimeInputErrors', () => {
       const clashingShiftError = screen.getByText(
         'You are already assigned to the following time periods:'
       );
-      expect(clashingShiftError).toBeTruthy();
-
-      const clashingShiftError1 = screen.getByText(
+      const firstClashingShift = screen.getByText(
         '08:00 to 12:00 on 3 November 2022'
       );
-      expect(clashingShiftError1).toBeTruthy();
-
-      const clashingShiftError2 = screen.getByText(
+      const secondClashingShift = screen.getByText(
         '17:00 to 18:00 on 3 November 2022'
       );
-      expect(clashingShiftError2).toBeTruthy();
+
+      expect(clashingShiftError).toBeTruthy();
+      expect(firstClashingShift).toBeTruthy();
+      expect(secondClashingShift).toBeTruthy();
+    });
+
+    it('should display both errors for SRD and shift clashes', () => {
+      const shiftAndSRDClashes = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+          endTime: '2022-11-03T12:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+          startTime: '2022-11-04T00:00:00.000+00:00',
+          endTime: '2022-11-05T00:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={'startTime'}
+          clashes={shiftAndSRDClashes}
+        />
+      );
+
+      const clashingTimePeriodError = screen.getByText(
+        'You are already assigned to the following time periods:'
+      );
+      const clashingShift = screen.getByText(
+        '08:00 to 12:00 on 3 November 2022'
+      );
+      const clashingSRD = screen.getByText(
+        'scheduled rest day on 4 November 2022'
+      );
+
+      expect(clashingTimePeriodError).toBeTruthy();
+      expect(clashingShift).toBeTruthy();
+      expect(clashingSRD).toBeTruthy();
+    });
+
+    it('should display both errors for SRD and NWD clashes', () => {
+      const shiftAndSRDClashes = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+          startTime: '2022-11-03T00:00:00.000+00:00',
+          endTime: '2022-11-04T00:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+          startTime: '2022-11-04T00:00:00.000+00:00',
+          endTime: '2022-11-05T00:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={'startTime'}
+          clashes={shiftAndSRDClashes}
+        />
+      );
+
+      const clashingTimePeriodError = screen.getByText(
+        'You are already assigned to the following time periods:'
+      );
+      const clashingNWD = screen.getByText(
+        'non-working day on 3 November 2022'
+      );
+      const clashingSRD = screen.getByText(
+        'scheduled rest day on 4 November 2022'
+      );
+
+      expect(clashingTimePeriodError).toBeTruthy();
+      expect(clashingNWD).toBeTruthy();
+      expect(clashingSRD).toBeTruthy();
     });
   });
 });
