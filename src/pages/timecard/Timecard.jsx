@@ -10,8 +10,8 @@ import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatDate,
   formatTime,
-  isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
+import { initFinishNextDay } from '../../utils/time-entry-utils/ContextTimeEntry';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
@@ -151,7 +151,7 @@ const updateTimeEntryContextData = async (
               timeEntry.actualStartTime,
               timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
               timeEntry.timePeriodTypeId,
-              (timeEntry.finishNextDay = isFinishTimeOnNextDay(
+              (timeEntry.finishNextDay = initFinishNextDay(
                 formatTime(timeEntry.actualStartTime),
                 formatTime(timeEntry.actualEndTime)
               ))
