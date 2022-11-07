@@ -8,15 +8,14 @@ const ValidatedTimeEntry = ({
   register,
   isRequired,
 }) => {
-  const validateTime = (time) => {
+  const isTimeValid = (time) => {
     if (time.length < 3 && time.length > 0) {
-      const timeRegEx = /^(\d|[01]\d|2[0-3])$/;
-      return timeRegEx.test(time);
+      const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
+      return hhTimeRegEx.test(time);
     } else if (time.length > 3 && time.length < 6) {
-      const timeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-      return timeRegEx.test(time);
+      const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+      return hhmmTimeRegEx.test(time);
     } else if (time.length == 0 && timeType === 'finish time') {
-      console.log('here');
       return true;
     } else {
       return false;
@@ -44,7 +43,7 @@ const ValidatedTimeEntry = ({
           message: errorMessage,
         },
         validate: {
-          validateTimeEntry: (v) => validateTime(v) || errorMessage,
+          validateTimeEntry: (value) => isTimeValid(value) || errorMessage,
         },
       })}
     />
