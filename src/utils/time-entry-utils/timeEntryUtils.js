@@ -32,3 +32,10 @@ export const removeTimecardContextEntry = (
   newTimeEntries.splice(removeAtIndex, 1);
   setTimeEntries(newTimeEntries);
 };
+
+export const getTimePeriodTypesMap = (timePeriodTypes) => {
+  return timePeriodTypes.reduce(
+    (acc, type) => ({ ...acc, [type.id]: type.name }),
+    {}
+  );
+};
