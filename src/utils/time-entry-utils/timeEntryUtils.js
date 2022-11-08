@@ -30,6 +30,10 @@ export const formatDateTimeISO = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ssZ');
 };
 
+export const formatLongDate = (dateTime) => {
+  return dayjs(dateTime).format('D MMMM YYYY');
+};
+
 export const removeTimecardContextEntry = (
   timeEntries,
   setTimeEntries,

@@ -239,7 +239,7 @@ describe('TimeInputErrors', () => {
         {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '2022-11-04T08:00:00.000+00:00',
-          endTime: '2022-11-05T12:00:00.000+00:00',
+          endTime: '2022-11-04T12:00:00.000+00:00',
         },
       ];
 
@@ -261,13 +261,14 @@ describe('TimeInputErrors', () => {
         '08:00 to 12:00 on 4 November 2022'
       );
       expect(clashingTimePeriods[2]).toEqual(
-        '12:00 to 16:00 on 4 November 2022'
+        '12:00 on 4 November 2022 to 16:00 on 5 November 2022'
       );
     });
   });
+
   describe('Clash finishes on a different day', () => {
     it('should display both days for a single shift clash that is over two days', () => {
-      const twoShiftClashes = [
+      const shiftClash = [
         {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '2022-11-03T08:00:00.000+00:00',
@@ -276,10 +277,7 @@ describe('TimeInputErrors', () => {
       ];
 
       renderWithTimecardContext(
-        <TimeInputErrors
-          clashingProperty={'startTime'}
-          clashes={twoShiftClashes}
-        />
+        <TimeInputErrors clashingProperty={'startTime'} clashes={shiftClash} />
       );
 
       const clashingShiftError = screen.getByText(
@@ -287,6 +285,35 @@ describe('TimeInputErrors', () => {
       );
 
       expect(clashingShiftError).toBeTruthy();
+    });
+
+    it('should display both days for two shift clashes that are over two days', () => {
+      const shiftClash = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+          endTime: '2022-11-04T12:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-04T07:00:00.000+00:00',
+          endTime: '2022-11-05T11:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors clashingProperty={'startTime'} clashes={shiftClash} />
+      );
+
+      const firstClashingShiftError = screen.getByText(
+        '08:00 on 3 November 2022 to 12:00 on 4 November 2022'
+      );
+      const secondClashingShiftError = screen.getByText(
+        '07:00 on 4 November 2022 to 11:00 on 5 November 2022'
+      );
+
+      expect(firstClashingShiftError).toBeTruthy();
+      expect(secondClashingShiftError).toBeTruthy();
     });
   });
 });

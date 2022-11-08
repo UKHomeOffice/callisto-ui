@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import {
+  formatLongDate,
   formatTime,
   getTimePeriodTypesMap,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
@@ -30,31 +31,19 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
 
   const displaySingleTimeClash = () => {
     const clash = clashes[0];
-    const startTime = new Date(clash.startTime);
-    const endTime = new Date(clash.endTime);
     let text;
 
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
     switch (timePeriodType) {
       case 'Shift':
-        if (startTime.toDateString() === endTime.toDateString()) {
-          text = `You are already assigned to work from ${formatTime(
-            clash.startTime
-          )} to ${formatTime(clash.endTime)} on ${dayjs(clash.startTime).format(
-            'D MMMM YYYY'
-          )}`;
-        } else {
-          text = `You are already assigned to work from ${formatTime(
-            clash.startTime
-          )} on ${dayjs(clash.startTime).format('D MMMM YYYY')} to ${formatTime(
-            clash.endTime
-          )} on ${dayjs(clash.endTime).format('D MMMM YYYY')}`;
-        }
+        text = `You are already assigned to work from ${startDateTime(
+          clash
+        )} to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`;
         break;
       default:
-        text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${dayjs(
+        text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
           clash.startTime
-        ).format('D MMMM YYYY')}`;
+        )}`;
     }
     return <p>{text}</p>;
   };
@@ -87,14 +76,26 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
     switch (timePeriodType) {
       case 'Shift':
-        return `${formatTime(clash.startTime)} to ${formatTime(
+        return `${startDateTime(clash)} to ${formatTime(
           clash.endTime
-        )} on ${dayjs(clash.startTime).format('D MMMM YYYY')}`;
+        )} on ${formatLongDate(clash.endTime)}`;
       default:
-        return `${timePeriodType.toLowerCase()} on ${dayjs(
+        return `${timePeriodType.toLowerCase()} on ${formatLongDate(
           clash.startTime
-        ).format('D MMMM YYYY')}`;
+        )}`;
     }
+  };
+
+  const startDateTime = (clash) => {
+    const startTime = new Date(clash.startTime);
+    const endTime = new Date(clash.endTime);
+    let startDate = '';
+
+    if (startTime.toDateString() !== endTime.toDateString()) {
+      startDate = ` on ${formatLongDate(clash.startTime)}`;
+    }
+
+    return `${formatTime(clash.startTime)}${startDate}`;
   };
 
   return (
