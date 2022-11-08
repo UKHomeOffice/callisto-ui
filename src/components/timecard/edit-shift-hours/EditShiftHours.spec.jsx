@@ -435,7 +435,60 @@ describe('EditShiftHours', () => {
   );
 
   describe('Service errors', () => {
-    it('should set time entry clashing errors in summaryErrors when error is returned from the server', async () => {
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'startAndEndTime',
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+          'shift-start-time': {
+            message:
+            'Your start and finish times must not overlap with another time period',
+          },
+        });
+      });
+    });
+
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for start time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
           response: {
@@ -481,7 +534,59 @@ describe('EditShiftHours', () => {
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-start-time': {
-            message: 'Your start time must not overlap with another period',
+            message: 'Your start time must not overlap with another time period',
+          },
+        });
+      });
+    });
+
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for end time', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'endTime',
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+          'shift-finish-time': {
+            message: 'Your end time must not overlap with another time period',
           },
         });
       });

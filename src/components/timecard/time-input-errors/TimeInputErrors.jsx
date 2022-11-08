@@ -51,7 +51,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const displayMultipleTimeClashes = () => {
-    var times = (
+    const times = (
       <div>
         <p>You are already assigned to the following time periods:</p>
         <ul>
@@ -65,8 +65,8 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const timePeriodClashToText = (clash) => {
-    var startTime = Date.parse(clash.startTime);
-    var endTime = Date.parse(clash.endTime);
+    const startTime = Date.parse(clash.startTime);
+    const endTime = Date.parse(clash.endTime);
 
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
     switch (timePeriodType) {

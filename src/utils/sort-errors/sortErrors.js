@@ -1,5 +1,5 @@
 export const sortErrorKeys = (errors, desiredOrder) => {
-  var orderedKeys = [];
+  const orderedKeys = [];
   const errorKeys = new Set(Object.keys(errors));
   desiredOrder.forEach((key) => {
     if (errorKeys.has(key)) {

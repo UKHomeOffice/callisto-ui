@@ -54,18 +54,15 @@ const EditShiftHours = ({
   };
 
   const handleServerValidationErrors = (error) => {
-    console.log(error);
     if (error == null || !Array.isArray(error)) {
       return false;
     }
     const summaryErrors = {};
     let errorsHandled = true;
 
-    var firstError = error[0];
+    const firstError = error[0];
     setClashingTimes(firstError.data);
     setClashingProperty(firstError.field);
-
-    console.log(firstError.field);
 
     if (firstError.field == 'startAndEndTime') {
       summaryErrors['shift-start-time'] = {
@@ -74,11 +71,11 @@ const EditShiftHours = ({
       };
     } else if (firstError.field == 'startTime') {
       summaryErrors['shift-start-time'] = {
-        message: 'Your start time must not overlap with another period',
+        message: 'Your start time must not overlap with another time period',
       };
     } else if (firstError.field == 'endTime') {
       summaryErrors['shift-finish-time'] = {
-        message: 'Your end time must not overlap with another period',
+        message: 'Your end time must not overlap with another time period',
       };
     } else {
       errorsHandled = false;
@@ -152,7 +149,7 @@ const EditShiftHours = ({
   };
 
   const getCombinedErrors = () => {
-    var existingErrors =
+    const existingErrors =
       Object.keys(errors).length > 0 ? errors : summaryErrors;
 
     const combinedErrors = { ...existingErrors };
