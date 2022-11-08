@@ -30,21 +30,30 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
 
   const displaySingleTimeClash = () => {
     const clash = clashes[0];
-    const startTime = Date.parse(clash.startTime);
-    const endTime = Date.parse(clash.endTime);
+    const startTime = new Date(clash.startTime);
+    const endTime = new Date(clash.endTime);
     let text;
+
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
     switch (timePeriodType) {
       case 'Shift':
-        text = `You are already assigned to work from ${formatTime(
-          startTime
-        )} to ${formatTime(endTime)} on ${dayjs(startTime).format(
-          'D MMMM YYYY'
-        )}`;
+        if (startTime.toDateString() === endTime.toDateString()) {
+          text = `You are already assigned to work from ${formatTime(
+            clash.startTime
+          )} to ${formatTime(clash.endTime)} on ${dayjs(clash.startTime).format(
+            'D MMMM YYYY'
+          )}`;
+        } else {
+          text = `You are already assigned to work from ${formatTime(
+            clash.startTime
+          )} on ${dayjs(clash.startTime).format('D MMMM YYYY')} to ${formatTime(
+            clash.endTime
+          )} on ${dayjs(clash.endTime).format('D MMMM YYYY')}`;
+        }
         break;
       default:
         text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${dayjs(
-          startTime
+          clash.startTime
         ).format('D MMMM YYYY')}`;
     }
     return <p>{text}</p>;
@@ -75,19 +84,16 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const timePeriodClashToText = (clash) => {
-    const startTime = Date.parse(clash.startTime);
-    const endTime = Date.parse(clash.endTime);
-
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
     switch (timePeriodType) {
       case 'Shift':
-        return `${formatTime(startTime)} to ${formatTime(endTime)} on ${dayjs(
-          startTime
-        ).format('D MMMM YYYY')}`;
+        return `${formatTime(clash.startTime)} to ${formatTime(
+          clash.endTime
+        )} on ${dayjs(clash.startTime).format('D MMMM YYYY')}`;
       default:
-        return `${timePeriodType.toLowerCase()} on ${dayjs(startTime).format(
-          'D MMMM YYYY'
-        )}`;
+        return `${timePeriodType.toLowerCase()} on ${dayjs(
+          clash.startTime
+        ).format('D MMMM YYYY')}`;
     }
   };
 

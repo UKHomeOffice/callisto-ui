@@ -265,4 +265,28 @@ describe('TimeInputErrors', () => {
       );
     });
   });
+  describe('Clash finishes on a different day', () => {
+    it('should display both days for a single shift clash that is over two days', () => {
+      const twoShiftClashes = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+          endTime: '2022-11-04T12:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={'startTime'}
+          clashes={twoShiftClashes}
+        />
+      );
+
+      const clashingShiftError = screen.getByText(
+        'You are already assigned to work from 08:00 on 3 November 2022 to 12:00 on 4 November 2022'
+      );
+
+      expect(clashingShiftError).toBeTruthy();
+    });
+  });
 });
