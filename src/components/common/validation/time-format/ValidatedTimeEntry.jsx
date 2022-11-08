@@ -15,7 +15,6 @@ const ValidatedTimeEntry = ({
   timeEntry,
   timeEntriesIndex,
 }) => {
-
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
   const setFinishTimeText = () => {
