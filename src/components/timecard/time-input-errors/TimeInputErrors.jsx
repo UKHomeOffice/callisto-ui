@@ -51,17 +51,27 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const displayMultipleTimeClashes = () => {
+    sortClashes(clashes);
+
     const times = (
       <div>
         <p>You are already assigned to the following time periods:</p>
         <ul>
           {clashes.map((clash, index) => (
-            <li key={index}>{timePeriodClashToText(clash)}</li>
+            <li key={index} data-testid="test">
+              {timePeriodClashToText(clash)}
+            </li>
           ))}
         </ul>
       </div>
     );
     return times;
+  };
+
+  const sortClashes = (clashes) => {
+    return clashes.sort(
+      (a, b) => Date.parse(a.startTime) - Date.parse(b.startTime)
+    );
   };
 
   const timePeriodClashToText = (clash) => {

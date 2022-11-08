@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { getNodeText, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import TimeInputErrors from './TimeInputErrors';
 
@@ -222,6 +222,47 @@ describe('TimeInputErrors', () => {
       expect(clashingTimePeriodError).toBeTruthy();
       expect(clashingNWD).toBeTruthy();
       expect(clashingSRD).toBeTruthy();
+    });
+
+    it('should display time clashes in chronological order by start time', () => {
+      const shiftAndSRDClashes = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-04T12:00:00.000+00:00',
+          endTime: '2022-11-05T16:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000003',
+          startTime: '2022-11-03T00:00:00.000+00:00',
+          endTime: '2022-11-04T00:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-04T08:00:00.000+00:00',
+          endTime: '2022-11-05T12:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={'startTime'}
+          clashes={shiftAndSRDClashes}
+        />
+      );
+
+      const clashingTimePeriods = screen
+        .getAllByTestId('test')
+        .map(getNodeText);
+
+      expect(clashingTimePeriods[0]).toEqual(
+        'non-working day on 3 November 2022'
+      );
+      expect(clashingTimePeriods[1]).toEqual(
+        '08:00 to 12:00 on 4 November 2022'
+      );
+      expect(clashingTimePeriods[2]).toEqual(
+        '12:00 to 16:00 on 4 November 2022'
+      );
     });
   });
 });
