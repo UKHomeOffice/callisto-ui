@@ -593,6 +593,48 @@ describe('EditShiftHours', () => {
       });
     });
 
+    it('should not set summary errors for responses other than time clashes', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'ownerId',
+                data: [],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+      });
+    });
+
     it('should not set errors in summaryErrors when unhandled error is returned from the server', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
