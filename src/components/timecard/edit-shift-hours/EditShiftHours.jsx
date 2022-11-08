@@ -62,33 +62,37 @@ const EditShiftHours = ({
     }
   };
 
-  const handleServerValidationErrors = (error) => {
-    if (error == null || !Array.isArray(error)) {
+  const handleServerValidationErrors = (errors) => {
+    if (errors == null || !Array.isArray(errors)) {
       return false;
     }
     const summaryErrors = {};
     let errorsHandled = true;
 
-    const firstError = error[0];
-    setClashingTimes(firstError.data);
-    setClashingProperty(firstError.field);
-
-    if (firstError.field == 'startAndEndTime') {
-      summaryErrors['shift-start-time'] = {
-        message:
-          'Your start and finish times must not overlap with another time period',
-      };
-    } else if (firstError.field == 'startTime') {
-      summaryErrors['shift-start-time'] = {
-        message: 'Your start time must not overlap with another time period',
-      };
-    } else if (firstError.field == 'endTime') {
-      summaryErrors['shift-finish-time'] = {
-        message: 'Your end time must not overlap with another time period',
-      };
-    } else {
-      errorsHandled = false;
-    }
+    errors.map((error) => {
+      if (error.field == 'startAndEndTime') {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors['shift-start-time'] = {
+          message:
+            'Your start and finish times must not overlap with another time period',
+        };
+      } else if (error.field == 'startTime') {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors['shift-start-time'] = {
+          message: 'Your start time must not overlap with another time period',
+        };
+      } else if (error.field == 'endTime') {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors['shift-finish-time'] = {
+          message: 'Your end time must not overlap with another time period',
+        };
+      } else {
+        errorsHandled = false;
+      }
+    });
 
     if (errorsHandled) {
       setSummaryErrors(summaryErrors);

@@ -426,6 +426,65 @@ describe('EditShiftHours', () => {
     }
   );
 
+  it('should set finish date as next day when finish time is edited to less than start time', async () => {
+    const timeEntryId = '1';
+    const inputtedStartTime = '08:00';
+    const inputtedEndTime = '01:00';
+    const timecardDate = '2022-09-01';
+    const endDate = '2022-09-02';
+    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
+    const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '08:00',
+      endTime: '10:00',
+      finishNextDay: true,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      fireEvent.change(startTimeInput, {
+        target: { value: '08:00' },
+      });
+
+      const endTimeInput = screen.getByTestId('shift-finish-time');
+      fireEvent.change(endTimeInput, {
+        target: { value: '01:00' },
+      });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+        timeEntryId,
+        {
+          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: expectedActualStartTime,
+          actualEndTime: expectedActualEndTime,
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
+    });
+  });
+
   describe('Service errors', () => {
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {
@@ -625,6 +684,58 @@ describe('EditShiftHours', () => {
       });
     });
 
+    it('should not set summary errors when not all errors are time clashes', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'ownerId',
+                data: [],
+              },
+              {
+                field: 'endTime',
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId('shift-start-time');
+      const finishTimeInput = screen.getByTestId('shift-finish-time');
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+      });
+    });
+
     it('should not set errors in summaryErrors when unhandled error is returned from the server', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -659,65 +770,6 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         expect(defaultTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
-      });
-    });
-
-    it('should set finish date as next day when finish time is edited to less than start time', async () => {
-      const timeEntryId = '1';
-      const inputtedStartTime = '08:00';
-      const inputtedEndTime = '01:00';
-      const timecardDate = '2022-09-01';
-      const endDate = '2022-09-02';
-      const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
-      const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
-
-      const existingTimeEntry = {
-        ...newTimeEntry,
-        timeEntryId: timeEntryId,
-        startTime: '08:00',
-        endTime: '10:00',
-        finishNextDay: true,
-      };
-
-      defaultTimecardContext.timecardDate = timecardDate;
-
-      renderWithTimecardContext(
-        <EditShiftHours
-          setShowEditShiftHours={jest.fn()}
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={0}
-        />,
-        defaultTimecardContext
-      );
-
-      act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
-        fireEvent.change(startTimeInput, {
-          target: { value: '08:00' },
-        });
-
-        const endTimeInput = screen.getByTestId('shift-finish-time');
-        fireEvent.change(endTimeInput, {
-          target: { value: '01:00' },
-        });
-
-        const saveButton = screen.getByText('Save');
-        fireEvent.click(saveButton);
-      });
-
-      await waitFor(() => {
-        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
-          timeEntryId,
-          {
-            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
-            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            actualStartTime: expectedActualStartTime,
-            actualEndTime: expectedActualEndTime,
-          },
-          new URLSearchParams([
-            ['tenantId', '00000000-0000-0000-0000-000000000000'],
-          ])
-        );
       });
     });
   });
