@@ -11,21 +11,19 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const displayClashingProperty = () => {
-    switch (clashingProperty) {
-      case 'startTime':
-        return <p>Your start time must not overlap with another time period</p>;
-      case 'endTime':
-        return (
-          <p>Your finish time must not overlap with another time period</p>
-        );
-      default:
-        return (
-          <p>
-            Your start and finish times must not overlap with another time
-            period
-          </p>
-        );
+    if (clashingProperty === 'startTime') {
+      return <p>Your start time must not overlap with another time period</p>;
     }
+
+    if (clashingProperty === 'endTime') {
+      return <p>Your finish time must not overlap with another time period</p>;
+    }
+
+    return (
+      <p>
+        Your start and finish times must not overlap with another time period
+      </p>
+    );
   };
 
   const displaySingleTimeClash = () => {
@@ -33,17 +31,17 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     let text;
 
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
-    switch (timePeriodType) {
-      case 'Shift':
-        text = `You are already assigned to work from ${startDateTime(
-          clash
-        )} to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`;
-        break;
-      default:
-        text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
-          clash.startTime
-        )}`;
+
+    if (timePeriodType === 'Shift') {
+      text = `You are already assigned to work from ${startDateTime(
+        clash
+      )} to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`;
+    } else {
+      text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
+        clash.startTime
+      )}`;
     }
+
     return <p>{text}</p>;
   };
 
@@ -73,16 +71,16 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
 
   const timePeriodClashToText = (clash) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
-    switch (timePeriodType) {
-      case 'Shift':
-        return `${startDateTime(clash)} to ${formatTime(
-          clash.endTime
-        )} on ${formatLongDate(clash.endTime)}`;
-      default:
-        return `${timePeriodType.toLowerCase()} on ${formatLongDate(
-          clash.startTime
-        )}`;
+
+    if (timePeriodType === 'Shift') {
+      return `${startDateTime(clash)} to ${formatTime(
+        clash.endTime
+      )} on ${formatLongDate(clash.endTime)}`;
     }
+
+    return `${timePeriodType.toLowerCase()} on ${formatLongDate(
+      clash.startTime
+    )}`;
   };
 
   const startDateTime = (clash) => {
