@@ -48,8 +48,12 @@ const StartFinishTimeInput = ({
             key={i}
             className="govuk-error-message govuk-!-margin-left-3"
           >
-            <span className="govuk-visually-hidden">Error:</span>
-            {errors[error]?.message}
+            {errors[error]?.message && (
+              <div>
+                <span className="govuk-visually-hidden">Error:</span>
+                {errors[error]?.message}
+              </div>
+            )}
           </div>
         ))}
       </div>
