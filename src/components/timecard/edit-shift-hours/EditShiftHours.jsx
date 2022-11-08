@@ -69,7 +69,7 @@ const EditShiftHours = ({
     const summaryErrors = {};
     let errorsHandled = true;
 
-    errors.map((error) => {
+    errors.forEach((error) => {
       if (error.field == 'startAndEndTime') {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
