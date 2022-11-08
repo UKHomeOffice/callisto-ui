@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-
 import {
   defaultApplicationContext,
   defaultTimecardContext,
@@ -16,11 +15,12 @@ import {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
-import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
+import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  finishNextDay: false,
 };
 
 const timecardService = require('../../../api/services/timecardService');
@@ -51,16 +51,15 @@ describe('EditShiftHours', () => {
     const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
 
     it('should call createTimeEntry when pressing save with no existing time entry', async () => {
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.timecardDate = timecardDate;
+      defaultTimecardContext.timecardDate = timecardDate;
 
       renderWithTimecardContext(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        defaultTimecardContext
       );
 
       act(() => {
@@ -99,16 +98,15 @@ describe('EditShiftHours', () => {
         endTime: '05:00',
       };
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.timecardDate = timecardDate;
+      defaultTimecardContext.timecardDate = timecardDate;
 
       renderWithTimecardContext(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        defaultTimecardContext
       );
 
       act(() => {
@@ -156,7 +154,7 @@ describe('EditShiftHours', () => {
           <EditShiftHours
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
-            index={0}
+            timeEntriesIndex={0}
           />,
           defaultTimecardContext,
           defaultApplicationContext
@@ -193,7 +191,7 @@ describe('EditShiftHours', () => {
           <EditShiftHours
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
-            index={0}
+            timeEntriesIndex={0}
           />,
           defaultTimecardContext,
           defaultApplicationContext
@@ -226,16 +224,12 @@ describe('EditShiftHours', () => {
       data: getApiResponseWithItems(shiftTimeEntry),
     });
 
-    const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-    mockTimecardContext.setTimeEntries = jest.fn();
-
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
-      />,
-      mockTimecardContext
+      />
     );
 
     const startTimeInput = screen.getByTestId('shift-start-time');
@@ -250,12 +244,13 @@ describe('EditShiftHours', () => {
     });
 
     await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
+      expect(defaultTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
-          startTime: '12:00',
-          finishTime: '22:00',
+          startTime: shiftTimeEntry.actualStartTime,
+          finishTime: shiftTimeEntry.actualEndTime,
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          finishNextDay: false,
         },
       ]);
     });
@@ -266,16 +261,12 @@ describe('EditShiftHours', () => {
       data: getApiResponseWithItems(shiftTimeEntryWithoutFinishTime),
     });
 
-    const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-    mockTimecardContext.setTimeEntries = jest.fn();
-
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
-      />,
-      mockTimecardContext
+      />
     );
 
     const startTimeInput = screen.getByTestId('shift-start-time');
@@ -287,12 +278,13 @@ describe('EditShiftHours', () => {
     });
 
     await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
+      expect(defaultTimecardContext.setTimeEntries).toHaveBeenCalledWith([
         {
-          startTime: '12:00',
+          startTime: shiftTimeEntryWithoutFinishTime.actualStartTime,
           finishTime: '',
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50004',
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          finishNextDay: false,
         },
       ]);
     });
@@ -303,7 +295,7 @@ describe('EditShiftHours', () => {
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
-        index={0}
+        timeEntriesIndex={0}
       />
     );
 
@@ -327,7 +319,7 @@ describe('EditShiftHours', () => {
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />
       );
 
@@ -355,7 +347,7 @@ describe('EditShiftHours', () => {
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />
       );
 
@@ -384,7 +376,7 @@ describe('EditShiftHours', () => {
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />
       );
 
@@ -412,7 +404,7 @@ describe('EditShiftHours', () => {
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
-          index={0}
+          timeEntriesIndex={0}
         />
       );
 
@@ -455,16 +447,14 @@ describe('EditShiftHours', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-
+      defaultTimecardContext.setSummaryErrors = jest.fn();
       renderWithTimecardContext(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        defaultTimecardContext
       );
 
       const startTimeInput = screen.getByTestId('shift-start-time');
@@ -479,7 +469,7 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-start-time': {
             message:
               'Your start and finish times must not overlap with another time period',
@@ -646,16 +636,14 @@ describe('EditShiftHours', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-
+      defaultTimecardContext.setSummaryErrors = jest.fn();
       renderWithTimecardContext(
         <EditShiftHours
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
         />,
-        mockTimecardContext
+        defaultTimecardContext
       );
 
       const startTimeInput = screen.getByTestId('shift-start-time');
@@ -670,7 +658,66 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+        expect(defaultTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should set finish date as next day when finish time is edited to less than start time', async () => {
+      const timeEntryId = '1';
+      const inputtedStartTime = '08:00';
+      const inputtedEndTime = '01:00';
+      const timecardDate = '2022-09-01';
+      const endDate = '2022-09-02';
+      const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
+      const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '08:00',
+        endTime: '10:00',
+        finishNextDay: true,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: '08:00' },
+        });
+
+        const endTimeInput = screen.getByTestId('shift-finish-time');
+        fireEvent.change(endTimeInput, {
+          target: { value: '01:00' },
+        });
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: expectedActualStartTime,
+            actualEndTime: expectedActualEndTime,
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
       });
     });
   });

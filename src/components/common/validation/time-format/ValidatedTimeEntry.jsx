@@ -1,4 +1,8 @@
 import PropTypes from 'prop-types';
+import { useTimecardContext } from '../../../../context/TimecardContext';
+import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
+import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
+import { isFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 const ValidatedTimeEntry = ({
   name,
@@ -7,7 +11,24 @@ const ValidatedTimeEntry = ({
   defaultValue,
   register,
   isRequired,
+  getFormValues,
+  timeEntry,
+  timeEntriesIndex,
 }) => {
+  const { timeEntries, setTimeEntries } = useTimecardContext();
+
+  const setFinishTimeText = () => {
+    const startTimeValue = getFormValues('shift-start-time');
+    const finishTimeValue = getFormValues('shift-finish-time');
+    const newTimeEntries = deepCloneJson(timeEntries);
+
+    const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+
+    newTimeEntries[timeEntriesIndex] =
+      ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
+    setTimeEntries(newTimeEntries);
+  };
+
   const isTimeValid = (time) => {
     if (time.length < 3 && time.length > 0) {
       const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
@@ -23,6 +44,7 @@ const ValidatedTimeEntry = ({
   };
 
   const errorMessage = `Enter a ${timeType} in the 24 hour clock format, for example, 08:00 or 0800`;
+
   return (
     <input
       id={name}
@@ -37,7 +59,10 @@ const ValidatedTimeEntry = ({
       } govuk-input--width-5`}
       defaultValue={defaultValue}
       data-testid={name}
+      autoComplete="off"
+      type="text"
       {...register(name, {
+        onBlur: () => setFinishTimeText(),
         required: {
           value: isRequired,
           message: errorMessage,
@@ -59,4 +84,8 @@ ValidatedTimeEntry.propTypes = {
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,
+  formState: PropTypes.any,
+  getFormValues: PropTypes.func.isRequired,
+  timeEntry: PropTypes.object.isRequired,
+  timeEntriesIndex: PropTypes.number.isRequired,
 };

@@ -32,6 +32,7 @@ const EditShiftHours = ({
     handleSubmit,
     formState: { errors },
     formState,
+    getValues,
   } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
@@ -51,6 +52,14 @@ const EditShiftHours = ({
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
+  };
+
+  const getFinishTimeDate = (actualStartDate) => {
+    if (timeEntry.finishNextDay) {
+      return formatDate(dayjs(actualStartDate).add(1, 'day'));
+    } else {
+      return actualStartDate;
+    }
   };
 
   const handleServerValidationErrors = (error) => {
@@ -98,9 +107,11 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    const actualEndDateTime = endTime
-      ? formatDateTimeISO(actualStartDate + ' ' + endTime)
-      : '';
+    let actualEndDateTime = '';
+    if (endTime) {
+      const actualEndDate = getFinishTimeDate(actualStartDate);
+      actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+    }
 
     const timecardPayload = {
       ownerId: userId,
@@ -126,9 +137,9 @@ const EditShiftHours = ({
 
         if (response?.data?.items?.length > 0) {
           const responseItem = response.data.items[0];
-          const formattedStartTime = formatTime(responseItem.actualStartTime);
+          const formattedStartTime = responseItem.actualStartTime;
           const formattedEndTime = responseItem.actualEndTime
-            ? formatTime(responseItem.actualEndTime)
+            ? responseItem.actualEndTime
             : '';
 
           const newTimeEntries = deepCloneJson(timeEntries);
@@ -137,7 +148,8 @@ const EditShiftHours = ({
           )
             .setStartTime(formattedStartTime)
             .setFinishTime(formattedEndTime)
-            .setTimeEntryId(responseItem.id);
+            .setTimeEntryId(responseItem.id)
+            .setFinishNextDay(timeEntry.finishNextDay);
 
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
@@ -201,8 +213,15 @@ const EditShiftHours = ({
           errors={getCombinedErrors()}
           register={register}
           formState={formState}
-          startTimeValue={timeEntry.startTime}
-          finishTimeValue={timeEntry.finishTime}
+          getFormValues={getValues}
+          timeEntry={timeEntry}
+          startTimeValue={
+            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
+          }
+          finishTimeValue={
+            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
+          }
+          timeEntriesIndex={timeEntriesIndex}
         />
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
