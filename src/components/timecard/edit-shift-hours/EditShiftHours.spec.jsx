@@ -482,7 +482,7 @@ describe('EditShiftHours', () => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-start-time': {
             message:
-            'Your start and finish times must not overlap with another time period',
+              'Your start and finish times must not overlap with another time period',
           },
         });
       });
@@ -534,7 +534,8 @@ describe('EditShiftHours', () => {
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-start-time': {
-            message: 'Your start time must not overlap with another time period',
+            message:
+              'Your start time must not overlap with another time period',
           },
         });
       });
