@@ -442,7 +442,13 @@ describe('EditShiftHours', () => {
             data: [
               {
                 field: 'startTime',
-                data: [{ timePeriodTypeId: 0, startTime: null, endTime: null }],
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
               },
             ],
           },

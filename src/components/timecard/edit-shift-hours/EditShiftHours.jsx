@@ -20,6 +20,7 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useState } from 'react';
+import TimeInputErrors from '../time-input-errors/TimeInputErrors';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -50,46 +51,6 @@ const EditShiftHours = ({
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
-  };
-
-  const formatTimeClashes = (timeClashes) => {
-    if (timeClashes.length > 1) {
-      var times = (
-        <div>
-          <p>You are already assigned to the following time periods:</p>
-          <ul>
-            {timeClashes.map((clash) => (
-              <li key="foo">{shiftClashToText(clash)}</li>
-            ))}
-          </ul>
-        </div>
-      );
-      return times;
-    } else {
-      var clash = timeClashes[0];
-      var startTime = Date.parse(clash.startTime);
-      var endTime = Date.parse(clash.endTime);
-      var text;
-      if (clash.timePeriodTypeId == '00000000-0000-0000-0000-000000000001') {
-        text = `You are already assigned to work from ${formatTime(
-          startTime
-        )} to ${formatTime(endTime)} on ${formatDate(startTime)}`;
-      } else {
-        text = `You are already assigned a scheduled rest day on ${formatDate(
-          startTime
-        )}`;
-      }
-      return <p>{text}</p>;
-    }
-  };
-
-  const shiftClashToText = (clash) => {
-    var startTime = Date.parse(clash.startTime);
-    var endTime = Date.parse(clash.endTime);
-    var clashText = `${formatTime(startTime)} to ${formatTime(
-      endTime
-    )} on ${formatDate(startTime)}`;
-    return clashText;
   };
 
   const handleServerValidationErrors = (error) => {
@@ -199,13 +160,10 @@ const EditShiftHours = ({
     if (clashingProperty == 'startAndEndTime') {
       combinedErrors['shift-start-time'] = {
         message: (
-          <div>
-            <p>
-              Your start and finish times must not overlap with another time
-              period
-            </p>
-            {formatTimeClashes(clashingTimes)}
-          </div>
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
         ),
       };
       combinedErrors['shift-finish-time'] = {
@@ -216,10 +174,10 @@ const EditShiftHours = ({
     if (clashingProperty == 'startTime') {
       combinedErrors['shift-start-time'] = {
         message: (
-          <div>
-            <p>Your start time must not overlap with another period</p>
-            {formatTimeClashes(clashingTimes)}
-          </div>
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
         ),
       };
     }
@@ -227,10 +185,10 @@ const EditShiftHours = ({
     if (clashingProperty == 'endTime') {
       combinedErrors['shift-finish-time'] = {
         message: (
-          <div>
-            <p>Your end time must not overlap with another period</p>
-            {formatTimeClashes(clashingTimes)}
-          </div>
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
         ),
       };
     }
