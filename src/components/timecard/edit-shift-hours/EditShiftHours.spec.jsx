@@ -15,7 +15,6 @@ import {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
-import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 
 const newTimeEntry = {
