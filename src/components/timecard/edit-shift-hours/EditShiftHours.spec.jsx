@@ -17,6 +17,7 @@ import {
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -25,6 +26,23 @@ const newTimeEntry = {
 const timecardService = require('../../../api/services/timecardService');
 const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
 const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
+
+const invalidTimes = [
+  '-00:01',
+  '24:00',
+  'abcd',
+  '!',
+  '25',
+  '13am',
+  '24pm',
+  '3p',
+  '6m',
+  '7a',
+  '4am',
+  '5pm',
+];
+
+const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
 
 describe('EditShiftHours', () => {
   describe('given time entries are to be persisted', () => {
@@ -296,13 +314,13 @@ describe('EditShiftHours', () => {
 
     await waitFor(() => {
       const errorMessage = screen.getByText(
-        'You must enter a start time in the HH:MM 24 hour clock format'
+        'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
       );
       expect(errorMessage).toBeTruthy();
     });
   });
 
-  test.each(['8:00', '-00:01', '24:00', 'abcd', '!'])(
+  test.each(invalidTimes)(
     'should display an error when pressing save with an invalid start time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -323,14 +341,14 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         const errorMessage = screen.getByText(
-          'You must enter a start time in the HH:MM 24 hour clock format'
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
         );
         expect(errorMessage).toBeTruthy();
       });
     }
   );
 
-  test.each(['00:00', '08:00', '23:59', '04:26', '0000'])(
+  test.each(validTimes)(
     'should not display an error when pressing save with a valid start time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -349,16 +367,17 @@ describe('EditShiftHours', () => {
         fireEvent.click(saveButton);
       });
 
-      await waitFor(() => {
-        const errorMessage = screen.queryByText(
-          'You must enter a start time in the HH:MM 24 hour clock format'
-        );
-        expect(errorMessage).toBeFalsy();
+      await expectNeverToHappen(() => {
+        expect(
+          screen.getByText(
+            'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+          )
+        ).toBeInTheDocument();
       });
     }
   );
 
-  test.each(['8:00', '-00:01', '24:00', 'abcd', '!'])(
+  test.each(invalidTimes)(
     'should display an error when pressing save with an invalid finish time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -379,14 +398,14 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         const errorMessage = screen.getByText(
-          'You must enter a finish time in the HH:MM 24 hour clock format'
+          'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
         );
         expect(errorMessage).toBeTruthy();
       });
     }
   );
 
-  test.each(['00:00', '08:00', '23:59', '04:26', '0000'])(
+  test.each(validTimes)(
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
       renderWithTimecardContext(
@@ -405,11 +424,12 @@ describe('EditShiftHours', () => {
         fireEvent.click(saveButton);
       });
 
-      await waitFor(() => {
-        const errorMessage = screen.queryByText(
-          'You must enter a finish time in the HH:MM 24 hour clock format'
-        );
-        expect(errorMessage).toBeFalsy();
+      await expectNeverToHappen(() => {
+        expect(
+          screen.getByText(
+            'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
+          )
+        ).toBeInTheDocument();
       });
     }
   );
