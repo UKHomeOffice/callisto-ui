@@ -132,3 +132,4 @@ steps:
         Repo: {{ repo.name }}
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}
+        <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
