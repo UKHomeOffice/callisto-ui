@@ -137,8 +137,6 @@ const updateTimeEntryContextData = async (
     .setFilters("ownerId=='" + userId + "'", ...filterTimeEntriesOnDate(date))
     .getUrlSearchParams();
 
-  const handleCustomErrors = () => {};
-
   validateServiceErrors(
     setServiceError,
     async () => {
@@ -166,7 +164,6 @@ const updateTimeEntryContextData = async (
         setTimeEntries([]);
       }
     },
-    handleCustomErrors,
     false
   );
 };

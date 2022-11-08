@@ -156,6 +156,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
+      true,
       handleServerValidationErrors
     );
   };
