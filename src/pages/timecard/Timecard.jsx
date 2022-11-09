@@ -8,8 +8,9 @@ import ErrorSummary from '../../components/common/form/error-summary/ErrorSummar
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
-  formatTime,
   formatDate,
+  formatTime,
+  isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -144,16 +145,21 @@ const updateTimeEntryContextData = async (
 
       if (timeEntriesResponse.data.items?.length > 0) {
         const existingTimeEntries = timeEntriesResponse.data.items.map(
-          (timeEntry) =>
-            new ContextTimeEntry(
+          (timeEntry) => {
+            return new ContextTimeEntry(
               timeEntry.id,
-              formatTime(timeEntry.actualStartTime),
-              timeEntry.actualEndTime
-                ? formatTime(timeEntry.actualEndTime)
-                : '',
-              timeEntry.timePeriodTypeId
-            )
+              timeEntry.actualStartTime,
+              timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+              timeEntry.timePeriodTypeId,
+              timeEntry.finishNextDay ??
+                isFinishTimeOnNextDay(
+                  formatTime(timeEntry.actualStartTime),
+                  formatTime(timeEntry.actualEndTime)
+                )
+            );
+          }
         );
+
         setTimeEntries(existingTimeEntries);
       } else {
         setTimeEntries([]);
