@@ -1,5 +1,6 @@
 import { ContextTimeEntry } from './ContextTimeEntry';
 import {
+  isFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
   removeTimecardContextEntry,
 } from './timeEntryUtils';
@@ -42,5 +43,49 @@ describe('timeEntryUtils', () => {
     const mockSetTimeEntries = jest.fn();
     removeTimecardContextEntry(existingTimeEntries, mockSetTimeEntries, 1);
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
+  });
+
+  describe('isFinishTimeOnNextDay', () => {
+    it('should return true when finish time is midnight', async () => {
+      const startTime = '12:03';
+      const finishTime = '00:00';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+    });
+
+    it('should return true when start time equals finish time', async () => {
+      const startTime = '11:59';
+      const finishTime = '11:59';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+    });
+
+    it('should return true when start time is one minute before finish time', async () => {
+      const startTime = '12:35';
+      const finishTime = '12:34';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+    });
+
+    it('should return false when finish time is one minute after start time', async () => {
+      const startTime = '12:03';
+      const finishTime = '12:04';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeFalsy();
+    });
+
+    it('should return false when finish time is empty', async () => {
+      const startTime = '08:00';
+      const finishTime = '';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeFalsy();
+    });
+
+    it('should return false when both start and finish time are empty', async () => {
+      const startTime = '';
+      const finishTime = '';
+
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeFalsy();
+    });
   });
 });

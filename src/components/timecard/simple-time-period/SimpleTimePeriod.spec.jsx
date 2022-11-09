@@ -161,6 +161,7 @@ describe('SimpleTimePeriod', () => {
             startTime: midnight,
             finishTime: midnight,
             timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
+            finishNextDay: false,
           },
         ]);
       });

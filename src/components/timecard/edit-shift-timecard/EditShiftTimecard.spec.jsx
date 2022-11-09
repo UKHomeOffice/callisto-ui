@@ -20,8 +20,8 @@ let existingTimeEntry;
 beforeEach(() => {
   existingTimeEntry = {
     timeEntryId: '00000000-0000-0000-0000-000000000001',
-    startTime: '08:00',
-    finishTime: '16:00',
+    startTime: '2022-11-01T08:00:00Z',
+    finishTime: '2022-11-01T16:00:00Z',
     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
   };
 });
@@ -265,7 +265,16 @@ describe('EditShiftTimecard', () => {
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
     });
 
-    it('should not display start and finish time on timecard when edit hours toggle is open', async () => {
+    it('should not display start and finish time with date on timecard when nothing has been entered', async () => {
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      );
+
+      expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+      expect(screen.queryByText('08:00 to 16:00 on 31 October')).toBeFalsy();
+    });
+
+    it('should not display start, finish time on timecard when edit hours toggle is open', async () => {
       renderWithTimecardContext(
         <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
@@ -279,6 +288,25 @@ describe('EditShiftTimecard', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+        expect(screen.queryByText('08:00 to 16:00 on 31 October')).toBeFalsy();
+      });
+    });
+
+    it('should not display start, finish time and date on timecard when edit hours toggle is open', async () => {
+      renderWithTimecardContext(
+        <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      );
+
+      expect(screen.getByText(`08:00 to 16:00`)).toBeTruthy();
+
+      act(() => {
+        const changeButton = screen.getByTestId('hours-change-button');
+        fireEvent.click(changeButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
+        expect(screen.queryByText('08:00 to 16:00 on 31 October')).toBeFalsy();
       });
     });
   });

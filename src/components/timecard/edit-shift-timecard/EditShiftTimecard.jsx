@@ -5,7 +5,11 @@ import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
-import { removeTimecardContextEntry } from '../../../utils/time-entry-utils/timeEntryUtils';
+import {
+  formatDateNoYear,
+  formatTime,
+  removeTimecardContextEntry,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
@@ -50,7 +54,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
             Shift
           </dt>
           <dd className="govuk-summary-list__value"></dd>
-          <dd className="govuk-summary-list__actions" style={{ width: '10%' }}>
+          <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
             {timeEntryExists && (
               <Link
                 onClick={handleClickRemoveShiftButton}
@@ -65,15 +69,25 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
         <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
           <dt
             className="govuk-summary-list__key"
-            style={{ paddingBottom: '20px', paddingTop: '20px' }}
+            style={{
+              paddingBottom: '20px',
+              paddingTop: '20px',
+            }}
           >
             Hours
           </dt>
-          <dd className="govuk-summary-list__value">
+          <dd
+            className="govuk-summary-list__value govuk-!-width-full"
+            style={{ whiteSpace: 'nowrap' }}
+          >
             {!showEditShiftHours &&
               timeEntryExists &&
-              `${timeEntry.startTime} to ${
-                timeEntry.finishTime ? timeEntry.finishTime : '-'
+              `${formatTime(timeEntry.startTime)} to ${
+                timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
+              } ${
+                timeEntry.finishNextDay
+                  ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
+                  : ''
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
