@@ -18,7 +18,9 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime || timeEntry?.startTime !== '';
-  const [showEditShiftHours, setShowEditShiftHours] = useState(!timeEntryExists);
+  const [showEditShiftHours, setShowEditShiftHours] = useState(
+    !timeEntryExists
+  );
 
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
@@ -26,10 +28,10 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   };
 
   useEffect(() => {
-    if(timeEntryExists === false){
+    if (timeEntryExists === false) {
       setShowEditShiftHours(true);
     }
-  })
+  });
 
   const handleClickRemoveShiftButton = async (event) => {
     event.preventDefault();
