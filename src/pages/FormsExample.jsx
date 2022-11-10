@@ -27,7 +27,6 @@ const FormsExample = () => {
 
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
           navigate('/');
         })}
       >
