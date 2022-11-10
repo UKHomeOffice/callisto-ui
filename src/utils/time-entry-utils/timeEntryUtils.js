@@ -37,7 +37,6 @@ export const removeTimecardContextEntry = (
 ) => {
   const newTimeEntries = deepCloneJson(timeEntries);
   newTimeEntries.splice(removeAtIndex, 1);
-  console.log('newTimeEntries', newTimeEntries);
   setTimeEntries(newTimeEntries);
 };
 
