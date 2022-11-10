@@ -28,8 +28,6 @@ beforeEach(() => {
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-  startTime: '',
-  finishTime: '',
 };
 
 const otherTimeEntry = {
