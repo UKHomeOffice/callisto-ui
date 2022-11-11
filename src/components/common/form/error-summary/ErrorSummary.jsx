@@ -15,7 +15,11 @@ const ErrorSummary = ({ errors, keys }) => {
       <div className="govuk-error-summary__body">
         <ul className="govuk-list govuk-error-summary__list" ref={errors}>
           {keys.map((key, i) => (
-            <li key={i} id={`summary-error-${i}`}>
+            <li
+              key={i}
+              id={`summary-error-${i}`}
+              data-testid="error-message-body"
+            >
               <HashLink id={`summary-error-${i}-message`} to={`#${key}`}>
                 {errors[key].message}
               </HashLink>

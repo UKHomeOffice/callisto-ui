@@ -28,7 +28,7 @@ export const validateServiceErrors = async (
 };
 
 export const focusErrors = () => {
-  const firstSummaryError = document.getElementById('summary-error-0-message');
+  const firstSummaryError = document.getElementById('error-summary-title');
   if (firstSummaryError) {
     firstSummaryError.scrollIntoView({
       block: 'center',

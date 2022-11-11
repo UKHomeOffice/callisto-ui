@@ -1,4 +1,6 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-test-renderer';
+import React from 'react';
 import {
   defaultApplicationContext,
   renderWithTimecardContext,
@@ -10,6 +12,11 @@ import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
+import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
+import EditShiftHours from '../../components/timecard/edit-shift-hours/EditShiftHours';
+import { ErrorSummary } from 'govuk-frontend';
+import * as focusErrors from '../../utils/api-utils/ApiUtils';
+import StartFinishTimeInput from '../../components/timecard/start-finish-time-input/StartFinishTimeInput';
 
 const date = '2022-07-01';
 const mockNavigate = jest.fn();
@@ -258,6 +265,72 @@ describe('Timecard', () => {
         name: 'Select another date',
       });
       expect(calendarLink.pathname).toBe('/calendar');
+    });
+  });
+  describe('Timecard', () => {
+    const focusErrorsSpy = jest.spyOn(focusErrors, 'focusErrors');
+    // const updateErrorMessagesSpy = jest.mock(
+    //   updateErrorMessages,
+    //   'updateErrorMessages'
+    // );
+    const testErrors = {
+      test: { inputName: 'test', message: 'Date cannot be blank' },
+      'test-day': { inputName: 'test-day', message: 'Enter a day' },
+      'test-month': { inputName: 'test-month', message: 'Enter a month' },
+      'test-year': { inputName: 'test-year', message: 'Enter a year' },
+    };
+    it('should generate error with focus', async () => {
+      // jest.spyOn(React, 'useEffect').mockImplementation((f) => f());
+      renderWithTimecardContext(
+        <Timecard>
+          <ErrorSummary
+            errors={testErrors}
+            keys={['test', 'test-day', 'test-month', 'test-year']}
+          >
+            <EditShiftTimecard>
+              <EditShiftHours
+                setShowEditShiftHours={jest.fn()}
+                timeEntriesIndex={0}
+                summaryErrors={jest.fn()}
+              >
+                <StartFinishTimeInput
+                  updateErrorMessages={jest.fn()}
+                ></StartFinishTimeInput>
+              </EditShiftHours>
+            </EditShiftTimecard>
+          </ErrorSummary>
+        </Timecard>,
+        {
+          summaryErrors: { testErrors },
+          setSummaryErrors: jest.fn(),
+          timeEntries: [
+            {
+              timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+              startTime: '2022-02-02T08:00:00Z',
+              finishTime: '2022-02-02T16:00:00Z',
+            },
+          ],
+          setTimeEntries: jest.fn(),
+          timecardDate: '',
+          setTimecardDate: jest.fn(),
+          newTimeEntry: false,
+        }
+      );
+
+      act(() => {
+        const addButton = screen.getByTestId('hours-change-button');
+        fireEvent.click(addButton);
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: '' },
+        });
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+      await waitFor(() => {
+        expect(focusErrorsSpy).toBeCalled();
+        expect(screen.getByText('There is a problem')).toBeTruthy();
+      });
     });
   });
 });
