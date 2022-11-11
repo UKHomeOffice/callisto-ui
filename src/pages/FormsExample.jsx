@@ -21,7 +21,9 @@ const FormsExample = () => {
   return (
     <>
       <h1 className="govuk-heading-xl">Forms example page</h1>
-      {errors && Object.keys(errors).length !== 0 && <ErrorSummary />}
+      {errors && Object.keys(errors).length !== 0 && (
+        <ErrorSummary errors={errors} />
+      )}
 
       <form
         onSubmit={handleSubmit((data) => {
