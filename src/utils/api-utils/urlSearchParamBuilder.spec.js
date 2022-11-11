@@ -1,3 +1,4 @@
+import { joinAndConditions } from '../filters/resource-filter-builder/resourceFilterBuilder';
 import { UrlSearchParamBuilder } from './UrlSearchParamBuilder';
 
 describe('UrlSearchParamBuilder', () => {
@@ -13,9 +14,8 @@ describe('UrlSearchParamBuilder', () => {
 
     it('should apply all filters to the filter parameter if multiple parameters are provided', () => {
       const urlSearchParamBuilder = new UrlSearchParamBuilder();
-      const filter1 = 'propertyA==5';
-      const filter2 = 'propertyB==9';
-      urlSearchParamBuilder.setFilters(filter1, filter2);
+      const filter = joinAndConditions('propertyA==5', 'propertyB==9');
+      urlSearchParamBuilder.setFilters(filter);
       expect(urlSearchParamBuilder.getUrlSearchParams().get('filter')).toEqual(
         'propertyA==5&&propertyB==9'
       );

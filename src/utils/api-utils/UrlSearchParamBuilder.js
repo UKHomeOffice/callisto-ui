@@ -19,13 +19,3 @@ export class UrlSearchParamBuilder {
     return this.params;
   }
 }
-
-export const joinWithAnd = (...filters) => {
-  console.log(filters.join('&&'));
-  return filters.join('&&');
-};
-
-export const joinWithOr = (...filters) => {
-  console.log(filters.join('||'));
-  return filters.join('||');
-};

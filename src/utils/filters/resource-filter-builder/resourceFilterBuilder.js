@@ -12,3 +12,11 @@ export const filterBeforeDate = (resourceDateProperty, date) => {
   );
   return `${resourceDateProperty}<='${beforeDate}'`;
 };
+
+export const joinAndConditions = (...filters) => {
+  return filters.join('&&');
+};
+
+export const joinOrConditions = (...filters) => {
+  return filters.join('||');
+};

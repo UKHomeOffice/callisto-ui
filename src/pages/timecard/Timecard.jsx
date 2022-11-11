@@ -12,18 +12,14 @@ import {
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
-import {
-  UrlSearchParamBuilder,
-  joinWithAnd,
-  joinWithOr,
-} from '../../utils/api-utils/UrlSearchParamBuilder';
+import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
-import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
+import { buildTimeCardFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
@@ -135,22 +131,9 @@ const updateTimeEntryContextData = async (
   setServiceError,
   userId
 ) => {
-  const startDateFilter = joinWithAnd(
-    ...filterTimeEntriesOnDate('actualStartTime', date)
-  );
-
-  const endDateFilter = joinWithAnd(
-    ...filterTimeEntriesOnDate('actualEndTime', date)
-  );
-
-  const timeCardFilter = joinWithOr(startDateFilter, endDateFilter);
-
-  const finalTimeCardFilter = "ownerId=='" + userId + "'&&" + timeCardFilter;
-  console.log(finalTimeCardFilter);
-
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters(finalTimeCardFilter)
+    .setFilters(buildTimeCardFilter((date, userId)))
     .getUrlSearchParams();
 
   const handleCustomErrors = () => {};
