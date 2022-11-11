@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import React from 'react';
 import {
   defaultApplicationContext,
   renderWithTimecardContext,
