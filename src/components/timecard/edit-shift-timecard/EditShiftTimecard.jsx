@@ -80,12 +80,10 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           >
             {!showEditShiftHours &&
               timeEntryExists &&
-              `${formatTime(timeEntry.startTime)} to ${
-                timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
-              } ${
-                timeEntry.finishNextDay
-                  ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
-                  : ''
+              `${formatTime(timeEntry.startTime)} to ${timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
+              } ${timeEntry.finishNextDay
+                ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
+                : ''
               }`}
           </dd>
           <dd className="govuk-summary-list__actions">
