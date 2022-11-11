@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import { useTimecardContext } from '../../../context/TimecardContext';
 
 import Radios from '../../common/form/radios/Radios';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { focusErrors } from '../../../utils/api-utils/ApiUtils';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -25,12 +27,21 @@ const SelectTimecardPeriodType = () => {
 
   const radioName = 'timePeriod';
 
-  const { timeEntries, setTimeEntries, setSummaryErrors, setNewTimeEntry } =
-    useTimecardContext();
+  const {
+    timeEntries,
+    setTimeEntries,
+    summaryErrors,
+    setSummaryErrors,
+    setNewTimeEntry,
+  } = useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
   };
+
+  useEffect(() => {
+    focusErrors();
+  }, [summaryErrors]);
 
   return (
     <>

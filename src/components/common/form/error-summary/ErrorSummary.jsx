@@ -4,16 +4,9 @@ import { HashLink } from 'react-router-hash-link';
 const ErrorSummary = ({ errors, keys }) => {
   const callbackRef = (summaryErrorList) => {
     if (summaryErrorList) {
-      const firstSummaryError =
-        summaryErrorList.children['summary-error-0'].children[
-          'summary-error-0-message'
-        ];
-      firstSummaryError.scrollIntoView({
-        block: 'center',
-        inline: 'center',
-        behaviour: 'smooth',
-      });
-      firstSummaryError.focus();
+      summaryErrorList.children['summary-error-0'].children[
+        'summary-error-0-message'
+      ];
     }
   };
 
