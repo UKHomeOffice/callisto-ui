@@ -20,32 +20,32 @@ describe('common-utils', () => {
       expect(result).not.toBe(input);
       expect(result).toEqual(input);
     });
+  });
 
-    it('summary error should have focus and scroll into view', () => {
-      const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
-      const testErrors = {
-        test: { inputName: 'test', message: 'Date cannot be blank' },
-        'test-day': { inputName: 'test-day', message: 'Enter a day' },
-        'test-month': { inputName: 'test-month', message: 'Enter a month' },
-        'test-year': { inputName: 'test-year', message: 'Enter a year' },
-      };
-      renderWithTimecardContext(
-        <ErrorSummary
-          errors={testErrors}
-          keys={['test', 'test-day', 'test-month', 'test-year']}
-        />
-      );
-      const errorSummary = screen.getByText('Date cannot be blank');
-      focusErrors(errorSummary);
-      expect(scroll).toBeCalled();
-      expect(errorSummary).toHaveFocus;
-    });
+  it('should set the summary error to have focus and scroll into view', () => {
+    const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
+    const testErrors = {
+      test: { inputName: 'test', message: 'Date cannot be blank' },
+      'test-day': { inputName: 'test-day', message: 'Enter a day' },
+      'test-month': { inputName: 'test-month', message: 'Enter a month' },
+      'test-year': { inputName: 'test-year', message: 'Enter a year' },
+    };
+    renderWithTimecardContext(
+      <ErrorSummary
+        errors={testErrors}
+        keys={['test', 'test-day', 'test-month', 'test-year']}
+      />
+    );
+    const errorSummary = screen.getByText('Date cannot be blank');
+    focusErrors(errorSummary);
+    expect(scroll).toBeCalled();
+    expect(errorSummary).toHaveFocus;
+  });
 
-    it('summary error should not scroll into view', () => {
-      const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
-      const errorSummary = '';
-      focusErrors(errorSummary);
-      expect(scroll).toBeCalledTimes(0);
-    });
+  it('should set the summary error to not scroll into view', () => {
+    const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
+    const errorSummary = '';
+    focusErrors(errorSummary);
+    expect(scroll).toBeCalledTimes(0);
   });
 });
