@@ -4,10 +4,10 @@ import {
   filterBeforeDate,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-export const filterTimeEntriesOnDate = (date) => {
-  const startOfDateFilter = filterOnOrAfterDate('actualStartTime', date);
+export const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
+  const startOfDateFilter = filterOnOrAfterDate(resourceDateProperty, date);
   const endOfDateFilter = filterBeforeDate(
-    'actualStartTime',
+    resourceDateProperty,
     dayjs(date).add(1, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];

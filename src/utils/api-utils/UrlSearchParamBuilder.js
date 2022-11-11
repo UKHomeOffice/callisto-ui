@@ -10,8 +10,8 @@ export class UrlSearchParamBuilder {
     return this;
   }
 
-  setFilters(...filters) {
-    this.params.append('filter', filters.join('&&'));
+  setFilters(filter) {
+    this.params.append('filter', filter);
     return this;
   }
 
@@ -19,3 +19,13 @@ export class UrlSearchParamBuilder {
     return this.params;
   }
 }
+
+export const joinWithAnd = (...filters) => {
+  console.log(filters.join('&&'));
+  return filters.join('&&');
+};
+
+export const joinWithOr = (...filters) => {
+  console.log(filters.join('||'));
+  return filters.join('||');
+};

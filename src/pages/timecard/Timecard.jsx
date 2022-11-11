@@ -12,7 +12,11 @@ import {
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
-import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
+import {
+  UrlSearchParamBuilder,
+  joinWithAnd,
+  joinWithOr,
+} from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
@@ -131,9 +135,22 @@ const updateTimeEntryContextData = async (
   setServiceError,
   userId
 ) => {
+  const startDateFilter = joinWithAnd(
+    ...filterTimeEntriesOnDate('actualStartTime', date)
+  );
+
+  const endDateFilter = joinWithAnd(
+    ...filterTimeEntriesOnDate('actualEndTime', date)
+  );
+
+  const timeCardFilter = joinWithOr(startDateFilter, endDateFilter);
+
+  const finalTimeCardFilter = "ownerId=='" + userId + "'&&" + timeCardFilter;
+  console.log(finalTimeCardFilter);
+
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters("ownerId=='" + userId + "'", ...filterTimeEntriesOnDate(date))
+    .setFilters(finalTimeCardFilter)
     .getUrlSearchParams();
 
   const handleCustomErrors = () => {};
