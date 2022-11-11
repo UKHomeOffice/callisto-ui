@@ -30,9 +30,8 @@ export const buildTimeCardFilter = (date, userId) => {
   );
 
   const timeCardFilter = joinAndConditions(
-    "ownerId=='" + userId,
+    "ownerId=='" + userId + "'",
     joinedStartEndDate
   );
-  console.log(timeCardFilter);
   return timeCardFilter;
 };

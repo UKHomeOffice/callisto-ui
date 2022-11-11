@@ -133,7 +133,7 @@ const updateTimeEntryContextData = async (
 ) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters(buildTimeCardFilter((date, userId)))
+    .setFilters(buildTimeCardFilter(date, userId))
     .getUrlSearchParams();
 
   const handleCustomErrors = () => {};
