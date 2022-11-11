@@ -7,7 +7,7 @@ import Radios from '../../common/form/radios/Radios';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
-import { focusErrors } from '../../../utils/api-utils/ApiUtils';
+import { focusErrors } from '../../../utils/common-utils/common-utils';
 
 const SelectTimecardPeriodType = () => {
   const {
@@ -40,7 +40,7 @@ const SelectTimecardPeriodType = () => {
   };
 
   useEffect(() => {
-    focusErrors();
+    focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
 
   return (

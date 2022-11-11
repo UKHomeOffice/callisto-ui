@@ -26,15 +26,3 @@ export const validateServiceErrors = async (
     });
   }
 };
-
-export const focusErrors = () => {
-  const firstSummaryError = document.getElementById('error-summary-title');
-  if (firstSummaryError) {
-    firstSummaryError.scrollIntoView({
-      block: 'center',
-      inline: 'center',
-      behaviour: 'smooth',
-    });
-    firstSummaryError.focus();
-  }
-};
