@@ -63,27 +63,27 @@ const EditShiftHours = ({
   };
 
   const handleServerValidationErrors = (errors) => {
-    if (errors == null || !Array.isArray(errors)) {
+    if (errors === null || !Array.isArray(errors)) {
       return false;
     }
     const summaryErrors = {};
     let errorsHandled = true;
 
     errors.forEach((error) => {
-      if (error.field == 'startAndEndTime') {
+      if (error.field === 'startAndEndTime') {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors['shift-start-time'] = {
           message:
             'Your start and finish times must not overlap with another time period',
         };
-      } else if (error.field == 'startTime') {
+      } else if (error.field === 'startTime') {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors['shift-start-time'] = {
           message: 'Your start time must not overlap with another time period',
         };
-      } else if (error.field == 'endTime') {
+      } else if (error.field === 'endTime') {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors['shift-finish-time'] = {
@@ -134,10 +134,10 @@ const EditShiftHours = ({
         const response = !timeEntry.timeEntryId
           ? await createTimeEntry(timecardPayload, params)
           : await updateTimeEntry(
-              timeEntry.timeEntryId,
-              timecardPayload,
-              params
-            );
+            timeEntry.timeEntryId,
+            timecardPayload,
+            params
+          );
 
         if (response?.data?.items?.length > 0) {
           const responseItem = response.data.items[0];
@@ -171,7 +171,7 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    if (clashingProperty == 'startAndEndTime') {
+    if (clashingProperty === 'startAndEndTime') {
       combinedErrors['shift-start-time'] = {
         message: (
           <TimeInputErrors
@@ -185,7 +185,7 @@ const EditShiftHours = ({
       };
     }
 
-    if (clashingProperty == 'startTime') {
+    if (clashingProperty === 'startTime') {
       combinedErrors['shift-start-time'] = {
         message: (
           <TimeInputErrors
@@ -196,7 +196,7 @@ const EditShiftHours = ({
       };
     }
 
-    if (clashingProperty == 'endTime') {
+    if (clashingProperty === 'endTime') {
       combinedErrors['shift-finish-time'] = {
         message: (
           <TimeInputErrors
