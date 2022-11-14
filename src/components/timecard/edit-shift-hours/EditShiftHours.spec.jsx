@@ -563,5 +563,47 @@ describe('EditShiftHours', () => {
         );
       });
     });
+    it('should generate an error message with focus errors called', async () => {
+      const focusErrors = jest.fn();
+      const timeEntryId = '1';
+      const timecardDate = '2022-09-01';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '08:00',
+        endTime: '10:00',
+        finishNextDay: true,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId('shift-start-time');
+        fireEvent.change(startTimeInput, {
+          target: { value: '' },
+        });
+
+        const endTimeInput = screen.getByTestId('shift-finish-time');
+        fireEvent.change(endTimeInput, {
+          target: { value: '01:00' },
+        });
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+      await waitFor(() => {
+        expect(focusErrors.toHaveBeenCalled);
+      });
+    });
   });
 });

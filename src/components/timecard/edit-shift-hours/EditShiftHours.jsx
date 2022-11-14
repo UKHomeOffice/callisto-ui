@@ -17,8 +17,12 @@ import {
   formatTime,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
-import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import {
+  deepCloneJson,
+  focusErrors,
+} from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
+import { useEffect } from 'react';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -45,6 +49,11 @@ const EditShiftHours = ({
     summaryErrors,
     setSummaryErrors,
   } = useTimecardContext();
+
+  useEffect(() => {
+    focusErrors(document.getElementById('summary-error-0-message'));
+  }, [summaryErrors]);
+
   const { userId } = useApplicationContext();
 
   const handleError = (errorFields) => {

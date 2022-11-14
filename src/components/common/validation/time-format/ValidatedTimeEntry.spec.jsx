@@ -15,7 +15,7 @@ describe('ValidatedTimeEntry', () => {
         timeType="start time"
         errors={{}}
         register={jest.fn()}
-        getValues={jest.fn()}
+        getFormValues={jest.fn()}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
       />
@@ -31,7 +31,7 @@ describe('ValidatedTimeEntry', () => {
         timeType="finish time"
         errors={{}}
         register={jest.fn()}
-        getValues={jest.fn()}
+        geFormValues={jest.fn()}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
       />
