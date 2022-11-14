@@ -10,7 +10,7 @@ export class UrlSearchParamBuilder {
     return this;
   }
 
-  setFilters(filter) {
+  setFilter(filter) {
     this.params.append('filter', filter);
     return this;
   }

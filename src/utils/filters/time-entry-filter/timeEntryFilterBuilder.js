@@ -6,7 +6,7 @@ import {
   joinAndConditions,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-export const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
+const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
   const startOfDateFilter = filterOnOrAfterDate(resourceDateProperty, date);
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
@@ -15,7 +15,7 @@ export const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
   return [startOfDateFilter, endOfDateFilter];
 };
 
-export const buildTimeCardFilter = (date, userId) => {
+export const buildTimeEntriesFilter = (date, userId) => {
   const startDateFilterCondition = joinAndConditions(
     ...filterTimeEntriesOnDate('actualStartTime', date)
   );

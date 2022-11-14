@@ -290,7 +290,7 @@ const shiftTimeCardPeriodType = {
   ],
 };
 
-const timeCardShiftFilter =
+const timeEntryFilter =
   "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='20220-10-29T00:00:00+00:00'&&actualStartTime<='20220-10-29T23:59:00+00:00'||actualEndTime>='20220-10-29T00:00:00+00:00'&&actualEndTime<='20220-10-29T23:59:00+00:00'";
 
 module.exports = {
@@ -301,7 +301,7 @@ module.exports = {
   nwdEntry,
   timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
-  timeCardShiftFilter,
+  timeEntryFilter,
   shiftTimeCardPeriodType,
   accruals,
   people,
