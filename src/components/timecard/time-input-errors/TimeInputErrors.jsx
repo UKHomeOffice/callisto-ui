@@ -33,7 +33,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      text = `You are already assigned to work from ${startDateTime(
+      text = `You are already assigned to work from ${formatStartDateTime(
         clash
       )} to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`;
     } else {
@@ -73,7 +73,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      return `${startDateTime(clash)} to ${formatTime(
+      return `${formatStartDateTime(clash)} to ${formatTime(
         clash.endTime
       )} on ${formatLongDate(clash.endTime)}`;
     }
@@ -83,7 +83,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     )}`;
   };
 
-  const startDateTime = (clash) => {
+  const formatStartDateTime = (clash) => {
     const startTime = new Date(clash.startTime);
     const endTime = new Date(clash.endTime);
     let startDate = '';
