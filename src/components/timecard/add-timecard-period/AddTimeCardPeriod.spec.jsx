@@ -42,7 +42,7 @@ describe('AddTimeCardPeriod component', () => {
     });
 
     await waitFor(() => {
-      expect(setSummarryErrorsSpy).toHaveBeenCalledWith({});
+      expect(setSummaryErrorsSpy).toHaveBeenCalledWith({});
       expect(setNewTimeEntrySpy).toHaveBeenCalledWith(true);
     });
   });
