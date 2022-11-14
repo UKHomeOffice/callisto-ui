@@ -28,12 +28,12 @@ describe('AddTimeCardPeriod component', () => {
 
   it('should call setNewTimeEntry when the add button is clicked', async () => {
     const setNewTimeEntrySpy = jest.fn();
-    const setSummarryErrorsSpy = jest.fn();
+    const setSummaryErrorsSpy = jest.fn();
 
     renderWithTimecardContext(<AddTimeCardPeriod timecardEmpty={false} />, {
       newTimeEntry: true,
       setNewTimeEntry: setNewTimeEntrySpy,
-      setSummaryErrors: setSummarryErrorsSpy,
+      setSummaryErrors: setSummaryErrorsSpy,
     });
 
     act(() => {

@@ -51,7 +51,7 @@ const EditShiftHours = ({
   } = useTimecardContext();
 
   useEffect(() => {
-    focusErrors(document.getElementById('error-summary-0-message'));
+    focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
 
   const { userId } = useApplicationContext();
