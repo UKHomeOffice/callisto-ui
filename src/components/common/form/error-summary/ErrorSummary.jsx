@@ -13,7 +13,7 @@ const ErrorSummary = ({ errors, keys }) => {
         There is a problem
       </h2>
       <div className="govuk-error-summary__body">
-        <ul className="govuk-list govuk-error-summary__list" ref={errors}>
+        <ul className="govuk-list govuk-error-summary__list">
           {keys.map((key, i) => (
             <li
               key={i}
