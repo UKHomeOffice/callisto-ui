@@ -27,6 +27,11 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const displaySingleTimeClash = () => {
+    if (clashes.length === 0) {
+      throw new Error(
+        'The time clashes data did not contain at least one time clash.'
+      );
+    }
     const clash = clashes[0];
     let text;
 

@@ -174,16 +174,24 @@ const EditShiftHours = ({
       />
     );
 
-    if (clashingProperty === 'startTime' || clashingProperty === 'endTime') {
-      combinedErrors['shift-start-time'] = {
-        message: timeInputErrors,
-      };
-    } else if (clashingProperty === 'startAndEndTime') {
+    if (clashingProperty === 'startAndEndTime') {
       combinedErrors['shift-start-time'] = {
         message: timeInputErrors,
       };
       combinedErrors['shift-finish-time'] = {
         message: '',
+      };
+    }
+
+    if (clashingProperty === 'startTime') {
+      combinedErrors['shift-start-time'] = {
+        message: timeInputErrors,
+      };
+    }
+
+    if (clashingProperty === 'endTime') {
+      combinedErrors['shift-finish-time'] = {
+        message: timeInputErrors,
       };
     }
 
