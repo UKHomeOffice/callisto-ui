@@ -3,6 +3,7 @@ import {
   buildTimeCardFilter,
   filterTimeEntriesOnDate,
 } from './timeEntryFilterBuilder';
+import { timeCardShiftFilter } from '../../../../mocks/mockData';
 
 describe('timeEntryFilterBuilder', () => {
   describe('filterTimeEntriesOnDate', () => {
@@ -29,9 +30,7 @@ describe('timeEntryFilterBuilder', () => {
         dateTime,
         '00000000-0000-0000-0000-000000000000'
       );
-      expect(filter).toEqual(
-        "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='20220-10-29T00:00:00+00:00'&&actualStartTime<='20220-10-29T23:59:00+00:00'||actualEndTime>='20220-10-29T00:00:00+00:00'&&actualEndTime<='20220-10-29T23:59:00+00:00'"
-      );
+      expect(filter).toEqual(timeCardShiftFilter);
     });
   });
 });
