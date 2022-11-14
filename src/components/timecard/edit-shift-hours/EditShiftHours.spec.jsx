@@ -636,7 +636,8 @@ describe('EditShiftHours', () => {
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
           'shift-finish-time': {
-            message: 'Your end time must not overlap with another time period',
+            message:
+              'Your finish time must not overlap with another time period',
           },
         });
       });

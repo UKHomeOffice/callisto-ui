@@ -87,7 +87,7 @@ const EditShiftHours = ({
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors['shift-finish-time'] = {
-          message: 'Your end time must not overlap with another time period',
+          message: 'Your finish time must not overlap with another time period',
         };
       } else {
         errorsHandled = false;
@@ -171,39 +171,23 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    if (clashingProperty === 'startAndEndTime') {
+    var timeInputErrors = (
+      <TimeInputErrors
+        clashingProperty={clashingProperty}
+        clashes={clashingTimes}
+      />
+    );
+
+    if (clashingProperty === 'startTime' || clashingProperty === 'endTime') {
       combinedErrors['shift-start-time'] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
+        message: timeInputErrors,
+      };
+    } else if (clashingProperty === 'startAndEndTime') {
+      combinedErrors['shift-start-time'] = {
+        message: timeInputErrors,
       };
       combinedErrors['shift-finish-time'] = {
         message: '',
-      };
-    }
-
-    if (clashingProperty === 'startTime') {
-      combinedErrors['shift-start-time'] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
-      };
-    }
-
-    if (clashingProperty === 'endTime') {
-      combinedErrors['shift-finish-time'] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
       };
     }
 
