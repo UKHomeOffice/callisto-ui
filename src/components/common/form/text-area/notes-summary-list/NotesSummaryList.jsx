@@ -7,6 +7,7 @@ const NotesSummaryList = () => {
   const [addNote, setAddNote] = useState(false);
 
   const handleClick = () => {
+    event.preventDefault();
     setAddNote(!addNote);
   };
 
