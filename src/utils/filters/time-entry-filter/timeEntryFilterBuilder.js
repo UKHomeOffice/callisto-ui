@@ -5,7 +5,7 @@ import {
 } from '../resource-filter-builder/resourceFilterBuilder';
 
 export const filterTimeEntriesOnDate = (date) => {
-  const startOfDateFilter = filterOnOrAfterDate('actualEndTime', date);
+  const startOfDateFilter = filterOnOrAfterDate('actualStartTime', date);
   const endOfDateFilter = filterBeforeDate(
     'actualStartTime',
     dayjs(date).add(1, 'day')
