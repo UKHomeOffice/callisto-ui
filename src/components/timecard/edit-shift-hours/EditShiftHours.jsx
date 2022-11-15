@@ -169,31 +169,35 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    const timeInputErrors = (
-      <TimeInputErrors
-        clashingProperty={clashingProperty}
-        clashes={clashingTimes}
-      />
-    );
-
     if (clashingProperty === ClashingProperty.startAndEndTime) {
       combinedErrors[inputNames.shiftStartTime] = {
-        message: timeInputErrors,
+        message: (
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
+        ),
       };
       combinedErrors[inputNames.shiftFinishTime] = {
         message: '',
       };
-    }
-
-    if (clashingProperty === ClashingProperty.startTime) {
+    } else if (clashingProperty === ClashingProperty.startTime) {
       combinedErrors[inputNames.shiftStartTime] = {
-        message: timeInputErrors,
+        message: (
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
+        ),
       };
-    }
-
-    if (clashingProperty === ClashingProperty.endTime) {
+    } else if (clashingProperty === ClashingProperty.endTime) {
       combinedErrors[inputNames.shiftFinishTime] = {
-        message: timeInputErrors,
+        message: (
+          <TimeInputErrors
+            clashingProperty={clashingProperty}
+            clashes={clashingTimes}
+          />
+        ),
       };
     }
 
