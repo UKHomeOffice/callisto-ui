@@ -2,13 +2,36 @@ import dayjs from 'dayjs';
 import {
   filterOnOrAfterDate,
   filterBeforeDate,
+  joinOrConditions,
+  joinAndConditions,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-export const filterTimeEntriesOnDate = (date) => {
-  const startOfDateFilter = filterOnOrAfterDate('actualStartTime', date);
+const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
+  const startOfDateFilter = filterOnOrAfterDate(resourceDateProperty, date);
   const endOfDateFilter = filterBeforeDate(
-    'actualStartTime',
+    resourceDateProperty,
     dayjs(date).add(1, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];
+};
+
+export const buildTimeEntriesFilter = (date, userId) => {
+  const startDateFilterCondition = joinAndConditions(
+    ...filterTimeEntriesOnDate('actualStartTime', date)
+  );
+
+  const endDateFilterCondition = joinAndConditions(
+    ...filterTimeEntriesOnDate('actualEndTime', date)
+  );
+
+  const joinedStartEndDate = joinOrConditions(
+    startDateFilterCondition,
+    endDateFilterCondition
+  );
+
+  const timeCardFilter = joinAndConditions(
+    "ownerId=='" + userId + "'",
+    joinedStartEndDate
+  );
+  return timeCardFilter;
 };

@@ -19,10 +19,14 @@ import {
   inputNames,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
-import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import {
+  deepCloneJson,
+  focusErrors,
+} from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useState } from 'react';
 import TimeInputErrors from '../time-input-errors/TimeInputErrors';
+import { useEffect } from 'react';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -49,8 +53,13 @@ const EditShiftHours = ({
     summaryErrors,
     setSummaryErrors,
   } = useTimecardContext();
+
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
+
+  useEffect(() => {
+    focusErrors(document.getElementById('summary-error-0-message'));
+  }, [summaryErrors]);
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);

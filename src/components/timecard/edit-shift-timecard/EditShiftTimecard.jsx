@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import EditShiftHours from '../edit-shift-hours/EditShiftHours';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
@@ -14,19 +14,25 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
+  const { setServiceError } = useApplicationContext();
+  const { timeEntries, setTimeEntries, setSummaryErrors } =
+    useTimecardContext();
+
+  const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
+  const [showEditShiftHours, setShowEditShiftHours] = useState(
+    !timeEntryExists
+  );
+
   const toggleEditShiftHours = (event) => {
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
 
-  const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, setSummaryErrors } =
-    useTimecardContext();
-
-  const timeEntryExists = !!timeEntry?.startTime;
-  const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timeEntryExists
-  );
+  useEffect(() => {
+    if (timeEntryExists === false) {
+      setShowEditShiftHours(true);
+    }
+  });
 
   const handleClickRemoveShiftButton = async (event) => {
     event.preventDefault();
