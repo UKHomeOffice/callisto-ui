@@ -4,6 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
 import ValidatedTimeEntry from './ValidatedTimeEntry';
+import { inputNames } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 describe('ValidatedTimeEntry', () => {
   const timeEntry = new ContextTimeEntry();
@@ -11,7 +12,7 @@ describe('ValidatedTimeEntry', () => {
   it('should render start time correctly', () => {
     const component = renderWithTimecardContext(
       <ValidatedTimeEntry
-        name="shift-start-time"
+        name={inputNames.shiftStartTime}
         timeType="start time"
         errors={{}}
         register={jest.fn()}
@@ -27,7 +28,7 @@ describe('ValidatedTimeEntry', () => {
   it('should render finish time correctly', () => {
     const component = renderWithTimecardContext(
       <ValidatedTimeEntry
-        name="shift-finish-time"
+        name={inputNames.shiftFinishTime}
         timeType="finish time"
         errors={{}}
         register={jest.fn()}

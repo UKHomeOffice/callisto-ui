@@ -12,6 +12,7 @@ import {
   getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
+  inputNames,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -42,8 +43,8 @@ const Timecard = () => {
   const nextDay = formatDate(dayjs(date).add(1, 'day'));
 
   const desiredErrorOrder = [
-    'shift-start-time',
-    'shift-finish-time',
+    inputNames.shiftStartTime,
+    inputNames.shiftFinishTime,
     'timePeriod',
   ];
 

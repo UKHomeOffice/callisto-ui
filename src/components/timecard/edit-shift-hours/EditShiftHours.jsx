@@ -12,9 +12,11 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
+  ClashingProperty,
   formatDate,
   formatDateTimeISO,
   formatTime,
+  inputNames,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
@@ -69,23 +71,23 @@ const EditShiftHours = ({
     const summaryErrors = {};
 
     errors.forEach((error) => {
-      if (error.field === 'startAndEndTime') {
+      if (error.field === ClashingProperty.startAndEndTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
-        summaryErrors['shift-start-time'] = {
+        summaryErrors[inputNames.shiftStartTime] = {
           message:
             'Your start and finish times must not overlap with another time period',
         };
-      } else if (error.field === 'startTime') {
+      } else if (error.field === ClashingProperty.startTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
-        summaryErrors['shift-start-time'] = {
+        summaryErrors[inputNames.shiftStartTime] = {
           message: 'Your start time must not overlap with another time period',
         };
-      } else if (error.field === 'endTime') {
+      } else if (error.field === ClashingProperty.endTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
-        summaryErrors['shift-finish-time'] = {
+        summaryErrors[inputNames.shiftFinishTime] = {
           message: 'Your finish time must not overlap with another time period',
         };
       } else {
@@ -167,30 +169,30 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    var timeInputErrors = (
+    const timeInputErrors = (
       <TimeInputErrors
         clashingProperty={clashingProperty}
         clashes={clashingTimes}
       />
     );
 
-    if (clashingProperty === 'startAndEndTime') {
-      combinedErrors['shift-start-time'] = {
+    if (clashingProperty === ClashingProperty.startAndEndTime) {
+      combinedErrors[inputNames.shiftStartTime] = {
         message: timeInputErrors,
       };
-      combinedErrors['shift-finish-time'] = {
+      combinedErrors[inputNames.shiftFinishTime] = {
         message: '',
       };
     }
 
-    if (clashingProperty === 'startTime') {
-      combinedErrors['shift-start-time'] = {
+    if (clashingProperty === ClashingProperty.startTime) {
+      combinedErrors[inputNames.shiftStartTime] = {
         message: timeInputErrors,
       };
     }
 
-    if (clashingProperty === 'endTime') {
-      combinedErrors['shift-finish-time'] = {
+    if (clashingProperty === ClashingProperty.endTime) {
+      combinedErrors[inputNames.shiftFinishTime] = {
         message: timeInputErrors,
       };
     }

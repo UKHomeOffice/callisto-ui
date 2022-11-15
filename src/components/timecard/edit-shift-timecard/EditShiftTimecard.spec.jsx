@@ -12,6 +12,7 @@ import {
   defaultTimecardContext,
   renderWithTimecardContext,
 } from '../../../test/helpers/TimecardContext';
+import { inputNames } from '../../../utils/time-entry-utils/timeEntryUtils';
 import EditShiftTimecard from './EditShiftTimecard';
 
 jest.mock('../../../api/services/timecardService');
@@ -68,8 +69,8 @@ describe('EditShiftTimecard', () => {
       <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });

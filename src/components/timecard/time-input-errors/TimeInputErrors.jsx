@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import {
+  ClashingProperty,
   formatLongDate,
   formatTime,
   getTimePeriodTypesMap,
@@ -11,11 +12,11 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const displayClashingProperty = () => {
-    if (clashingProperty === 'startTime') {
+    if (clashingProperty === ClashingProperty.startTime) {
       return <p>Your start time must not overlap with another time period</p>;
     }
 
-    if (clashingProperty === 'endTime') {
+    if (clashingProperty === ClashingProperty.endTime) {
       return <p>Your finish time must not overlap with another time period</p>;
     }
 
@@ -51,7 +52,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const displayMultipleTimeClashes = () => {
-    sortClashes(clashes);
+    sortByStartTime(clashes);
 
     const times = (
       <div>
@@ -68,7 +69,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     return times;
   };
 
-  const sortClashes = (clashes) => {
+  const sortByStartTime = (clashes) => {
     return clashes.sort(
       (a, b) => Date.parse(a.startTime) - Date.parse(b.startTime)
     );

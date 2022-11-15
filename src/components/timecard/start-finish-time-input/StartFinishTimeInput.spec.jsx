@@ -1,6 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
+import { inputNames } from '../../../utils/time-entry-utils/timeEntryUtils';
 import StartFinishTimeInput from './StartFinishTimeInput';
 
 const mockRegister = jest.fn();
@@ -60,8 +61,8 @@ describe('StartFinishTimeInput', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });
@@ -84,8 +85,8 @@ describe('StartFinishTimeInput', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     expect(startTimeInput.value).toBe('07:00');
     expect(finishTimeInput.value).toBe('17:00');

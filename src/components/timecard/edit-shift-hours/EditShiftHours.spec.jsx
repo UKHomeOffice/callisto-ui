@@ -17,6 +17,10 @@ import {
 } from '../../../../mocks/mockData';
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+import {
+  ClashingProperty,
+  inputNames,
+} from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -63,7 +67,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
@@ -110,12 +114,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: inputtedEndTime },
         });
@@ -161,7 +165,7 @@ describe('EditShiftHours', () => {
         );
 
         act(() => {
-          const startTimeInput = screen.getByTestId('shift-start-time');
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
           fireEvent.change(startTimeInput, {
             target: { value: inputtedStartTime },
           });
@@ -198,7 +202,7 @@ describe('EditShiftHours', () => {
         );
 
         act(() => {
-          const startTimeInput = screen.getByTestId('shift-start-time');
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
           fireEvent.change(startTimeInput, {
             target: { value: inputtedStartTime },
           });
@@ -232,8 +236,8 @@ describe('EditShiftHours', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     fireEvent.change(startTimeInput, { target: { value: '1201' } });
     fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -269,7 +273,7 @@ describe('EditShiftHours', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
     fireEvent.change(startTimeInput, { target: { value: '1201' } });
 
     act(() => {
@@ -324,7 +328,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -352,7 +356,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -381,7 +385,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const finishTimeInput = screen.getByTestId('shift-finish-time');
+        const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -409,7 +413,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const finishTimeInput = screen.getByTestId('shift-finish-time');
+        const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -455,12 +459,12 @@ describe('EditShiftHours', () => {
     );
 
     act(() => {
-      const startTimeInput = screen.getByTestId('shift-start-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
       fireEvent.change(startTimeInput, {
         target: { value: '08:00' },
       });
 
-      const endTimeInput = screen.getByTestId('shift-finish-time');
+      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
       fireEvent.change(endTimeInput, {
         target: { value: '01:00' },
       });
@@ -492,7 +496,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: 'startAndEndTime',
+                field: ClashingProperty.startAndEndTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -516,8 +520,8 @@ describe('EditShiftHours', () => {
         defaultTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -543,7 +547,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: 'startTime',
+                field: ClashingProperty.startTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -569,8 +573,8 @@ describe('EditShiftHours', () => {
         mockTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -596,7 +600,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: 'endTime',
+                field: ClashingProperty.endTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -622,8 +626,8 @@ describe('EditShiftHours', () => {
         mockTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -669,8 +673,8 @@ describe('EditShiftHours', () => {
         mockTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -695,7 +699,7 @@ describe('EditShiftHours', () => {
                 data: [],
               },
               {
-                field: 'endTime',
+                field: ClashingProperty.endTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -721,8 +725,8 @@ describe('EditShiftHours', () => {
         mockTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -758,8 +762,8 @@ describe('EditShiftHours', () => {
         defaultTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
