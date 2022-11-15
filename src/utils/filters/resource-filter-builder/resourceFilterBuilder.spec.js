@@ -1,6 +1,11 @@
 import dayjs from 'dayjs';
 import { formatDate } from '../../time-entry-utils/timeEntryUtils';
-import { filterOnOrAfterDate, filterBeforeDate } from './resourceFilterBuilder';
+import {
+  filterOnOrAfterDate,
+  filterBeforeDate,
+  joinOrConditions,
+  joinAndConditions,
+} from './resourceFilterBuilder';
 
 const date = '2022-10-29';
 const dateTime = date + ' 19:18:09';
@@ -18,5 +23,27 @@ describe('resourceFilterBuilder', () => {
     expect(filterBeforeDate(resourceDateProperty, dateTime)).toEqual(
       `${resourceDateProperty}<='${yesterday}T23:59:00+00:00'`
     );
+  });
+  it('should join two conditions with or', () => {
+    const expression1 = 'expression1';
+    const expression2 = 'expression2';
+    const returnStatment = joinOrConditions(expression1, expression2);
+    expect(returnStatment).toEqual('expression1||expression2');
+  });
+  it('should return the expression without or operator', () => {
+    const expression1 = 'expression1';
+    const returnStatment = joinOrConditions(expression1);
+    expect(returnStatment).toEqual('expression1');
+  });
+  it('should join two conditions with and', () => {
+    const expression1 = 'expression1';
+    const expression2 = 'expression2';
+    const returnStatment = joinAndConditions(expression1, expression2);
+    expect(returnStatment).toEqual('expression1&&expression2');
+  });
+  it('should return the expression without and operator', () => {
+    const expression1 = 'expression1';
+    const returnStatment = joinAndConditions(expression1);
+    expect(returnStatment).toEqual('expression1');
   });
 });

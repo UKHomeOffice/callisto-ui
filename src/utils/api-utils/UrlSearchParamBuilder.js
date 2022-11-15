@@ -10,8 +10,8 @@ export class UrlSearchParamBuilder {
     return this;
   }
 
-  setFilters(...filters) {
-    this.params.append('filter', filters.join('&&'));
+  setFilter(filter) {
+    this.params.append('filter', filter);
     return this;
   }
 
