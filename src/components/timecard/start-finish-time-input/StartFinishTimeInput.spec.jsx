@@ -142,7 +142,7 @@ describe('StartFinishTimeInput', () => {
           name={'shift'}
           errors={{
             'radio-error': { message: 'Select a radio button' }, // error message for another component
-            'shift-start-time': { message: startTimeErrorMessage },
+            [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
           }}
           register={mockRegister}
           timeEntry={timeEntry}
@@ -171,8 +171,8 @@ describe('StartFinishTimeInput', () => {
             name={'shift'}
             errors={{
               'radio-error': { message: 'Select a radio button' }, // error message for another component
-              'shift-finish-time': { message: finishTimeErrorMessage },
-              'shift-start-time': { message: startTimeErrorMessage },
+              [inputNames.shiftFinishTime]: { message: finishTimeErrorMessage },
+              [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
             }}
             register={mockRegister}
             timeEntry={timeEntry}

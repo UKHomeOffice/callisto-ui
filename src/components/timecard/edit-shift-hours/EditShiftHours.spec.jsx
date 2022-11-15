@@ -533,7 +533,7 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-          'shift-start-time': {
+          [inputNames.shiftStartTime]: {
             message:
               'Your start and finish times must not overlap with another time period',
           },
@@ -586,7 +586,7 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-          'shift-start-time': {
+          [inputNames.shiftStartTime]: {
             message:
               'Your start time must not overlap with another time period',
           },
@@ -639,7 +639,7 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-          'shift-finish-time': {
+          [inputNames.shiftFinishTime]: {
             message:
               'Your finish time must not overlap with another time period',
           },
@@ -807,12 +807,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: '08:00' },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: '01:00' },
         });
@@ -861,12 +861,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: '' },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: '01:00' },
         });

@@ -46,7 +46,7 @@ describe('ValidatedTimeEntry', () => {
 
     const component = renderWithTimecardContext(
       <ValidatedTimeEntry
-        name="shift-finish-time"
+        name={inputNames.shiftFinishTime}
         timeType="finish time"
         errors={{}}
         register={setFinishTimeTextSpy}
@@ -57,8 +57,9 @@ describe('ValidatedTimeEntry', () => {
     );
 
     act(() => {
-      const someElement =
-        component.container.querySelector('#shift-finish-time');
+      const someElement = component.container.querySelector(
+        `#${inputNames.shiftFinishTime}`
+      );
       fireEvent.blur(someElement);
     });
 
