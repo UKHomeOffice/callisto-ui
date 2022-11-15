@@ -1,6 +1,6 @@
 import { getNodeText, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import { ClashingProperty } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { ClashingProperty } from '../../../utils/constants';
 import TimeInputErrors from './TimeInputErrors';
 
 describe('TimeInputErrors', () => {

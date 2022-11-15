@@ -12,7 +12,6 @@ import {
   getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
-  inputNames,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
@@ -25,6 +24,7 @@ import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/ti
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
+import { inputNames } from '../../utils/constants';
 
 const Timecard = () => {
   const {

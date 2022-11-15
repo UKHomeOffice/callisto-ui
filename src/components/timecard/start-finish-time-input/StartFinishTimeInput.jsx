@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrorKeys } from '../../../utils/sort-errors/sortErrors';
-import { inputNames } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { inputNames } from '../../../utils/constants';
 
 const StartFinishTimeInput = ({
   name,

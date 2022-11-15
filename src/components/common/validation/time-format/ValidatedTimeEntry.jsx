@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import { useTimecardContext } from '../../../../context/TimecardContext';
 import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
+import { inputNames } from '../../../../utils/constants';
 import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
-import {
-  inputNames,
-  isFinishTimeOnNextDay,
-} from '../../../../utils/time-entry-utils/timeEntryUtils';
+import { isFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 const ValidatedTimeEntry = ({
   name,

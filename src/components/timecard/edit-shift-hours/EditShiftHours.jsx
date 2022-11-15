@@ -12,11 +12,9 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
-  ClashingProperty,
   formatDate,
   formatDateTimeISO,
   formatTime,
-  inputNames,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -27,6 +25,7 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useState } from 'react';
 import TimeInputErrors from '../time-input-errors/TimeInputErrors';
 import { useEffect } from 'react';
+import { ClashingProperty, inputNames } from '../../../utils/constants';
 
 const EditShiftHours = ({
   setShowEditShiftHours,

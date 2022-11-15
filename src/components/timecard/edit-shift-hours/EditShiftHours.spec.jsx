@@ -17,10 +17,8 @@ import {
 } from '../../../../mocks/mockData';
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
-import {
-  ClashingProperty,
-  inputNames,
-} from '../../../utils/time-entry-utils/timeEntryUtils';
+
+import { ClashingProperty, inputNames } from '../../../utils/constants';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',

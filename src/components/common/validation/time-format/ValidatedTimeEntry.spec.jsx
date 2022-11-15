@@ -4,7 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 
 import ValidatedTimeEntry from './ValidatedTimeEntry';
-import { inputNames } from '../../../../utils/time-entry-utils/timeEntryUtils';
+import { inputNames } from '../../../../utils/constants';
 
 describe('ValidatedTimeEntry', () => {
   const timeEntry = new ContextTimeEntry();

@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { inputNames } from '../../../utils/constants';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
-import { inputNames } from '../../../utils/time-entry-utils/timeEntryUtils';
 import StartFinishTimeInput from './StartFinishTimeInput';
 
 const mockRegister = jest.fn();

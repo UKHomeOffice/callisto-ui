@@ -12,7 +12,7 @@ import {
   defaultTimecardContext,
   renderWithTimecardContext,
 } from '../../../test/helpers/TimecardContext';
-import { inputNames } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { inputNames } from '../../../utils/constants';
 import EditShiftTimecard from './EditShiftTimecard';
 
 jest.mock('../../../api/services/timecardService');

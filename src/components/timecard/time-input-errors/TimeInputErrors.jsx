@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
+import { ClashingProperty } from '../../../utils/constants';
 import {
-  ClashingProperty,
   formatLongDate,
   formatTime,
   getTimePeriodTypesMap,
