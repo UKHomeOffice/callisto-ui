@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import {
@@ -94,7 +95,7 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const endTime = new Date(clash.endTime);
     let startDate = '';
 
-    if (startTime.toDateString() !== endTime.toDateString()) {
+    if (!dayjs(startTime).isSame(endTime, 'day')) {
       startDate = ` on ${formatLongDate(clash.startTime)}`;
     }
 
