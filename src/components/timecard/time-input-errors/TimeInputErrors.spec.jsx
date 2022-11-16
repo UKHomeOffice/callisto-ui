@@ -356,4 +356,19 @@ describe('TimeInputErrors', () => {
       expect(secondClashingShiftError).toBeTruthy();
     });
   });
+
+  describe('Invalid input', () => {
+    it('should throw an error if no clashes are given', () => {
+      expect(() =>
+        renderWithTimecardContext(
+          <TimeInputErrors
+            clashingProperty={clashingProperties.startTime}
+            clashes={[]}
+          />
+        )
+      ).toThrow(
+        'The time clashes data did not contain at least one time clash.'
+      );
+    });
+  });
 });
