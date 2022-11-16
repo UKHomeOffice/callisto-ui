@@ -24,7 +24,6 @@ import {
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import TimeInputErrors from '../time-input-errors/TimeInputErrors';
 import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const EditShiftHours = ({
