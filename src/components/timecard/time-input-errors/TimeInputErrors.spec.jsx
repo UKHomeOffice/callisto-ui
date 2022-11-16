@@ -1,6 +1,6 @@
 import { getNodeText, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import { ClashingProperty } from '../../../utils/constants';
+import { clashingProperties } from '../../../utils/constants';
 import TimeInputErrors from './TimeInputErrors';
 
 describe('TimeInputErrors', () => {
@@ -16,7 +16,7 @@ describe('TimeInputErrors', () => {
     it('should display a single error for start time clash', () => {
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={singleShiftClash}
         />
       );
@@ -30,7 +30,7 @@ describe('TimeInputErrors', () => {
     it('should display a single error for finish time clash', () => {
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.endTime}
+          clashingProperty={clashingProperties.endTime}
           clashes={singleShiftClash}
         />
       );
@@ -44,7 +44,7 @@ describe('TimeInputErrors', () => {
     it('should display a single error for start and finish time clash', () => {
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startAndEndTime}
+          clashingProperty={clashingProperties.startAndEndTime}
           clashes={singleShiftClash}
         />
       );
@@ -60,7 +60,7 @@ describe('TimeInputErrors', () => {
     it('should display a single error for shift clash', () => {
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={singleShiftClash}
         />
       );
@@ -82,7 +82,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={singleScheduledRestDayClash}
         />
       );
@@ -104,7 +104,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={singleNonWorkingDayClash}
         />
       );
@@ -133,7 +133,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={twoShiftClashes}
         />
       );
@@ -169,7 +169,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
         />
       );
@@ -205,7 +205,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
         />
       );
@@ -246,7 +246,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
         />
       );
@@ -282,7 +282,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
         />
       );
@@ -312,7 +312,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
         />
       );
@@ -340,7 +340,7 @@ describe('TimeInputErrors', () => {
 
       renderWithTimecardContext(
         <TimeInputErrors
-          clashingProperty={ClashingProperty.startTime}
+          clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
         />
       );

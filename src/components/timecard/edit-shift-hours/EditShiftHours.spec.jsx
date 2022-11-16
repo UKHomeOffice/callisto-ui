@@ -18,7 +18,7 @@ import {
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 
-import { ClashingProperty, inputNames } from '../../../utils/constants';
+import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -494,7 +494,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: ClashingProperty.startAndEndTime,
+                field: clashingProperties.startAndEndTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -545,7 +545,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: ClashingProperty.startTime,
+                field: clashingProperties.startTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -598,7 +598,7 @@ describe('EditShiftHours', () => {
           response: {
             data: [
               {
-                field: ClashingProperty.endTime,
+                field: clashingProperties.endTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
