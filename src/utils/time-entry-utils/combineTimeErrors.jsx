@@ -1,5 +1,5 @@
-import TimeInputErrors from "../../components/timecard/time-input-errors/TimeInputErrors";
-import { clashingProperties, inputNames } from "../constants";
+import TimeInputErrors from '../../components/timecard/time-input-errors/TimeInputErrors';
+import { clashingProperties, inputNames } from '../constants';
 
 export function combineExistingAndTimeClashErrors(
   errors,
