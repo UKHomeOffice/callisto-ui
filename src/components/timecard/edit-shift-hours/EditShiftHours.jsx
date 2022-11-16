@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
-  combineExistingAndTimeClashErrors,
   formatDate,
   formatDateTimeISO,
   formatTime,
@@ -25,6 +24,7 @@ import {
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
 import { clashingProperties, inputNames } from '../../../utils/constants';
+import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
