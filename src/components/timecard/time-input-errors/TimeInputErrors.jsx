@@ -91,11 +91,9 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   };
 
   const formatStartDateTime = (clash) => {
-    const startTime = new Date(clash.startTime);
-    const endTime = new Date(clash.endTime);
     let startDate = '';
 
-    if (!dayjs(startTime).isSame(endTime, 'day')) {
+    if (!dayjs(clash.startTime).isSame(clash.endTime, 'day')) {
       startDate = ` on ${formatLongDate(clash.startTime)}`;
     }
 
