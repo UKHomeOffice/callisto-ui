@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
 import { useApplicationContext } from '../../../context/ApplicationContext';
-import { ClashingProperty } from '../../../utils/constants';
+import { clashingProperties } from '../../../utils/constants';
 import {
   formatLongDate,
   formatTime,
@@ -13,11 +13,11 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const displayClashingProperty = () => {
-    if (clashingProperty === ClashingProperty.startTime) {
+    if (clashingProperty === clashingProperties.startTime) {
       return <p>Your start time must not overlap with another time period</p>;
     }
 
-    if (clashingProperty === ClashingProperty.endTime) {
+    if (clashingProperty === clashingProperties.endTime) {
       return <p>Your finish time must not overlap with another time period</p>;
     }
 

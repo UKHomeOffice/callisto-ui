@@ -1,4 +1,4 @@
-export const ClashingProperty = {
+export const clashingProperties = {
   startTime: 'startTime',
   endTime: 'endTime',
   startAndEndTime: 'startAndEndTime',

@@ -25,7 +25,7 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useState } from 'react';
 import TimeInputErrors from '../time-input-errors/TimeInputErrors';
 import { useEffect } from 'react';
-import { ClashingProperty, inputNames } from '../../../utils/constants';
+import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -79,20 +79,20 @@ const EditShiftHours = ({
     const summaryErrors = {};
 
     errors.forEach((error) => {
-      if (error.field === ClashingProperty.startAndEndTime) {
+      if (error.field === clashingProperties.startAndEndTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors[inputNames.shiftStartTime] = {
           message:
             'Your start and finish times must not overlap with another time period',
         };
-      } else if (error.field === ClashingProperty.startTime) {
+      } else if (error.field === clashingProperties.startTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors[inputNames.shiftStartTime] = {
           message: 'Your start time must not overlap with another time period',
         };
-      } else if (error.field === ClashingProperty.endTime) {
+      } else if (error.field === clashingProperties.endTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
         summaryErrors[inputNames.shiftFinishTime] = {
@@ -177,7 +177,7 @@ const EditShiftHours = ({
 
     const combinedErrors = { ...existingErrors };
 
-    if (clashingProperty === ClashingProperty.startAndEndTime) {
+    if (clashingProperty === clashingProperties.startAndEndTime) {
       combinedErrors[inputNames.shiftStartTime] = {
         message: (
           <TimeInputErrors
@@ -189,7 +189,7 @@ const EditShiftHours = ({
       combinedErrors[inputNames.shiftFinishTime] = {
         message: '',
       };
-    } else if (clashingProperty === ClashingProperty.startTime) {
+    } else if (clashingProperty === clashingProperties.startTime) {
       combinedErrors[inputNames.shiftStartTime] = {
         message: (
           <TimeInputErrors
@@ -198,7 +198,7 @@ const EditShiftHours = ({
           />
         ),
       };
-    } else if (clashingProperty === ClashingProperty.endTime) {
+    } else if (clashingProperty === clashingProperties.endTime) {
       combinedErrors[inputNames.shiftFinishTime] = {
         message: (
           <TimeInputErrors
