@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
+  combineExistingAndTimeClashErrors,
   formatDate,
   formatDateTimeISO,
   formatTime,
@@ -22,9 +23,8 @@ import {
   focusErrors,
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TimeInputErrors from '../time-input-errors/TimeInputErrors';
-import { useEffect } from 'react';
 import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const EditShiftHours = ({
@@ -176,46 +176,12 @@ const EditShiftHours = ({
     );
   };
 
-  const getCombinedErrors = () => {
-    const existingErrors =
-      Object.keys(errors).length > 0 ? errors : summaryErrors;
-
-    const combinedErrors = { ...existingErrors };
-
-    if (clashingProperty === clashingProperties.startAndEndTime) {
-      combinedErrors[inputNames.shiftStartTime] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
-      };
-      combinedErrors[inputNames.shiftFinishTime] = {
-        message: '',
-      };
-    } else if (clashingProperty === clashingProperties.startTime) {
-      combinedErrors[inputNames.shiftStartTime] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
-      };
-    } else if (clashingProperty === clashingProperties.endTime) {
-      combinedErrors[inputNames.shiftFinishTime] = {
-        message: (
-          <TimeInputErrors
-            clashingProperty={clashingProperty}
-            clashes={clashingTimes}
-          />
-        ),
-      };
-    }
-
-    return combinedErrors;
-  };
+  const getCombinedErrors = combineExistingAndTimeClashErrors(
+    errors,
+    summaryErrors,
+    clashingProperty,
+    clashingTimes
+  );
 
   return (
     <div>
