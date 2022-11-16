@@ -13,36 +13,35 @@ export function combineExistingAndTimeClashErrors(
   const combinedErrors = { ...existingErrors };
 
   if (clashingProperty === clashingProperties.startAndEndTime) {
-    combinedErrors[inputNames.shiftStartTime] = {
-      message: (
-        <TimeInputErrors
-          clashingProperty={clashingProperty}
-          clashes={clashingTimes}
-        />
-      ),
-    };
+    combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
+      clashingProperty,
+      clashingTimes
+    );
     combinedErrors[inputNames.shiftFinishTime] = {
       message: '',
     };
   } else if (clashingProperty === clashingProperties.startTime) {
-    combinedErrors[inputNames.shiftStartTime] = {
-      message: (
-        <TimeInputErrors
-          clashingProperty={clashingProperty}
-          clashes={clashingTimes}
-        />
-      ),
-    };
+    combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
+      clashingProperty,
+      clashingTimes
+    );
   } else if (clashingProperty === clashingProperties.endTime) {
-    combinedErrors[inputNames.shiftFinishTime] = {
-      message: (
-        <TimeInputErrors
-          clashingProperty={clashingProperty}
-          clashes={clashingTimes}
-        />
-      ),
-    };
+    combinedErrors[inputNames.shiftFinishTime] = clashErrorMessage(
+      clashingProperty,
+      clashingTimes
+    );
   }
 
   return combinedErrors;
+}
+
+function clashErrorMessage(clashingProperty, clashingTimes) {
+  return {
+    message: (
+      <TimeInputErrors
+        clashingProperty={clashingProperty}
+        clashes={clashingTimes}
+      />
+    ),
+  };
 }
