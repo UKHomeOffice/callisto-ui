@@ -175,19 +175,17 @@ const EditShiftHours = ({
     );
   };
 
-  const getCombinedErrors = combineExistingAndTimeClashErrors(
-    errors,
-    summaryErrors,
-    clashingProperty,
-    clashingTimes
-  );
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <StartFinishTimeInput
           name={inputName}
-          errors={getCombinedErrors()}
+          errors={combineExistingAndTimeClashErrors(
+            errors,
+            summaryErrors,
+            clashingProperty,
+            clashingTimes
+          )}
           register={register}
           formState={formState}
           getFormValues={getValues}
