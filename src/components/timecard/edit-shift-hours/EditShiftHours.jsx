@@ -77,8 +77,9 @@ const EditShiftHours = ({
       return false;
     }
     const summaryErrors = {};
+    let errorsHandled = true;
 
-    errors.forEach((error) => {
+    for (const error of errors) {
       if (error.field === clashingProperties.startAndEndTime) {
         setClashingTimes(error.data);
         setClashingProperty(error.field);
@@ -99,12 +100,16 @@ const EditShiftHours = ({
           message: 'Your finish time must not overlap with another time period',
         };
       } else {
-        return false;
+        errorsHandled = false;
+        break;
       }
-    });
+    }
+    if (errorsHandled) {
+      setSummaryErrors(summaryErrors);
+      return true;
+    }
 
-    setSummaryErrors(summaryErrors);
-    return true;
+    return false;
   };
 
   const onSubmit = async (formData) => {

@@ -697,7 +697,7 @@ describe('EditShiftHours', () => {
                 data: [],
               },
               {
-                field: ClashingProperty.endTime,
+                field: clashingProperties.endTime,
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
