@@ -165,11 +165,6 @@ steps:
       source: dist/**/*
       strip_prefix: dist/
       target: test/main
-    when:
-      event: 
-        - push
-      branch:
-        - main
     depends_on:
       - build for test
 
