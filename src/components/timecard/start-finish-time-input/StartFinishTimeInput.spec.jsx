@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { inputNames } from '../../../utils/constants';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import StartFinishTimeInput from './StartFinishTimeInput';
 
@@ -60,8 +61,8 @@ describe('StartFinishTimeInput', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     fireEvent.change(startTimeInput, { target: { value: '08:00' } });
     fireEvent.change(finishTimeInput, { target: { value: '16:00' } });
@@ -84,8 +85,8 @@ describe('StartFinishTimeInput', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     expect(startTimeInput.value).toBe('07:00');
     expect(finishTimeInput.value).toBe('17:00');
@@ -141,7 +142,7 @@ describe('StartFinishTimeInput', () => {
           name={'shift'}
           errors={{
             'radio-error': { message: 'Select a radio button' }, // error message for another component
-            'shift-start-time': { message: startTimeErrorMessage },
+            [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
           }}
           register={mockRegister}
           timeEntry={timeEntry}
@@ -170,8 +171,8 @@ describe('StartFinishTimeInput', () => {
             name={'shift'}
             errors={{
               'radio-error': { message: 'Select a radio button' }, // error message for another component
-              'shift-finish-time': { message: finishTimeErrorMessage },
-              'shift-start-time': { message: startTimeErrorMessage },
+              [inputNames.shiftFinishTime]: { message: finishTimeErrorMessage },
+              [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
             }}
             register={mockRegister}
             timeEntry={timeEntry}

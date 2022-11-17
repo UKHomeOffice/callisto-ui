@@ -9,6 +9,7 @@ import generateDocumentTitle from '../../utils/generate-document-title/generateD
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatDate,
+  getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
@@ -19,10 +20,11 @@ import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
-import { filterTimeEntriesOnDate } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
+import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
+import { inputNames } from '../../utils/constants';
 
 const Timecard = () => {
   const {
@@ -41,8 +43,8 @@ const Timecard = () => {
   const nextDay = formatDate(dayjs(date).add(1, 'day'));
 
   const desiredErrorOrder = [
-    'shift-start-time',
-    'shift-finish-time',
+    inputNames.shiftStartTime,
+    inputNames.shiftFinishTime,
     'timePeriod',
   ];
 
@@ -133,10 +135,8 @@ const updateTimeEntryContextData = async (
 ) => {
   const timeEntriesParams = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
-    .setFilters("ownerId=='" + userId + "'", ...filterTimeEntriesOnDate(date))
+    .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
-
-  const handleCustomErrors = () => {};
 
   validateServiceErrors(
     setServiceError,
@@ -165,15 +165,7 @@ const updateTimeEntryContextData = async (
         setTimeEntries([]);
       }
     },
-    handleCustomErrors,
     false
-  );
-};
-
-const getTimePeriodTypesMap = (timePeriodTypes) => {
-  return timePeriodTypes.reduce(
-    (acc, type) => ({ ...acc, [type.id]: type.name }),
-    {}
   );
 };
 

@@ -48,7 +48,7 @@ describe('ApiUtils', () => {
     const serviceFunction = () => {
       throw new Error();
     };
-    validateServiceErrors(setServiceError, serviceFunction, () => {}, false);
+    validateServiceErrors(setServiceError, serviceFunction, false, () => {});
 
     await waitFor(() => {
       expect(setServiceError).toHaveBeenCalledWith({
@@ -77,6 +77,7 @@ describe('ApiUtils', () => {
       validateServiceErrors(
         setServiceError,
         serviceFunction,
+        true,
         handleCustomErrors
       );
 
@@ -104,6 +105,7 @@ describe('ApiUtils', () => {
       validateServiceErrors(
         setServiceError,
         serviceFunction,
+        true,
         handleCustomErrors
       );
 

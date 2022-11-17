@@ -30,6 +30,10 @@ export const formatDateTimeISO = (dateTime) => {
   return dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ssZ');
 };
 
+export const formatLongDate = (dateTime) => {
+  return dayjs(dateTime).format('D MMMM YYYY');
+};
+
 export const removeTimecardContextEntry = (
   timeEntries,
   setTimeEntries,
@@ -38,6 +42,13 @@ export const removeTimecardContextEntry = (
   const newTimeEntries = deepCloneJson(timeEntries);
   newTimeEntries.splice(removeAtIndex, 1);
   setTimeEntries(newTimeEntries);
+};
+
+export const getTimePeriodTypesMap = (timePeriodTypes) => {
+  return timePeriodTypes.reduce(
+    (acc, type) => ({ ...acc, [type.id]: type.name }),
+    {}
+  );
 };
 
 export const isFinishTimeOnNextDay = (startTimeValue, finishTimeValue) => {
