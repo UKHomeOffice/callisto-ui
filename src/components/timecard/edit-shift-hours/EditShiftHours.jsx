@@ -22,7 +22,9 @@ import {
   focusErrors,
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { clashingProperties, inputNames } from '../../../utils/constants';
+import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -41,7 +43,7 @@ const EditShiftHours = ({
   });
 
   const inputName = 'shift';
-  const { setServiceError } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
   const {
     timeEntries,
     setTimeEntries,
@@ -50,11 +52,12 @@ const EditShiftHours = ({
     setSummaryErrors,
   } = useTimecardContext();
 
+  const [clashingProperty, setClashingProperty] = useState(null);
+  const [clashingTimes, setClashingTimes] = useState(null);
+
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
-
-  const { userId } = useApplicationContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -68,25 +71,43 @@ const EditShiftHours = ({
     }
   };
 
-  const handleServerValidationErrors = (error) => {
+  const handleServerValidationErrors = (errors) => {
+    if (errors === null || !Array.isArray(errors)) {
+      return false;
+    }
     const summaryErrors = {};
     let errorsHandled = true;
 
-    if (
-      error ==
-      ' has the following error(s): Time periods must not overlap with another time period'
-    ) {
-      summaryErrors['shift-start-time'] = {
-        message: 'Time periods must not overlap with another time period',
-      };
-    } else {
-      errorsHandled = false;
+    for (const error of errors) {
+      if (error.field === clashingProperties.startAndEndTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors[inputNames.shiftStartTime] = {
+          message:
+            'Your start and finish times must not overlap with another time period',
+        };
+      } else if (error.field === clashingProperties.startTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors[inputNames.shiftStartTime] = {
+          message: 'Your start time must not overlap with another time period',
+        };
+      } else if (error.field === clashingProperties.endTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        summaryErrors[inputNames.shiftFinishTime] = {
+          message: 'Your finish time must not overlap with another time period',
+        };
+      } else {
+        errorsHandled = false;
+        break;
+      }
     }
-
     if (errorsHandled) {
       setSummaryErrors(summaryErrors);
       return true;
     }
+
     return false;
   };
 
@@ -149,6 +170,7 @@ const EditShiftHours = ({
           setShowEditShiftHours(false);
         }
       },
+      true,
       handleServerValidationErrors
     );
   };
@@ -158,7 +180,12 @@ const EditShiftHours = ({
       <form onSubmit={handleSubmit(onSubmit, handleError)}>
         <StartFinishTimeInput
           name={inputName}
-          errors={Object.keys(errors).length > 0 ? errors : summaryErrors}
+          errors={combineExistingAndTimeClashErrors(
+            errors,
+            summaryErrors,
+            clashingProperty,
+            clashingTimes
+          )}
           register={register}
           formState={formState}
           getFormValues={getValues}

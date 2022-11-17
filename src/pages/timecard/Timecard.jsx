@@ -9,6 +9,7 @@ import generateDocumentTitle from '../../utils/generate-document-title/generateD
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatDate,
+  getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
@@ -23,6 +24,7 @@ import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/ti
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
+import { inputNames } from '../../utils/constants';
 
 const Timecard = () => {
   const {
@@ -41,8 +43,8 @@ const Timecard = () => {
   const nextDay = formatDate(dayjs(date).add(1, 'day'));
 
   const desiredErrorOrder = [
-    'shift-start-time',
-    'shift-finish-time',
+    inputNames.shiftStartTime,
+    inputNames.shiftFinishTime,
     'timePeriod',
   ];
 
@@ -136,8 +138,6 @@ const updateTimeEntryContextData = async (
     .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
 
-  const handleCustomErrors = () => {};
-
   validateServiceErrors(
     setServiceError,
     async () => {
@@ -165,15 +165,7 @@ const updateTimeEntryContextData = async (
         setTimeEntries([]);
       }
     },
-    handleCustomErrors,
     false
-  );
-};
-
-const getTimePeriodTypesMap = (timePeriodTypes) => {
-  return timePeriodTypes.reduce(
-    (acc, type) => ({ ...acc, [type.id]: type.name }),
-    {}
   );
 };
 

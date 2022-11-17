@@ -16,6 +16,9 @@ import {
   shiftTimeEntryWithoutFinishTime,
 } from '../../../../mocks/mockData';
 import { expectNeverToHappen } from '../../../test/helpers/Helpers';
+import { deepCloneJson } from '../../../utils/common-utils/common-utils';
+
+import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const newTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -62,7 +65,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
@@ -109,12 +112,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: inputtedStartTime },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: inputtedEndTime },
         });
@@ -160,7 +163,7 @@ describe('EditShiftHours', () => {
         );
 
         act(() => {
-          const startTimeInput = screen.getByTestId('shift-start-time');
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
           fireEvent.change(startTimeInput, {
             target: { value: inputtedStartTime },
           });
@@ -197,7 +200,7 @@ describe('EditShiftHours', () => {
         );
 
         act(() => {
-          const startTimeInput = screen.getByTestId('shift-start-time');
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
           fireEvent.change(startTimeInput, {
             target: { value: inputtedStartTime },
           });
@@ -231,8 +234,8 @@ describe('EditShiftHours', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
-    const finishTimeInput = screen.getByTestId('shift-finish-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+    const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
     fireEvent.change(startTimeInput, { target: { value: '1201' } });
     fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -268,7 +271,7 @@ describe('EditShiftHours', () => {
       />
     );
 
-    const startTimeInput = screen.getByTestId('shift-start-time');
+    const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
     fireEvent.change(startTimeInput, { target: { value: '1201' } });
 
     act(() => {
@@ -323,7 +326,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -351,7 +354,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -380,7 +383,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const finishTimeInput = screen.getByTestId('shift-finish-time');
+        const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -408,7 +411,7 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const finishTimeInput = screen.getByTestId('shift-finish-time');
+        const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(finishTimeInput, { target: { value: testValue } });
 
         const saveButton = screen.getByText('Save');
@@ -425,15 +428,82 @@ describe('EditShiftHours', () => {
     }
   );
 
+  it('should set finish date as next day when finish time is edited to less than start time', async () => {
+    const timeEntryId = '1';
+    const inputtedStartTime = '08:00';
+    const inputtedEndTime = '01:00';
+    const timecardDate = '2022-09-01';
+    const endDate = '2022-09-02';
+    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
+    const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '08:00',
+      endTime: '10:00',
+      finishNextDay: true,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '08:00' },
+      });
+
+      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+      fireEvent.change(endTimeInput, {
+        target: { value: '01:00' },
+      });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+        timeEntryId,
+        {
+          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: expectedActualStartTime,
+          actualEndTime: expectedActualEndTime,
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
+    });
+  });
+
   describe('Service errors', () => {
-    it('should set time entry clashing errors in summaryErrors when error is returned from the server', async () => {
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
           response: {
-            data: {
-              message:
-                ' has the following error(s): Time periods must not overlap with another time period',
-            },
+            data: [
+              {
+                field: clashingProperties.startAndEndTime,
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
           },
         };
       });
@@ -448,8 +518,8 @@ describe('EditShiftHours', () => {
         defaultTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -461,10 +531,211 @@ describe('EditShiftHours', () => {
 
       await waitFor(() => {
         expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-          'shift-start-time': {
-            message: 'Time periods must not overlap with another time period',
+          [inputNames.shiftStartTime]: {
+            message:
+              'Your start and finish times must not overlap with another time period',
           },
         });
+      });
+    });
+
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for start time', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: clashingProperties.startTime,
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+          [inputNames.shiftStartTime]: {
+            message:
+              'Your start time must not overlap with another time period',
+          },
+        });
+      });
+    });
+
+    it('should set time entry clashing errors in summaryErrors when error is returned from the server for end time', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: clashingProperties.endTime,
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+          [inputNames.shiftFinishTime]: {
+            message:
+              'Your finish time must not overlap with another time period',
+          },
+        });
+      });
+    });
+
+    it('should not set summary errors for responses other than time clashes', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'ownerId',
+                data: [],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should not set summary errors when not all errors are time clashes', async () => {
+      createTimeEntry.mockImplementation(() => {
+        throw {
+          response: {
+            data: [
+              {
+                field: 'ownerId',
+                data: [],
+              },
+              {
+                field: clashingProperties.endTime,
+                data: [
+                  {
+                    timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+                    startTime: null,
+                    endTime: null,
+                  },
+                ],
+              },
+            ],
+          },
+        };
+      });
+
+      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
+      mockTimecardContext.setSummaryErrors = jest.fn();
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        mockTimecardContext
+      );
+
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+
+      fireEvent.change(startTimeInput, { target: { value: '1201' } });
+      fireEvent.change(finishTimeInput, { target: { value: '2201' } });
+
+      act(() => {
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
       });
     });
 
@@ -489,8 +760,8 @@ describe('EditShiftHours', () => {
         defaultTimecardContext
       );
 
-      const startTimeInput = screen.getByTestId('shift-start-time');
-      const finishTimeInput = screen.getByTestId('shift-finish-time');
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
 
       fireEvent.change(startTimeInput, { target: { value: '1201' } });
       fireEvent.change(finishTimeInput, { target: { value: '2201' } });
@@ -534,12 +805,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: '08:00' },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: '01:00' },
         });
@@ -588,12 +859,12 @@ describe('EditShiftHours', () => {
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId('shift-start-time');
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
           target: { value: '' },
         });
 
-        const endTimeInput = screen.getByTestId('shift-finish-time');
+        const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: '01:00' },
         });

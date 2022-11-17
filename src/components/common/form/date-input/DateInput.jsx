@@ -65,7 +65,7 @@ const DateInput = ({
               dateType="day"
               errors={errors}
               defaultValue={dayValue}
-              pattern={/^([1-9]|0[1-9]|[12][\d]|3[01])$/}
+              pattern={/^([1-9]|0[1-9]|[12]\d|3[01])$/}
               register={register}
             />
 
@@ -74,7 +74,7 @@ const DateInput = ({
               dateType="month"
               errors={errors}
               defaultValue={monthValue}
-              pattern={/^([1-9]|[0][1-9]|1[012])$/}
+              pattern={/^([1-9]|0[1-9]|1[012])$/}
               register={register}
             />
 

@@ -15,7 +15,8 @@ import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries } = useTimecardContext();
+  const { timeEntries, setTimeEntries, setSummaryErrors } =
+    useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
@@ -39,6 +40,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
+    setSummaryErrors({});
     validateServiceErrors(setServiceError, async () => {
       await deleteTimeEntry(timeEntry.timeEntryId, params);
       removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
