@@ -153,7 +153,7 @@ steps:
       - npm ci
       - npm run build
 
-  - name: upload to S3
+  - name: upload to test S3
     image: plugins/s3
     settings:
       bucket: ho-callisto-dev
