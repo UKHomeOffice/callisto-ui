@@ -7,6 +7,11 @@ platform:
   os: linux
   arch: amd64
 
+trigger:
+  event:
+    exclude:
+      - promote  
+
 steps:
   - name: fetch
     image: alpine/git
