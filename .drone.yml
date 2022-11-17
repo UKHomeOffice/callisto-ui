@@ -147,8 +147,8 @@ steps:
         from_secret: kc_realm_test
       VITE_KC_CLIENTID:
         from_secret: kc_clientid_test
-      VITE_TIMECARD_API_URL: "https://timecard.test.callisto.homeoffice.gov.uk/"
-      VITE_ACCRUALS_API_URL: "https://accruals.test.callisto.homeoffice.gov.uk/"                        
+      VITE_TIMECARD_API_URL: "https://timecard.test.callisto-notprod.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.test.callisto-notprod.homeoffice.gov.uk/"                        
     commands:
       - npm ci
       - npm run build
