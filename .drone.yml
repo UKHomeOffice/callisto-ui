@@ -120,6 +120,62 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
+name: callisto-ui-test-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui
+
+trigger:
+  event:
+    - promote
+  target:
+    - test
+
+steps:
+  - name: build for test
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_test
+      VITE_KC_REALM:
+        from_secret: kc_realm_test
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_test
+      VITE_TIMECARD_API_URL: "https://timecard.test.callisto.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.test.callisto.homeoffice.gov.uk/"                        
+    commands:
+      - npm ci
+      - npm run build
+
+  - name: upload to S3
+    image: plugins/s3
+    settings:
+      bucket: ho-callisto-dev
+      region: eu-west-2
+      access_key:
+        from_secret: s3_aws_access_key_id
+      secret_key:
+        from_secret: s3_aws_secret_access_key
+      source: dist/**/*
+      strip_prefix: dist/
+      target: test/main
+    when:
+      event: 
+        - push
+      branch:
+        - main
+    depends_on:
+      - build for test
+
+---
+kind: pipeline
+type: kubernetes
 name: callisto-ui-prod-deploy
 
 platform:
@@ -167,7 +223,6 @@ steps:
       target: main
     depends_on:
       - build for prod
-
 
 ---
 kind: pipeline
