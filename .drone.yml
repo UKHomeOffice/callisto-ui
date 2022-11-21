@@ -89,11 +89,11 @@ steps:
     image: alpine/git
     commands:      
       - "git tag v$${DRONE_BUILD_NUMBER} && git push origin v$${DRONE_BUILD_NUMBER}"
-    when:
-      event: 
-        - push
-      branch:
-        - main
+    # when:
+    #   event: 
+    #     - push
+    #   branch:
+    #     - main
     depends_on:
       - build project
   
