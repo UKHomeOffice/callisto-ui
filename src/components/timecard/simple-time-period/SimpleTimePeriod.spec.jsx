@@ -10,7 +10,6 @@ import {
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
 const timecardDate = '2022-09-01';
-const timecardDateNextDay = '2022-09-02';
 const midnight = '00:00';
 
 const newTimeEntry = {
