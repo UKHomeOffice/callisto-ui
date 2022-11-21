@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  keycloak:
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth']
+      start_period: 30s
+    image: jboss/keycloak:15.0.2
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: h2
+    volumes:
+      - ${PWD}/keycloak/config:/opt/jboss/keycloak/config
+    command:
+      - '-Dkeycloak.migration.action=import'
+      - '-Dkeycloak.migration.provider=dir'
+      - '-Dkeycloak.migration.dir=/opt/jboss/keycloak/config'
+    networks:
+      - callisto
+
+  callisto-ui:
+    container_name: callisto-ui-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '3000:3000'
+    networks:
+      - callisto
+    depends_on:
+      - keycloak
+
+networks:
+  callisto:
+    name: callisto-localdev_callisto
+    driver: bridge
+    external: true
