@@ -222,26 +222,33 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
-name: build notifications
+name: callisto-ui notifications
 
 trigger:
   status:
     - success
     - failure
-  event:
-    - push
+  # event:
+  #   - push
 
 depends_on:
   - callisto-ui
+  - callisto-ui-test-deploy
+  - callisto-ui-prod-deploy
 
-steps:
-  - name: slack
-    image: plugins/slack
+slack: &slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: SLACK_WEBHOOK_URL
+    channel: callisto-tech-notifications
+    username: Drone
+
+  
+steps:  
+  - name: slack_build
+    <<: *slack
     settings:
-      webhook:
-        from_secret: SLACK_WEBHOOK_URL
-      channel: callisto-tech-notifications
-      username: Drone
       template: |
         {{#success build.status}}
           Build #{{ build.number }} succeeded! :tada:
@@ -253,3 +260,19 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}
         <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
+    when:
+      event: 
+        - push
+
+  - name: slack_deploy
+    <<: *slack
+    settings:
+      template: >
+        {{#success build.status}}
+          :rocket: Successful *{{uppercasefirst build.deployTo}}* deployment for *{{repo.name}} build #{{build.number}}*.          
+        {{else}}
+          :zombie: Problem *{{uppercasefirst build.deployTo}}* deployment failed for <${DRONE_BUILD_LINK}| build #{{build.number}}>.
+        {{/success}}       
+    when:
+      event: 
+        - promote   
