@@ -85,17 +85,17 @@ steps:
     depends_on:
       - install dependencies
 
-  - name: git tag
-    image: alpine/git
-    commands:      
-      - "git tag v$${DRONE_BUILD_NUMBER} && git push origin v$${DRONE_BUILD_NUMBER}"
-    # when:
-    #   event: 
-    #     - push
-    #   branch:
-    #     - main
-    depends_on:
-      - build project
+  # - name: git tag
+  #   image: plugins/git
+  #   commands:      
+  #     - "git tag v$${DRONE_BUILD_NUMBER} && git push origin v$${DRONE_BUILD_NUMBER}"
+  #   when:
+  #     event: 
+  #       - push
+  #     branch:
+  #       - main
+  #   depends_on:
+  #     - build project
   
   - name: upload to S3
     image: plugins/s3
