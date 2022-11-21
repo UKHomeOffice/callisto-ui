@@ -96,7 +96,7 @@ describe('SimpleTimePeriod', () => {
   describe('Save button', () => {
     it('should call createTimeEntry when pressing save', async () => {
       const expectedActualStartTime = `${timecardDate}T00:00:00+00:00`;
-      const expectedActualEndTime = `${timecardDateNextDay}T00:00:00+00:00`;
+      const expectedActualEndTime = `${timecardDate}T23:59:59+00:00`;
 
       const timecardService = require('../../../api/services/timecardService');
       const mockCreateTimeEntry = jest.spyOn(
