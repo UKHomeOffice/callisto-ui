@@ -16,13 +16,15 @@ const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
 };
 
 export const buildTimeEntriesFilter = (date, userId) => {
+  const ownerAndUserId = "ownerId=='" + userId + "'";
+
   const startDateFilterCondition = joinAndConditions(
-    "ownerId=='" + userId + "'",
+    ownerAndUserId,
     ...filterTimeEntriesOnDate('actualStartTime', date)
   );
 
   const endDateFilterCondition = joinAndConditions(
-    "ownerId=='" + userId + "'",
+    ownerAndUserId,
     ...filterTimeEntriesOnDate('actualEndTime', date)
   );
 
