@@ -98,10 +98,11 @@ steps:
     when:
       event: 
         - push
-      # branch:
-      #   - main
+      branch:
+        - main
     depends_on:
       - build project
+      - sonar analysis      
   
   - name: upload to S3
     image: plugins/s3
