@@ -2,12 +2,13 @@ version: '3'
 
 services:
   keycloak:
+    container_name: callisto-ui-keycloak-localdev
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth']
       start_period: 30s
     image: jboss/keycloak:15.0.2
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
@@ -22,10 +23,10 @@ services:
       - callisto
 
   callisto-ui:
-    container_name: callisto-ui-dev
+    container_name: callisto-ui-web-localdev
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.localdev
     volumes:
       - '.:/app'
       - '/app/node_modules'
@@ -33,8 +34,6 @@ services:
       - '3000:3000'
     networks:
       - callisto
-    depends_on:
-      - keycloak
 
 networks:
   callisto:
