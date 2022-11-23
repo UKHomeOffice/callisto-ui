@@ -190,8 +190,6 @@ trigger:
   status:
     - success
     - failure
-  # event:
-  #   - push
 
 depends_on:
   - callisto-ui
@@ -212,7 +210,7 @@ steps:
     settings:
       template: |
         {{#success build.status}}
-          Build #{{ build.number }} succeeded! :tada:
+          Build #{{ build.number }} succeeded! :tada: {{#main build.branch}}and deployed to Dev{{/main}}
         {{else}}
           Build #{{ build.number }} failed :alert:
         {{/success}}
