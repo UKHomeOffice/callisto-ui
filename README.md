@@ -33,6 +33,18 @@ Navigate to http://localhost:3000
 
 The application will serve mock data from JSON server by default
 
+### Run the applicationa as a Docker container
+
+To run application as a Docker container, run command (while being in the root directory of the application):
+
+`docker compose up -d`
+
+This will run the UI and Keycloak as a containers. The use of the `npm start` command listed in the _Run the application_ section is not required.
+
+Before running the `docker compose up -d` command, it is necessary to stop any Keycloak containers running on port used by docker-compose.yml keycloak service (default: `8080`).
+
+After running the application as Docker containers, it is possible to develop the application and preview changes on the fly without restarting or rebuilding the UI container
+
 ### To use your local API e.g. for Timecard
 
 1. Set the \_API_URL environment variables to the local dev server (currently 'http://localhost:3000')
