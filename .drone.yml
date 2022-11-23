@@ -193,6 +193,7 @@ trigger:
 
 depends_on:
   - callisto-ui
+  - callisto-ui-dev-deploy
   - callisto-ui-test-deploy  
 
 slack: &slack
