@@ -10,7 +10,8 @@ platform:
 trigger:
   event:
     exclude:
-      - promote  
+      - promote
+      - tag  
 
 steps:
   - name: fetch
