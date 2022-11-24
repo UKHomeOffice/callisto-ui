@@ -42,7 +42,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       dayjs(timecardDate).startOf('day')
     );
     const actualEndDateTime = formatDateTimeISO(
-      dayjs(timecardDate).startOf('day').add(1, 'day')
+      dayjs(timecardDate).endOf('day')
     );
 
     const timecardPayload = {
