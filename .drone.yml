@@ -212,7 +212,7 @@ steps:
     settings:
       template: |
         {{#success build.status}}
-          Build #{{ build.number }} succeeded! :tada: {{#main build.branch}}and deployed to Dev{{/main}}
+          Build #{{ build.number }} succeeded {{#main build.branch}}and deployed to Dev{{/main}}! :tada:
         {{else}}
           Build #{{ build.number }} failed :alert:
         {{/success}}
