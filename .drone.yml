@@ -101,8 +101,7 @@ steps:
        - push
       branch:
        - main  
-    depends_on:
-      - install dependencies
+    depends_on:      
       - sonar analysis
   
   - name: upload to S3
