@@ -7,6 +7,12 @@ platform:
   os: linux
   arch: amd64
 
+trigger:
+  event:
+    exclude:
+      - promote
+      - tag  
+
 steps:
   - name: fetch
     image: alpine/git
@@ -14,7 +20,7 @@ steps:
       - "git fetch origin +refs/heads/main:"
 
   - name: install dependencies
-    image: &node_image # the version we're targeting for productio
+    image: &node_image # the version we're targeting for production
       node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
@@ -80,6 +86,36 @@ steps:
     depends_on:
       - install dependencies
 
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui-dev-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui
+
+trigger:
+  event:
+    - push
+  branch:
+    - main  
+
+steps:
+  - name: git tag push
+    image: appleboy/drone-git-push
+    settings:
+      branch: main
+      remote: git@github.com:UKHomeOffice/callisto-ui.git
+      ssh_key:
+        from_secret: github_private_key
+      commit: true
+      tag: v$${DRONE_BUILD_NUMBER}
+      followtags: true     
+  
   - name: upload to S3
     image: plugins/s3
     settings:
@@ -92,39 +128,91 @@ steps:
       source: dist/**/*
       strip_prefix: dist/
       target: dev/main
-    when:
-      event: push
-      branch:
-        - main
     depends_on:
-      - build project
+      - git tag push
 
 ---
 kind: pipeline
 type: kubernetes
-name: build notifications
+name: callisto-ui-test-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui-dev-deploy
+
+trigger:
+  event:
+    - promote
+  target:
+    - test
+
+steps:
+  - name: build for test
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_test
+      VITE_KC_REALM:
+        from_secret: kc_realm_test
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_test
+      VITE_TIMECARD_API_URL: "https://timecard.test.callisto-notprod.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.test.callisto-notprod.homeoffice.gov.uk/"                        
+    commands:
+      - npm ci
+      - npm run build
+
+  - name: upload to test S3
+    image: plugins/s3
+    settings:
+      bucket: ho-callisto-dev
+      region: eu-west-2
+      access_key:
+        from_secret: s3_aws_access_key_id
+      secret_key:
+        from_secret: s3_aws_secret_access_key
+      source: dist/**/*
+      strip_prefix: dist/
+      target: test/main
+    depends_on:
+      - build for test
+
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui notifications
 
 trigger:
   status:
     - success
     - failure
-  event:
-    - push
 
 depends_on:
   - callisto-ui
+  - callisto-ui-dev-deploy
+  - callisto-ui-test-deploy  
 
-steps:
-  - name: slack
-    image: plugins/slack
+slack: &slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: SLACK_WEBHOOK_URL
+    channel: callisto-tech-notifications
+    username: Drone
+
+  
+steps:  
+  - name: slack_build
+    <<: *slack
     settings:
-      webhook:
-        from_secret: SLACK_WEBHOOK_URL
-      channel: callisto-tech-notifications
-      username: Drone
       template: |
         {{#success build.status}}
-          Build #{{ build.number }} succeeded! :tada:
+          Build #{{ build.number }} succeeded {{#main build.branch}}and deployed to Dev{{/main}}! :tada:
         {{else}}
           Build #{{ build.number }} failed :alert:
         {{/success}}
@@ -133,3 +221,19 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}
         <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
+    when:
+      event: 
+        - push
+
+  - name: slack_deploy
+    <<: *slack
+    settings:
+      template: >
+        {{#success build.status}}
+          :rocket: Successful *{{uppercasefirst build.deployTo}}* deployment for *{{repo.name}} build #{{build.number}}*.          
+        {{else}}
+          :zombie: Problem *{{uppercasefirst build.deployTo}}* deployment failed for *{{repo.name}}* <${DRONE_BUILD_LINK}| build #{{build.number}}>.
+        {{/success}}       
+    when:
+      event: 
+        - promote   
