@@ -93,7 +93,6 @@ steps:
       remote: git@github.com:UKHomeOffice/callisto-ui.git
       ssh_key:
         from_secret: github_private_key
-      commit: true
       tag: v${DRONE_BUILD_NUMBER}
       followtags: true
     when:
