@@ -45,6 +45,7 @@ export default defineConfig((config) => {
         '/resources/time-entries': timecardConfig,
         '/test': accrualsConfig, // TODO: configure Accruals URLs accordingly
       },
+      port: 9090,
     },
   };
 });

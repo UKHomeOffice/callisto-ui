@@ -5,6 +5,7 @@ npm-debug.log*
 
 # Build
 node_modules
+node_modules_linux
 dist
 dist-ssr
 *.local
