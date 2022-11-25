@@ -1,0 +1,8 @@
+organization=ukhomeoffice
+projectKey=callisto-ui
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.34970
+branch=main
+dashboardUrl=https://sonarcloud.io/dashboard?id=callisto-ui&branch=main
+ceTaskId=AYSue12K2SqSi419Cs31
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AYSue12K2SqSi419Cs31
