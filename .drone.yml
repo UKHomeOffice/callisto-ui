@@ -86,25 +86,6 @@ steps:
     depends_on:
       - install dependencies
 
----
-kind: pipeline
-type: kubernetes
-name: callisto-ui-dev-deploy
-
-platform:
-  os: linux
-  arch: amd64
-
-depends_on:
-  - callisto-ui
-
-trigger:
-  event:
-    - push
-  branch:
-    - main  
-
-steps:
   - name: git tag push
     image: appleboy/drone-git-push
     settings:
@@ -113,8 +94,15 @@ steps:
       ssh_key:
         from_secret: github_private_key
       commit: true
-      tag: v$${DRONE_BUILD_NUMBER}
-      followtags: true     
+      tag: v${DRONE_BUILD_NUMBER}
+      followtags: true
+    when:
+      event:
+       - push
+      branch:
+       - main  
+    depends_on:      
+      - sonar analysis
   
   - name: upload to S3
     image: plugins/s3
@@ -128,6 +116,11 @@ steps:
       source: dist/**/*
       strip_prefix: dist/
       target: dev/main
+    when:
+      event:
+       - push
+      branch:
+       - main  
     depends_on:
       - git tag push
 
@@ -141,7 +134,7 @@ platform:
   arch: amd64
 
 depends_on:
-  - callisto-ui-dev-deploy
+  - callisto-ui
 
 trigger:
   event:
@@ -193,8 +186,7 @@ trigger:
     - failure
 
 depends_on:
-  - callisto-ui
-  - callisto-ui-dev-deploy
+  - callisto-ui  
   - callisto-ui-test-deploy  
 
 slack: &slack
