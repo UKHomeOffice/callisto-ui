@@ -93,7 +93,6 @@ steps:
       remote: git@github.com:UKHomeOffice/callisto-ui.git
       ssh_key:
         from_secret: github_private_key
-      commit: true
       tag: v${DRONE_BUILD_NUMBER}
       followtags: true
     when:
@@ -143,6 +142,16 @@ trigger:
     - test
 
 steps:
+  - name: promote to test check
+    image: alpine:latest
+    commands:    
+      - echo Cannot promote from non 'main' branch
+      - exit 1
+    when:
+      branch:
+        exclude:
+          - main
+
   - name: build for test
     image: node:16.15.0
     environment:
@@ -159,6 +168,8 @@ steps:
     commands:
       - npm ci
       - npm run build
+    depends_on:
+      - promote to test check
 
   - name: upload to test S3
     image: plugins/s3
