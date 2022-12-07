@@ -41,7 +41,7 @@ describe('ValidatedTimeEntry', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call onblur method', async () => {
+  it('should call setFinishTimeText method', async () => {
     const setFinishTimeTextSpy = jest.fn();
 
     const component = renderWithTimecardContext(
