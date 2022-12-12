@@ -300,7 +300,7 @@ trigger:
 depends_on:
   - callisto-ui  
   - callisto-ui-test-deploy
-  # - callisto-ui-prod-deploy    
+  - callisto-ui-prod-deploy    
 
 slack: &slack
   image: plugins/slack
