@@ -196,7 +196,7 @@ platform:
   arch: amd64
 
 depends_on:
-  - callisto-ui-test-deploy  
+  - callisto-ui 
 
 trigger:
   event:
