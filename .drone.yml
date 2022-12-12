@@ -123,6 +123,14 @@ steps:
     depends_on:
       - git tag push
 
+  - name: url check
+    pull: if-not-exists    
+    image: alpine/curl:3.14   
+    commands:       
+    - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
+    - chmod +x ./up.sh
+    - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+
 ---
 kind: pipeline
 type: kubernetes
