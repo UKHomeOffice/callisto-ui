@@ -40,9 +40,12 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      text = `You are already assigned to work from ${formatStartDateTime(
-        clash
-      )} to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`;
+      const endDateText = clash.endTime
+        ? `to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`
+        : '';
+
+      text = `You are already assigned to work from 
+      ${formatStartDateTime(clash)} ${endDateText}`;
     } else {
       text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
         clash.startTime
