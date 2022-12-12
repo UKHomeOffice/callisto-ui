@@ -189,7 +189,7 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
-name: callisto-ui-promotion-checks
+name: callisto-ui-prod-deploy
 
 platform:
   os: linux
@@ -202,8 +202,9 @@ trigger:
   event:
     - promote
   target:
+    - production
     exclude:
-    - test
+      - test
 
 steps:
   - name: environment check
@@ -238,27 +239,7 @@ steps:
       done
       echo 'NO match.'
       exit 1
-
----
-kind: pipeline
-type: kubernetes
-name: callisto-ui-prod-deploy
-
-platform:
-  os: linux
-  arch: amd64
-
-depends_on:
-  - callisto-ui 
-  - callisto-ui-promotion-checks
-
-trigger:
-  event:
-    - promote
-  target:
-    - production
-
-steps:
+ 
   - name: build for prod
     image: node:16.15.0
     environment:
