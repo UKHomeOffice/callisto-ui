@@ -491,69 +491,6 @@ describe('EditShiftHours', () => {
     });
   });
 
-  it('should set finish date as next day when finish time is edited to less than start time and submitted by pressing enter', async () => {
-    const timeEntryId = '1';
-    const inputtedStartTime = '08:00';
-    const inputtedEndTime = '01:00';
-    const timecardDate = '2022-09-01';
-    const endDate = '2022-09-02';
-    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
-    const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
-
-    const existingTimeEntry = {
-      ...newTimeEntry,
-      timeEntryId: timeEntryId,
-      startTime: '08:00',
-      endTime: '10:00',
-      finishNextDay: true,
-    };
-
-    defaultTimecardContext.timecardDate = timecardDate;
-
-    renderWithTimecardContext(
-      <EditShiftHours
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={existingTimeEntry}
-        timeEntriesIndex={0}
-      />,
-      defaultTimecardContext
-    );
-
-    act(() => {
-      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-      fireEvent.change(startTimeInput, {
-        target: { value: '08:00' },
-      });
-
-      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
-      fireEvent.change(endTimeInput, {
-        target: { value: '01:00' },
-      });
-
-      fireEvent.keyDown(endTimeInput, { key: 'enter', keyCode: 13 });
-      // fireEvent.keyPress(endTimeInput, {
-      //   key: 'Enter',
-      //   code: 13,
-      //   charCode: 13,
-      // });
-    });
-
-    await waitFor(() => {
-      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
-        timeEntryId,
-        {
-          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: expectedActualStartTime,
-          actualEndTime: expectedActualEndTime,
-        },
-        new URLSearchParams([
-          ['tenantId', '00000000-0000-0000-0000-000000000000'],
-        ])
-      );
-    });
-  });
-
   describe('Service errors', () => {
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {
