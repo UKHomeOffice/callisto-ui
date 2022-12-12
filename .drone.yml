@@ -205,7 +205,7 @@ trigger:
     - production
 
 steps:
-  - name: environment-check
+  - name: environment check
     pull: if-not-exists
     image: alpine:latest
     commands:
@@ -237,6 +237,8 @@ steps:
       done
       echo 'NO match.'
       exit 1
+    depends_on:
+      - environment check      
 
   - name: build for prod
     image: node:16.15.0
@@ -255,7 +257,7 @@ steps:
       - npm ci
       - npm run build
     depends_on:
-      - promote to prod check
+      - successful build check
 
   - name: upload to prod S3
     image: plugins/s3
