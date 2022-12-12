@@ -130,6 +130,13 @@ steps:
     - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
     - chmod +x ./up.sh
     - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+    when:
+      event:
+       - push
+      branch:
+       - main  
+    depends_on:
+      - upload to S3    
 
 ---
 kind: pipeline
