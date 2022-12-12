@@ -202,9 +202,10 @@ trigger:
   event:
     - promote
   target:
+    include:
     - production
-    # exclude:
-    # - test
+    exclude:
+    - test
 
 steps:
   - name: environment check
