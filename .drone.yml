@@ -150,7 +150,7 @@ steps:
     when:
       branch:
         exclude:
-          - main
+          - EAHW-2441/promote-ui-prod
 
   - name: build for test
     image: node:16.15.0
@@ -195,6 +195,9 @@ platform:
   os: linux
   arch: amd64
 
+depends_on:
+  - callisto-ui-test-deploy  
+
 trigger:
   event:
     - promote
@@ -232,7 +235,6 @@ steps:
       done
       echo 'NO match.'
       exit 1
-
 
 ---
 kind: pipeline
