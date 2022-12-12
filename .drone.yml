@@ -216,7 +216,7 @@ steps:
     when:
       target:
         exclude:
-        - production
+          - production
 
   - name: successful build check
     pull: if-not-exists    
