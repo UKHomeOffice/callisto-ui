@@ -201,6 +201,9 @@ depends_on:
 trigger:
   event:
     - promote
+  target:
+    exclude:
+    - test
 
 steps:
   - name: environment check
