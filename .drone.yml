@@ -216,7 +216,7 @@ steps:
         exclude:
           - production
 
- - name: successful build check
+  - name: successful build check
     pull: if-not-exists    
     image: drone/cli:1.6.2-alpine
     environment:
