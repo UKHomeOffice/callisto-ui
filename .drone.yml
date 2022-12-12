@@ -205,16 +205,39 @@ trigger:
     - production
 
 steps:
-  - name: promote to prod check
+  - name: environment-check
+    pull: if-not-exists
     image: alpine:latest
-    commands:    
-      - echo Cannot promote from non 'main' branch
+    commands:
+      - echo Cannot promote to a non prod environment
       - exit 1
     when:
-      branch:
+      target:
         exclude:
-          - main # EAHW-2441/promote-ui-prod
-          
+          - production
+
+ - name: successful build check
+    pull: if-not-exists    
+    image: drone/cli:1.6.2-alpine
+    environment:
+      DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+      DRONE_TOKEN:
+        from_secret: drone_token        
+    commands:
+    - |        
+      PAGE=1
+      SUCCESSFUL_BUILDS=''      
+      while [ "$PAGE" -le 10 ]; do 
+        SUCCESSFUL_BUILDS="$(drone build ls --format '{{.Number}}' $DRONE_REPO --branch EAHW-2441/promote-ui-prod --status success --event push --limit 100 --page $PAGE)"
+        if [ `echo $SUCCESSFUL_BUILDS | grep -c $DRONE_BUILD_PARENT` -gt 0 ]; then
+          echo 'Found match.'
+          exit 0
+        fi 
+        PAGE="$((PAGE+1))"
+      done
+      echo 'NO match.'
+      exit 1
+
   - name: build for prod
     image: node:16.15.0
     environment:
