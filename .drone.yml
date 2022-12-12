@@ -240,6 +240,8 @@ steps:
       done
       echo 'NO match.'
       exit 1
+    depends_on:
+      - environment check
  
   - name: build for prod
     image: node:16.15.0
