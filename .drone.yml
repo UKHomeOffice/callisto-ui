@@ -203,8 +203,8 @@ trigger:
     - promote
   target:
     - production
-    exclude:
-    - test
+    # exclude:
+    # - test
 
 steps:
   - name: environment check
