@@ -40,12 +40,8 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      const endDateText = clash.endTime
-        ? `to ${formatTime(clash.endTime)} on ${formatLongDate(clash.endTime)}`
-        : '';
-
       text = `You are already assigned to work from 
-      ${formatStartDateTime(clash)} ${endDateText}`;
+      ${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`;
     } else {
       text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
         clash.startTime
@@ -83,14 +79,18 @@ const TimeInputErrors = ({ clashingProperty, clashes }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      return `${formatStartDateTime(clash)} to ${formatTime(
-        clash.endTime
-      )} on ${formatLongDate(clash.endTime)}`;
+      return `${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`;
     }
 
     return `${timePeriodType.toLowerCase()} on ${formatLongDate(
       clash.startTime
     )}`;
+  };
+
+  const getEndTimeText = (endTime) => {
+    return endTime
+      ? `to ${formatTime(endTime)} on ${formatLongDate(endTime)}`
+      : '';
   };
 
   const formatStartDateTime = (clash) => {
