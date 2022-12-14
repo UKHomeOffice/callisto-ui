@@ -1,7 +1,5 @@
 import { renderWithTimecardContext } from '../../../../test/helpers/TimecardContext';
 import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
-import { fireEvent, waitFor } from '@testing-library/react';
-import { act } from 'react-test-renderer';
 
 import ValidatedTimeEntry from './ValidatedTimeEntry';
 import { inputNames } from '../../../../utils/constants';
