@@ -248,12 +248,12 @@ steps:
       while [ "$PAGE" -le 10 ]; do 
         SUCCESSFUL_BUILDS="$(drone build ls --format '{{.Number}}' $DRONE_REPO --branch main --status success --event push --limit 100 --page $PAGE)"
         if [ `echo $SUCCESSFUL_BUILDS | grep -c $DRONE_BUILD_PARENT` -gt 0 ]; then
-          echo 'Found match.'
+          echo 'Found successful build.'
           exit 0
         fi 
         PAGE="$((PAGE+1))"
       done
-      echo 'NO match.'
+      echo 'No succcessful build found.'
       exit 1
     depends_on:
       - environment check
