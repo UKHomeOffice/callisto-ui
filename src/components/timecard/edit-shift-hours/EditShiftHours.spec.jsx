@@ -491,6 +491,45 @@ describe('EditShiftHours', () => {
     });
   });
 
+  it('should show "finishes next day" when finish time is edited to less than start time', async () => {
+    const timeEntryId = '1';
+    const timecardDate = '2022-09-01';
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '08:00',
+      endTime: '10:00',
+      finishNextDay: true,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '08:00' },
+      });
+
+      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+      fireEvent.change(endTimeInput, {
+        target: { value: '01:00' },
+      });
+    });
+
+    const message = screen.getByText('Finishes next day');
+    expect(message).toBeTruthy();
+  });
+
   describe('Service errors', () => {
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {

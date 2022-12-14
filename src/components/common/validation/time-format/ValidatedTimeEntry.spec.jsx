@@ -40,31 +40,4 @@ describe('ValidatedTimeEntry', () => {
 
     expect(component).toBeTruthy();
   });
-
-  it('should call setFinishTimeText method', async () => {
-    const setFinishTimeTextSpy = jest.fn();
-
-    const component = renderWithTimecardContext(
-      <ValidatedTimeEntry
-        name={inputNames.shiftFinishTime}
-        timeType="finish time"
-        errors={{}}
-        register={setFinishTimeTextSpy}
-        getValues={jest.fn()}
-        timeEntry={timeEntry}
-        timeEntriesIndex={0}
-      />
-    );
-
-    act(() => {
-      const someElement = component.container.querySelector(
-        `#${inputNames.shiftFinishTime}`
-      );
-      fireEvent.blur(someElement);
-    });
-
-    await waitFor(() => {
-      expect(setFinishTimeTextSpy).toBeCalledTimes(1);
-    });
-  });
 });
