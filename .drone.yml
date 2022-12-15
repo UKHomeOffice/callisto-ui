@@ -115,13 +115,13 @@ steps:
         from_secret: s3_aws_access_key_id
       AWS_SECRET_ACCESS_KEY:
         from_secret: s3_aws_secret_access_key
-    when:
-      event:
-       - push
-      branch:
-       - main  
+    # when:
+    #   event:
+    #    - push
+    #   branch:
+    #    - main  
     depends_on:
-      - git tag push
+      - build project #git tag push
 
   - name: url check
     pull: if-not-exists    
