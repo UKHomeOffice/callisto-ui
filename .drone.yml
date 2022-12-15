@@ -86,7 +86,6 @@ steps:
     depends_on:
       - install dependencies
 
-
   - name: git tag push
     image: appleboy/drone-git-push
     settings:
@@ -105,17 +104,17 @@ steps:
       - sonar analysis
   
   - name: upload to S3
-    image: plugins/s3
-    settings:
-      bucket: ho-callisto-dev
-      region: eu-west-2
-      access_key:
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/dev/main    
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
         from_secret: s3_aws_access_key_id
-      secret_key:
+      AWS_SECRET_ACCESS_KEY:
         from_secret: s3_aws_secret_access_key
-      source: dist/**/*
-      strip_prefix: dist/
-      target: dev/main
     when:
       event:
        - push
@@ -188,17 +187,17 @@ steps:
       - promote to test check
 
   - name: upload to test S3
-    image: plugins/s3
-    settings:
-      bucket: ho-callisto-dev
-      region: eu-west-2
-      access_key:
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/test/main   
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
         from_secret: s3_aws_access_key_id
-      secret_key:
+      AWS_SECRET_ACCESS_KEY:
         from_secret: s3_aws_secret_access_key
-      source: dist/**/*
-      strip_prefix: dist/
-      target: test/main
     depends_on:
       - build for test
 
@@ -279,17 +278,21 @@ steps:
       - successful build check
 
   - name: upload to prod S3
-    image: plugins/s3
-    settings:
-      bucket: ho-callisto
-      region: eu-west-2
-      access_key:
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto/main
+        --sse aws:kms
+        --sse-kms-key-id $${AWS_KMS_KEY}      
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
         from_secret: s3_aws_access_key_id_prod
-      secret_key:
+      AWS_SECRET_ACCESS_KEY:
         from_secret: s3_aws_secret_access_key_prod
-      source: dist/**/*
-      strip_prefix: dist/
-      target: main
+      AWS_KMS_KEY:
+        from_secret: s3_aws_kms_key
     depends_on:
       - build for prod
 
