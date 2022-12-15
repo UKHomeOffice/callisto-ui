@@ -86,24 +86,6 @@ steps:
     depends_on:
       - install dependencies
 
-  - name: check upload to prod s3
-    image: amazon/aws-cli
-    commands:
-      - >
-        aws s3 cp 
-        --recursive ./dist/ s3://ho-callisto/main
-        --sse aws:kms
-        --sse-kms-key-id $${AWS_KMS_KEY}      
-    environment:
-      AWS_DEFAULT_REGION: eu-west-2
-      AWS_ACCESS_KEY_ID:
-        from_secret: s3_aws_access_key_id_prod
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: s3_aws_secret_access_key_prod
-      AWS_KMS_KEY:
-        from_secret: s3_aws_kms_key
-    depends_on:
-      - build project
 
   - name: git tag push
     image: appleboy/drone-git-push
