@@ -123,6 +123,21 @@ steps:
     depends_on:
       - git tag push
 
+  - name: url check
+    pull: if-not-exists    
+    image: alpine/curl:3.14   
+    commands:       
+    - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
+    - chmod +x ./up.sh
+    - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+    when:
+      event:
+       - push
+      branch:
+       - main  
+    depends_on:
+      - upload to S3    
+
 ---
 kind: pipeline
 type: kubernetes
@@ -189,6 +204,97 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
+name: callisto-ui-prod-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui-test-deploy
+
+trigger:
+  event:
+    - promote
+  target:
+    include:
+    - production
+    exclude:
+    - test
+
+steps:
+  - name: environment check
+    pull: if-not-exists
+    image: alpine:latest
+    commands:
+      - echo Cannot promote to a non prod environment
+      - exit 1
+    when:
+      target:
+        exclude:
+          - production
+
+  - name: successful build check
+    pull: if-not-exists    
+    image: drone/cli:1.6.2-alpine
+    environment:
+      DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+      DRONE_TOKEN:
+        from_secret: drone_token        
+    commands:
+    - |        
+      PAGE=1
+      SUCCESSFUL_BUILDS=''      
+      while [ "$PAGE" -le 10 ]; do 
+        SUCCESSFUL_BUILDS="$(drone build ls --format '{{.Number}}' $DRONE_REPO --branch main --status success --event push --limit 100 --page $PAGE)"
+        if [ `echo $SUCCESSFUL_BUILDS | grep -c $DRONE_BUILD_PARENT` -gt 0 ]; then
+          echo 'Found successful build.'
+          exit 0
+        fi 
+        PAGE="$((PAGE+1))"
+      done
+      echo 'No succcessful build found.'
+      exit 1
+    depends_on:
+      - environment check
+ 
+  - name: build for prod
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_prod
+      VITE_KC_REALM:
+        from_secret: kc_realm_prod
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_prod
+      VITE_TIMECARD_API_URL: "https://timecard.callisto.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.callisto.homeoffice.gov.uk/"                        
+    commands:
+      - npm ci
+      - npm run build
+    depends_on:
+      - successful build check
+
+  - name: upload to prod S3
+    image: plugins/s3
+    settings:
+      bucket: ho-callisto
+      region: eu-west-2
+      access_key:
+        from_secret: s3_aws_access_key_id_prod
+      secret_key:
+        from_secret: s3_aws_secret_access_key_prod
+      source: dist/**/*
+      strip_prefix: dist/
+      target: main
+    depends_on:
+      - build for prod
+
+---
+kind: pipeline
+type: kubernetes
 name: callisto-ui notifications
 
 trigger:
@@ -198,7 +304,8 @@ trigger:
 
 depends_on:
   - callisto-ui  
-  - callisto-ui-test-deploy  
+  - callisto-ui-test-deploy
+  - callisto-ui-prod-deploy    
 
 slack: &slack
   image: plugins/slack
@@ -215,7 +322,7 @@ steps:
     settings:
       template: |
         {{#success build.status}}
-          Build #{{ build.number }} succeeded {{#main build.branch}}and deployed to Dev{{/main}}! :tada:
+          Build #{{ build.number }} succeeded{{#equal build.branch "main"}} and deployed to Dev{{/equal}}! :tada:
         {{else}}
           Build #{{ build.number }} failed :alert:
         {{/success}}
@@ -224,6 +331,7 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}
         <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
+        {{build.link}}
     when:
       event: 
         - push
