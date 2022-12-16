@@ -1,3 +1,5 @@
+# This one is using build version of the UI
+# Use command `npm run build` to build the app.
 version: '3.3'
 
 services:

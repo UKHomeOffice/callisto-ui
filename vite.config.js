@@ -46,6 +46,9 @@ export default defineConfig((config) => {
         '/test': accrualsConfig, // TODO: configure Accruals URLs accordingly
       },
       port: 9090,
+      hmr: {
+        clientPort: 443,
+      },
     },
   };
 });

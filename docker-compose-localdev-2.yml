@@ -1,21 +1,16 @@
+# It allows to develop the code while running app as Docker container without the need to restart it.
 version: '3.3'
 
 services:
   web:
     image: node:17-alpine
     ports:
-      - 9090
+      - '9090'
     volumes:
       - .:/app
       - './node_modules_linux:/app/node_modules'
     networks:
       - callisto
-    environment:
-      - VITE_KC_URL="https://keycloak.callisto.localhost/auth/"
-      - VITE_KC_REALM="callisto"
-      - VITE_KC_CLIENTID="callistoreactclient"
-      - VITE_TIMECARD_API_URL = "https://timecard-restapi.callisto.localhost/"
-      - VITE_ACCRUALS_API_URL = "https://accruals-restapi.callisto.localhost/"
     entrypoint: 'npm run localdev'
     working_dir: /app
 
