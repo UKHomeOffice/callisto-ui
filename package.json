@@ -15,8 +15,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "vite": "vite",
-    "vite:host": "vite --host",
-    "docker": "run-p start:jsonserver vite:host",
     "localdev": "npm install && npm run vite -- --host"
   },
   "jest": {

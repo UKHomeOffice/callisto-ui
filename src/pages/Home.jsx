@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="govuk-heading-xl">Home page TEST</h1>
+      <h1 className="govuk-heading-xl">Home page</h1>
     </>
   );
 };
