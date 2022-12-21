@@ -142,3 +142,32 @@ VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
 ## Troubleshooting
 
 If you’re using an AMD (M1,M2) chip mac, you might encounter problems starting the keycloak docker container. We’ve had some success building a new image locally, as per the instructions in this github thread: https://github.com/docker/for-mac/issues/5310#issuecomment-877653653
+
+## Running UI in LocalDev Environment
+
+### Step 1
+
+Download Callisto LocalDev repository from https://github.com/UKHomeOffice/callisto-localdev
+
+Run its services with command : `docker compose up -d`
+
+### Step 2
+
+Stop (manually) service `web` (most likely the name will be `web-1`)
+
+### Step 3
+
+Create file .env in the root of this project, and add the following:
+
+```
+VITE_KC_URL="https://keycloak.callisto.localhost/auth/"
+VITE_KC_REALM="callisto"
+VITE_KC_CLIENTID="callistoreactclient"
+
+VITE_TIMECARD_API_URL = "https://timecard-restapi.callisto.localhost/"
+VITE_ACCRUALS_API_URL = "https://accruals-restapi.callisto.localhost/"
+```
+
+### Step 4
+
+Run command `docker compose up -d`
