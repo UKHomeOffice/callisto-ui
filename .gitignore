@@ -5,6 +5,7 @@ npm-debug.log*
 
 # Build
 node_modules
+node_modules_linux
 dist
 dist-ssr
 *.local
@@ -24,3 +25,5 @@ db.json
 
 #APIs
 start-timecard-api.ps1
+
+.env
