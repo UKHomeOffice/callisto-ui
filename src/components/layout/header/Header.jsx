@@ -5,6 +5,7 @@ import SignIn from './SignIn';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { formatDate } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { HashLink } from 'react-router-hash-link';
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -19,6 +20,13 @@ const Header = () => {
         }}
         role="banner"
       >
+        <HashLink
+          to="#main-content"
+          className="govuk-skip-link"
+          data-module="govuk-skip-link"
+        >
+          Skip to main content
+        </HashLink>
         <div
           className="govuk-header__container govuk-width-container"
           style={{ borderBottom: 0 }}
