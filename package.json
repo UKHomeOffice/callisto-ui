@@ -15,7 +15,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "vite": "vite",
-    "localdev": "npm install && npm run vite -- --host"
+    "localdev": "run-p localdev:init start:jsonserver vite ",
+    "localdev:init": "npm install"
   },
   "jest": {
     "collectCoverageFrom": [
