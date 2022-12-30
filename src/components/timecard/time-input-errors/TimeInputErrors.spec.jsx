@@ -114,6 +114,28 @@ describe('TimeInputErrors', () => {
       );
       expect(clashingShiftError).toBeTruthy();
     });
+
+    it('should only include the clashing shift start time in the error message when there is no clashing shift end time', () => {
+      const shiftClash = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={clashingProperties.startTime}
+          clashes={shiftClash}
+        />
+      );
+
+      const startTimeClashText =
+        'You are already assigned to work from 08:00 on 3 November 2022';
+
+      expect(screen.getByText(startTimeClashText)).toBeTruthy();
+      expect(screen.queryByText(`${startTimeClashText} to`)).toBeFalsy();
+    });
   });
 
   describe('Multiple time clashes', () => {
@@ -297,6 +319,41 @@ describe('TimeInputErrors', () => {
       expect(clashingTimePeriods[1]).toEqual(
         '08:00 to 12:00 on 4 November 2022'
       );
+    });
+
+    it('should only include the clashing shift start time in the error message when there is no clashing shift end time', () => {
+      const shiftClash = [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-03T08:00:00.000+00:00',
+          endTime: '2022-11-04T16:00:00.000+00:00',
+        },
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-11-04T17:00:00.000+00:00',
+        },
+      ];
+
+      renderWithTimecardContext(
+        <TimeInputErrors
+          clashingProperty={clashingProperties.startTime}
+          clashes={shiftClash}
+        />
+      );
+
+      const clashingTimePeriods = screen
+        .getAllByTestId('test')
+        .map(getNodeText);
+
+      expect(clashingTimePeriods[0]).toEqual(
+        '08:00 on 3 November 2022 to 16:00 on 4 November 2022'
+      );
+
+      const secondTimePeriodClashText = '17:00 on 4 November 2022';
+      expect(clashingTimePeriods[1].trimEnd()).toEqual(
+        secondTimePeriodClashText
+      );
+      expect(screen.queryByText(`${secondTimePeriodClashText} to`)).toBeFalsy();
     });
   });
 

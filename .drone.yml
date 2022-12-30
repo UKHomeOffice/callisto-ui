@@ -7,6 +7,12 @@ platform:
   os: linux
   arch: amd64
 
+trigger:
+  event:
+    exclude:
+      - promote
+      - tag  
+
 steps:
   - name: fetch
     image: alpine/git
@@ -14,7 +20,7 @@ steps:
       - "git fetch origin +refs/heads/main:"
 
   - name: install dependencies
-    image: &node_image # the version we're targeting for productio
+    image: &node_image # the version we're targeting for production
       node:16.15.0
     environment:
       NPM_AUTH_TOKEN:
@@ -80,51 +86,247 @@ steps:
     depends_on:
       - install dependencies
 
-  - name: upload to S3
-    image: plugins/s3
+  - name: git tag push
+    image: appleboy/drone-git-push
     settings:
-      bucket: ho-callisto-dev
-      region: eu-west-2
-      access_key:
-        from_secret: s3_aws_access_key_id
-      secret_key:
-        from_secret: s3_aws_secret_access_key
-      source: dist/**/*
-      strip_prefix: dist/
-      target: dev/main
+      branch: main
+      remote: git@github.com:UKHomeOffice/callisto-ui.git
+      ssh_key:
+        from_secret: github_private_key
+      tag: v${DRONE_BUILD_NUMBER}
+      followtags: true
     when:
-      event: push
+      event:
+       - push
       branch:
-        - main
+       - main  
+    depends_on:      
+      - sonar analysis
+  
+  - name: upload to S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/dev/main    
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    when:
+      event:
+       - push
+      branch:
+       - main  
     depends_on:
-      - build project
+      - git tag push
+
+  - name: url check
+    pull: if-not-exists    
+    image: alpine/curl:3.14   
+    commands:       
+    - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
+    - chmod +x ./up.sh
+    - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+    when:
+      event:
+       - push
+      branch:
+       - main  
+    depends_on:
+      - upload to S3    
 
 ---
 kind: pipeline
 type: kubernetes
-name: build notifications
+name: callisto-ui-test-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui
+
+trigger:
+  event:
+    - promote
+  target:
+    - test
+
+steps:
+  - name: promote to test check
+    image: alpine:latest
+    commands:    
+      - echo Cannot promote from non 'main' branch
+      - exit 1
+    when:
+      branch:
+        exclude:
+          - main
+
+  - name: build for test
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_test
+      VITE_KC_REALM:
+        from_secret: kc_realm_test
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_test
+      VITE_TIMECARD_API_URL: "https://timecard.test.callisto-notprod.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.test.callisto-notprod.homeoffice.gov.uk/"                        
+    commands:
+      - npm ci
+      - npm run build
+    depends_on:
+      - promote to test check
+
+  - name: upload to test S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/test/main   
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    depends_on:
+      - build for test
+
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui-prod-deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+depends_on:
+  - callisto-ui-test-deploy
+
+trigger:
+  event:
+    - promote
+  target:
+    include:
+    - production
+    exclude:
+    - test
+
+steps:
+  - name: environment check
+    pull: if-not-exists
+    image: alpine:latest
+    commands:
+      - echo Cannot promote to a non prod environment
+      - exit 1
+    when:
+      target:
+        exclude:
+          - production
+
+  - name: successful build check
+    pull: if-not-exists    
+    image: drone/cli:1.6.2-alpine
+    environment:
+      DRONE_SERVER: https://drone-gh.acp.homeoffice.gov.uk
+      DRONE_TOKEN:
+        from_secret: drone_token        
+    commands:
+    - |        
+      PAGE=1
+      SUCCESSFUL_BUILDS=''      
+      while [ "$PAGE" -le 10 ]; do 
+        SUCCESSFUL_BUILDS="$(drone build ls --format '{{.Number}}' $DRONE_REPO --branch main --status success --event push --limit 100 --page $PAGE)"
+        if [ `echo $SUCCESSFUL_BUILDS | grep -c $DRONE_BUILD_PARENT` -gt 0 ]; then
+          echo 'Found successful build.'
+          exit 0
+        fi 
+        PAGE="$((PAGE+1))"
+      done
+      echo 'No succcessful build found.'
+      exit 1
+    depends_on:
+      - environment check
+ 
+  - name: build for prod
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_prod
+      VITE_KC_REALM:
+        from_secret: kc_realm_prod
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_prod
+      VITE_TIMECARD_API_URL: "https://timecard.callisto.homeoffice.gov.uk/"
+      VITE_ACCRUALS_API_URL: "https://accruals.callisto.homeoffice.gov.uk/"                        
+    commands:
+      - npm ci
+      - npm run build
+    depends_on:
+      - successful build check
+
+  - name: upload to prod S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto/main
+        --sse aws:kms
+        --sse-kms-key-id $${AWS_KMS_KEY}      
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id_prod
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key_prod
+      AWS_KMS_KEY:
+        from_secret: s3_aws_kms_key
+    depends_on:
+      - build for prod
+
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui notifications
 
 trigger:
   status:
     - success
     - failure
-  event:
-    - push
 
 depends_on:
-  - callisto-ui
+  - callisto-ui  
+  - callisto-ui-test-deploy
+  - callisto-ui-prod-deploy    
 
-steps:
-  - name: slack
-    image: plugins/slack
+slack: &slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: SLACK_WEBHOOK_URL
+    channel: callisto-tech-notifications
+    username: Drone
+
+  
+steps:  
+  - name: slack_build
+    <<: *slack
     settings:
-      webhook:
-        from_secret: SLACK_WEBHOOK_URL
-      channel: callisto-tech-notifications
-      username: Drone
       template: |
         {{#success build.status}}
-          Build #{{ build.number }} succeeded! :tada:
+          Build #{{ build.number }} succeeded{{#equal build.branch "main"}} and deployed to Dev{{/equal}}! :tada:
         {{else}}
           Build #{{ build.number }} failed :alert:
         {{/success}}
@@ -133,3 +335,20 @@ steps:
         Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}
         <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
+        {{build.link}}
+    when:
+      event: 
+        - push
+
+  - name: slack_deploy
+    <<: *slack
+    settings:
+      template: >
+        {{#success build.status}}
+          :rocket: Successful *{{uppercasefirst build.deployTo}}* deployment for *{{repo.name}} build #{{build.number}}*.          
+        {{else}}
+          :zombie: Problem *{{uppercasefirst build.deployTo}}* deployment failed for *{{repo.name}}* <${DRONE_BUILD_LINK}| build #{{build.number}}>.
+        {{/success}}       
+    when:
+      event: 
+        - promote   
