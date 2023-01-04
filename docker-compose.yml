@@ -11,8 +11,14 @@ services:
       - './node_modules_linux:/app/node_modules'
     networks:
       - callisto
-    entrypoint: 'npm run localdev'
+    entrypoint: 'sh -c "npm install && ((npm run start:jsonserver) & npm run vite)"'
     working_dir: /app
+    healthcheck:
+      interval: 10s
+      retries: 10
+      start_period: 15s
+      timeout: 2s
+      test: ['CMD', 'node', '-e', 'require("axios").get("http://web:9090/index.html").catch(()=> process.exit(1)).then((res) =>{process.exit(res.status ? 0: 1);})']
 
 networks:
   callisto:

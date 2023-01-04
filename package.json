@@ -14,9 +14,7 @@
     "lint": "eslint --ext .js,.jsx src",
     "build": "vite build",
     "preview": "vite preview",
-    "vite": "vite",
-    "localdev": "run-p localdev:init start:jsonserver vite ",
-    "localdev:init": "npm install"
+    "vite": "vite"
   },
   "jest": {
     "collectCoverageFrom": [
