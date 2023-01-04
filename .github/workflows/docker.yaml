@@ -1,0 +1,57 @@
+name: Docker
+on:
+  push:
+    branches:
+      - main
+      - '**EAHW-**'
+
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    env:
+      NPM_AUTH_TOKEN: ${{ secrets.npm_auth_token }}
+      VITE_KC_URL: "https://keycloak.callisto.localhost/auth" 
+      VITE_KC_REALM: "callisto" 
+      VITE_KC_CLIENTID: "callistoreactclient" 
+      VITE_TIMECARD_API_URL: "https://timecard-restapi.callisto.localhost/" 
+      VITE_ACCRUALS_API_URL: "https://accruals-restapi.callisto.localhost/"
+      ECR_REGISTRY: 340268328991.dkr.ecr.eu-west-2.amazonaws.com 
+      DOCKER_REPO: callisto/ui
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.15.0'
+    - run: npm ci
+    - run: npm run lint
+    - run: npx stylelint "**/*.scss"
+    - run: npm run test
+    - run: npm run build --if-present
+
+    - name: Docker build
+      run: |
+        if [ "$GITHUB_REF_NAME" = "main" ]
+        then
+          docker build . -t ${ECR_REGISTRY}/${DOCKER_REPO}:latest
+        else
+          [[ $GITHUB_REF_NAME =~ (EAHW-[0-9]*) ]] && TAG=${match/#E/E}${BASH_REMATCH/#E/E}
+          docker build . -t ${ECR_REGISTRY}/${DOCKER_REPO}:${TAG}
+        fi
+      shell: bash
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.CALLISTO_UI_DEPLOY_BOT_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.CALLISTO_UI_DEPLOY_BOT_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Push image to Amazon ECR
+      run: |
+        docker image push --all-tags ${ECR_REGISTRY}/${DOCKER_REPO}
