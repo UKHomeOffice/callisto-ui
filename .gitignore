@@ -25,5 +25,3 @@ db.json
 
 #APIs
 start-timecard-api.ps1
-
-.env
