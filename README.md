@@ -130,3 +130,45 @@ VITE_ACCRUALS_API_URL_PROXY="http://localhost:9091/"
 ## Troubleshooting
 
 If you’re using an AMD (M1,M2) chip mac, you might encounter problems starting the keycloak docker container. We’ve had some success building a new image locally, as per the instructions in this github thread: https://github.com/docker/for-mac/issues/5310#issuecomment-877653653
+
+## Running UI in LocalDev Environment
+
+### Step 1
+
+Download Callisto LocalDev repository from https://github.com/UKHomeOffice/callisto-localdev and follow the instruction in the callisto-localdev repository to start local environment.
+
+### Step 2
+
+Stop `web` (UI) service using command `docker compose stop web` (Make sure you are in the localdev project directory where the docker-compose.yml file used to start the localdev environment is located)
+
+### Step 3
+
+Run command `docker compose up -d` from the root level of the local Callisto UI project.
+
+## LocalDev solution and .env file
+
+`.env` shouldn't be changed. It contain variables used by LocalDev solution.
+
+If you want to use mock data or any other, custom values for environment variables, please create file `.env.local` and set those values in that file
+
+**NPM** has priority when using .env files
+
+Files on the left have more priority than files on the right
+
+`npm start: .env.development.local, .env.local, .env.development, .env`
+
+These variables will act as the defaults if the machine does not explicitly set them.
+
+### Scenario 1
+
+I want to use UI within the LocalDev solution, but I need to work with Timecard-restapi mock api and data.
+
+Steps:
+
+Create file .env.local (if not exists) in the root of the project.
+
+Override .env VITE_TIMECARD_API_URL variable to point Timecard-restapi mock:
+
+`VITE_TIMECARD_API_URL = "http://localhost:50001/"`
+
+Re-run container to use updated env variables by using commands `docker compose restart web` and

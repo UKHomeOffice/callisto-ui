@@ -1,0 +1,27 @@
+# It allows to develop the code while running app as Docker container without the need to restart it.
+version: '3.3'
+
+services:
+  web:
+    image: node:17-alpine
+    ports:
+      - '50001:9090'
+    volumes:
+      - .:/app
+      - './node_modules_linux:/app/node_modules'
+    networks:
+      - callisto
+    entrypoint: 'sh -c "npm install && ((npm run start:jsonserver) & npm run vite)"'
+    working_dir: /app
+    healthcheck:
+      interval: 10s
+      retries: 10
+      start_period: 15s
+      timeout: 2s
+      test: ['CMD', 'node', '-e', 'require("axios").get("http://web:9090/index.html").catch(()=> process.exit(1)).then((res) =>{process.exit(res.status ? 0: 1);})']
+
+networks:
+  callisto:
+    name: callisto-localdev_callisto
+    driver: bridge
+    external: true

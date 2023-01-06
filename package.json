@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "start": "run-p keycloak start:jsonserver vite",
-    "start:dev": "run-p keycloak vite",    
+    "start:dev": "run-p keycloak vite",
     "keycloak": "cd keycloak && docker compose up",
     "prestart:jsonserver": "node mocks/createMockDb.js",
-    "start:jsonserver": "node mocks/apiServer.js",    
+    "start:jsonserver": "node mocks/apiServer.js",
     "test": "TZ=UTC jest --coverage",
     "monitor": "TZ=UTC jest --watchAll",
     "lint:fix": "eslint --ext .js,.jsx src --fix",
