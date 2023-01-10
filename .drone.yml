@@ -328,7 +328,7 @@ steps:
       channel: callisto-urgent-tech-notifications
       username: Drone
       template: |
-          @here <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
+          <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
           Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
           Repo: {{ repo.name }}
           Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
