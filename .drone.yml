@@ -324,11 +324,11 @@ steps:
     image: plugins/slack
     settings:
       webhook:
-        from_secret: SLACK_WEBHOOK_URL
-      channel: callisto-tech-notifications
+        from_secret: slack_urgent_webhook_url
+      channel: callisto-urgent-tech-notifications
       username: Drone
       template: |
-          HELLOOOOO <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
+          @here <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
           Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
           Repo: {{ repo.name }}
           Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
