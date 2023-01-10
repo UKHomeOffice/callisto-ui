@@ -326,7 +326,7 @@ steps:
       webhook:
         from_secret: slack_urgent_webhook_url
       channel: callisto-urgent-tech-notifications
-      username: Drone
+      username: Callisto Urgent Drone Notifications
       template: |
           @here <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
           Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
