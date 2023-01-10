@@ -335,9 +335,9 @@ steps:
           Author: {{ build.author }}
           <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
           {{build.link}}
-    # when: 
-    #   status: 
-    #     - failure
+    trigger: 
+      status: 
+        - failure
 
   - name: slack_build
     <<: *slack
