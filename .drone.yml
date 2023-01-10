@@ -340,6 +340,7 @@ steps:
         - push
         - promote
       status:
+        - success
         - failure
 
   - name: slack_build
