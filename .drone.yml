@@ -301,10 +301,10 @@ kind: pipeline
 type: kubernetes
 name: callisto-ui notifications
 
-# trigger:
-#   status:
-#     - success
-#     - failure
+trigger:
+  status:
+    - success
+    - failure
 
 depends_on:
   - callisto-ui  
@@ -335,9 +335,9 @@ steps:
           Author: {{ build.author }}
           <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
           {{build.link}}
-    when: 
-      status: 
-        - failure
+    # when: 
+    #   status: 
+    #     - failure
 
   - name: slack_build
     <<: *slack
