@@ -383,9 +383,9 @@ steps:
         Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
         Repo: {{ repo.name }}
         Author: {{ build.author }}
-    # when:
-    #   branch:
-    #     - main
+    when:
+      branch:
+        - main
 
   - name: slack_deploy_urgent
     image: plugins/slack
@@ -396,6 +396,6 @@ steps:
       username: Drone
       template: |
         :alert: Problem *{{uppercasefirst build.deployTo}}* deployment failed for *{{repo.name}}* <${DRONE_BUILD_LINK}| build #{{build.number}}>.
-    # when:
-    #   event:
-    #     - promote
+    when:
+      event:
+        - promote
