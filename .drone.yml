@@ -327,7 +327,7 @@ steps:
         {{#success build.status}}
           <${DRONE_BUILD_LINK}|Build #{{build.number}}> succeeded{{#equal build.branch "main"}} and deployed to Dev{{/equal}}! :tada:
         {{else}}
-          <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
+          <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :broken_heart:
         {{/success}}
         Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
         Repo: {{ repo.name }}
@@ -366,8 +366,28 @@ depends_on:
   - callisto-ui-test-deploy
   - callisto-ui-prod-deploy
 
+slack: &slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_urgent_webhook_url
+    channel: callisto-urgent-tech-notifications
+    username: Drone
+
 steps:
-  - name: slack_urgent
+  - name: slack_build_urgent
+    <<: *slack
+    settings:
+      template: |
+        <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :this-is-fine-fire:
+        Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
+        Repo: {{ repo.name }}
+        Author: {{ build.author }}
+    # when:
+    #   branch:
+    #     - main
+
+  - name: slack_deploy_urgent
     image: plugins/slack
     settings:
       webhook:
@@ -375,14 +395,7 @@ steps:
       channel: callisto-urgent-tech-notifications
       username: Drone
       template: |
-        <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
-        Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
-        Repo: {{ repo.name }}
-        Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
-        Author: {{ build.author }}
-        <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
-        {{build.link}}
+        :alert: Problem *{{uppercasefirst build.deployTo}}* deployment failed for *{{repo.name}}* <${DRONE_BUILD_LINK}| build #{{build.number}}>.
     # when:
     #   event:
-    #     - push
     #     - promote
