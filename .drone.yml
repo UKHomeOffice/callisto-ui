@@ -301,10 +301,10 @@ kind: pipeline
 type: kubernetes
 name: callisto-ui notifications
 
-trigger:
-  status:
-    - success
-    - failure
+# trigger:
+#   status:
+#     - success
+#     - failure
 
 depends_on:
   - callisto-ui  
