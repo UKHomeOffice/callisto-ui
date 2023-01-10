@@ -351,4 +351,23 @@ steps:
         {{/success}}       
     when:
       event: 
-        - promote   
+        - promote
+
+  - name: slack_urgent
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack_urgent_webhook_url
+      channel: callisto-urgent-tech-notifications
+      username: Drone
+      template: |
+          @here <${DRONE_BUILD_LINK}|Build #{{build.number}}> failed :alert:
+          Commit: <${DRONE_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}> - {{{ trim build.message }}}
+          Repo: {{ repo.name }}
+          Branch: <${DRONE_REPO_LINK}/commits/{{ build.branch }}|{{ build.branch }}>
+          Author: {{ build.author }}
+          <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
+          {{build.link}}
+    when: 
+      status: 
+        - failure

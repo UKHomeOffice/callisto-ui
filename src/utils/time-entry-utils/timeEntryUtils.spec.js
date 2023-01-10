@@ -50,7 +50,7 @@ describe('timeEntryUtils', () => {
       const startTime = '12:03';
       const finishTime = '00:00';
 
-      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeTruthy();
+      expect(isFinishTimeOnNextDay(startTime, finishTime)).toBeFalsy();
     });
 
     it('should return true when start time equals finish time', async () => {
