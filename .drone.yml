@@ -335,7 +335,7 @@ steps:
           Author: {{ build.author }}
           <https://sonarcloud.io/dashboard?id=callisto-ui&branch={{ build.branch }}&resolved=false|SonarCloud Analysis Report>
           {{build.link}}
-    trigger: 
+    when: 
       status: 
         - failure
 
@@ -357,6 +357,9 @@ steps:
     when:
       event: 
         - push
+      status:
+        - success
+        - failure
 
   - name: slack_deploy
     <<: *slack
@@ -370,4 +373,7 @@ steps:
     when:
       event: 
         - promote
+      status:
+        - success
+        - failure
 
