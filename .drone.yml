@@ -27,6 +27,9 @@ steps:
     when:
       branch:
         - main
+      event:
+        exclude:
+          - pull_request
 
   - name: install dependencies
     image: &node_image # the version we're targeting for production
