@@ -19,18 +19,6 @@ steps:
     commands:
       - 'git fetch origin +refs/heads/main:'
 
-  - name: break main
-    image: alpine:latest
-    commands:
-      - echo Testing urgent notifications
-      - exit 1
-    when:
-      branch:
-        - main
-      event:
-        exclude:
-          - pull_request
-
   - name: install dependencies
     image: &node_image # the version we're targeting for production
       node:16.15.0
