@@ -399,12 +399,8 @@ steps:
         - main
 
   - name: slack_deploy_urgent
-    image: plugins/slack
+    <<: *slack
     settings:
-      webhook:
-        from_secret: slack_urgent_webhook_url
-      channel: callisto-urgent-tech-notifications
-      username: Drone
       template: |
         :alert: Problem *{{uppercasefirst build.deployTo}}* deployment failed for *{{repo.name}}* <${DRONE_BUILD_LINK}| build #{{build.number}}>.
     when:
