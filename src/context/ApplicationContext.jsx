@@ -12,14 +12,10 @@ const setTimePeriodTypesData = async (setTimePeriodTypes, setServiceError) => {
     .setTenantId('00000000-0000-0000-0000-000000000000')
     .getUrlSearchParams();
 
-  validateServiceErrors(
-    setServiceError,
-    async () => {
-      const response = await getTimePeriodTypes(params);
-      setTimePeriodTypes(response.data?.items);
-    },
-    false
-  );
+  validateServiceErrors(setServiceError, async () => {
+    const response = await getTimePeriodTypes(params);
+    setTimePeriodTypes(response.data?.items);
+  });
 };
 
 export const ApplicationProvider = ({ children }) => {
