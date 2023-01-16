@@ -29,10 +29,18 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    validateServiceErrors(setServiceError, async () => {
-      await deleteTimeEntry(timeEntry.timeEntryId, params);
-      removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
-    });
+    validateServiceErrors(
+      setServiceError,
+      async () => {
+        await deleteTimeEntry(timeEntry.timeEntryId, params);
+        removeTimecardContextEntry(
+          timeEntries,
+          setTimeEntries,
+          timeEntriesIndex
+        );
+      },
+      true
+    );
   };
 
   const onSubmit = async (event) => {
@@ -56,28 +64,32 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    validateServiceErrors(setServiceError, async () => {
-      const response = await createTimeEntry(timecardPayload, params);
+    validateServiceErrors(
+      setServiceError,
+      async () => {
+        const response = await createTimeEntry(timecardPayload, params);
 
-      if (response?.data?.items?.length > 0) {
-        const formattedStartTime = formatTime(
-          response.data.items[0].actualStartTime
-        );
-        const formattedEndTime = formatTime(
-          response.data.items[0].actualEndTime
-        );
+        if (response?.data?.items?.length > 0) {
+          const formattedStartTime = formatTime(
+            response.data.items[0].actualStartTime
+          );
+          const formattedEndTime = formatTime(
+            response.data.items[0].actualEndTime
+          );
 
-        const newTimeEntries = deepCloneJson(timeEntries);
-        newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
-          timeEntry
-        )
-          .setStartTime(formattedStartTime)
-          .setFinishTime(formattedEndTime)
-          .setTimeEntryId(response.data.items[0].id);
+          const newTimeEntries = deepCloneJson(timeEntries);
+          newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+            timeEntry
+          )
+            .setStartTime(formattedStartTime)
+            .setFinishTime(formattedEndTime)
+            .setTimeEntryId(response.data.items[0].id);
 
-        setTimeEntries(newTimeEntries);
-      }
-    });
+          setTimeEntries(newTimeEntries);
+        }
+      },
+      true
+    );
   };
 
   const onCancel = (event) => {

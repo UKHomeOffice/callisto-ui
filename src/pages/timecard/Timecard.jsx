@@ -138,35 +138,31 @@ const updateTimeEntryContextData = async (
     .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
 
-  validateServiceErrors(
-    setServiceError,
-    async () => {
-      const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+  validateServiceErrors(setServiceError, async () => {
+    const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-      if (timeEntriesResponse.data.items?.length > 0) {
-        const existingTimeEntries = timeEntriesResponse.data.items.map(
-          (timeEntry) => {
-            return new ContextTimeEntry(
-              timeEntry.id,
-              timeEntry.actualStartTime,
-              timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
-              timeEntry.timePeriodTypeId,
-              timeEntry.finishNextDay ??
-                isFinishTimeOnNextDay(
-                  formatTime(timeEntry.actualStartTime),
-                  formatTime(timeEntry.actualEndTime)
-                )
-            );
-          }
-        );
+    if (timeEntriesResponse.data.items?.length > 0) {
+      const existingTimeEntries = timeEntriesResponse.data.items.map(
+        (timeEntry) => {
+          return new ContextTimeEntry(
+            timeEntry.id,
+            timeEntry.actualStartTime,
+            timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+            timeEntry.timePeriodTypeId,
+            timeEntry.finishNextDay ??
+              isFinishTimeOnNextDay(
+                formatTime(timeEntry.actualStartTime),
+                formatTime(timeEntry.actualEndTime)
+              )
+          );
+        }
+      );
 
-        setTimeEntries(existingTimeEntries);
-      } else {
-        setTimeEntries([]);
-      }
-    },
-    false
-  );
+      setTimeEntries(existingTimeEntries);
+    } else {
+      setTimeEntries([]);
+    }
+  });
 };
 
 export default Timecard;

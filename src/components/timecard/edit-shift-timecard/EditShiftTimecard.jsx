@@ -41,10 +41,18 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
       .getUrlSearchParams();
 
     setSummaryErrors({});
-    validateServiceErrors(setServiceError, async () => {
-      await deleteTimeEntry(timeEntry.timeEntryId, params);
-      removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
-    });
+    validateServiceErrors(
+      setServiceError,
+      async () => {
+        await deleteTimeEntry(timeEntry.timeEntryId, params);
+        removeTimecardContextEntry(
+          timeEntries,
+          setTimeEntries,
+          timeEntriesIndex
+        );
+      },
+      true
+    );
   };
 
   return (
