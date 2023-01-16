@@ -1,7 +1,7 @@
 export const validateServiceErrors = async (
   setServiceError,
   serviceFunction,
-  isRecoverable = true,
+  isRecoverable = false,
   handleCustomErrors = () => {}
 ) => {
   try {

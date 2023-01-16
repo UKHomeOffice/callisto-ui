@@ -23,7 +23,7 @@ describe('ApiUtils', () => {
     });
   });
 
-  it('should set the service error and recoverable to true when an error is thrown', async () => {
+  it('should set the service error and recoverable to false when an error is thrown', async () => {
     serviceError = {
       hasError: false,
     };
@@ -35,7 +35,7 @@ describe('ApiUtils', () => {
     await waitFor(() => {
       expect(setServiceError).toHaveBeenCalledWith({
         hasError: true,
-        recoverable: true,
+        recoverable: false,
       });
       expect(serviceError.hasError).toEqual(true);
     });
