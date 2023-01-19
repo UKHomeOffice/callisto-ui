@@ -84,7 +84,28 @@ steps:
     commands:
       - npm run build
     depends_on:
-      - install dependencies
+      - lint project
+      - test project
+
+  - name: deploy branch to S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/        
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    # when:
+    #   event:
+    #     - pull_request
+    #   action:
+    #     - opened
+    depends_on:
+      - build project
 
   - name: git tag push
     image: appleboy/drone-git-push
