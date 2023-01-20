@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+    cert-manager.io/solver: route53
+  annotations:
+    cert-manager.io/enabled: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: "nginx-internal"
+    kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:  
+    - hosts:
+        - {{ .Values.branch }}-web.dev.callisto-notprod.homeoffice.gov.uk  
+      secretName: callisto-web-tls-{{ .Values.branch }}
+  rules:  
+  - host: {{ .Values.branch }}-web.dev.callisto-notprod.homeoffice.gov.uk
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ .Values.ui.service.name }}
+              port:
+                number: {{ .Values.ui.service.port }}  
