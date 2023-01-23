@@ -87,6 +87,74 @@ steps:
       - lint project
       - test project
 
+  - name: deploy branch to S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    # when:
+    #   event:
+    #     - pull_request
+
+  - name: git tag push
+    image: appleboy/drone-git-push
+    settings:
+      branch: main
+      remote: git@github.com:UKHomeOffice/callisto-ui.git
+      ssh_key:
+        from_secret: github_private_key
+      tag: v${DRONE_BUILD_NUMBER}
+      followtags: true
+    when:
+      event:
+        - push
+      branch:
+        - main
+    depends_on:
+      - sonar analysis
+
+  - name: upload to S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp
+        --recursive ./dist/ s3://ho-callisto-dev/dev/main
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    when:
+      event:
+        - push
+      branch:
+        - main
+    depends_on:
+      - git tag push
+
+  - name: url check
+    pull: if-not-exists
+    image: alpine/curl:3.14
+    commands:
+      - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
+      - chmod +x ./up.sh
+      - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+    when:
+      event:
+        - push
+      branch:
+        - main
+    depends_on:
+      - upload to S3
+
 ---
 kind: pipeline
 type: kubernetes
@@ -104,19 +172,6 @@ depends_on:
 #     - pull_request
 
 steps:
-  - name: deploy branch to S3
-    image: amazon/aws-cli
-    commands:
-      - >
-        aws s3 cp 
-        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
-    environment:
-      AWS_DEFAULT_REGION: eu-west-2
-      AWS_ACCESS_KEY_ID:
-        from_secret: s3_aws_access_key_id
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: s3_aws_secret_access_key
-
   - name: branch_deploy
     image: pelotech/drone-helm3
     settings:
@@ -134,55 +189,6 @@ steps:
         from_secret: dev_kube_api_url
       kube_token:
         from_secret: dev_kube_token
-
-# ---
-# kind: pipeline
-# type: kubernetes
-# name: callisto-ui-dev-deploy
-
-# depends_on: callisto-ui
-
-# trigger:
-#   event:
-#     - push
-#   branch:
-#     - main
-
-# steps:
-#   - name: git tag push
-#     image: appleboy/drone-git-push
-#     settings:
-#       branch: main
-#       remote: git@github.com:UKHomeOffice/callisto-ui.git
-#       ssh_key:
-#         from_secret: github_private_key
-#       tag: v${DRONE_BUILD_NUMBER}
-#       followtags: true
-
-#   - name: upload to S3
-#     image: amazon/aws-cli
-#     commands:
-#       - >
-#         aws s3 cp
-#         --recursive ./dist/ s3://ho-callisto-dev/dev/main
-#     environment:
-#       AWS_DEFAULT_REGION: eu-west-2
-#       AWS_ACCESS_KEY_ID:
-#         from_secret: s3_aws_access_key_id
-#       AWS_SECRET_ACCESS_KEY:
-#         from_secret: s3_aws_secret_access_key
-#     depends_on:
-#       - git tag push
-
-#   - name: url check
-#     pull: if-not-exists
-#     image: alpine/curl:3.14
-#     commands:
-#       - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
-#       - chmod +x ./up.sh
-#       - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
-#     depends_on:
-#       - upload to S3
 
 ---
 kind: pipeline
