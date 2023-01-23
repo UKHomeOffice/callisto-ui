@@ -172,8 +172,8 @@ depends_on:
 trigger:
   event:
     - pull_request
-  # action:
-  #   - opened
+  action:
+    - opened
 
 steps:
   - name: branch_deploy
