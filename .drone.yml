@@ -363,7 +363,6 @@ trigger:
 depends_on:
   - callisto-ui
   - callisto-ui-branch-deploy
-  # - callisto-ui-dev-deploy
   - callisto-ui-test-deploy
   - callisto-ui-prod-deploy
 
@@ -418,7 +417,6 @@ trigger:
 
 depends_on:
   - callisto-ui
-  # - callisto-ui-dev-deploy
   - callisto-ui-test-deploy
   - callisto-ui-prod-deploy
 
