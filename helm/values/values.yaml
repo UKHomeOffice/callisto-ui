@@ -1,6 +1,5 @@
-ui:
-  service:
-    name: web
-    port: 3000
+service:
+  name: callisto-web
+  port: 3000
 
 branch: default # overridden by drone.yml for branch deploys
