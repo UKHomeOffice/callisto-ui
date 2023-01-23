@@ -68,25 +68,6 @@ steps:
         exclude:
           - pull_request
 
-  - name: build project
-    image: *node_image
-    environment:
-      NPM_AUTH_TOKEN:
-        from_secret: npm_auth_token
-      VITE_KC_URL:
-        from_secret: kc_url_dev
-      VITE_KC_REALM:
-        from_secret: kc_realm_dev
-      VITE_KC_CLIENTID:
-        from_secret: kc_clientid_dev
-      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
-      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
-    commands:
-      - npm run build
-    depends_on:
-      - lint project
-      - test project
-
 ---
 kind: pipeline
 type: kubernetes
@@ -104,6 +85,22 @@ depends_on:
 #     - pull_request
 
 steps:
+  - name: build project
+  image: *node_image
+  environment:
+    NPM_AUTH_TOKEN:
+      from_secret: npm_auth_token
+    VITE_KC_URL:
+      from_secret: kc_url_dev
+    VITE_KC_REALM:
+      from_secret: kc_realm_dev
+    VITE_KC_CLIENTID:
+      from_secret: kc_clientid_dev
+    VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+    VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+  commands:
+    - npm run build
+
   - name: deploy branch to S3
     image: amazon/aws-cli
     commands:
@@ -135,54 +132,75 @@ steps:
       kube_token:
         from_secret: dev_kube_token
 
-# ---
-# kind: pipeline
-# type: kubernetes
-# name: callisto-ui-dev-deploy
+---
+kind: pipeline
+type: kubernetes
+name: callisto-ui-dev-deploy
 
-# depends_on: callisto-ui
+platform:
+  os: linux
+  arch: amd64
 
-# trigger:
-#   event:
-#     - push
-#   branch:
-#     - main
+depends_on:
+  - callisto-ui
 
-# steps:
-#   - name: git tag push
-#     image: appleboy/drone-git-push
-#     settings:
-#       branch: main
-#       remote: git@github.com:UKHomeOffice/callisto-ui.git
-#       ssh_key:
-#         from_secret: github_private_key
-#       tag: v${DRONE_BUILD_NUMBER}
-#       followtags: true
+trigger:
+  event:
+    - push
+  branch:
+    - main
 
-#   - name: upload to S3
-#     image: amazon/aws-cli
-#     commands:
-#       - >
-#         aws s3 cp
-#         --recursive ./dist/ s3://ho-callisto-dev/dev/main
-#     environment:
-#       AWS_DEFAULT_REGION: eu-west-2
-#       AWS_ACCESS_KEY_ID:
-#         from_secret: s3_aws_access_key_id
-#       AWS_SECRET_ACCESS_KEY:
-#         from_secret: s3_aws_secret_access_key
-#     depends_on:
-#       - git tag push
+steps:
+  - name: build project
+    image: *node_image
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_dev
+      VITE_KC_REALM:
+        from_secret: kc_realm_dev
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_dev
+      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+    commands:
+      - npm run build
 
-#   - name: url check
-#     pull: if-not-exists
-#     image: alpine/curl:3.14
-#     commands:
-#       - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
-#       - chmod +x ./up.sh
-#       - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
-#     depends_on:
-#       - upload to S3
+  - name: git tag push
+    image: appleboy/drone-git-push
+    settings:
+      branch: main
+      remote: git@github.com:UKHomeOffice/callisto-ui.git
+      ssh_key:
+        from_secret: github_private_key
+      tag: v${DRONE_BUILD_NUMBER}
+      followtags: true
+
+  - name: upload to S3
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp
+        --recursive ./dist/ s3://ho-callisto-dev/dev/main
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    depends_on:
+      - git tag push
+
+  - name: url check
+    pull: if-not-exists
+    image: alpine/curl:3.14
+    commands:
+      - curl -s https://raw.githubusercontent.com/UKHomeOffice/callisto-ui-nginx/main/scripts/is-url-up.sh >up.sh
+      - chmod +x ./up.sh
+      - ./up.sh https://web.dev.callisto-notprod.homeoffice.gov.uk/index.html
+    depends_on:
+      - upload to S3
 
 ---
 kind: pipeline
