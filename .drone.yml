@@ -185,7 +185,7 @@ steps:
       values:
         - branch=${DRONE_SOURCE_BRANCH%%/*}
       values_files:
-        - ./helm/values/branch-values.yaml
+        - ./helm/values/values.yaml
       release: callisto-ui-${DRONE_SOURCE_BRANCH%%/*}
       kube_certificate:
         from_secret: notprod_kube_api_certificate
