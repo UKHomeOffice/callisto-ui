@@ -1,4 +1,6 @@
-ui:  
+ui:
   service:
     name: web
-    port: 3000  
+    port: 3000
+
+branch: default # overridden by drone.yml for branch deploys
