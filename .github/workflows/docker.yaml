@@ -45,7 +45,7 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ${{ QUAY_REPO_NAME }}
+        image: ${{ env.QUAY_REPO_NAME }}
         tags: ${{ env.image_tag }}
         containerfiles: |
           ./Dockerfile
