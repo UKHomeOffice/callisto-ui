@@ -48,7 +48,7 @@ jobs:
         image: ${{ env.QUAY_REPO_NAME }}
         tags: ${{ env.image_tag }}
         containerfiles: |
-          ./Dockerfile
+          ./dockerfile
     
     - name: Push image to Quay
       id: push-to-quay
