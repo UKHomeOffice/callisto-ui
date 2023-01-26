@@ -157,22 +157,22 @@ trigger:
 
 steps:
   - name: build project
-  image: *node_image
-  environment:
-    NPM_AUTH_TOKEN:
-      from_secret: npm_auth_token
-    VITE_KC_URL:
-      from_secret: kc_url_dev # change me
-    VITE_KC_REALM:
-      from_secret: kc_realm_dev
-    VITE_KC_CLIENTID:
-      from_secret: kc_clientid_dev
-    VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
-    VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
-  commands:
-    - npm ci
-    - npm run build
-  
+    image: node:16.15.0
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_dev # change me
+      VITE_KC_REALM:
+        from_secret: kc_realm_dev
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_dev
+      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+    commands:
+      - npm ci
+      - npm run build
+
   - name: deploy branch to S3
     image: amazon/aws-cli
     commands:
