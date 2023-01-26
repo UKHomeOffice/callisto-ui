@@ -87,24 +87,6 @@ steps:
       - lint project
       - test project
 
-  - name: deploy branch to S3
-    image: amazon/aws-cli
-    commands:
-      - >
-        aws s3 cp 
-        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
-    environment:
-      AWS_DEFAULT_REGION: eu-west-2
-      AWS_ACCESS_KEY_ID:
-        from_secret: s3_aws_access_key_id
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: s3_aws_secret_access_key
-    depends_on:
-      - build project
-    when:
-      event:
-        - pull_request
-
   - name: git tag push
     image: appleboy/drone-git-push
     settings:
@@ -174,6 +156,38 @@ trigger:
     - pull_request
 
 steps:
+  - name: build project
+  image: *node_image
+  environment:
+    NPM_AUTH_TOKEN:
+      from_secret: npm_auth_token
+    VITE_KC_URL:
+      from_secret: kc_url_dev # change me
+    VITE_KC_REALM:
+      from_secret: kc_realm_dev
+    VITE_KC_CLIENTID:
+      from_secret: kc_clientid_dev
+    VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+    VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+  commands:
+    - npm ci
+    - npm run build
+  
+  - name: deploy branch to S3
+  image: amazon/aws-cli
+  commands:
+    - >
+      aws s3 cp 
+      --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
+  environment:
+    AWS_DEFAULT_REGION: eu-west-2
+    AWS_ACCESS_KEY_ID:
+      from_secret: s3_aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: s3_aws_secret_access_key
+  depends_on:
+    - build project
+
   - name: branch_deploy
     image: pelotech/drone-helm3
     settings:
