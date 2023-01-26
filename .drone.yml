@@ -174,19 +174,19 @@ steps:
     - npm run build
   
   - name: deploy branch to S3
-  image: amazon/aws-cli
-  commands:
-    - >
-      aws s3 cp 
-      --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
-  environment:
-    AWS_DEFAULT_REGION: eu-west-2
-    AWS_ACCESS_KEY_ID:
-      from_secret: s3_aws_access_key_id
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: s3_aws_secret_access_key
-  depends_on:
-    - build project
+    image: amazon/aws-cli
+    commands:
+      - >
+        aws s3 cp 
+        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
+    environment:
+      AWS_DEFAULT_REGION: eu-west-2
+      AWS_ACCESS_KEY_ID:
+        from_secret: s3_aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: s3_aws_secret_access_key
+    depends_on:
+      - build project
 
   - name: branch_deploy
     image: pelotech/drone-helm3
