@@ -30,6 +30,24 @@ steps:
     depends_on:
       - fetch
 
+  - name: build project
+    image: *node_image
+    environment:
+      NPM_AUTH_TOKEN:
+        from_secret: npm_auth_token
+      VITE_KC_URL:
+        from_secret: kc_url_dev
+      VITE_KC_REALM:
+        from_secret: kc_realm_dev
+      VITE_KC_CLIENTID:
+        from_secret: kc_clientid_dev
+      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+    commands:
+      - npm run build
+    depends_on:
+      - install dependencies
+
   - name: lint project
     image: *node_image
     environment:
@@ -67,25 +85,6 @@ steps:
       event:
         exclude:
           - pull_request
-
-  - name: build project
-    image: *node_image
-    environment:
-      NPM_AUTH_TOKEN:
-        from_secret: npm_auth_token
-      VITE_KC_URL:
-        from_secret: kc_url_dev
-      VITE_KC_REALM:
-        from_secret: kc_realm_dev
-      VITE_KC_CLIENTID:
-        from_secret: kc_clientid_dev
-      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
-      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
-    commands:
-      - npm run build
-    depends_on:
-      - lint project
-      - test project
 
   - name: git tag push
     image: appleboy/drone-git-push
