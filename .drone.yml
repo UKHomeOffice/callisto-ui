@@ -161,7 +161,7 @@ steps:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
       VITE_KC_URL:
-        from_secret: kc_url_dev # change me
+        from_secret: kc_url_branch
       VITE_KC_REALM:
         from_secret: kc_realm_dev
       VITE_KC_CLIENTID:
