@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - '**EAHW-**'
+      - '**eahw-**'
 
 jobs:
   build-docker-image:
@@ -15,10 +15,10 @@ jobs:
       VITE_KC_CLIENTID: "callistoreactclient" 
       VITE_TIMECARD_API_URL: "https://timecard-restapi.callisto.localhost/" 
       VITE_ACCRUALS_API_URL: "https://accruals-restapi.callisto.localhost/"
-      ECR_REGISTRY: 340268328991.dkr.ecr.eu-west-2.amazonaws.com 
-      DOCKER_REPO: callisto/ui
+      QUAY_REGISTRY: quay.io/ukhomeofficedigital
+      QUAY_REPO_NAME: callisto-ui
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Use Node.js
       uses: actions/setup-node@v3
@@ -30,28 +30,35 @@ jobs:
     - run: npm run test
     - run: npm run build --if-present
 
-    - name: Docker build
+    - name: Get Image Tag
+      id: image-tags
       run: |
-        if [ "$GITHUB_REF_NAME" = "main" ]
-        then
-          docker build . -t ${ECR_REGISTRY}/${DOCKER_REPO}:latest
-        else
-          [[ $GITHUB_REF_NAME =~ (EAHW-[0-9]*) ]] && TAG=${match/#E/E}${BASH_REMATCH/#E/E}
-          docker build . -t ${ECR_REGISTRY}/${DOCKER_REPO}:${TAG}
-        fi
-      shell: bash
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "image_tag=latest" >> $GITHUB_ENV
+          fi
+          if [[ $GITHUB_REF_NAME =~ (eahw-[0-9]*) ]] && TAG=${match/#E/E}${BASH_REMATCH/#E/E}; then
+            echo "image_tag=${TAG}" >> $GITHUB_ENV
+          fi
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Build Image
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
       with:
-        aws-access-key-id: ${{ secrets.CALLISTO_UI_DEPLOY_BOT_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.CALLISTO_UI_DEPLOY_BOT_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-2
+        image: ${{ env.QUAY_REPO_NAME }}
+        tags: ${{ env.image_tag }}
+        containerfiles: |
+          ./dockerfile
+    
+    - name: Push image to Quay
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: ${{ env.QUAY_REGISTRY}}
+        username: ${{ secrets.QUAY_ROBOT_NAME }}
+        password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
-    - name: Push image to Amazon ECR
-      run: |
-        docker image push --all-tags ${ECR_REGISTRY}/${DOCKER_REPO}
