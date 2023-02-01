@@ -164,7 +164,7 @@ steps:
       VITE_KC_REALM: callisto
       VITE_KC_CLIENTID:
         from_secret: kc_clientid_dev
-      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+      VITE_TIMECARD_API_URL: 'https://eahw-2589-timecard.dev.callisto-notprod.homeoffice.gov.uk/'
       VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
     commands:
       - npm ci
