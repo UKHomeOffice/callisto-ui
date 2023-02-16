@@ -259,5 +259,29 @@ describe('Timecard', () => {
       });
       expect(calendarLink.pathname).toBe('/calendar');
     });
+
+    it('should not display notification messages when they havent been raised', async () => {
+      window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+      renderWithTimecardContext(<Timecard />, {
+        summaryMessages: {},
+
+        setSummaryMessages: jest.fn(),
+        isAlertVisable: false,
+        setIsAlertVisable: jest.fn(),
+
+        timeEntries: [
+          {
+            startTime: '',
+            finishTime: '',
+          },
+        ],
+        setTimeEntries: jest.fn(),
+        timecardDate: '',
+        setTimecardDate: jest.fn(),
+      });
+
+      expect(screen.queryByText('Row Deleted')).toBeFalsy();
+    });
   });
 });

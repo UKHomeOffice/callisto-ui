@@ -18,9 +18,13 @@ const MessageSummary = ({ messages, keys }) => {
       </div>
       <div className="govuk-notification-banner__content">
         <ul className="govuk-list govuk-message-summary__list">
-          {keys.map((key, i) => (
-            <li key={i} id={`summary-message-${i}`} data-testid="message-body">
-              <HashLink id={`summary-message-${i}-message`} to={`#${key}`}>
+          {keys.map((key) => (
+            <li
+              key={key}
+              id={`summary-message-${key}`}
+              data-testid="message-body"
+            >
+              <HashLink id={`summary-message-${key}-message`} to={`#${key}`}>
                 {messages[key].message}
               </HashLink>
             </li>
