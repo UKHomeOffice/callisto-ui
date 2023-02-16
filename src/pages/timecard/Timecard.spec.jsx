@@ -234,6 +234,59 @@ describe('Timecard', () => {
     expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
   });
 
+  it('should not display notification messages when they havent been raised', async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+    renderWithTimecardContext(<Timecard />, {
+      summaryMessages: {},
+
+      setSummaryMessages: jest.fn(),
+      isAlertVisable: false,
+      setIsAlertVisable: jest.fn(),
+
+      timeEntries: [
+        {
+          startTime: '',
+          finishTime: '',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.queryByText('Row Deleted')).toBeFalsy();
+  });
+
+  it('should display notification messages when they exist', async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+    renderWithTimecardContext(<Timecard />, {
+      summaryMessages: {
+        delete: { inputName: 'delete', message: 'Row Deleted' },
+        update: { inputName: 'update', message: 'Row Updated' },
+        insert: { inputName: 'insert', message: 'Row Inserted' },
+      },
+
+      setSummaryMessages: jest.fn(),
+      isAlertVisable: true,
+      setIsAlertVisable: jest.fn(),
+
+      timeEntries: [
+        {
+          startTime: '',
+          finishTime: '',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('Row Deleted')).toBeTruthy();
+    expect(screen.getByText('Row Deleted')).toBeTruthy();
+  });
+
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
       renderWithTimecardContext(<Timecard />);
@@ -258,30 +311,6 @@ describe('Timecard', () => {
         name: 'Select another date',
       });
       expect(calendarLink.pathname).toBe('/calendar');
-    });
-
-    it('should not display notification messages when they havent been raised', async () => {
-      window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-      renderWithTimecardContext(<Timecard />, {
-        summaryMessages: {},
-
-        setSummaryMessages: jest.fn(),
-        isAlertVisable: false,
-        setIsAlertVisable: jest.fn(),
-
-        timeEntries: [
-          {
-            startTime: '',
-            finishTime: '',
-          },
-        ],
-        setTimeEntries: jest.fn(),
-        timecardDate: '',
-        setTimecardDate: jest.fn(),
-      });
-
-      expect(screen.queryByText('Row Deleted')).toBeFalsy();
     });
   });
 });
