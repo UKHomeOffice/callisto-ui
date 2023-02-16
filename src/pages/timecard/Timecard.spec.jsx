@@ -241,8 +241,8 @@ describe('Timecard', () => {
       summaryMessages: {},
 
       setSummaryMessages: jest.fn(),
-      isAlertVisable: false,
-      setIsAlertVisable: jest.fn(),
+      isAlertVisible: false,
+      setIsAlertVisible: jest.fn(),
 
       timeEntries: [
         {
@@ -269,8 +269,8 @@ describe('Timecard', () => {
       },
 
       setSummaryMessages: jest.fn(),
-      isAlertVisable: true,
-      setIsAlertVisable: jest.fn(),
+      isAlertVisible: true,
+      setIsAlertVisible: jest.fn(),
 
       timeEntries: [
         {
