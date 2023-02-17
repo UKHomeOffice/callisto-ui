@@ -8,6 +8,8 @@ export const TimecardProvider = ({ children }) => {
   const [timeEntries, setTimeEntries] = useState([]);
   const [timecardDate, setTimecardDate] = useState();
   const [newTimeEntry, setNewTimeEntry] = useState();
+  const [summaryMessages, setSummaryMessages] = useState({});
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   const value = {
     summaryErrors,
@@ -18,6 +20,10 @@ export const TimecardProvider = ({ children }) => {
     setTimecardDate,
     newTimeEntry,
     setNewTimeEntry,
+    summaryMessages,
+    setSummaryMessages,
+    isAlertVisible,
+    setIsAlertVisible,
   };
 
   return (
