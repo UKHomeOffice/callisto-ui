@@ -160,8 +160,7 @@ steps:
     environment:
       NPM_AUTH_TOKEN:
         from_secret: npm_auth_token
-      VITE_KC_URL:
-        from_secret: kc_url_branch
+      VITE_KC_URL: https://keycloak.dev.callisto-notprod.homeoffice.gov.uk/auth/
       VITE_KC_REALM: callisto
       VITE_KC_CLIENTID:
         from_secret: kc_clientid_dev
