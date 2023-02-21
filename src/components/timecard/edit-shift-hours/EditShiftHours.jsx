@@ -243,10 +243,10 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
+          setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
-          setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
         }
       },
       true,
