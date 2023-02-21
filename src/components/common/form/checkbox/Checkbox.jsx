@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Checkbox = ({ text, name }) => {
+const Checkbox = ({ text, name, isChecked, handleChange }) => {
   return (
     <div className="govuk-form-group">
       <fieldset className="govuk-fieldset" aria-describedby={name}>
@@ -14,6 +14,8 @@ const Checkbox = ({ text, name }) => {
               name={name}
               type="checkbox"
               value={name}
+              checked={isChecked}
+              onChange={handleChange}
             />
             <label
               className="govuk-label govuk-checkboxes__label"
@@ -31,6 +33,8 @@ const Checkbox = ({ text, name }) => {
 Checkbox.propTypes = {
   text: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default Checkbox;

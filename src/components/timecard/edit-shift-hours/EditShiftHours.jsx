@@ -15,6 +15,7 @@ import {
   formatDate,
   formatDateTimeISO,
   formatTime,
+  formatDateNoYear,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -25,6 +26,9 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
 import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
+import DateInput from '../../common/form/date-input/DateInput';
+import Checkbox from '../../common/form/checkbox/Checkbox';
+import { useNavigate } from 'react-router-dom';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -44,12 +48,20 @@ const EditShiftHours = ({
 
   const inputName = 'shift';
   const { setServiceError, userId } = useApplicationContext();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [redirectTarget, setRedirectTarget] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
   const {
     timeEntries,
     setTimeEntries,
     timecardDate,
     summaryErrors,
     setSummaryErrors,
+    setIsAlertVisible,
+    summaryMessages,
+    setSummaryMessages,
   } = useTimecardContext();
 
   const [clashingProperty, setClashingProperty] = useState(null);
@@ -57,18 +69,21 @@ const EditShiftHours = ({
 
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
+    if (shouldRedirect) {
+      navigate(redirectTarget);
+    }
+
+    if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
+      setTimeout(() => setIsAlertVisible(false), 10000);
+    }
   }, [summaryErrors]);
+
+  const handleChange = () => {
+    setIsChecked((isChecked) => !isChecked);
+  };
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
-  };
-
-  const getFinishTimeDate = (actualStartDate) => {
-    if (timeEntry.finishNextDay) {
-      return formatDate(dayjs(actualStartDate).add(1, 'day'));
-    } else {
-      return actualStartDate;
-    }
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -111,19 +126,79 @@ const EditShiftHours = ({
     return false;
   };
 
+  const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
+    if (timecardDate && startDate && endDate) {
+      const currentDay = dayjs(timecardDate).format('DD');
+      const startDay = dayjs(startDate).format('DD');
+      const endDay = dayjs(endDate).format('DD');
+
+      let datesMoved = false;
+
+      if (currentDay !== startDay) {
+        datesMoved = true;
+        setShouldRedirect(true);
+        setRedirectTarget(`/timecard/${startDate}`);
+      } else if (currentDay !== endDay) {
+        datesMoved = true;
+        setShouldRedirect(true);
+        setRedirectTarget(`/timecard/${endDate}`);
+      }
+
+      if (datesMoved) {
+        const formattedStart = formatDateNoYear(startDate);
+        const formattedEnd = formatDateNoYear(endDate);
+        summaryMessages['update'] = {
+          message: `Timecard has been updated to start ${formattedStart} and end ${formattedEnd}`,
+        };
+      } else {
+        const formattedTimecard = formatDateNoYear(timecardDate);
+        summaryMessages['update'] = {
+          message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
+        };
+      }
+      setSummaryMessages(summaryMessages);
+      setIsAlertVisible(true);
+    }
+  };
+
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = formatDate(timecardDate);
+    let localStartDate = timeEntry.startTime
+      ? timeEntry.startTime
+      : timecardDate;
+    let localEndDate = timeEntry.finishTime
+      ? timeEntry.finishTime
+      : timecardDate;
+
+    if (isChecked) {
+      localStartDate =
+        formData[`startDate-year`] +
+        '-' +
+        formData[`startDate-month`] +
+        '-' +
+        formData[`startDate-day`];
+    }
+
+    const actualStartDate = formatDate(localStartDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = formatDateTimeISO(
       actualStartDate + ' ' + actualStartTime
     );
 
+    if (isChecked) {
+      localEndDate =
+        formData[`finishDate-year`] +
+        '-' +
+        formData[`finishDate-month`] +
+        '-' +
+        formData[`finishDate-day`];
+    }
+
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = getFinishTimeDate(actualStartDate);
+      const actualEndDate = formatDate(localEndDate);
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
@@ -168,6 +243,7 @@ const EditShiftHours = ({
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
+          setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
         }
       },
       true,
@@ -198,6 +274,64 @@ const EditShiftHours = ({
           }
           timeEntriesIndex={timeEntriesIndex}
         />
+        <Checkbox
+          text="View or edit dates"
+          name="viewOrEditDates"
+          checked={isChecked}
+          handleChange={handleChange}
+        />
+        {isChecked && (
+          <>
+            <DateInput
+              name="startDate"
+              heading="Start date"
+              headingSize="m"
+              hint="For example, 23 7 2021"
+              errors={errors}
+              register={register}
+              formState={formState}
+              dayValue={
+                timeEntry.startTime
+                  ? dayjs(timeEntry.startTime).format('DD')
+                  : dayjs(timecardDate).format('DD')
+              }
+              monthValue={
+                timeEntry.startTime
+                  ? dayjs(timeEntry.startTime).format('MM')
+                  : dayjs(timecardDate).format('MM')
+              }
+              yearValue={
+                timeEntry.startTime
+                  ? dayjs(timeEntry.startTime).format('YYYY')
+                  : dayjs(timecardDate).format('YYYY')
+              }
+            />
+            <DateInput
+              name="finishDate"
+              heading="Finish date"
+              headingSize="m"
+              hint="For example, 23 7 2021"
+              errors={errors}
+              register={register}
+              formState={formState}
+              dayValue={
+                timeEntry.finishTime
+                  ? dayjs(timeEntry.finishTime).format('DD')
+                  : dayjs(timecardDate).format('DD')
+              }
+              monthValue={
+                timeEntry.finishTime
+                  ? dayjs(timeEntry.finishTime).format('MM')
+                  : dayjs(timecardDate).format('MM')
+              }
+              yearValue={
+                timeEntry.finishTime
+                  ? dayjs(timeEntry.finishTime).format('YYYY')
+                  : dayjs(timecardDate).format('YYYY')
+              }
+            />
+          </>
+        )}
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
             Save
