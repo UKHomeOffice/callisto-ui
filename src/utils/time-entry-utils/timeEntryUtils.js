@@ -34,6 +34,18 @@ export const formatLongDate = (dateTime) => {
   return dayjs(dateTime).format('D MMMM YYYY');
 };
 
+export const formatJustDay = (dateTime) => {
+  return dayjs(dateTime).format('DD');
+};
+
+export const formatJustMonth = (dateTime) => {
+  return dayjs(dateTime).format('MM');
+};
+
+export const formatJustYear = (dateTime) => {
+  return dayjs(dateTime).format('YYYY');
+};
+
 export const removeTimecardContextEntry = (
   timeEntries,
   setTimeEntries,

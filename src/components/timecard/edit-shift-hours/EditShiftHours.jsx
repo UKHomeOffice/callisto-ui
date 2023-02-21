@@ -16,6 +16,9 @@ import {
   formatDateTimeISO,
   formatTime,
   formatDateNoYear,
+  formatJustDay,
+  formatJustMonth,
+  formatJustYear,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -128,9 +131,9 @@ const EditShiftHours = ({
 
   const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
     if (timecardDate && startDate && endDate) {
-      const currentDay = dayjs(timecardDate).format('DD');
-      const startDay = dayjs(startDate).format('DD');
-      const endDay = dayjs(endDate).format('DD');
+      const currentDay = formatJustDay(timecardDate);
+      const startDay = formatJustDay(startDate);
+      const endDay = formatJustDay(endDate);
 
       let datesMoved = false;
 
@@ -292,18 +295,18 @@ const EditShiftHours = ({
               formState={formState}
               dayValue={
                 timeEntry.startTime
-                  ? dayjs(timeEntry.startTime).format('DD')
-                  : dayjs(timecardDate).format('DD')
+                  ? formatJustDay(timeEntry.startTime)
+                  : formatJustDay(timecardDate)
               }
               monthValue={
                 timeEntry.startTime
-                  ? dayjs(timeEntry.startTime).format('MM')
-                  : dayjs(timecardDate).format('MM')
+                  ? formatJustMonth(timeEntry.startTime)
+                  : formatJustMonth(timecardDate)
               }
               yearValue={
                 timeEntry.startTime
-                  ? dayjs(timeEntry.startTime).format('YYYY')
-                  : dayjs(timecardDate).format('YYYY')
+                  ? formatJustYear(timeEntry.startTime)
+                  : formatJustYear(timecardDate)
               }
             />
             <DateInput
@@ -316,18 +319,18 @@ const EditShiftHours = ({
               formState={formState}
               dayValue={
                 timeEntry.finishTime
-                  ? dayjs(timeEntry.finishTime).format('DD')
-                  : dayjs(timecardDate).format('DD')
+                  ? formatJustDay(timeEntry.finishTime)
+                  : formatJustDay(timecardDate)
               }
               monthValue={
                 timeEntry.finishTime
-                  ? dayjs(timeEntry.finishTime).format('MM')
-                  : dayjs(timecardDate).format('MM')
+                  ? formatJustMonth(timeEntry.finishTime)
+                  : formatJustMonth(timecardDate)
               }
               yearValue={
                 timeEntry.finishTime
-                  ? dayjs(timeEntry.finishTime).format('YYYY')
-                  : dayjs(timecardDate).format('YYYY')
+                  ? formatJustYear(timeEntry.finishTime)
+                  : formatJustYear(timecardDate)
               }
             />
           </>

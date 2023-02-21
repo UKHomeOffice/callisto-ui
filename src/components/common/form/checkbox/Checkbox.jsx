@@ -33,7 +33,7 @@ const Checkbox = ({ text, name, isChecked, handleChange }) => {
 Checkbox.propTypes = {
   text: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  isChecked: PropTypes.bool.isRequired,
+  isChecked: PropTypes.bool,
   handleChange: PropTypes.func.isRequired,
 };
 
