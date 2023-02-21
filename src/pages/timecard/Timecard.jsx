@@ -74,7 +74,9 @@ const Timecard = () => {
           keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
         />
       )}
-      <h1 className="govuk-caption-m">My Timecard</h1>
+      <h1 className="govuk-caption-m" style={{ color: 'red' }}>
+        My Timecard
+      </h1>
       <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
