@@ -82,11 +82,23 @@ const EditShiftHours = ({
   }, [summaryErrors]);
 
   const handleChange = () => {
+    // if (!timeEntry.finishTime && timeEntry.finishNextDay) {
+    //   const actualEndDate = getFinishTimeDate(actualStartDate);
+    //   timeEntry.finishTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+    // }
     setIsChecked((isChecked) => !isChecked);
   };
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
+  };
+
+  const getFinishTimeDate = (actualStartDate) => {
+    if (timeEntry.finishNextDay) {
+      return formatDate(dayjs(actualStartDate).add(1, 'day'));
+    } else {
+      return actualStartDate;
+    }
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -201,7 +213,9 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = formatDate(localEndDate);
+      const actualEndDate = isChecked
+        ? formatDate(localEndDate)
+        : getFinishTimeDate(actualStartDate);
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
