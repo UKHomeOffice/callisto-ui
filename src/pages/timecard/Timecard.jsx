@@ -106,8 +106,8 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {newTimeEntry && <SelectTimecardPeriodType />}
-      {!newTimeEntry && (
+      {(newTimeEntry || timeEntries.length === 0) && <SelectTimecardPeriodType />}
+      {(!newTimeEntry && timeEntries.length !== 0) && (
         <>
           {timeEntries.map((timeEntry, index) => (
             <div key={index} className="govuk-!-margin-bottom-6">
