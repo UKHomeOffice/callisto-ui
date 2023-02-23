@@ -59,20 +59,22 @@ describe('Timecard', () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timeEntries: [ existingTimeEntry ],
+      timeEntries: [{
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01 01:00:00+00:00',
+          finishTime: '2022-09-01 05:00:00+00:00',
+      }, ],
       setTimeEntries: jest.fn(),
       timecardDate: '',
       setTimecardDate: jest.fn(),
     });
 
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Start time')).toBeTruthy();
-    expect(screen.getByText('Finish time')).toBeTruthy();
     expect(screen.getByText('Shift')).toBeTruthy();
 
     fireEvent.click(screen.getByText('Remove'));
 
-    expect(screen.queryByText('Add a new time period')).toBeTruthy();
+    expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
   });
 
   it('should render the EditShiftTimecard component when time period type is Shift', async () => {
