@@ -1,15 +1,14 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
   defaultApplicationContext,
   renderWithTimecardContext,
   defaultTimecardContext,
 } from '../../test/helpers/TimecardContext';
-import { shiftTimeEntry } from '../../../mocks/mockData';
+import { shiftTimeEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
-import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
 const date = '2022-07-01';
 const mockNavigate = jest.fn();
@@ -20,6 +19,15 @@ jest.mock('react-router-dom', () => ({
   }),
   useNavigate: () => mockNavigate,
 }));
+
+const midnight = '00:00';
+
+const existingTimeEntry = {
+  timeEntryId: 'id',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  startTime: midnight,
+  finishTime: midnight,
+};
 
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 
@@ -45,6 +53,26 @@ describe('Timecard', () => {
 
     const heading = screen.getByText('Add time period');
     expect(heading).toBeTruthy();
+  });
+
+  it('should render the SelectTimecardPeriodType component when the last time period is removed', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [ existingTimeEntry ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.getByText('Start time')).toBeTruthy();
+    expect(screen.getByText('Finish time')).toBeTruthy();
+    expect(screen.getByText('Shift')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('Remove'));
+
+    expect(screen.queryByText('Add a new time period')).toBeTruthy();
   });
 
   it('should render the EditShiftTimecard component when time period type is Shift', async () => {
