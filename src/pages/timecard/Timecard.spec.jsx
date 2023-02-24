@@ -22,13 +22,6 @@ jest.mock('react-router-dom', () => ({
 
 const midnight = '00:00';
 
-const existingTimeEntry = {
-  timeEntryId: 'id',
-  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-  startTime: midnight,
-  finishTime: midnight,
-};
-
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 
 jest.mock('../../api/services/timecardService');
@@ -59,11 +52,13 @@ describe('Timecard', () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
-      timeEntries: [{
+      timeEntries: [
+        {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
           startTime: '2022-09-01 01:00:00+00:00',
           finishTime: '2022-09-01 05:00:00+00:00',
-      }, ],
+        }, 
+      ],
       setTimeEntries: jest.fn(),
       timecardDate: '',
       setTimecardDate: jest.fn(),
