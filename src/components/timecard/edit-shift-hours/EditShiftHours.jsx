@@ -51,10 +51,10 @@ const EditShiftHours = ({
 
   const inputName = 'shift';
   const { setServiceError, userId } = useApplicationContext();
-  const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [redirectTarget, setRedirectTarget] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  let shouldRedirect = false;
+  let redirectTarget = '';
 
   const {
     timeEntries,
@@ -151,12 +151,12 @@ const EditShiftHours = ({
 
       if (currentDay !== startDay) {
         datesMoved = true;
-        setShouldRedirect(true);
-        setRedirectTarget(`/timecard/${startDate}`);
+        shouldRedirect = true;
+        redirectTarget = `/timecard/${startDate}`;
       } else if (currentDay !== endDay) {
         datesMoved = true;
-        setShouldRedirect(true);
-        setRedirectTarget(`/timecard/${endDate}`);
+        shouldRedirect = true;
+        redirectTarget = `/timecard/${endDate}`;
       }
 
       if (datesMoved) {

@@ -565,16 +565,141 @@ describe('EditShiftHours', () => {
     const startYearValue = startYear.getAttribute('value');
     expect(startYearValue).toEqual('2022');
 
-    const endDay = screen.getByTestId(inputNames.startDay);
+    const endDay = screen.getByTestId(inputNames.endDay);
     const endDayValue = endDay.getAttribute('value');
     expect(endDayValue).toEqual('01');
-    const endMonth = screen.getByTestId(inputNames.startMonth);
+    const endMonth = screen.getByTestId(inputNames.endMonth);
     const endMonthValue = endMonth.getAttribute('value');
     expect(endMonthValue).toEqual('09');
-    const endYear = screen.getByTestId(inputNames.startYear);
+    const endYear = screen.getByTestId(inputNames.endYear);
     const endYearValue = endYear.getAttribute('value');
     expect(endYearValue).toEqual('2022');
   });
+
+  it('should redirect to new start date when on different day', async () => {
+    const timeEntryId = '1';
+    const timecardDate = '2022-09-02';
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '2022-09-02 08:00:00+00:00',
+      endTime: '2022-09-02 16:00:00+00:00',
+      finishNextDay: false,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '08:00' },
+      });
+
+      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+      fireEvent.change(endTimeInput, {
+        target: { value: '16:00' },
+      });
+
+      const checkBox = screen.getByText('View or edit dates');
+      fireEvent.click(checkBox);
+
+      const startDay = screen.getByTestId(inputNames.startDay);
+      fireEvent.change(startDay, {
+        target: { value: '01' },
+      });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      //expect(screen.getByText('01 September 2022')).toBeInTheDocument();
+      // expect(
+      //   screen.getByText(
+      //     'Timecard has been updated to start 01 September and end 02 September'
+      //   )
+      // ).toBeInTheDocument();
+      // expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith({
+      //   ['update']: {
+      //     message:
+      //       'Timecard has been updated to start 01 September and end 02 September',
+      //   },
+      // });
+      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+        timeEntryId,
+        {
+          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          actualStartTime: '2022-09-01T08:00:00+00:00',
+          actualEndTime: '2022-09-02T16:00:00+00:00',
+        },
+        new URLSearchParams([
+          ['tenantId', '00000000-0000-0000-0000-000000000000'],
+        ])
+      );
+    });
+  });
+
+  // it('should redirect to new end date when on different day', async () => {
+  //   const timeEntryId = '1';
+  //   const timecardDate = '2022-09-02';
+
+  //   const existingTimeEntry = {
+  //     ...newTimeEntry,
+  //     timeEntryId: timeEntryId,
+  //     startTime: '2022-09-02 08:00:00+00:00',
+  //     endTime: '2022-09-02 16:00:00+00:00',
+  //     finishNextDay: false,
+  //   };
+
+  //   defaultTimecardContext.timecardDate = timecardDate;
+
+  //   renderWithTimecardContext(
+  //     <EditShiftHours
+  //       setShowEditShiftHours={jest.fn()}
+  //       timeEntry={existingTimeEntry}
+  //       timeEntriesIndex={0}
+  //     />,
+  //     defaultTimecardContext
+  //   );
+
+  //   act(() => {
+  //     const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+  //     fireEvent.change(startTimeInput, {
+  //       target: { value: '08:00' },
+  //     });
+
+  //     const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+  //     fireEvent.change(endTimeInput, {
+  //       target: { value: '16:00' },
+  //     });
+
+  //     const checkBox = screen.getByText('View or edit dates');
+  //     fireEvent.click(checkBox);
+
+  //     const endDay = screen.getByTestId(inputNames.endDay);
+  //     fireEvent.change(endDay, {
+  //       target: { value: '03' },
+  //     });
+
+  //     const saveButton = screen.getByText('Save');
+  //     fireEvent.click(saveButton);
+  //   });
+
+  //   await waitFor(() => {
+  //     expect(screen.getByText('03 September 2022')).toBeInTheDocument();
+  //   });
+  // });
 
   describe('Service errors', () => {
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {

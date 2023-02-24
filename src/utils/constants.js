@@ -10,7 +10,7 @@ export const inputNames = Object.freeze({
   startDay: 'startDate-day-input',
   startMonth: 'startDate-month-input',
   startYear: 'startDate-year-input',
-  endDay: 'endDate-day-input',
-  endMonth: 'endDate-month-input',
-  endYear: 'endDate-year-input',
+  endDay: 'finishDate-day-input',
+  endMonth: 'finishDate-month-input',
+  endYear: 'finishDate-year-input',
 });
