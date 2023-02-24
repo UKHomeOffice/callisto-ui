@@ -124,7 +124,7 @@ const DateInputItem = ({
           name={`${name}-${dateType}`}
           type="text"
           inputMode="numeric"
-          data-testid={`${dateType}-input`}
+          data-testid={`${name}-${dateType}-input`}
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
             required: {

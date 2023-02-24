@@ -26,10 +26,14 @@ export const defaultTimecardContext = {
   setSummaryErrors: jest.fn(),
   timeEntries: [],
   setTimeEntries: jest.fn(),
-  timecardDate: '',
+  timecardDate: '2022-09-01',
   setTimecardDate: jest.fn(),
   newTimeEntry: false,
   setNewTimeEntry: jest.fn(),
+  summaryMessages: {},
+  setSummaryMessages: jest.fn(),
+  isAlertVisible: false,
+  setIsAlertVisible: jest.fn(),
 };
 
 export const defaultApplicationContext = {

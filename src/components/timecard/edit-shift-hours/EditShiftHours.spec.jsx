@@ -100,8 +100,8 @@ describe('EditShiftHours', () => {
       const existingTimeEntry = {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
-        startTime: '01:00',
-        endTime: '05:00',
+        startTime: '2022-09-01 01:00:00+00:00',
+        endTime: '2022-09-01 05:00:00+00:00',
       };
 
       defaultTimecardContext.timecardDate = timecardDate;
@@ -276,7 +276,7 @@ describe('EditShiftHours', () => {
     );
 
     const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-    fireEvent.change(startTimeInput, { target: { value: '1201' } });
+    fireEvent.change(startTimeInput, { target: { value: '12:00' } });
 
     act(() => {
       const saveButton = screen.getByText('Save');
@@ -444,8 +444,8 @@ describe('EditShiftHours', () => {
     const existingTimeEntry = {
       ...newTimeEntry,
       timeEntryId: timeEntryId,
-      startTime: '08:00',
-      endTime: '10:00',
+      startTime: '2022-09-01 08:00:00+00:00',
+      endTime: '2022-09-01 10:00:00+00:00',
       finishNextDay: true,
     };
 
@@ -528,6 +528,52 @@ describe('EditShiftHours', () => {
 
     const message = screen.getByText('Finishes next day');
     expect(message).toBeTruthy();
+  });
+
+  it('should show start and end dates when check box', async () => {
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={newTimeEntry}
+        timeEntriesIndex={0}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '08:00' },
+      });
+
+      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+      fireEvent.change(endTimeInput, {
+        target: { value: '16:00' },
+      });
+
+      const checkBox = screen.getByText('View or edit dates');
+      fireEvent.click(checkBox);
+    });
+
+    const startDay = screen.getByTestId(inputNames.startDay);
+    const startDayValue = startDay.getAttribute('value');
+    expect(startDayValue).toEqual('01');
+    const startMonth = screen.getByTestId(inputNames.startMonth);
+    const startMonthValue = startMonth.getAttribute('value');
+    expect(startMonthValue).toEqual('09');
+    const startYear = screen.getByTestId(inputNames.startYear);
+    const startYearValue = startYear.getAttribute('value');
+    expect(startYearValue).toEqual('2022');
+
+    const endDay = screen.getByTestId(inputNames.startDay);
+    const endDayValue = endDay.getAttribute('value');
+    expect(endDayValue).toEqual('01');
+    const endMonth = screen.getByTestId(inputNames.startMonth);
+    const endMonthValue = endMonth.getAttribute('value');
+    expect(endMonthValue).toEqual('09');
+    const endYear = screen.getByTestId(inputNames.startYear);
+    const endYearValue = endYear.getAttribute('value');
+    expect(endYearValue).toEqual('2022');
   });
 
   describe('Service errors', () => {
