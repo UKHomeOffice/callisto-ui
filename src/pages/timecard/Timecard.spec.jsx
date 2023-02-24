@@ -20,8 +20,6 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const midnight = '00:00';
-
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 
 jest.mock('../../api/services/timecardService');
