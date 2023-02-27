@@ -52,9 +52,13 @@ const EditShiftHours = ({
   const inputName = 'shift';
   const { setServiceError, userId } = useApplicationContext();
   const [isChecked, setIsChecked] = useState(false);
+  const [redirectTarget, setRedirectTarget] = useState('');
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [clashingProperty, setClashingProperty] = useState(null);
+  const [clashingTimes, setClashingTimes] = useState(null);
   const navigate = useNavigate();
-  let shouldRedirect = false;
-  let redirectTarget = '';
+  let localStartDate;
+  let localEndDate;
 
   const {
     timeEntries,
@@ -66,9 +70,6 @@ const EditShiftHours = ({
     summaryMessages,
     setSummaryMessages,
   } = useTimecardContext();
-
-  const [clashingProperty, setClashingProperty] = useState(null);
-  const [clashingTimes, setClashingTimes] = useState(null);
 
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
@@ -82,10 +83,12 @@ const EditShiftHours = ({
   }, [summaryErrors]);
 
   const handleChange = () => {
-    // if (!timeEntry.finishTime && timeEntry.finishNextDay) {
-    //   const actualEndDate = getFinishTimeDate(actualStartDate);
-    //   timeEntry.finishTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
-    // }
+    if (!timeEntry.finishTime && timeEntry.finishNextDay) {
+      localEndDate =
+        timeEntry.startTime === ''
+          ? formatDate(getFinishTimeDate(timecardDate))
+          : formatDate(getFinishTimeDate(timeEntry.startTime));
+    }
     setIsChecked((isChecked) => !isChecked);
   };
 
@@ -151,12 +154,12 @@ const EditShiftHours = ({
 
       if (currentDay !== startDay) {
         datesMoved = true;
-        shouldRedirect = true;
-        redirectTarget = `/timecard/${startDate}`;
+        setShouldRedirect(true);
+        setRedirectTarget(`/timecard/${startDate}`);
       } else if (currentDay !== endDay) {
         datesMoved = true;
-        shouldRedirect = true;
-        redirectTarget = `/timecard/${endDate}`;
+        setShouldRedirect(true);
+        setRedirectTarget(`/timecard/${endDate}`);
       }
 
       if (datesMoved) {
@@ -179,12 +182,8 @@ const EditShiftHours = ({
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    let localStartDate = timeEntry.startTime
-      ? timeEntry.startTime
-      : timecardDate;
-    let localEndDate = timeEntry.finishTime
-      ? timeEntry.finishTime
-      : timecardDate;
+    localStartDate = timeEntry.startTime ? timeEntry.startTime : timecardDate;
+    localEndDate = timeEntry.finishTime ? timeEntry.finishTime : timecardDate;
 
     if (isChecked) {
       localStartDate =
@@ -334,17 +333,17 @@ const EditShiftHours = ({
               dayValue={
                 timeEntry.finishTime
                   ? formatJustDay(timeEntry.finishTime)
-                  : formatJustDay(timecardDate)
+                  : formatJustDay(localEndDate)
               }
               monthValue={
                 timeEntry.finishTime
                   ? formatJustMonth(timeEntry.finishTime)
-                  : formatJustMonth(timecardDate)
+                  : formatJustMonth(localEndDate)
               }
               yearValue={
                 timeEntry.finishTime
                   ? formatJustYear(timeEntry.finishTime)
-                  : formatJustYear(timecardDate)
+                  : formatJustYear(localEndDate)
               }
             />
           </>

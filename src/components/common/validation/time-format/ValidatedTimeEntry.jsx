@@ -63,7 +63,7 @@ const ValidatedTimeEntry = ({
       autoComplete="off"
       type="text"
       {...register(name, {
-        onChange: () => setFinishTimeText(),
+        onBlur: () => setFinishTimeText(),
         required: {
           value: isRequired,
           message: errorMessage,
