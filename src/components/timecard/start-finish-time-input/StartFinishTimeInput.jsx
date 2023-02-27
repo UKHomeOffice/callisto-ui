@@ -14,6 +14,7 @@ const StartFinishTimeInput = ({
   timeEntriesIndex,
   register,
   formState,
+  calculateEndDate,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -83,6 +84,7 @@ const StartFinishTimeInput = ({
             getFormValues={getFormValues}
             timeEntry={timeEntry}
             timeEntriesIndex={timeEntriesIndex}
+            calculateEndDate={calculateEndDate}
           />
         </div>
 
@@ -106,6 +108,7 @@ const StartFinishTimeInput = ({
               getFormValues={getFormValues}
               timeEntry={timeEntry}
               timeEntriesIndex={timeEntriesIndex}
+              calculateEndDate={calculateEndDate}
             />
           </div>
         </div>

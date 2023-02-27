@@ -57,8 +57,8 @@ const EditShiftHours = ({
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
   const navigate = useNavigate();
-  let localStartDate;
-  let localEndDate;
+  const [localStartDate, setLocalStartDate] = useState();
+  const [localEndDate, setLocalEndDate] = useState();
 
   const {
     timeEntries,
@@ -83,13 +83,18 @@ const EditShiftHours = ({
   }, [summaryErrors]);
 
   const handleChange = () => {
-    if (!timeEntry.finishTime && timeEntry.finishNextDay) {
-      localEndDate =
-        timeEntry.startTime === ''
-          ? formatDate(getFinishTimeDate(timecardDate))
-          : formatDate(getFinishTimeDate(timeEntry.startTime));
-    }
+    calculateEndDate();
     setIsChecked((isChecked) => !isChecked);
+  };
+
+  const calculateEndDate = () => {
+    console.log('here');
+    setLocalEndDate(
+      timeEntry.startTime === ''
+        ? formatDate(getFinishTimeDate(timecardDate))
+        : formatDate(getFinishTimeDate(timeEntry.startTime))
+    );
+    console.log(localEndDate);
   };
 
   const handleError = (errorFields) => {
@@ -180,18 +185,20 @@ const EditShiftHours = ({
   };
 
   const onSubmit = async (formData) => {
+    console.log('here, onSubmit');
     dayjs.extend(utc);
 
-    localStartDate = timeEntry.startTime ? timeEntry.startTime : timecardDate;
-    localEndDate = timeEntry.finishTime ? timeEntry.finishTime : timecardDate;
+    setLocalStartDate(timeEntry.startTime ? timeEntry.startTime : timecardDate);
+    setLocalEndDate(timeEntry.finishTime ? timeEntry.finishTime : timecardDate);
 
     if (isChecked) {
-      localStartDate =
+      setLocalStartDate(
         formData[`startDate-year`] +
-        '-' +
-        formData[`startDate-month`] +
-        '-' +
-        formData[`startDate-day`];
+          '-' +
+          formData[`startDate-month`] +
+          '-' +
+          formData[`startDate-day`]
+      );
     }
 
     const actualStartDate = formatDate(localStartDate);
@@ -201,12 +208,13 @@ const EditShiftHours = ({
     );
 
     if (isChecked) {
-      localEndDate =
+      setLocalEndDate(
         formData[`finishDate-year`] +
-        '-' +
-        formData[`finishDate-month`] +
-        '-' +
-        formData[`finishDate-day`];
+          '-' +
+          formData[`finishDate-month`] +
+          '-' +
+          formData[`finishDate-day`]
+      );
     }
 
     const endTime = formData[`${inputName}-finish-time`] || null;
@@ -289,6 +297,7 @@ const EditShiftHours = ({
             timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
           }
           timeEntriesIndex={timeEntriesIndex}
+          calculateEndDate={calculateEndDate}
         />
         <Checkbox
           text="View or edit dates"
@@ -307,17 +316,17 @@ const EditShiftHours = ({
               register={register}
               formState={formState}
               dayValue={
-                timeEntry.startTime
+                timeEntry.startTime !== ''
                   ? formatJustDay(timeEntry.startTime)
                   : formatJustDay(timecardDate)
               }
               monthValue={
-                timeEntry.startTime
+                timeEntry.startTime !== ''
                   ? formatJustMonth(timeEntry.startTime)
                   : formatJustMonth(timecardDate)
               }
               yearValue={
-                timeEntry.startTime
+                timeEntry.startTime !== ''
                   ? formatJustYear(timeEntry.startTime)
                   : formatJustYear(timecardDate)
               }
@@ -331,17 +340,17 @@ const EditShiftHours = ({
               register={register}
               formState={formState}
               dayValue={
-                timeEntry.finishTime
+                timeEntry.finishTime !== ''
                   ? formatJustDay(timeEntry.finishTime)
                   : formatJustDay(localEndDate)
               }
               monthValue={
-                timeEntry.finishTime
+                timeEntry.finishTime !== ''
                   ? formatJustMonth(timeEntry.finishTime)
                   : formatJustMonth(localEndDate)
               }
               yearValue={
-                timeEntry.finishTime
+                timeEntry.finishTime !== ''
                   ? formatJustYear(timeEntry.finishTime)
                   : formatJustYear(localEndDate)
               }
