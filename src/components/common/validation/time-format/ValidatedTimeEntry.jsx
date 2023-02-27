@@ -15,7 +15,6 @@ const ValidatedTimeEntry = ({
   getFormValues,
   timeEntry,
   timeEntriesIndex,
-  calculateEndDate,
 }) => {
   const { timeEntries, setTimeEntries } = useTimecardContext();
 
@@ -29,7 +28,6 @@ const ValidatedTimeEntry = ({
     newTimeEntries[timeEntriesIndex] =
       ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
     setTimeEntries(newTimeEntries);
-    calculateEndDate();
   };
 
   const isTimeValid = (time) => {
