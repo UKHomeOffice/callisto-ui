@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { HashLink } from 'react-router-hash-link';
 
 const MessageSummary = ({ messages, keys }) => {
   return (
@@ -24,9 +23,7 @@ const MessageSummary = ({ messages, keys }) => {
               id={`summary-message-${key}`}
               data-testid="message-body"
             >
-              <HashLink id={`summary-message-${key}-message`} to={`#${key}`}>
-                {messages[key].message}
-              </HashLink>
+              {messages[key].message}
             </li>
           ))}
         </ul>

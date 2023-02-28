@@ -21,6 +21,9 @@ import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import { clashingProperties, inputNames } from '../../../utils/constants';
 
 const newTimeEntry = {
+  timeEntryId: '',
+  startTime: '',
+  finishTime: '',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
   finishNextDay: false,
 };
@@ -541,16 +544,6 @@ describe('EditShiftHours', () => {
     );
 
     act(() => {
-      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-      fireEvent.change(startTimeInput, {
-        target: { value: '08:00' },
-      });
-
-      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
-      fireEvent.change(endTimeInput, {
-        target: { value: '16:00' },
-      });
-
       const checkBox = screen.getByText('View or edit dates');
       fireEvent.click(checkBox);
     });
@@ -576,7 +569,7 @@ describe('EditShiftHours', () => {
     expect(endYearValue).toEqual('2022');
   });
 
-  it('should redirect to new start date when on different day', async () => {
+  it('should save successfully when checking box and saving', async () => {
     const timeEntryId = '1';
     const timecardDate = '2022-09-02';
 
@@ -623,18 +616,6 @@ describe('EditShiftHours', () => {
     });
 
     await waitFor(() => {
-      //expect(screen.getByText('01 September 2022')).toBeInTheDocument();
-      // expect(
-      //   screen.getByText(
-      //     'Timecard has been updated to start 01 September and end 02 September'
-      //   )
-      // ).toBeInTheDocument();
-      // expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith({
-      //   ['update']: {
-      //     message:
-      //       'Timecard has been updated to start 01 September and end 02 September',
-      //   },
-      // });
       expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
         timeEntryId,
         {
@@ -649,57 +630,6 @@ describe('EditShiftHours', () => {
       );
     });
   });
-
-  // it('should redirect to new end date when on different day', async () => {
-  //   const timeEntryId = '1';
-  //   const timecardDate = '2022-09-02';
-
-  //   const existingTimeEntry = {
-  //     ...newTimeEntry,
-  //     timeEntryId: timeEntryId,
-  //     startTime: '2022-09-02 08:00:00+00:00',
-  //     endTime: '2022-09-02 16:00:00+00:00',
-  //     finishNextDay: false,
-  //   };
-
-  //   defaultTimecardContext.timecardDate = timecardDate;
-
-  //   renderWithTimecardContext(
-  //     <EditShiftHours
-  //       setShowEditShiftHours={jest.fn()}
-  //       timeEntry={existingTimeEntry}
-  //       timeEntriesIndex={0}
-  //     />,
-  //     defaultTimecardContext
-  //   );
-
-  //   act(() => {
-  //     const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-  //     fireEvent.change(startTimeInput, {
-  //       target: { value: '08:00' },
-  //     });
-
-  //     const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
-  //     fireEvent.change(endTimeInput, {
-  //       target: { value: '16:00' },
-  //     });
-
-  //     const checkBox = screen.getByText('View or edit dates');
-  //     fireEvent.click(checkBox);
-
-  //     const endDay = screen.getByTestId(inputNames.endDay);
-  //     fireEvent.change(endDay, {
-  //       target: { value: '03' },
-  //     });
-
-  //     const saveButton = screen.getByText('Save');
-  //     fireEvent.click(saveButton);
-  //   });
-
-  //   await waitFor(() => {
-  //     expect(screen.getByText('03 September 2022')).toBeInTheDocument();
-  //   });
-  // });
 
   describe('Service errors', () => {
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
