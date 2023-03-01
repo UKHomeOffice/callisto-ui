@@ -17,8 +17,6 @@ import {
   formatTime,
   formatDateNoYear,
   formatJustDay,
-  formatJustMonth,
-  formatJustYear,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -29,7 +27,7 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
 import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
-import DateInput from '../../common/form/date-input/DateInput';
+import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
 import { useNavigate } from 'react-router-dom';
 
@@ -85,12 +83,6 @@ const EditShiftHours = ({
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
-  };
-
-  const calculateEndDate = () => {
-    return startEntryExists
-      ? formatDate(getFinishTimeDate(timeEntry.startTime))
-      : formatDate(getFinishTimeDate(timecardDate));
   };
 
   const handleError = (errorFields) => {
@@ -310,53 +302,17 @@ const EditShiftHours = ({
         />
         {isChecked && (
           <>
-            <DateInput
-              name="startDate"
-              heading="Start date"
-              headingSize="m"
-              hint="For example, 23 7 2021"
+            <StartFinishDateInput
+              name="Date"
               errors={errors}
+              startTimeValue={timeEntry.startTime}
+              finishTimeValue={timeEntry.finishTime}
+              startEntryExists={startEntryExists}
+              finishEntryExists={finishEntryExists}
+              timecardDate={timecardDate}
               register={register}
               formState={formState}
-              dayValue={
-                startEntryExists
-                  ? formatJustDay(timeEntry.startTime)
-                  : formatJustDay(timecardDate)
-              }
-              monthValue={
-                startEntryExists
-                  ? formatJustMonth(timeEntry.startTime)
-                  : formatJustMonth(timecardDate)
-              }
-              yearValue={
-                startEntryExists
-                  ? formatJustYear(timeEntry.startTime)
-                  : formatJustYear(timecardDate)
-              }
-            />
-            <DateInput
-              name="finishDate"
-              heading="Finish date"
-              headingSize="m"
-              hint="For example, 23 7 2021"
-              errors={errors}
-              register={register}
-              formState={formState}
-              dayValue={
-                finishEntryExists
-                  ? formatJustDay(timeEntry.finishTime)
-                  : formatJustDay(calculateEndDate())
-              }
-              monthValue={
-                finishEntryExists
-                  ? formatJustMonth(timeEntry.finishTime)
-                  : formatJustMonth(calculateEndDate())
-              }
-              yearValue={
-                finishEntryExists
-                  ? formatJustYear(timeEntry.finishTime)
-                  : formatJustYear(calculateEndDate())
-              }
+              finishNextDay={timeEntry.finishNextDay}
             />
           </>
         )}
