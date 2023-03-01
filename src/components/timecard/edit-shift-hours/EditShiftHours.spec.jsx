@@ -19,6 +19,7 @@ import { expectNeverToHappen } from '../../../test/helpers/Helpers';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 
 import { clashingProperties, inputNames } from '../../../utils/constants';
+import { testInputNames } from '../../../utils/test-utils/testConstants';
 
 const newTimeEntry = {
   timeEntryId: '',
@@ -533,7 +534,7 @@ describe('EditShiftHours', () => {
     expect(message).toBeTruthy();
   });
 
-  it('should show start and end dates when check box', async () => {
+  it('should show start and end dates when checking box', async () => {
     renderWithTimecardContext(
       <EditShiftHours
         setShowEditShiftHours={jest.fn()}
@@ -548,23 +549,23 @@ describe('EditShiftHours', () => {
       fireEvent.click(checkBox);
     });
 
-    const startDay = screen.getByTestId(inputNames.startDay);
+    const startDay = screen.getByTestId(testInputNames.startDay);
     const startDayValue = startDay.getAttribute('value');
     expect(startDayValue).toEqual('01');
-    const startMonth = screen.getByTestId(inputNames.startMonth);
+    const startMonth = screen.getByTestId(testInputNames.startMonth);
     const startMonthValue = startMonth.getAttribute('value');
     expect(startMonthValue).toEqual('09');
-    const startYear = screen.getByTestId(inputNames.startYear);
+    const startYear = screen.getByTestId(testInputNames.startYear);
     const startYearValue = startYear.getAttribute('value');
     expect(startYearValue).toEqual('2022');
 
-    const endDay = screen.getByTestId(inputNames.endDay);
+    const endDay = screen.getByTestId(testInputNames.endDay);
     const endDayValue = endDay.getAttribute('value');
     expect(endDayValue).toEqual('01');
-    const endMonth = screen.getByTestId(inputNames.endMonth);
+    const endMonth = screen.getByTestId(testInputNames.endMonth);
     const endMonthValue = endMonth.getAttribute('value');
     expect(endMonthValue).toEqual('09');
-    const endYear = screen.getByTestId(inputNames.endYear);
+    const endYear = screen.getByTestId(testInputNames.endYear);
     const endYearValue = endYear.getAttribute('value');
     expect(endYearValue).toEqual('2022');
   });
@@ -606,7 +607,7 @@ describe('EditShiftHours', () => {
       const checkBox = screen.getByText('View or edit dates');
       fireEvent.click(checkBox);
 
-      const startDay = screen.getByTestId(inputNames.startDay);
+      const startDay = screen.getByTestId(testInputNames.startDay);
       fireEvent.change(startDay, {
         target: { value: '01' },
       });

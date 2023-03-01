@@ -57,6 +57,9 @@ const EditShiftHours = ({
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
   const navigate = useNavigate();
+  const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
+  const finishEntryExists =
+    !!timeEntry?.finishTime && timeEntry.finishTime !== '';
 
   const {
     timeEntries,
@@ -80,14 +83,14 @@ const EditShiftHours = ({
     }
   }, [summaryErrors]);
 
-  const handleChange = () => {
+  const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
   };
 
   const calculateEndDate = () => {
-    return timeEntry.startTime === ''
-      ? formatDate(getFinishTimeDate(timecardDate))
-      : formatDate(getFinishTimeDate(timeEntry.startTime));
+    return startEntryExists
+      ? formatDate(getFinishTimeDate(timeEntry.startTime))
+      : formatDate(getFinishTimeDate(timecardDate));
   };
 
   const handleError = (errorFields) => {
@@ -142,48 +145,54 @@ const EditShiftHours = ({
     return false;
   };
 
-  const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
-    if (timecardDate && startDate && endDate) {
-      const currentDay = formatJustDay(timecardDate);
-      const startDay = formatJustDay(startDate);
-      const endDay = formatJustDay(endDate);
-
-      let datesMoved = false;
-
-      if (currentDay !== startDay) {
-        datesMoved = true;
-        setShouldRedirect(true);
-        setRedirectTarget(`/timecard/${startDate}`);
-      } else if (currentDay !== endDay) {
-        datesMoved = true;
-        setShouldRedirect(true);
-        setRedirectTarget(`/timecard/${endDate}`);
-      }
-
-      if (datesMoved) {
-        const formattedStart = formatDateNoYear(startDate);
-        const formattedEnd = formatDateNoYear(endDate);
-        summaryMessages['update'] = {
-          message: `Timecard has been updated to start ${formattedStart} and end ${formattedEnd}`,
-        };
-      } else {
-        const formattedTimecard = formatDateNoYear(timecardDate);
-        summaryMessages['update'] = {
-          message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
-        };
-      }
-      setSummaryMessages(summaryMessages);
-      setIsAlertVisible(true);
+  const setRedirectAndMessages = (
+    timecardDate,
+    startDate,
+    endDate,
+    isNewRecord
+  ) => {
+    if (isNewRecord) {
+      return;
     }
+    const currentDay = formatJustDay(timecardDate);
+    const startDay = formatJustDay(startDate);
+    const endDay = formatJustDay(endDate);
+
+    let datesMoved = false;
+
+    if (currentDay !== startDay) {
+      datesMoved = true;
+      setShouldRedirect(true);
+      setRedirectTarget(`/timecard/${startDate}`);
+    } else if (currentDay !== endDay) {
+      datesMoved = true;
+      setShouldRedirect(true);
+      setRedirectTarget(`/timecard/${endDate}`);
+    }
+
+    if (datesMoved) {
+      const formattedStart = formatDateNoYear(startDate);
+      const formattedEnd = formatDateNoYear(endDate);
+      summaryMessages['update'] = {
+        message: `Timecard has been updated to start ${formattedStart} and end ${formattedEnd}`,
+      };
+    } else {
+      const formattedTimecard = formatDateNoYear(timecardDate);
+      summaryMessages['update'] = {
+        message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
+      };
+    }
+    setSummaryMessages(summaryMessages);
+    setIsAlertVisible(true);
   };
 
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    let localStartDate =
-      timeEntry.startTime !== '' ? timeEntry.startTime : timecardDate;
-    let localEndDate =
-      timeEntry.finishTime !== '' ? timeEntry.finishTime : timecardDate;
+    const isNewRecord = startEntryExists ? false : true;
+
+    let localStartDate = startEntryExists ? timeEntry.startTime : timecardDate;
+    let localEndDate = finishEntryExists ? timeEntry.finishTime : timecardDate;
 
     if (isChecked) {
       localStartDate =
@@ -192,15 +201,7 @@ const EditShiftHours = ({
         formData[`startDate-month`] +
         '-' +
         formData[`startDate-day`];
-    }
 
-    const actualStartDate = formatDate(localStartDate);
-    const actualStartTime = formData[`${inputName}-start-time`];
-    const actualStartDateTime = formatDateTimeISO(
-      actualStartDate + ' ' + actualStartTime
-    );
-
-    if (isChecked) {
       localEndDate =
         formData[`finishDate-year`] +
         '-' +
@@ -208,6 +209,12 @@ const EditShiftHours = ({
         '-' +
         formData[`finishDate-day`];
     }
+
+    const actualStartDate = formatDate(localStartDate);
+    const actualStartTime = formData[`${inputName}-start-time`];
+    const actualStartDateTime = formatDateTimeISO(
+      actualStartDate + ' ' + actualStartTime
+    );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
@@ -256,7 +263,12 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
+          setRedirectAndMessages(
+            timecardDate,
+            localStartDate,
+            localEndDate,
+            isNewRecord
+          );
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
@@ -294,7 +306,7 @@ const EditShiftHours = ({
           text="View or edit dates"
           name="viewOrEditDates"
           checked={isChecked}
-          handleChange={handleChange}
+          handleChange={handleCheckboxChange}
         />
         {isChecked && (
           <>
@@ -307,17 +319,17 @@ const EditShiftHours = ({
               register={register}
               formState={formState}
               dayValue={
-                timeEntry.startTime !== ''
+                startEntryExists
                   ? formatJustDay(timeEntry.startTime)
                   : formatJustDay(timecardDate)
               }
               monthValue={
-                timeEntry.startTime !== ''
+                startEntryExists
                   ? formatJustMonth(timeEntry.startTime)
                   : formatJustMonth(timecardDate)
               }
               yearValue={
-                timeEntry.startTime !== ''
+                startEntryExists
                   ? formatJustYear(timeEntry.startTime)
                   : formatJustYear(timecardDate)
               }
@@ -331,17 +343,17 @@ const EditShiftHours = ({
               register={register}
               formState={formState}
               dayValue={
-                timeEntry.finishTime !== ''
+                finishEntryExists
                   ? formatJustDay(timeEntry.finishTime)
                   : formatJustDay(calculateEndDate())
               }
               monthValue={
-                timeEntry.finishTime !== ''
+                finishEntryExists
                   ? formatJustMonth(timeEntry.finishTime)
                   : formatJustMonth(calculateEndDate())
               }
               yearValue={
-                timeEntry.finishTime !== ''
+                finishEntryExists
                   ? formatJustYear(timeEntry.finishTime)
                   : formatJustYear(calculateEndDate())
               }
