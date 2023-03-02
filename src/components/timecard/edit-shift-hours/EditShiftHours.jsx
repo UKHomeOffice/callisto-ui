@@ -146,16 +146,16 @@ const EditShiftHours = ({
 
   const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
     const currentDay = formatJustDay(timecardDate);
-    const startDay = formatJustDay(startDate);
-    const endDay = formatJustDay(endDate);
+    const newStartDay = formatJustDay(startDate);
+    const newEndDay = formatJustDay(endDate);
 
     let datesMoved = false;
 
-    if (currentDay !== startDay) {
+    if (currentDay !== newStartDay) {
       datesMoved = true;
       setShouldRedirect(true);
       setRedirectTarget(`/timecard/${startDate}`);
-    } else if (currentDay !== endDay) {
+    } else if (currentDay !== newEndDay) {
       datesMoved = true;
       setShouldRedirect(true);
       setRedirectTarget(`/timecard/${endDate}`);

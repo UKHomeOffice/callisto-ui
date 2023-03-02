@@ -50,21 +50,9 @@ const StartFinishDateInput = ({
         getFormValues={getFormValues}
         setDate={setStartDate}
         setEndDate={setEndDate}
-        dayValue={
-          startEntryExists
-            ? formatJustDay(startTimeValue)
-            : formatJustDay(timecardDate)
-        }
-        monthValue={
-          startEntryExists
-            ? formatJustMonth(startTimeValue)
-            : formatJustMonth(timecardDate)
-        }
-        yearValue={
-          startEntryExists
-            ? formatJustYear(startTimeValue)
-            : formatJustYear(timecardDate)
-        }
+        dayValue={formatJustDay(startTimeValue)}
+        monthValue={formatJustMonth(startTimeValue)}
+        yearValue={formatJustYear(startTimeValue)}
       />
       <DateInput
         name={`finish${name}`}
@@ -78,19 +66,19 @@ const StartFinishDateInput = ({
         setStartDate={setStartDate}
         setEndDate={setEndDate}
         dayValue={
-          finishEntryExists
-            ? formatJustDay(finishTimeValue)
-            : formatJustDay(calculateEndDate())
+          finishNextDay
+            ? formatJustDay(calculateEndDate())
+            : formatJustDay(finishTimeValue)
         }
         monthValue={
-          finishEntryExists
-            ? formatJustMonth(finishTimeValue)
-            : formatJustMonth(calculateEndDate())
+          finishNextDay
+            ? formatJustMonth(calculateEndDate())
+            : formatJustMonth(finishTimeValue)
         }
         yearValue={
-          finishEntryExists
-            ? formatJustYear(finishTimeValue)
-            : formatJustYear(calculateEndDate())
+          finishNextDay
+            ? formatJustYear(calculateEndDate())
+            : formatJustYear(finishTimeValue)
         }
       />
     </div>
