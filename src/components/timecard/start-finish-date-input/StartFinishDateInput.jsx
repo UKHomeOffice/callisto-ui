@@ -19,6 +19,9 @@ const StartFinishDateInput = ({
   register,
   formState,
   finishNextDay,
+  getFormValues,
+  setStartDate,
+  setEndDate,
 }) => {
   const calculateEndDate = () => {
     return startEntryExists
@@ -44,6 +47,9 @@ const StartFinishDateInput = ({
         errors={errors}
         register={register}
         formState={formState}
+        getFormValues={getFormValues}
+        setDate={setStartDate}
+        setEndDate={setEndDate}
         dayValue={
           startEntryExists
             ? formatJustDay(startTimeValue)
@@ -68,6 +74,9 @@ const StartFinishDateInput = ({
         errors={errors}
         register={register}
         formState={formState}
+        getFormValues={getFormValues}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
         dayValue={
           finishEntryExists
             ? formatJustDay(finishTimeValue)
@@ -101,4 +110,7 @@ StartFinishDateInput.propTypes = {
   register: PropTypes.any.isRequired,
   formState: PropTypes.any,
   finishNextDay: PropTypes.bool,
+  getFormValues: PropTypes.func.isRequired,
+  setStartDate: PropTypes.func.isRequired,
+  setEndDate: PropTypes.func.isRequired,
 };

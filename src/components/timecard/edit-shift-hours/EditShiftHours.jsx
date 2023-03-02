@@ -55,9 +55,6 @@ const EditShiftHours = ({
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
   const navigate = useNavigate();
-  const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
-  const finishEntryExists =
-    !!timeEntry?.finishTime && timeEntry.finishTime !== '';
 
   const {
     timeEntries,
@@ -69,6 +66,16 @@ const EditShiftHours = ({
     summaryMessages,
     setSummaryMessages,
   } = useTimecardContext();
+
+  const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
+  const finishEntryExists =
+    !!timeEntry?.finishTime && timeEntry.finishTime !== '';
+  const [localStartDate, setLocalStartDate] = useState(
+    startEntryExists ? timeEntry.startTime : timecardDate
+  );
+  const [localEndDate, setLocalEndDate] = useState(
+    finishEntryExists ? timeEntry.finishTime : timecardDate
+  );
 
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
@@ -137,15 +144,7 @@ const EditShiftHours = ({
     return false;
   };
 
-  const setRedirectAndMessages = (
-    timecardDate,
-    startDate,
-    endDate,
-    isNewRecord
-  ) => {
-    if (isNewRecord) {
-      return;
-    }
+  const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
     const currentDay = formatJustDay(timecardDate);
     const startDay = formatJustDay(startDate);
     const endDay = formatJustDay(endDate);
@@ -166,7 +165,7 @@ const EditShiftHours = ({
       const formattedStart = formatDateNoYear(startDate);
       const formattedEnd = formatDateNoYear(endDate);
       summaryMessages['update'] = {
-        message: `Timecard has been updated to start ${formattedStart} and end ${formattedEnd}`,
+        message: `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`,
       };
     } else {
       const formattedTimecard = formatDateNoYear(timecardDate);
@@ -181,27 +180,6 @@ const EditShiftHours = ({
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const isNewRecord = startEntryExists ? false : true;
-
-    let localStartDate = startEntryExists ? timeEntry.startTime : timecardDate;
-    let localEndDate = finishEntryExists ? timeEntry.finishTime : timecardDate;
-
-    if (isChecked) {
-      localStartDate =
-        formData[`startDate-year`] +
-        '-' +
-        formData[`startDate-month`] +
-        '-' +
-        formData[`startDate-day`];
-
-      localEndDate =
-        formData[`finishDate-year`] +
-        '-' +
-        formData[`finishDate-month`] +
-        '-' +
-        formData[`finishDate-day`];
-    }
-
     const actualStartDate = formatDate(localStartDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = formatDateTimeISO(
@@ -211,9 +189,9 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = isChecked
-        ? formatDate(localEndDate)
-        : getFinishTimeDate(actualStartDate);
+      const actualEndDate = timeEntry.finishNextDay
+        ? getFinishTimeDate(actualStartDate)
+        : formatDate(localEndDate);
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
@@ -255,12 +233,9 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          setRedirectAndMessages(
-            timecardDate,
-            localStartDate,
-            localEndDate,
-            isNewRecord
-          );
+          if (startEntryExists) {
+            setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
+          }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
@@ -305,14 +280,17 @@ const EditShiftHours = ({
             <StartFinishDateInput
               name="Date"
               errors={errors}
-              startTimeValue={timeEntry.startTime}
-              finishTimeValue={timeEntry.finishTime}
+              startTimeValue={localStartDate}
+              finishTimeValue={localEndDate}
               startEntryExists={startEntryExists}
               finishEntryExists={finishEntryExists}
               timecardDate={timecardDate}
               register={register}
               formState={formState}
               finishNextDay={timeEntry.finishNextDay}
+              getFormValues={getValues}
+              setStartDate={setLocalStartDate}
+              setEndDate={setLocalEndDate}
             />
           </>
         )}

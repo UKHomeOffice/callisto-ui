@@ -571,7 +571,7 @@ describe('EditShiftHours', () => {
       expect(endYearValue).toEqual('2022');
     });
 
-    it('should save successfully when checking box and saving', async () => {
+    it('should save successfully when the check box is ticked and changing to the day before', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-02';
 
