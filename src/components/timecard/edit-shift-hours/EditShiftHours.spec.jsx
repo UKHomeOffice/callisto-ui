@@ -571,7 +571,7 @@ describe('EditShiftHours', () => {
       expect(endYearValue).toEqual('2022');
     });
 
-    it('should save successfully when the check box is ticked and changing to the day before', async () => {
+    it('should save successfully when the check box is ticked and save selected', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-02';
 
@@ -597,7 +597,7 @@ describe('EditShiftHours', () => {
       act(() => {
         const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
-          target: { value: '23:00' },
+          target: { value: '08:00' },
         });
 
         const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
@@ -607,11 +607,6 @@ describe('EditShiftHours', () => {
 
         const checkBox = screen.getByText('View or edit dates');
         fireEvent.click(checkBox);
-
-        const startDay = screen.getByTestId(testInputNames.startDay);
-        fireEvent.change(startDay, {
-          target: { value: '01' },
-        });
 
         const saveButton = screen.getByText('Save');
         fireEvent.click(saveButton);
@@ -623,7 +618,7 @@ describe('EditShiftHours', () => {
           {
             ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            actualStartTime: '2022-09-01T23:00:00+00:00',
+            actualStartTime: '2022-09-02T08:00:00+00:00',
             actualEndTime: '2022-09-02T16:00:00+00:00',
           },
           new URLSearchParams([

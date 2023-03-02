@@ -79,6 +79,9 @@ const EditShiftHours = ({
 
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
+  }, [summaryErrors]);
+
+  useEffect(() => {
     if (shouldRedirect) {
       navigate(redirectTarget);
     }
@@ -86,7 +89,7 @@ const EditShiftHours = ({
     if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
       setTimeout(() => setIsAlertVisible(false), 10000);
     }
-  }, [summaryErrors]);
+  }, [summaryMessages]);
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
@@ -234,7 +237,11 @@ const EditShiftHours = ({
             .setFinishNextDay(timeEntry.finishNextDay);
 
           if (startEntryExists) {
-            setRedirectAndMessages(timecardDate, localStartDate, localEndDate);
+            setRedirectAndMessages(
+              timecardDate,
+              actualStartDateTime,
+              actualEndDateTime
+            );
           }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
@@ -283,7 +290,6 @@ const EditShiftHours = ({
               startTimeValue={localStartDate}
               finishTimeValue={localEndDate}
               startEntryExists={startEntryExists}
-              finishEntryExists={finishEntryExists}
               timecardDate={timecardDate}
               register={register}
               formState={formState}
