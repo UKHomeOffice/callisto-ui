@@ -597,7 +597,7 @@ describe('EditShiftHours', () => {
       act(() => {
         const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
-          target: { value: '08:00' },
+          target: { value: '23:00' },
         });
 
         const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
@@ -623,7 +623,7 @@ describe('EditShiftHours', () => {
           {
             ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            actualStartTime: '2022-09-01T08:00:00+00:00',
+            actualStartTime: '2022-09-01T23:00:00+00:00',
             actualEndTime: '2022-09-02T16:00:00+00:00',
           },
           new URLSearchParams([

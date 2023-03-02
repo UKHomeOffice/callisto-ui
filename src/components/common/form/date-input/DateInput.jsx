@@ -73,6 +73,7 @@ const DateInput = ({
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
+              width={2}
             />
 
             <DateInputItem
@@ -85,6 +86,7 @@ const DateInput = ({
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
+              width={2}
             />
 
             <DateInputItem
@@ -97,6 +99,7 @@ const DateInput = ({
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
+              width={3}
             />
           </div>
         </fieldset>
@@ -115,6 +118,7 @@ const DateInputItem = ({
   getFormValues,
   setStartDate,
   setEndDate,
+  width,
 }) => {
   const capitilisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
@@ -146,7 +150,7 @@ const DateInputItem = ({
           {capitilisedName}
         </label>
         <input
-          className={`govuk-input govuk-date-input__input govuk-input--width-2 ${
+          className={`govuk-input govuk-date-input__input govuk-input--width-${width} ${
             errors &&
             Object.keys(errors).find((error) => {
               return error === name + '-' + dateType;
@@ -204,4 +208,5 @@ DateInputItem.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
 };

@@ -77,30 +77,30 @@ describe('StartFinishDateInput', () => {
     expect(endYearValue).toEqual('2022');
   });
 
-  // it('should update the end date if finish next day is true on and a record already exists', () => {
-  //   renderWithTimecardContext(
-  //     <StartFinishDateInput
-  //       name="Date"
-  //       errors={{}}
-  //       startTimeValue='2022-09-02'
-  //       finishTimeValue='2022-09-02'
-  //       startEntryExists={true}
-  //       finishEntryExists={true}
-  //       timecardDate='2022-09-02'
-  //       register={mockRegister}
-  //       formState={jest.fn()}
-  //       finishNextDay={true}
-  //     />
-  //   );
+  it('should update the end date if finish next day is true on and a record already exists', () => {
+    renderWithTimecardContext(
+      <StartFinishDateInput
+        name="Date"
+        errors={{}}
+        startTimeValue='2022-09-02'
+        finishTimeValue='2022-09-02'
+        startEntryExists={true}
+        finishEntryExists={true}
+        timecardDate='2022-09-02'
+        register={mockRegister}
+        formState={jest.fn()}
+        finishNextDay={true}
+      />
+    );
 
-  //   const endDay = screen.getByTestId(testInputNames.endDay);
-  //   const endDayValue = endDay.getAttribute('value');
-  //   expect(endDayValue).toEqual('03');
-  //   const endMonth = screen.getByTestId(testInputNames.endMonth);
-  //   const endMonthValue = endMonth.getAttribute('value');
-  //   expect(endMonthValue).toEqual('09');
-  //   const endYear = screen.getByTestId(testInputNames.endYear);
-  //   const endYearValue = endYear.getAttribute('value');
-  //   expect(endYearValue).toEqual('2022');
-  // });
+    const endDay = screen.getByTestId(testInputNames.endDay);
+    const endDayValue = endDay.getAttribute('value');
+    expect(endDayValue).toEqual('03');
+    const endMonth = screen.getByTestId(testInputNames.endMonth);
+    const endMonthValue = endMonth.getAttribute('value');
+    expect(endMonthValue).toEqual('09');
+    const endYear = screen.getByTestId(testInputNames.endYear);
+    const endYearValue = endYear.getAttribute('value');
+    expect(endYearValue).toEqual('2022');
+  });
 });
