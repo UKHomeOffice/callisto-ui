@@ -283,22 +283,20 @@ const EditShiftHours = ({
           handleChange={handleCheckboxChange}
         />
         {isChecked && (
-          <>
-            <StartFinishDateInput
-              name="Date"
-              errors={errors}
-              startTimeValue={localStartDate}
-              finishTimeValue={localEndDate}
-              startEntryExists={startEntryExists}
-              timecardDate={timecardDate}
-              register={register}
-              formState={formState}
-              finishNextDay={timeEntry.finishNextDay}
-              getFormValues={getValues}
-              setStartDate={setLocalStartDate}
-              setEndDate={setLocalEndDate}
-            />
-          </>
+          <StartFinishDateInput
+            name="Date"
+            errors={errors}
+            startTimeValue={localStartDate}
+            finishTimeValue={localEndDate}
+            startEntryExists={startEntryExists}
+            timecardDate={timecardDate}
+            register={register}
+            formState={formState}
+            finishNextDay={timeEntry.finishNextDay}
+            getFormValues={getValues}
+            setStartDate={setLocalStartDate}
+            setEndDate={setLocalEndDate}
+          />
         )}
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
