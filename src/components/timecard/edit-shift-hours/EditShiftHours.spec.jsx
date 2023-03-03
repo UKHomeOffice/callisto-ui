@@ -688,6 +688,10 @@ describe('EditShiftHours', () => {
     });
 
     it('should redirect to new date when the finish date is updated and save selected', async () => {
+      updateTimeEntry.mockResolvedValue({
+        data: getApiResponseWithItems(shiftTimeEntry),
+      });
+
       const timeEntryId = '1';
       const timecardDate = '2022-09-01';
 
@@ -725,7 +729,6 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(async () => {
-        // await waitFor(() => {});
         expect(mockNavigate).toHaveBeenCalled();
       });
     });

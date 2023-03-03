@@ -142,8 +142,6 @@ const EditShiftHours = ({
   };
 
   const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
-    console.log('******************setting redirect');
-
     const currentDay = formatJustDay(timecardDate);
     const newStartDay = formatJustDay(startDate);
     const newEndDay = formatJustDay(endDate);
@@ -209,12 +207,6 @@ const EditShiftHours = ({
         const params = new UrlSearchParamBuilder()
           .setTenantId('00000000-0000-0000-0000-000000000000')
           .getUrlSearchParams();
-
-        setRedirectAndMessages(
-          timecardDate,
-          actualStartDateTime,
-          actualEndDateTime
-        );
 
         const response = !timeEntry.timeEntryId
           ? await createTimeEntry(timecardPayload, params)
