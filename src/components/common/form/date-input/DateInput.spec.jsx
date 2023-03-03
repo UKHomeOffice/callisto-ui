@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render, fireEvent, userEvent } from '@testing-library/react';
 
 import DateInput from './DateInput';
 
@@ -57,6 +57,7 @@ describe('DateInput', () => {
     fireEvent.change(dayInput, { target: { value: '01' } });
     fireEvent.change(monthInput, { target: { value: '03' } });
     fireEvent.change(yearInput, { target: { value: '2022' } });
+    fireEvent.focusOut(yearInput);
 
     expect(dayInput.value).toBe('01');
     expect(monthInput.value).toBe('03');
