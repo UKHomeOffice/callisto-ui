@@ -151,10 +151,10 @@ const EditShiftHours = ({
 
     if (currentDay !== newStartDay) {
       datesMoved = true;
-      redirectTarget = `/timecard/${startDate}`;
+      redirectTarget = `/timecard/${formatDate(startDate)}`;
     } else if (currentDay !== newEndDay) {
       datesMoved = true;
-      redirectTarget = `/timecard/${endDate}`;
+      redirectTarget = `/timecard/${formatDate(endDate)}`;
     }
 
     if (datesMoved) {

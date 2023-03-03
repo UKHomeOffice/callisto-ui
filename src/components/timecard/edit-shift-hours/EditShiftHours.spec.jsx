@@ -729,9 +729,7 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(async () => {
-        expect(mockNavigate).toHaveBeenCalledWith(
-          '/timecard/2022-09-02T16:00:00+00:00'
-        );
+        expect(mockNavigate).toHaveBeenCalledWith('/timecard/2022-09-02');
       });
     });
 
@@ -843,9 +841,7 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith(
-          '/timecard/2022-09-01T23:00:00+00:00'
-        );
+        expect(mockNavigate).toHaveBeenCalledWith('/timecard/2022-09-01');
         expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
           timeEntryId,
           {
