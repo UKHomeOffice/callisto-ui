@@ -63,6 +63,7 @@ const EditShiftHours = ({
     setIsAlertVisible,
     summaryMessages,
     setSummaryMessages,
+    isAlertVisible,
   } = useTimecardContext();
 
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
@@ -83,7 +84,7 @@ const EditShiftHours = ({
     if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
       setTimeout(() => setIsAlertVisible(false), 10000);
     }
-  }, [summaryMessages]);
+  }, [isAlertVisible]);
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
@@ -232,7 +233,7 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          if (startEntryExists) {
+          if (startEntryExists && finishEntryExists) {
             setRedirectAndMessages(
               timecardDate,
               actualStartDateTime,
