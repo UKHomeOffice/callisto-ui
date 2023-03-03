@@ -1,4 +1,4 @@
-import { screen, render, fireEvent, userEvent } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 
 import DateInput from './DateInput';
 
