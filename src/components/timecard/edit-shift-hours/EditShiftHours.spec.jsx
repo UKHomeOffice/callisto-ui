@@ -60,10 +60,6 @@ const invalidTimes = [
 
 const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
 
-const sleep = (milliseconds) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-};
-
 describe('EditShiftHours', () => {
   describe('given time entries are to be persisted', () => {
     const timecardDate = '2022-09-01';
