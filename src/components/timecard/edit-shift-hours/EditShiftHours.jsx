@@ -50,8 +50,6 @@ const EditShiftHours = ({
   const inputName = 'shift';
   const { setServiceError, userId } = useApplicationContext();
   const [isChecked, setIsChecked] = useState(false);
-  const [redirectTarget, setRedirectTarget] = useState('');
-  const [shouldRedirect, setShouldRedirect] = useState(false);
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
   const navigate = useNavigate();
@@ -82,10 +80,6 @@ const EditShiftHours = ({
   }, [summaryErrors]);
 
   useEffect(() => {
-    if (shouldRedirect) {
-      navigate(redirectTarget);
-    }
-
     if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
       setTimeout(() => setIsAlertVisible(false), 10000);
     }
@@ -148,23 +142,26 @@ const EditShiftHours = ({
   };
 
   const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
+    console.log('******************setting redirect');
+
     const currentDay = formatJustDay(timecardDate);
     const newStartDay = formatJustDay(startDate);
     const newEndDay = formatJustDay(endDate);
 
     let datesMoved = false;
+    let redirectTarget;
 
     if (currentDay !== newStartDay) {
       datesMoved = true;
-      setShouldRedirect(true);
-      setRedirectTarget(`/timecard/${startDate}`);
+      redirectTarget = `/timecard/${startDate}`;
     } else if (currentDay !== newEndDay) {
       datesMoved = true;
-      setShouldRedirect(true);
-      setRedirectTarget(`/timecard/${endDate}`);
+      redirectTarget = `/timecard/${endDate}`;
     }
 
     if (datesMoved) {
+      navigate(redirectTarget);
+
       const formattedStart = formatDateNoYear(startDate);
       const formattedEnd = formatDateNoYear(endDate);
       summaryMessages['update'] = {
@@ -176,6 +173,7 @@ const EditShiftHours = ({
         message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
       };
     }
+
     setSummaryMessages(summaryMessages);
     setIsAlertVisible(true);
   };
@@ -211,6 +209,12 @@ const EditShiftHours = ({
         const params = new UrlSearchParamBuilder()
           .setTenantId('00000000-0000-0000-0000-000000000000')
           .getUrlSearchParams();
+
+        setRedirectAndMessages(
+          timecardDate,
+          actualStartDateTime,
+          actualEndDateTime
+        );
 
         const response = !timeEntry.timeEntryId
           ? await createTimeEntry(timecardPayload, params)

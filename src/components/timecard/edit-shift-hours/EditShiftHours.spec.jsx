@@ -33,6 +33,12 @@ const timecardService = require('../../../api/services/timecardService');
 const mockCreateTimeEntry = jest.spyOn(timecardService, 'createTimeEntry');
 const mockUpdateTimeEntry = jest.spyOn(timecardService, 'updateTimeEntry');
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -105,7 +111,7 @@ describe('EditShiftHours', () => {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
         startTime: '2022-09-01 01:00:00+00:00',
-        endTime: '2022-09-01 05:00:00+00:00',
+        finishTime: '2022-09-01 05:00:00+00:00',
       };
 
       defaultTimecardContext.timecardDate = timecardDate;
@@ -449,7 +455,7 @@ describe('EditShiftHours', () => {
       ...newTimeEntry,
       timeEntryId: timeEntryId,
       startTime: '2022-09-01 08:00:00+00:00',
-      endTime: '2022-09-01 10:00:00+00:00',
+      finishTime: '2022-09-01 10:00:00+00:00',
       finishNextDay: true,
     };
 
@@ -503,7 +509,7 @@ describe('EditShiftHours', () => {
       ...newTimeEntry,
       timeEntryId: timeEntryId,
       startTime: '08:00',
-      endTime: '10:00',
+      finishTime: '10:00',
       finishNextDay: true,
     };
 
@@ -579,7 +585,7 @@ describe('EditShiftHours', () => {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
         startTime: '2022-09-02 08:00:00+00:00',
-        endTime: '2022-09-02 16:00:00+00:00',
+        finishTime: '2022-09-02 16:00:00+00:00',
         finishNextDay: false,
       };
 
@@ -628,6 +634,102 @@ describe('EditShiftHours', () => {
       });
     });
 
+    it('should update finish date when the finish date box is changed and save selected', async () => {
+      const timeEntryId = '1';
+      const timecardDate = '2022-09-01';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '2022-09-01 08:00:00+00:00',
+        finishTime: '2022-09-01 16:00:00+00:00',
+        finishNextDay: false,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const checkBox = screen.getByText('View or edit dates');
+        fireEvent.click(checkBox);
+
+        const endDay = screen.getByTestId(testInputNames.endDay);
+        fireEvent.change(endDay, {
+          target: { value: '02' },
+        });
+        fireEvent.focusOut(endDay);
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: '2022-09-01T08:00:00+00:00',
+            actualEndTime: '2022-09-02T16:00:00+00:00',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
+    });
+
+    it('should redirect to new date when the finish date is updated and save selected', async () => {
+      const timeEntryId = '1';
+      const timecardDate = '2022-09-01';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '2022-09-01 08:00:00+00:00',
+        finishTime: '2022-09-01 16:00:00+00:00',
+        finishNextDay: false,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const checkBox = screen.getByText('View or edit dates');
+        fireEvent.click(checkBox);
+
+        const endDay = screen.getByTestId(testInputNames.endDay);
+        fireEvent.change(endDay, {
+          target: { value: '02' },
+        });
+        fireEvent.focusOut(endDay);
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(async () => {
+        // await waitFor(() => {});
+        expect(mockNavigate).toHaveBeenCalled();
+      });
+    });
+
     it('end date should move to next day when check box is selected and finishNextDay is true', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-02';
@@ -636,7 +738,7 @@ describe('EditShiftHours', () => {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
         startTime: '2022-09-02 08:00:00+00:00',
-        endTime: '2022-09-02 16:00:00+00:00',
+        finishTime: '2022-09-02 16:00:00+00:00',
         finishNextDay: true,
       };
 
@@ -992,7 +1094,7 @@ describe('EditShiftHours', () => {
         ...newTimeEntry,
         timeEntryId: timeEntryId,
         startTime: '08:00',
-        endTime: '10:00',
+        finishTime: '10:00',
         finishNextDay: true,
       };
 
