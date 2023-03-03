@@ -60,6 +60,10 @@ const invalidTimes = [
 
 const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
 
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
+
 describe('EditShiftHours', () => {
   describe('given time entries are to be persisted', () => {
     const timecardDate = '2022-09-01';
@@ -786,6 +790,131 @@ describe('EditShiftHours', () => {
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
             actualStartTime: '2022-09-02T08:00:00+00:00',
             actualEndTime: '2022-09-03T01:00:00+00:00',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
+    });
+
+    it('start date should move to previous day when check box is selected and date changed', async () => {
+      const timeEntryId = '1';
+      const timecardDate = '2022-09-02';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '2022-09-02 08:00:00+00:00',
+        finishTime: '2022-09-02 16:00:00+00:00',
+        finishNextDay: false,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+          localStartDate={'2022-09-02 08:00:00+00:00'}
+          localEndDate={'2022-09-02 16:00:00+00:00'}
+          startEntryExists={true}
+          setSummaryMessages={jest.fn()}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+        fireEvent.change(startTimeInput, {
+          target: { value: '23:00' },
+        });
+
+        const checkBox = screen.getByText('View or edit dates');
+        fireEvent.click(checkBox);
+
+        const startDay = screen.getByTestId(testInputNames.startDay);
+        fireEvent.change(startDay, {
+          target: { value: '01' },
+        });
+        fireEvent.focusOut(startDay);
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalled();
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: '2022-09-01T23:00:00+00:00',
+            actualEndTime: '2022-09-02T16:00:00+00:00',
+          },
+          new URLSearchParams([
+            ['tenantId', '00000000-0000-0000-0000-000000000000'],
+          ])
+        );
+      });
+    });
+
+    it('start date should move to to same day as end date when check box is selected and date changed', async () => {
+      const timeEntryId = '1';
+      const timecardDate = '2022-09-02';
+
+      const existingTimeEntry = {
+        ...newTimeEntry,
+        timeEntryId: timeEntryId,
+        startTime: '2022-09-01 23:00:00+00:00',
+        finishTime: '2022-09-02 16:00:00+00:00',
+        finishNextDay: false,
+      };
+
+      defaultTimecardContext.timecardDate = timecardDate;
+
+      renderWithTimecardContext(
+        <EditShiftHours
+          setShowEditShiftHours={jest.fn()}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+          localStartDate={'2022-09-01 23:00:00+00:00'}
+          localEndDate={'2022-09-02 16:00:00+00:00'}
+          startEntryExists={true}
+          setSummaryMessages={jest.fn()}
+        />,
+        defaultTimecardContext
+      );
+
+      act(() => {
+        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+        fireEvent.change(startTimeInput, {
+          target: { value: '01:00' },
+        });
+
+        const checkBox = screen.getByText('View or edit dates');
+        fireEvent.click(checkBox);
+
+        const startDay = screen.getByTestId(testInputNames.startDay);
+        fireEvent.change(startDay, {
+          target: { value: '02' },
+        });
+        fireEvent.focusOut(startDay);
+
+        const saveButton = screen.getByText('Save');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
+          timeEntryId,
+          {
+            ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            actualStartTime: '2022-09-02T01:00:00+00:00',
+            actualEndTime: '2022-09-02T16:00:00+00:00',
           },
           new URLSearchParams([
             ['tenantId', '00000000-0000-0000-0000-000000000000'],
