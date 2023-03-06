@@ -1005,7 +1005,7 @@ describe('EditShiftHours', () => {
 
           const startDay = screen.getByTestId(testInputNames.startDay);
           fireEvent.change(startDay, {
-            target: { value: '03' },
+            target: { value: '02' },
           });
           fireEvent.focusOut(startDay);
 
