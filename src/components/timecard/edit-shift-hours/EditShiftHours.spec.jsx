@@ -918,6 +918,191 @@ describe('EditShiftHours', () => {
         );
       });
     });
+
+    describe('setMessages', () => {
+      it('should set summary messages when dates have moved and finish entry exists', async () => {
+        updateTimeEntry.mockResolvedValue({
+          data: getApiResponseWithItems(shiftTimeEntry),
+        });
+
+        const timeEntryId = '1';
+        const existingTimeEntry = {
+          ...newTimeEntry,
+          timeEntryId: timeEntryId,
+          startTime: '2022-09-01 08:00:00+00:00',
+          finishTime: '2022-09-01 16:00:00+00:00',
+          finishNextDay: false,
+        };
+
+        defaultTimecardContext.setSummaryMessages = jest.fn();
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={existingTimeEntry}
+            timeEntriesIndex={0}
+          />,
+          defaultTimecardContext
+        );
+
+        act(() => {
+          const checkBox = screen.getByText('View or edit dates');
+          fireEvent.click(checkBox);
+
+          const endDay = screen.getByTestId(testInputNames.endDay);
+          fireEvent.change(endDay, {
+            target: { value: '02' },
+          });
+          fireEvent.focusOut(endDay);
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultTimecardContext.setSummaryMessages
+          ).toHaveBeenCalledWith({
+            ['update']: {
+              message:
+                'Timecard has been updated to start on 01 September and end on 02 September',
+            },
+          });
+        });
+      });
+
+      it('should set summary messages without finish date when dates have moved and finish entry does not exist', async () => {
+        updateTimeEntry.mockResolvedValue({
+          data: getApiResponseWithItems(shiftTimeEntry),
+        });
+
+        const timeEntryId = '1';
+        const existingTimeEntry = {
+          ...newTimeEntry,
+          timeEntryId: timeEntryId,
+          startTime: '2022-09-01 08:00:00+00:00',
+          finishTime: '',
+          finishNextDay: false,
+        };
+
+        defaultTimecardContext.setSummaryMessages = jest.fn();
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={existingTimeEntry}
+            timeEntriesIndex={0}
+          />,
+          defaultTimecardContext
+        );
+
+        act(() => {
+          const checkBox = screen.getByText('View or edit dates');
+          fireEvent.click(checkBox);
+
+          const startDay = screen.getByTestId(testInputNames.startDay);
+          fireEvent.change(startDay, {
+            target: { value: '02' },
+          });
+          fireEvent.focusOut(startDay);
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultTimecardContext.setSummaryMessages
+          ).toHaveBeenCalledWith({
+            ['update']: {
+              message: 'Timecard has been updated to start on 02 September',
+            },
+          });
+        });
+      });
+
+      it('should set summary messages with both dates when dates have moved to start and end on same day', async () => {
+        updateTimeEntry.mockResolvedValue({
+          data: getApiResponseWithItems(shiftTimeEntry),
+        });
+
+        const timeEntryId = '1';
+        const existingTimeEntry = {
+          ...newTimeEntry,
+          timeEntryId: timeEntryId,
+          startTime: '2022-09-01 08:00:00+00:00',
+          finishTime: '2022-09-02 17:00:00+00:00',
+          finishNextDay: false,
+        };
+
+        defaultTimecardContext.setSummaryMessages = jest.fn();
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={existingTimeEntry}
+            timeEntriesIndex={0}
+          />,
+          defaultTimecardContext
+        );
+
+        act(() => {
+          const checkBox = screen.getByText('View or edit dates');
+          fireEvent.click(checkBox);
+
+          const startDay = screen.getByTestId(testInputNames.startDay);
+          fireEvent.change(startDay, {
+            target: { value: '02' },
+          });
+          fireEvent.focusOut(startDay);
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultTimecardContext.setSummaryMessages
+          ).toHaveBeenCalledWith({
+            ['update']: {
+              message:
+                'Timecard has been updated, it now starts and ends on 02 September',
+            },
+          });
+        });
+      });
+
+      it('should not set summary messages for new time entries', async () => {
+        createTimeEntry.mockResolvedValue({
+          data: getApiResponseWithItems(shiftTimeEntry),
+        });
+
+        defaultTimecardContext.setSummaryMessages = jest.fn();
+
+        renderWithTimecardContext(
+          <EditShiftHours
+            setShowEditShiftHours={jest.fn()}
+            timeEntry={newTimeEntry}
+            timeEntriesIndex={0}
+          />,
+          defaultTimecardContext
+        );
+
+        act(() => {
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+          fireEvent.change(startTimeInput, { target: { value: '08:00' } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          expect(
+            defaultTimecardContext.setSummaryMessages
+          ).not.toHaveBeenCalled();
+        });
+      });
+    });
   });
 
   describe('Service errors', () => {
