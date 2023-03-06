@@ -142,29 +142,15 @@ const EditShiftHours = ({
     return false;
   };
 
-  const setRedirectAndMessages = (timecardDate, startDate, endDate) => {
-    const currentDay = formatJustDay(timecardDate);
-    const newStartDay = formatJustDay(startDate);
-    const newEndDay = formatJustDay(endDate);
-
-    let datesMoved = false;
-    let redirectTarget;
-
-    if (currentDay !== newStartDay) {
-      datesMoved = true;
-      redirectTarget = `/timecard/${formatDate(startDate)}`;
-    } else if (currentDay !== newEndDay) {
-      datesMoved = true;
-      redirectTarget = `/timecard/${formatDate(endDate)}`;
-    }
-
+  const setMessages = (startDate, endDate, datesMoved) => {
     if (datesMoved) {
-      navigate(redirectTarget);
-
       const formattedStart = formatDateNoYear(startDate);
       const formattedEnd = formatDateNoYear(endDate);
+      const message = finishEntryExists
+        ? `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`
+        : `Timecard has been updated to start on ${formattedStart}`;
       summaryMessages['update'] = {
-        message: `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`,
+        message: message,
       };
     } else {
       const formattedTimecard = formatDateNoYear(timecardDate);
@@ -233,12 +219,13 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          if (startEntryExists && finishEntryExists) {
-            setRedirectAndMessages(
-              timecardDate,
-              actualStartDateTime,
-              actualEndDateTime
-            );
+          let datesMoved = setDatesMoved(
+            actualStartDateTime,
+            actualEndDateTime
+          );
+
+          if (startEntryExists) {
+            setMessages(actualStartDateTime, actualEndDateTime, datesMoved);
           }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
@@ -248,6 +235,26 @@ const EditShiftHours = ({
       true,
       handleServerValidationErrors
     );
+  };
+
+  const setDatesMoved = (actualStartDateTime, actualEndDateTime) => {
+    const currentDay = formatJustDay(timecardDate);
+    const newStartDay = formatJustDay(actualStartDateTime);
+    const newEndDay = formatJustDay(actualEndDateTime);
+
+    let datesMoved = false;
+    let redirectTarget;
+    if (currentDay !== newStartDay) {
+      datesMoved = true;
+      redirectTarget = `/timecard/${formatDate(actualStartDateTime)}`;
+      navigate(redirectTarget);
+    } else if (currentDay !== newEndDay) {
+      datesMoved = true;
+      redirectTarget = `/timecard/${formatDate(actualEndDateTime)}`;
+      navigate(redirectTarget);
+    }
+
+    return datesMoved;
   };
 
   return (
