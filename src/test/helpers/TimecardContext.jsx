@@ -36,6 +36,23 @@ export const defaultTimecardContext = {
   setIsAlertVisible: jest.fn(),
 };
 
+export const createDefaultTimecardContext = () => {
+  return {
+    summaryErrors: {},
+    setSummaryErrors: jest.fn(),
+    timeEntries: [],
+    setTimeEntries: jest.fn(),
+    timecardDate: '2022-09-01',
+    setTimecardDate: jest.fn(),
+    newTimeEntry: false,
+    setNewTimeEntry: jest.fn(),
+    summaryMessages: {},
+    setSummaryMessages: jest.fn(),
+    isAlertVisible: false,
+    setIsAlertVisible: jest.fn(),
+  };
+};
+
 export const defaultApplicationContext = {
   timePeriodTypes: timeCardPeriodTypes,
   setTimePeriodTypes: jest.fn(),

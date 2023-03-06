@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import {
+  createDefaultTimecardContext,
   defaultApplicationContext,
   defaultTimecardContext,
   renderWithTimecardContext,
@@ -934,6 +935,7 @@ describe('EditShiftHours', () => {
           finishNextDay: false,
         };
 
+        const defaultTimecardContext = createDefaultTimecardContext();
         defaultTimecardContext.setSummaryMessages = jest.fn();
 
         renderWithTimecardContext(
@@ -985,6 +987,7 @@ describe('EditShiftHours', () => {
           finishNextDay: false,
         };
 
+        const defaultTimecardContext = createDefaultTimecardContext();
         defaultTimecardContext.setSummaryMessages = jest.fn();
 
         renderWithTimecardContext(
@@ -1002,7 +1005,7 @@ describe('EditShiftHours', () => {
 
           const startDay = screen.getByTestId(testInputNames.startDay);
           fireEvent.change(startDay, {
-            target: { value: '02' },
+            target: { value: '03' },
           });
           fireEvent.focusOut(startDay);
 
@@ -1035,6 +1038,7 @@ describe('EditShiftHours', () => {
           finishNextDay: false,
         };
 
+        const defaultTimecardContext = createDefaultTimecardContext();
         defaultTimecardContext.setSummaryMessages = jest.fn();
 
         renderWithTimecardContext(
@@ -1077,6 +1081,7 @@ describe('EditShiftHours', () => {
           data: getApiResponseWithItems(shiftTimeEntry),
         });
 
+        const defaultTimecardContext = createDefaultTimecardContext();
         defaultTimecardContext.setSummaryMessages = jest.fn();
 
         renderWithTimecardContext(
