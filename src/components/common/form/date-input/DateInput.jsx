@@ -164,7 +164,7 @@ const DateInputItem = ({
           data-testid={`${name}-${dateType}-input`}
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
-            onBlur: () => setDates(),
+            onChange: () => setDates(),
             required: {
               value: true,
               message: 'Enter a ' + dateType,

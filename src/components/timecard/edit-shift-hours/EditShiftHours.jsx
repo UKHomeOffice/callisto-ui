@@ -142,27 +142,6 @@ const EditShiftHours = ({
     return false;
   };
 
-  const setMessages = (startDate, endDate, datesMoved) => {
-    if (datesMoved) {
-      const formattedStart = formatDateNoYear(startDate);
-      const formattedEnd = formatDateNoYear(endDate);
-      const message = finishEntryExists
-        ? `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`
-        : `Timecard has been updated to start on ${formattedStart}`;
-      summaryMessages['update'] = {
-        message: message,
-      };
-    } else {
-      const formattedTimecard = formatDateNoYear(timecardDate);
-      summaryMessages['update'] = {
-        message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
-      };
-    }
-
-    setSummaryMessages(summaryMessages);
-    setIsAlertVisible(true);
-  };
-
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
@@ -248,13 +227,34 @@ const EditShiftHours = ({
       datesMoved = true;
       redirectTarget = `/timecard/${formatDate(actualStartDateTime)}`;
       navigate(redirectTarget);
-    } else if (currentDay !== newEndDay) {
+    } else if (finishEntryExists && currentDay !== newEndDay) {
       datesMoved = true;
       redirectTarget = `/timecard/${formatDate(actualEndDateTime)}`;
       navigate(redirectTarget);
     }
 
     return datesMoved;
+  };
+
+  const setMessages = (startDate, endDate, datesMoved) => {
+    if (datesMoved) {
+      const formattedStart = formatDateNoYear(startDate);
+      const formattedEnd = formatDateNoYear(endDate);
+      const message = finishEntryExists
+        ? `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`
+        : `Timecard has been updated to start on ${formattedStart}`;
+      summaryMessages['update'] = {
+        message: message,
+      };
+    } else {
+      const formattedTimecard = formatDateNoYear(timecardDate);
+      summaryMessages['update'] = {
+        message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
+      };
+    }
+
+    setSummaryMessages(summaryMessages);
+    setIsAlertVisible(true);
   };
 
   return (
