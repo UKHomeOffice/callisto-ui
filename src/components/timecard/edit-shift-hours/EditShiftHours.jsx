@@ -16,7 +16,6 @@ import {
   formatDateTimeISO,
   formatTime,
   formatDateNoYear,
-  formatJustDay,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -203,8 +202,8 @@ const EditShiftHours = ({
             actualEndDateTime
           );
 
-          if (startEntryExists) {
-            setMessages(actualStartDateTime, actualEndDateTime, datesMoved);
+          if (datesMoved && startEntryExists) {
+            setMessages(actualStartDateTime, actualEndDateTime);
           }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
@@ -217,39 +216,39 @@ const EditShiftHours = ({
   };
 
   const setDatesMoved = (actualStartDateTime, actualEndDateTime) => {
-    const currentDay = formatJustDay(timecardDate);
-    const newStartDay = formatJustDay(actualStartDateTime);
-    const newEndDay = formatJustDay(actualEndDateTime);
+    const currentDay = timecardDate;
+    const newStartDay = formatDate(actualStartDateTime);
+    const newEndDay = formatDate(actualEndDateTime);
 
     let datesMoved = false;
     let redirectTarget;
     if (currentDay !== newStartDay) {
       datesMoved = true;
-      redirectTarget = `/timecard/${formatDate(actualStartDateTime)}`;
+      redirectTarget = `/timecard/${newStartDay}`;
       navigate(redirectTarget);
     } else if (finishEntryExists && currentDay !== newEndDay) {
       datesMoved = true;
-      redirectTarget = `/timecard/${formatDate(actualEndDateTime)}`;
+      redirectTarget = `/timecard/${newEndDay}`;
       navigate(redirectTarget);
     }
 
     return datesMoved;
   };
 
-  const setMessages = (startDate, endDate, datesMoved) => {
-    if (datesMoved) {
-      const formattedStart = formatDateNoYear(startDate);
-      const formattedEnd = formatDateNoYear(endDate);
+  const setMessages = (startDate, endDate) => {
+    const formattedStart = formatDateNoYear(startDate);
+    const formattedEnd = formatDateNoYear(endDate);
+
+    if (formatDate(startDate) === formatDate(endDate)) {
+      summaryMessages['update'] = {
+        message: `Timecard has been updated, it now starts and ends on ${formattedStart}`,
+      };
+    } else {
       const message = finishEntryExists
         ? `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`
         : `Timecard has been updated to start on ${formattedStart}`;
       summaryMessages['update'] = {
         message: message,
-      };
-    } else {
-      const formattedTimecard = formatDateNoYear(timecardDate);
-      summaryMessages['update'] = {
-        message: `Timecard has been updated, it now starts and ends on ${formattedTimecard}`,
       };
     }
 
