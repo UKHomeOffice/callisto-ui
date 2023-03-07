@@ -81,9 +81,17 @@ const EditShiftHours = ({
 
   useEffect(() => {
     if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
-      setTimeout(() => setIsAlertVisible(false), 10000);
+      const timeout = setTimeout(() => clearSummary(timeout), 10000);
     }
   }, [isAlertVisible]);
+
+  const clearSummary = (timeout) => {
+    setSummaryMessages({});
+    setIsAlertVisible(false);
+    if (timeout != null) {
+      clearTimeout(timeout);
+    }
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
@@ -241,12 +249,12 @@ const EditShiftHours = ({
 
     if (formatDate(startDate) === formatDate(endDate)) {
       summaryMessages['update'] = {
-        message: `Timecard has been updated, it now starts and ends on ${formattedStart}`,
+        message: `The time period now starts and ends on ${formattedStart}`,
       };
     } else {
       const message = finishEntryExists
-        ? `Timecard has been updated to start on ${formattedStart} and end on ${formattedEnd}`
-        : `Timecard has been updated to start on ${formattedStart}`;
+        ? `The time period starts on ${formattedStart} and finishes on ${formattedEnd}`
+        : `The time period starts on ${formattedStart}`;
       summaryMessages['update'] = {
         message: message,
       };

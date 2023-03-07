@@ -967,7 +967,7 @@ describe('EditShiftHours', () => {
           ).toHaveBeenCalledWith({
             ['update']: {
               message:
-                'Timecard has been updated to start on 01 September and end on 02 September',
+                'The time period starts on 01 September and finishes on 02 September',
             },
           });
         });
@@ -1018,7 +1018,7 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             ['update']: {
-              message: 'Timecard has been updated to start on 02 September',
+              message: 'The time period starts on 02 September',
             },
           });
         });
@@ -1069,8 +1069,7 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             ['update']: {
-              message:
-                'Timecard has been updated, it now starts and ends on 02 September',
+              message: 'The time period now starts and ends on 02 September',
             },
           });
         });

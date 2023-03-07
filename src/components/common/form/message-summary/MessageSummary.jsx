@@ -12,7 +12,7 @@ const MessageSummary = ({ messages, keys }) => {
           className="govuk-notification-banner__title"
           id="govuk-notification-banner-title"
         >
-          Update Successful
+          Hours changed
         </h2>
       </div>
       <div className="govuk-notification-banner__content">
