@@ -55,8 +55,16 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
+    console.log('date: ', date);
     setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
+    updateTimeEntryContextData(
+      date,
+      setTimeEntries,
+      setServiceError,
+      userId,
+      previousDay,
+      nextDay
+    );
   }, [date, timePeriodTypes]);
 
   return (
@@ -152,22 +160,38 @@ const updateTimeEntryContextData = async (
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
+    const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
+
+    console.log('timecardStart:', timeCardStart.toString());
+
+    const timeCardEnd = dayjs(date).endOf('day');
+
+    console.log('timecardEnd:', timeCardEnd.toString());
+
     if (timeEntriesResponse.data.items?.length > 0) {
-      const existingTimeEntries = timeEntriesResponse.data.items.map(
+      const filteredTimeEntries = timeEntriesResponse.data.items.filter(
         (timeEntry) => {
-          return new ContextTimeEntry(
-            timeEntry.id,
-            timeEntry.actualStartTime,
-            timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
-            timeEntry.timePeriodTypeId,
-            timeEntry.finishNextDay ??
-              isFinishTimeOnNextDay(
-                formatTime(timeEntry.actualStartTime),
-                formatTime(timeEntry.actualEndTime)
-              )
+          return !(
+            dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
+            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd)
           );
         }
       );
+      const existingTimeEntries = filteredTimeEntries.map((timeEntry) => {
+        return new ContextTimeEntry(
+          timeEntry.id,
+          timeEntry.actualStartTime,
+          timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+          timeEntry.timePeriodTypeId,
+          timeEntry.finishNextDay ??
+            isFinishTimeOnNextDay(
+              formatTime(timeEntry.actualStartTime),
+              formatTime(timeEntry.actualEndTime)
+            )
+        );
+      });
+
+      console.log('existingTimeEntries: ', existingTimeEntries);
 
       setTimeEntries(existingTimeEntries);
     } else {

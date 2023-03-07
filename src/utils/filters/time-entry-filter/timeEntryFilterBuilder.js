@@ -7,10 +7,13 @@ import {
 } from '../resource-filter-builder/resourceFilterBuilder';
 
 const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
-  const startOfDateFilter = filterOnOrAfterDate(resourceDateProperty, date);
+  const startOfDateFilter = filterOnOrAfterDate(
+    resourceDateProperty,
+    dayjs(date).subtract(1, 'day')
+  );
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
-    dayjs(date).add(1, 'day')
+    dayjs(date).add(2, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];
 };
