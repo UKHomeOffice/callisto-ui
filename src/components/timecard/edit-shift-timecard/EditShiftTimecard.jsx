@@ -65,7 +65,12 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
           >
             Shift
           </dt>
-          <dd className="govuk-summary-list__value"></dd>
+          <dd
+            className="govuk-summary-list__value"
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            Shift
+          </dd>
           <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
             {timeEntryExists && (
               <Link
