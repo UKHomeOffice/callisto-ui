@@ -110,7 +110,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
                 to={'/'}
                 data-testid="hours-change-button"
               >
-                Change<span className="govuk-visually-hidden"> hours</span>
+                Edit<span className="govuk-visually-hidden"> hours</span>
               </Link>
             )}
           </dd>
@@ -147,7 +147,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
                 to={'/'}
                 data-testid="meal-break-change-button"
               >
-                Change<span className="govuk-visually-hidden"> meal break</span>
+                Edit<span className="govuk-visually-hidden"> meal break</span>
               </Link>
             )}
           </dd>
