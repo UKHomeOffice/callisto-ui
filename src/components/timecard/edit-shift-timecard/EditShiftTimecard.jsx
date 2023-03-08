@@ -63,7 +63,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
             className="govuk-summary-list__key govuk-!-width-two-thirds"
             style={{ paddingBottom: '20px', paddingTop: '10px' }}
           >
-            Shift
+            Time Period
           </dt>
           <dd
             className="govuk-summary-list__value"
