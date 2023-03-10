@@ -4,24 +4,25 @@ import {
   renderWithTimecardContext,
   defaultTimecardContext,
 } from '../../test/helpers/TimecardContext';
-import { shiftTimeEntry } from '../../../mocks/mockData';
+import { shiftTimeEntry, shiftTimeEntryMultipleDays } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
+import { useParams } from 'react-router';
 
-const date = '2022-07-01';
+let mockDate = '2022-07-01';
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
-    date: date,
+    date: mockDate,
   }),
   useNavigate: () => mockNavigate,
 }));
 
-const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
+const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry, shiftTimeEntryMultipleDays);
 
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
@@ -32,7 +33,8 @@ beforeEach(() => {
   });
 });
 
-describe('Timecard', () => {
+describe('Timecard BST', () => {
+
   it('should render a timecard component with the correct date', () => {
     renderWithTimecardContext(<Timecard />);
 
@@ -68,6 +70,69 @@ describe('Timecard', () => {
     expect(screen.getByText('Finish time')).toBeTruthy();
     expect(screen.getByText('Shift')).toBeTruthy();
   });
+
+  it('should render the EditShiftTimecard component when time entry spans multiple days', async () => {
+    mockDate = '2022-02-01';
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
+      };
+    });
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-02-01',
+      setTimecardDate: jest.fn(),
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('09:00 to 09:00')).toBeInTheDocument();
+      expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
+    });
+    
+  })
+
+  it('should not render the EditShiftTimecard component when time entry ends at 00:00', async () => {
+    mockDate = '2022-02-01';
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
+      };
+    });
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-02-01',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('09:00 to 00:00')).toBeFalsy();
+    expect(screen.getByText(addTimePeriodHeading)).toBeFalsy();
+  })
+
+  it('should render the EditShiftTimecard component when time entry begins at 00:00', async () => {
+    mockDate = '2022-02-01';
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
+      };
+    });
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-02-02',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('00:00 to 09:00')).toBeInTheDocument();
+    expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
+  })
 
   test.each([
     '00000000-0000-0000-0000-000000000002',

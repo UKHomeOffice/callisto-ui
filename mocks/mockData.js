@@ -201,6 +201,14 @@ const shiftTimeEntryWithoutFinishTime = createTimeEntry({
   actualEndTime: null,
 });
 
+const shiftTimeEntryMultipleDays = createTimeEntry({
+  id: 'c0a80040-82cf-1986-8182-cfedbbd50004',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  ownerId: userId,
+  actualStartTime: dayjs('2022-01-30T12:00:00Z').format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: dayjs('2022-02-02T12:00:00Z').format('YYYY-MM-DDTHH:mm:ssZ'),
+})
+
 const srdEntry = createTimeEntry({
   id: '0a650b0a-8346-158f-8183-471def7e0004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
@@ -296,6 +304,7 @@ const timeEntryFilter =
 module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
+  shiftTimeEntryMultipleDays,
   userId,
   srdEntry,
   nwdEntry,

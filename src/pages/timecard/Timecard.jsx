@@ -162,11 +162,7 @@ const updateTimeEntryContextData = async (
 
     const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
 
-    console.log('timecardStart:', timeCardStart.toString());
-
     const timeCardEnd = dayjs(date).endOf('day');
-
-    console.log('timecardEnd:', timeCardEnd.toString());
 
     if (timeEntriesResponse.data.items?.length > 0) {
       const filteredTimeEntries = timeEntriesResponse.data.items.filter(
@@ -190,8 +186,6 @@ const updateTimeEntryContextData = async (
             )
         );
       });
-
-      console.log('existingTimeEntries: ', existingTimeEntries);
 
       setTimeEntries(existingTimeEntries);
     } else {
