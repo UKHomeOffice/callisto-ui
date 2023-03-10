@@ -236,7 +236,8 @@ const EditShiftHours = ({
 
     if (!finishEntryExists) {
       summaryMessages['update'] = {
-        message: `The time period starts on ${formattedStart}`,
+        template: `singleDateMoved`,
+        variables: [formattedStart],
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);

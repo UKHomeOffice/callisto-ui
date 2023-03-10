@@ -1,21 +1,23 @@
-import { PropTypes, Link } from 'prop-types';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-// const clearSummary = () => {
-//   // setSummaryMessages({});
-//   // setIsAlertVisible(false);
-// };
+const clearSummary = () => {
+  // setSummaryMessages({});
+  // setIsAlertVisible(false);
+};
 
-const SingleDateMoved = () => {
+const SingleDateMoved = (variables) => {
+  const startDate = variables[0];
   return (
     <div>
       <Link
         onClick={() => {
-          // clearSummary();
+          clearSummary();
         }}
         className="govuk-link govuk-link--no-visited-state"
-        to={`/timecard/2023-03-05`}
+        to={`/timecard/${startDate}`}
       >
-        05 March
+        {startDate}
       </Link>
     </div>
   );
@@ -24,5 +26,5 @@ const SingleDateMoved = () => {
 export default SingleDateMoved;
 
 SingleDateMoved.propTypes = {
- // templateName: PropTypes.string,
+  variables: PropTypes.array,
 };

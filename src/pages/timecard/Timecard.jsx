@@ -61,7 +61,7 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes, timeEntries]);
+  }, [date, timePeriodTypes]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
@@ -73,8 +73,8 @@ const Timecard = () => {
       <BackLink text="Back to calendar" link="/calendar" />
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
-          messages={summaryMessages}
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
+          messageSummary={summaryMessages}
         />
       )}
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
