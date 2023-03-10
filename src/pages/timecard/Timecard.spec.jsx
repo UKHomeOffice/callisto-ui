@@ -3,16 +3,19 @@ import {
   defaultApplicationContext,
   renderWithTimecardContext,
   defaultTimecardContext,
+  createDefaultTimecardContext,
 } from '../../test/helpers/TimecardContext';
-import { shiftTimeEntry, shiftTimeEntryMultipleDays } from '../../../mocks/mockData';
+import {
+  shiftTimeEntry,
+  shiftTimeEntryMultipleDays,
+} from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import { timeCardPeriodTypes } from '../../../mocks/mockData';
-import { useParams } from 'react-router';
 
-let mockDate = '2022-07-01';
+let mockDate;
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -22,10 +25,15 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry, shiftTimeEntryMultipleDays);
+const shiftTimeEntryApiResponse = getApiResponseWithItems(
+  shiftTimeEntry,
+  shiftTimeEntryMultipleDays
+);
 
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
+  mockDate = '2022-07-01';
+
   getTimeEntries.mockImplementation(() => {
     return {
       data: shiftTimeEntryApiResponse,
@@ -33,8 +41,7 @@ beforeEach(() => {
   });
 });
 
-describe('Timecard BST', () => {
-
+describe('Timecard', () => {
   it('should render a timecard component with the correct date', () => {
     renderWithTimecardContext(<Timecard />);
 
@@ -70,69 +77,6 @@ describe('Timecard BST', () => {
     expect(screen.getByText('Finish time')).toBeTruthy();
     expect(screen.getByText('Shift')).toBeTruthy();
   });
-
-  it('should render the EditShiftTimecard component when time entry spans multiple days', async () => {
-    mockDate = '2022-02-01';
-    getTimeEntries.mockImplementation(() => {
-      return {
-        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
-      };
-    });
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [],
-      setTimeEntries: jest.fn(),
-      timecardDate: '2022-02-01',
-      setTimecardDate: jest.fn(),
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('09:00 to 09:00')).toBeInTheDocument();
-      expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
-    });
-    
-  })
-
-  it('should not render the EditShiftTimecard component when time entry ends at 00:00', async () => {
-    mockDate = '2022-02-01';
-    getTimeEntries.mockImplementation(() => {
-      return {
-        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
-      };
-    });
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [],
-      setTimeEntries: jest.fn(),
-      timecardDate: '2022-02-01',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.getByText('09:00 to 00:00')).toBeFalsy();
-    expect(screen.getByText(addTimePeriodHeading)).toBeFalsy();
-  })
-
-  it('should render the EditShiftTimecard component when time entry begins at 00:00', async () => {
-    mockDate = '2022-02-01';
-    getTimeEntries.mockImplementation(() => {
-      return {
-        data: getApiResponseWithItems(shiftTimeEntryMultipleDays),
-      };
-    });
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [],
-      setTimeEntries: jest.fn(),
-      timecardDate: '2022-02-02',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.getByText('00:00 to 09:00')).toBeInTheDocument();
-    expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
-  })
 
   test.each([
     '00000000-0000-0000-0000-000000000002',
@@ -184,7 +128,9 @@ describe('Timecard BST', () => {
           finishNextDay: false,
         },
       ]);
-      expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(date);
+      expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(
+        mockDate
+      );
       expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
         hasError: false,
       });
@@ -212,7 +158,9 @@ describe('Timecard BST', () => {
 
     await waitFor(() => {
       expect(timeCardContextValues.setTimeEntries).toHaveBeenCalledWith([]);
-      expect(timeCardContextValues.setTimecardDate).toHaveBeenCalledWith(date);
+      expect(timeCardContextValues.setTimecardDate).toHaveBeenCalledWith(
+        mockDate
+      );
       expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
         hasError: false,
       });
@@ -350,6 +298,108 @@ describe('Timecard BST', () => {
 
     expect(screen.getByText('Row Deleted')).toBeTruthy();
     expect(screen.getByText('Row Deleted')).toBeTruthy();
+  });
+
+  describe('Shift spanning mutiple days', () => {
+    it('should call setTimeEntries when time entry begins at midnight', async () => {
+      mockDate = '2022-01-30';
+
+      const mockTimecardContext = createDefaultTimecardContext();
+      mockTimecardContext.timecardDate = mockDate;
+
+      renderWithTimecardContext(
+        <Timecard />,
+        mockTimecardContext,
+        defaultApplicationContext
+      );
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
+          {
+            timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
+            startTime: '2022-01-30T00:00:00+00:00',
+            finishTime: '2022-02-02T00:00:00+00:00',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            finishNextDay: true,
+          },
+        ]);
+      });
+    });
+
+    it('should call setTimeEntries when time entry spans over timecard date', async () => {
+      mockDate = '2022-01-31';
+
+      const mockTimecardContext = createDefaultTimecardContext();
+      mockTimecardContext.timecardDate = mockDate;
+
+      renderWithTimecardContext(
+        <Timecard />,
+        mockTimecardContext,
+        defaultApplicationContext
+      );
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
+          {
+            timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
+            startTime: '2022-01-30T00:00:00+00:00',
+            finishTime: '2022-02-02T00:00:00+00:00',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            finishNextDay: true,
+          },
+        ]);
+      });
+    });
+
+    it('should call setTimeEntries when time entry ends at midnight that night', async () => {
+      mockDate = '2022-02-01';
+
+      const mockTimecardContext = createDefaultTimecardContext();
+      mockTimecardContext.timecardDate = mockDate;
+
+      renderWithTimecardContext(
+        <Timecard />,
+        mockTimecardContext,
+        defaultApplicationContext
+      );
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
+          {
+            timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
+            startTime: '2022-01-30T00:00:00+00:00',
+            finishTime: '2022-02-02T00:00:00+00:00',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            finishNextDay: true,
+          },
+        ]);
+      });
+    });
+
+    it('should not call setTimeEntries when time entry ended at midnight last night', async () => {
+      mockDate = '2022-02-02';
+
+      const mockTimecardContext = createDefaultTimecardContext();
+      mockTimecardContext.timecardDate = mockDate;
+
+      renderWithTimecardContext(
+        <Timecard />,
+        mockTimecardContext,
+        defaultApplicationContext
+      );
+
+      await waitFor(() => {
+        expect(mockTimecardContext.setTimeEntries).not.toHaveBeenCalledWith([
+          {
+            timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
+            startTime: '2022-01-30T00:00:00+00:00',
+            finishTime: '2022-02-02T00:00:00+00:00',
+            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+            finishNextDay: true,
+          },
+        ]);
+      });
+    });
   });
 
   describe('navigation', () => {
