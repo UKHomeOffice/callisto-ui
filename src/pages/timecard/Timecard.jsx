@@ -55,16 +55,8 @@ const Timecard = () => {
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    console.log('date: ', date);
     setTimecardDate(date);
-    updateTimeEntryContextData(
-      date,
-      setTimeEntries,
-      setServiceError,
-      userId,
-      previousDay,
-      nextDay
-    );
+    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
   }, [date, timePeriodTypes]);
 
   return (
@@ -163,7 +155,6 @@ const updateTimeEntryContextData = async (
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
-
     const timeCardEnd = dayjs(date).endOf('day');
 
     if (timeEntriesResponse.data.items?.length > 0) {
