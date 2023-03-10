@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
   defaultApplicationContext,
   renderWithTimecardContext,
@@ -8,12 +8,12 @@ import {
 import {
   shiftTimeEntry,
   shiftTimeEntryMultipleDays,
+  timeCardPeriodTypes,
 } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
-import { timeCardPeriodTypes } from '../../../mocks/mockData';
 
 let mockDate;
 const mockNavigate = jest.fn();
@@ -54,6 +54,30 @@ describe('Timecard', () => {
 
     const heading = screen.getByText('Add time period');
     expect(heading).toBeTruthy();
+  });
+
+  it('should render the SelectTimecardPeriodType component when the last time period is removed', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01 01:00:00+00:00',
+          finishTime: '2022-09-01 05:00:00+00:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.getByText('Shift')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('Remove'));
+
+    expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
   });
 
   it('should render the EditShiftTimecard component when time period type is Shift', async () => {
