@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import MessageItem from '../message-item/MessageItem';
 
 const MessageSummary = ({ messages, keys }) => {
   return (
@@ -23,7 +24,7 @@ const MessageSummary = ({ messages, keys }) => {
               id={`summary-message-${key}`}
               data-testid="message-body"
             >
-              {messages[key].message}
+              <MessageItem />
             </li>
           ))}
         </ul>
