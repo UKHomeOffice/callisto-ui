@@ -6,24 +6,23 @@ import MessageSummary from './MessageSummary';
 describe('MessageSummary', () => {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
   it('should render a summary component with all messages details', () => {
-    const testMessages = {
-      delete: { inputName: 'delete', message: 'Row Deleted' },
-      update: { inputName: 'update', message: 'Row Updated' },
-      insert: { inputName: 'insert', message: 'Row Inserted' },
+    const summaryMessages = {
+      update: {
+        template: `singleDateMoved`,
+        variables: ['2022-09-21'],
+      },
     };
     renderWithTimecardContext(
       <MessageSummary
-        messages={testMessages}
-        keys={['delete', 'update', 'insert']}
+        keys={['update']}
+        messageSummary={summaryMessages}
+        setSummaryMessages={jest.fn()}
+        setIsAlertVisible={jest.fn()}
       />
     );
 
-    const deleteMessage = screen.getByText('Row Deleted');
-    const updateMessage = screen.getByText('Row Updated');
-    const insertMessage = screen.getByText('Row Inserted');
+    const updateMessage = screen.getByText('The time period starts on');
 
-    expect(deleteMessage).toBeTruthy();
     expect(updateMessage).toBeTruthy();
-    expect(insertMessage).toBeTruthy();
   });
 });

@@ -286,9 +286,10 @@ describe('Timecard', () => {
 
     renderWithTimecardContext(<Timecard />, {
       summaryMessages: {
-        delete: { inputName: 'delete', message: 'Row Deleted' },
-        update: { inputName: 'update', message: 'Row Updated' },
-        insert: { inputName: 'insert', message: 'Row Inserted' },
+        update: {
+          template: `singleDateMoved`,
+          variables: ['2022-09-21'],
+        },
       },
 
       setSummaryMessages: jest.fn(),
@@ -306,8 +307,7 @@ describe('Timecard', () => {
       setTimecardDate: jest.fn(),
     });
 
-    expect(screen.getByText('Row Deleted')).toBeTruthy();
-    expect(screen.getByText('Row Deleted')).toBeTruthy();
+    expect(screen.getByText('The time period starts on')).toBeTruthy();
   });
 
   describe('navigation', () => {

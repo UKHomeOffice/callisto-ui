@@ -227,12 +227,12 @@ const EditShiftHours = ({
       finishEntryExists &&
       (startDay > currentDayEnd || endDay < currentDayStart);
 
-    return singleDateMoved ? true : bothDatesMoved ? true : false;
+    return singleDateMoved || bothDatesMoved ? true : false;
   };
 
   const setMessages = (startDate, endDate) => {
-    const formattedStart = formatDateNoYear(startDate);
-    const formattedEnd = formatDateNoYear(endDate);
+    const formattedStart = formatDate(startDate);
+    const formattedEnd = formatDate(endDate);
 
     if (!finishEntryExists) {
       summaryMessages['update'] = {
@@ -243,7 +243,8 @@ const EditShiftHours = ({
       setIsAlertVisible(true);
     } else {
       summaryMessages['update'] = {
-        message: `The time period starts on ${formattedStart} and finishes on ${formattedEnd}`,
+        template: `doubleDateMoved`,
+        variables: [formattedStart, formattedEnd],
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);

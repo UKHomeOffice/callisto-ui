@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import MessageItem from '../message-item/MessageItem';
 
-const MessageSummary = ({ keys, messageSummary }) => {
+const MessageSummary = ({
+  keys,
+  messageSummary,
+  setSummaryMessages,
+  setIsAlertVisible,
+}) => {
   return (
     <div
       className="govuk-notification-banner"
@@ -24,7 +29,11 @@ const MessageSummary = ({ keys, messageSummary }) => {
               id={`summary-message-${key}`}
               data-testid="message-body"
             >
-              <MessageItem messageSummary={messageSummary} />
+              <MessageItem
+                messageSummary={messageSummary}
+                setSummaryMessages={setSummaryMessages}
+                setIsAlertVisible={setIsAlertVisible}
+              />
             </li>
           ))}
         </ul>
@@ -38,4 +47,6 @@ export default MessageSummary;
 MessageSummary.propTypes = {
   keys: PropTypes.array,
   messageSummary: PropTypes.object,
+  setSummaryMessages: PropTypes.func,
+  setIsAlertVisible: PropTypes.func,
 };
