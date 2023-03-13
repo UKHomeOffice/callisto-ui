@@ -318,6 +318,7 @@ describe('Timecard', () => {
         name: 'Previous day',
       });
       expect(previousDayLink.pathname).toBe('/timecard/2022-06-30');
+      fireEvent.click(previousDayLink);
     });
 
     it('should contain a link to next day', () => {
@@ -325,6 +326,7 @@ describe('Timecard', () => {
 
       const nextDayLink = screen.getByRole('link', { name: 'Next day' });
       expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
+      fireEvent.click(nextDayLink);
     });
 
     it('should contain a link to the calendar', () => {
