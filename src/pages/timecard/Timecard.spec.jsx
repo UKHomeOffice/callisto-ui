@@ -25,8 +25,9 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const shiftTimeEntryApiResponse = getApiResponseWithItems(
-  shiftTimeEntry,
+const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
+
+const multipleDayShiftTimeEntryApiResponse = getApiResponseWithItems(
   shiftTimeEntryMultipleDays
 );
 
@@ -327,6 +328,11 @@ describe('Timecard', () => {
   describe('Shift spanning mutiple days', () => {
     it('should call setTimeEntries when time entry begins at midnight', async () => {
       mockDate = '2022-01-30';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
 
       const mockTimecardContext = createDefaultTimecardContext();
       mockTimecardContext.timecardDate = mockDate;
@@ -352,6 +358,11 @@ describe('Timecard', () => {
 
     it('should call setTimeEntries when time entry spans over timecard date', async () => {
       mockDate = '2022-01-31';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
 
       const mockTimecardContext = createDefaultTimecardContext();
       mockTimecardContext.timecardDate = mockDate;
@@ -377,6 +388,11 @@ describe('Timecard', () => {
 
     it('should call setTimeEntries when time entry ends at midnight that night', async () => {
       mockDate = '2022-02-01';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
 
       const mockTimecardContext = createDefaultTimecardContext();
       mockTimecardContext.timecardDate = mockDate;
@@ -402,6 +418,11 @@ describe('Timecard', () => {
 
     it('should not call setTimeEntries when time entry ended at midnight last night', async () => {
       mockDate = '2022-02-02';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
 
       const mockTimecardContext = createDefaultTimecardContext();
       mockTimecardContext.timecardDate = mockDate;

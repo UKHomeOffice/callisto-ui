@@ -299,7 +299,7 @@ const shiftTimeCardPeriodType = {
 };
 
 const timeEntryFilter =
-  "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='2022-10-28T00:00:00+00:00'&&actualStartTime<='2022-10-30T23:59:00+00:00'||ownerId=='00000000-0000-0000-0000-000000000000'&&actualEndTime>='2022-10-28T00:00:00+00:00'&&actualEndTime<='2022-10-30T23:59:00+00:00'";
+  "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='2022-10-28T00:00:00+00:00'&&actualStartTime<='2022-10-29T23:59:00+00:00'||ownerId=='00000000-0000-0000-0000-000000000000'&&actualEndTime>='2022-10-29T00:00:00+00:00'&&actualEndTime<='2022-10-30T23:59:00+00:00'";
 
 module.exports = {
   shiftTimeEntry,

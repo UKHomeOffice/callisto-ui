@@ -6,10 +6,22 @@ import {
   joinAndConditions,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-const filterTimeEntriesOnDate = (resourceDateProperty, date) => {
+const filterStartTimeEntriesOnDate = (resourceDateProperty, date) => {
   const startOfDateFilter = filterOnOrAfterDate(
     resourceDateProperty,
     dayjs(date).subtract(1, 'day')
+  );
+  const endOfDateFilter = filterBeforeDate(
+    resourceDateProperty,
+    dayjs(date).add(1, 'day')
+  );
+  return [startOfDateFilter, endOfDateFilter];
+};
+
+const filterEndTimeEntriesOnDate = (resourceDateProperty, date) => {
+  const startOfDateFilter = filterOnOrAfterDate(
+    resourceDateProperty,
+    dayjs(date)
   );
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
@@ -23,12 +35,12 @@ export const buildTimeEntriesFilter = (date, userId) => {
 
   const startDateFilterCondition = joinAndConditions(
     ownerAndUserId,
-    ...filterTimeEntriesOnDate('actualStartTime', date)
+    ...filterStartTimeEntriesOnDate('actualStartTime', date)
   );
 
   const endDateFilterCondition = joinAndConditions(
     ownerAndUserId,
-    ...filterTimeEntriesOnDate('actualEndTime', date)
+    ...filterEndTimeEntriesOnDate('actualEndTime', date)
   );
 
   const joinedStartEndDate = joinOrConditions(

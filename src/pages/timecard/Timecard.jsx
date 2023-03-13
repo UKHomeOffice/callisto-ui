@@ -154,31 +154,22 @@ const updateTimeEntryContextData = async (
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
-    const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
-    const timeCardEnd = dayjs(date).endOf('day');
-
     if (timeEntriesResponse.data.items?.length > 0) {
-      const filteredTimeEntries = timeEntriesResponse.data.items.filter(
+      const existingTimeEntries = timeEntriesResponse.data.items.map(
         (timeEntry) => {
-          return !(
-            dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
-            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd)
+          return new ContextTimeEntry(
+            timeEntry.id,
+            timeEntry.actualStartTime,
+            timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+            timeEntry.timePeriodTypeId,
+            timeEntry.finishNextDay ??
+              isFinishTimeOnNextDay(
+                formatTime(timeEntry.actualStartTime),
+                formatTime(timeEntry.actualEndTime)
+              )
           );
         }
       );
-      const existingTimeEntries = filteredTimeEntries.map((timeEntry) => {
-        return new ContextTimeEntry(
-          timeEntry.id,
-          timeEntry.actualStartTime,
-          timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
-          timeEntry.timePeriodTypeId,
-          timeEntry.finishNextDay ??
-            isFinishTimeOnNextDay(
-              formatTime(timeEntry.actualStartTime),
-              formatTime(timeEntry.actualEndTime)
-            )
-        );
-      });
 
       setTimeEntries(existingTimeEntries);
     } else {
