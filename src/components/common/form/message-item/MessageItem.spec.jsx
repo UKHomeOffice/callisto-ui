@@ -1,4 +1,4 @@
-import { screen, waitFor, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../../test/helpers/TimecardContext';
 
 import MessageItem from './MessageItem';

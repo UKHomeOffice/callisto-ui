@@ -15,7 +15,6 @@ import {
   formatDate,
   formatDateTimeISO,
   formatTime,
-  formatDateNoYear,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -28,7 +27,6 @@ import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
-import { useNavigate } from 'react-router-dom';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -51,7 +49,6 @@ const EditShiftHours = ({
   const [isChecked, setIsChecked] = useState(false);
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
-  const navigate = useNavigate();
 
   const {
     timeEntries,
@@ -77,11 +74,6 @@ const EditShiftHours = ({
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
-
-  const clearSummary = () => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
-  };
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
