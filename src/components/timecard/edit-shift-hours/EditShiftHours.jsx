@@ -192,7 +192,6 @@ const EditShiftHours = ({
             startEntryExists &&
             hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
           ) {
-            hasShiftMoved();
             setMessages(actualStartDateTime, actualEndDateTime);
           }
           setTimeEntries(newTimeEntries);
@@ -221,7 +220,11 @@ const EditShiftHours = ({
       finishEntryExists &&
       (startDay > currentDayEnd || endDay < currentDayStart);
 
-    return singleDateMoved || bothDatesMoved ? true : false;
+    if (singleDateMoved || bothDatesMoved) {
+      hasShiftMoved();
+      return true;
+    }
+    return false;
   };
 
   const setMessages = (startDate, endDate) => {

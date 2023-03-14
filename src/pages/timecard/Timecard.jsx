@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
@@ -23,8 +23,6 @@ import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry'
 import { inputNames } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
-//import Alert from '../../components/common/form/alert/Alert';
-//import Alert from '@hods/alert';
 
 const Timecard = () => {
   const {
@@ -54,7 +52,9 @@ const Timecard = () => {
   const desiredMessageOrder = ['delete', 'update', 'insert'];
 
   const hasShiftMovedFromTimecardCallback = () => {
-    console.log('Callback has shift changed day: ');
+    document.title = generateDocumentTitle('Timecard ');
+    setTimecardDate(date);
+    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
   };
 
   useEffect(() => {

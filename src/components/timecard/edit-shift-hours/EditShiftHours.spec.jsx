@@ -896,6 +896,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMoved={jest.fn()}
           />,
           defaultTimecardContext
         );
@@ -953,6 +954,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMoved={jest.fn()}
           />,
           defaultTimecardContext
         );

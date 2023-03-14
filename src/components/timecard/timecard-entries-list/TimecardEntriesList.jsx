@@ -12,9 +12,6 @@ const TimecardEntriesList = ({
 }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
-  useEffect(() => {
-    console.log('Time Entries: ', timeEntries);
-  }, [timeEntries]);
   return (
     <div>
       {timeEntries.map((timeEntry, index) => (

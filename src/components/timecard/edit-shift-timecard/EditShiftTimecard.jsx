@@ -13,7 +13,7 @@ import {
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
-const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
+const EditShiftTimecard = ({ timeEntry, timeEntriesIndex, hasShiftMoved }) => {
   const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, setSummaryErrors } =
     useTimecardContext();
@@ -122,6 +122,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
+                hasShiftMoved={hasShiftMoved}
               />
             </dt>
           </div>
@@ -162,4 +163,5 @@ export default EditShiftTimecard;
 EditShiftTimecard.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
+  hasShiftMoved: PropTypes.func,
 };
