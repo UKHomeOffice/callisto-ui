@@ -32,6 +32,7 @@ const EditShiftHours = ({
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
+  hasShiftMoved,
 }) => {
   const {
     register,
@@ -191,6 +192,7 @@ const EditShiftHours = ({
             startEntryExists &&
             hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
           ) {
+            hasShiftMoved();
             setMessages(actualStartDateTime, actualEndDateTime);
           }
           setTimeEntries(newTimeEntries);
@@ -303,4 +305,5 @@ EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
+  hasShiftMoved: PropTypes.func,
 };

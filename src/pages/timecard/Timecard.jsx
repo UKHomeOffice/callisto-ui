@@ -9,23 +9,20 @@ import generateDocumentTitle from '../../utils/generate-document-title/generateD
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatDate,
-  getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
-import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
-import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 import { inputNames } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
+import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
 //import Alert from '../../components/common/form/alert/Alert';
 //import Alert from '@hods/alert';
 
@@ -43,7 +40,6 @@ const Timecard = () => {
     setIsAlertVisible,
   } = useTimecardContext();
   const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
-  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
   const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
@@ -56,6 +52,10 @@ const Timecard = () => {
   ];
 
   const desiredMessageOrder = ['delete', 'update', 'insert'];
+
+  const hasShiftMovedFromTimecardCallback = () => {
+    console.log('Callback has shift changed day: ');
+  };
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
@@ -124,34 +124,14 @@ const Timecard = () => {
         <SelectTimecardPeriodType />
       )}
       {!newTimeEntry && timeEntries.length !== 0 && (
-        <>
-          {timeEntries.map((timeEntry, index) => (
-            <div key={index} className="govuk-!-margin-bottom-6">
-              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
-            </div>
-          ))}
-          <AddTimeCardPeriod />
-        </>
+        <TimecardEntriesList
+          timeEntries={timeEntries}
+          timePeriodTypes={timePeriodTypes}
+          hasShiftMoved={hasShiftMovedFromTimecardCallback}
+        />
       )}
     </>
   );
-};
-
-const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
-  switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
-    case 'Shift':
-      return (
-        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-      );
-    default:
-      return (
-        <SimpleTimePeriod
-          timeEntry={timeEntry}
-          timeEntriesIndex={index}
-          timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
-        />
-      );
-  }
 };
 
 const updateTimeEntryContextData = async (
