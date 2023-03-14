@@ -3,7 +3,6 @@ import { getTimePeriodTypesMap } from '../../../utils/time-entry-utils/timeEntry
 import EditShiftTimecard from '../edit-shift-timecard/EditShiftTimecard';
 import SimpleTimePeriod from '../simple-time-period/SimpleTimePeriod';
 import { PropTypes } from 'prop-types';
-import { useEffect } from 'react';
 
 const TimecardEntriesList = ({
   timeEntries,
