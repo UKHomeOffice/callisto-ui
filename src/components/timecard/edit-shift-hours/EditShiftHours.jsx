@@ -15,7 +15,6 @@ import {
   formatDate,
   formatDateTimeISO,
   formatTime,
-  formatDateNoYear,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -28,7 +27,6 @@ import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
-import { useNavigate } from 'react-router-dom';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -51,7 +49,6 @@ const EditShiftHours = ({
   const [isChecked, setIsChecked] = useState(false);
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
-  const navigate = useNavigate();
 
   const {
     timeEntries,
@@ -62,7 +59,6 @@ const EditShiftHours = ({
     setIsAlertVisible,
     summaryMessages,
     setSummaryMessages,
-    isAlertVisible,
   } = useTimecardContext();
 
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
@@ -78,20 +74,6 @@ const EditShiftHours = ({
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
-
-  useEffect(() => {
-    if (summaryMessages && Object.keys(summaryMessages).length !== 0) {
-      const timeout = setTimeout(() => clearSummary(timeout), 10000);
-    }
-  }, [isAlertVisible]);
-
-  const clearSummary = (timeout) => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
-    if (timeout != null) {
-      clearTimeout(timeout);
-    }
-  };
 
   const handleCheckboxChange = () => {
     setIsChecked((isChecked) => !isChecked);
@@ -205,12 +187,10 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          let datesMoved = setDatesMoved(
-            actualStartDateTime,
-            actualEndDateTime
-          );
-
-          if (datesMoved && startEntryExists) {
+          if (
+            startEntryExists &&
+            hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
+          ) {
             setMessages(actualStartDateTime, actualEndDateTime);
           }
           setTimeEntries(newTimeEntries);
@@ -223,45 +203,44 @@ const EditShiftHours = ({
     );
   };
 
-  const setDatesMoved = (actualStartDateTime, actualEndDateTime) => {
-    const currentDay = timecardDate;
-    const newStartDay = formatDate(actualStartDateTime);
-    const newEndDay = formatDate(actualEndDateTime);
+  const hasShiftMovedFromTimecard = (startDate, endDate) => {
+    const startDayTime = dayjs(timecardDate).startOf('day');
+    const endDayTime = dayjs(timecardDate).endOf('day');
+    const currentDayStart = new Date(startDayTime).getTime();
+    const currentDayEnd = new Date(endDayTime).getTime();
+    const startDay = new Date(startDate).getTime();
+    const endDay = new Date(endDate).getTime();
 
-    let datesMoved = false;
-    let redirectTarget;
-    if (currentDay !== newStartDay) {
-      datesMoved = true;
-      redirectTarget = `/timecard/${newStartDay}`;
-      navigate(redirectTarget);
-    } else if (finishEntryExists && currentDay !== newEndDay) {
-      datesMoved = true;
-      redirectTarget = `/timecard/${newEndDay}`;
-      navigate(redirectTarget);
-    }
+    const singleDateMoved =
+      !finishEntryExists &&
+      (startDay < currentDayStart || startDay > currentDayEnd);
 
-    return datesMoved;
+    const bothDatesMoved =
+      finishEntryExists &&
+      (startDay > currentDayEnd || endDay < currentDayStart);
+
+    return singleDateMoved || bothDatesMoved ? true : false;
   };
 
   const setMessages = (startDate, endDate) => {
-    const formattedStart = formatDateNoYear(startDate);
-    const formattedEnd = formatDateNoYear(endDate);
+    const formattedStart = formatDate(startDate);
+    const formattedEnd = formatDate(endDate);
 
-    if (formatDate(startDate) === formatDate(endDate)) {
+    if (!finishEntryExists) {
       summaryMessages['update'] = {
-        message: `The time period now starts and ends on ${formattedStart}`,
+        template: `singleDateMoved`,
+        variables: [formattedStart],
       };
+      setSummaryMessages(summaryMessages);
+      setIsAlertVisible(true);
     } else {
-      const message = finishEntryExists
-        ? `The time period starts on ${formattedStart} and finishes on ${formattedEnd}`
-        : `The time period starts on ${formattedStart}`;
       summaryMessages['update'] = {
-        message: message,
+        template: `doubleDateMoved`,
+        variables: [formattedStart, formattedEnd],
       };
+      setSummaryMessages(summaryMessages);
+      setIsAlertVisible(true);
     }
-
-    setSummaryMessages(summaryMessages);
-    setIsAlertVisible(true);
   };
 
   return (

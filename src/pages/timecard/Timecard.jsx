@@ -26,6 +26,8 @@ import SimpleTimePeriod from '../../components/timecard/simple-time-period/Simpl
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 import { inputNames } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
+//import Alert from '../../components/common/form/alert/Alert';
+//import Alert from '@hods/alert';
 
 const Timecard = () => {
   const {
@@ -37,6 +39,8 @@ const Timecard = () => {
     setNewTimeEntry,
     summaryMessages,
     isAlertVisible,
+    setSummaryMessages,
+    setIsAlertVisible,
   } = useTimecardContext();
   const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
@@ -59,13 +63,20 @@ const Timecard = () => {
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
   }, [date, timePeriodTypes]);
 
+  const clearMessageSummary = () => {
+    setSummaryMessages({});
+    setIsAlertVisible(false);
+  };
+
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
-          messages={summaryMessages}
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
+          messageSummary={summaryMessages}
+          setSummaryMessages={setSummaryMessages}
+          setIsAlertVisible={setIsAlertVisible}
         />
       )}
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
@@ -80,6 +91,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
@@ -89,6 +101,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
@@ -98,6 +111,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"
