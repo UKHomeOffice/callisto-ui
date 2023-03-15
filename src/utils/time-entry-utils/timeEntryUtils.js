@@ -23,7 +23,7 @@ export const formatDate = (dateTime) => {
 };
 
 export const formatDateNoYear = (dateTime) => {
-  return dayjs(dateTime).format('DD MMMM');
+  return dayjs(dateTime).format('D MMMM');
 };
 
 export const formatDateTimeISO = (dateTime) => {
