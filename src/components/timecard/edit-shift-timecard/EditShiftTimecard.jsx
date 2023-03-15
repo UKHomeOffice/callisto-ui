@@ -8,6 +8,7 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import {
   formatDateNoYear,
   formatTime,
+  formatDate,
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
@@ -15,7 +16,7 @@ import { useApplicationContext } from '../../../context/ApplicationContext';
 
 const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, setSummaryErrors } =
+  const { timeEntries, setTimeEntries, setSummaryErrors, timecardDate } =
     useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
@@ -69,7 +70,12 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
             className="govuk-summary-list__value"
             style={{ whiteSpace: 'nowrap' }}
           >
-            {timeEntryExists && 'Shift'}
+            {timeEntryExists
+              ? timecardDate === formatDate(timeEntry.startTime) ||
+                timecardDate === formatDate(timeEntry.finishTime)
+                ? 'Shift'
+                : 'Shift (continued)'
+              : null}
           </dd>
           <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
             {timeEntryExists && (
