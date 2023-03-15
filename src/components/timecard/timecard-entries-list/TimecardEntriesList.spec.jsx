@@ -1,32 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
-import {
-  shiftTimeEntry,
-  timeCardPeriodTypes,
-} from '../../../../mocks/mockData';
+import { timeCardPeriodTypes } from '../../../../mocks/mockData';
 import TimecardEntriesList from './TimecardEntriesList';
-import { getTimeEntries } from '../../../api/services/timecardService';
-import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
-import { getTimePeriodTypes } from '../../../api/services/timecardService';
-
-// const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
-
-// beforeEach(() => {
-//   getTimeEntries.mockImplementation(() => {
-//     return {
-//       data: shiftTimeEntryApiResponse,
-//     };
-//   });
-// });
 
 describe('TimecardEntriesList', () => {
-  // it('should render a timecard component with the correct date', () => {
-  //   renderWithTimecardContext(<TimecardEntriesList />);
-
-  //   const screenDate = screen.getByText('01 July 2022');
-  //   expect(screenDate).toBeTruthy();
-  // });
-
   it('should render the EditShiftTimecard component when time period type is Shift', async () => {
     renderWithTimecardContext(
       <TimecardEntriesList
