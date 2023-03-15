@@ -32,7 +32,7 @@ const EditShiftHours = ({
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
-  hasShiftMoved,
+  hasShiftMovedCallback,
 }) => {
   const {
     register,
@@ -221,7 +221,7 @@ const EditShiftHours = ({
       (startDay > currentDayEnd || endDay < currentDayStart);
 
     if (singleDateMoved || bothDatesMoved) {
-      hasShiftMoved();
+      hasShiftMovedCallback();
       return true;
     }
     return false;
@@ -308,5 +308,5 @@ EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
-  hasShiftMoved: PropTypes.func,
+  hasShiftMovedCallback: PropTypes.func,
 };

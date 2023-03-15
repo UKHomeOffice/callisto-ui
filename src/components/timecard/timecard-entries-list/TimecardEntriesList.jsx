@@ -7,7 +7,7 @@ import { PropTypes } from 'prop-types';
 const TimecardEntriesList = ({
   timeEntries,
   timePeriodTypes,
-  hasShiftMoved,
+  hasShiftMovedCallback,
 }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
@@ -19,7 +19,7 @@ const TimecardEntriesList = ({
             timePeriodTypesMap,
             timeEntry,
             index,
-            hasShiftMoved,
+            hasShiftMovedCallback,
           })}
         </div>
       ))}
@@ -32,7 +32,7 @@ const renderTimeEntry = ({
   timePeriodTypesMap,
   timeEntry,
   index,
-  hasShiftMoved,
+  hasShiftMovedCallback,
 }) => {
   switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
     case 'Shift':
@@ -40,9 +40,15 @@ const renderTimeEntry = ({
         <EditShiftTimecard
           timeEntry={timeEntry}
           timeEntriesIndex={index}
-          hasShiftMoved={hasShiftMoved}
+          hasShiftMovedCallback={hasShiftMovedCallback}
         />
       );
+    case 'Scheduled rest day':
+    case 'Non-working day':
+    case 'On call':
+    case 'Absence':
+    case 'Training':
+    case 'Overtime':
     default:
       return (
         <SimpleTimePeriod
@@ -59,5 +65,5 @@ export default TimecardEntriesList;
 TimecardEntriesList.propTypes = {
   timeEntries: PropTypes.array,
   timePeriodTypes: PropTypes.array,
-  hasShiftMoved: PropTypes.func,
+  hasShiftMovedCallback: PropTypes.func,
 };

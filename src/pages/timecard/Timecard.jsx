@@ -52,8 +52,6 @@ const Timecard = () => {
   const desiredMessageOrder = ['delete', 'update', 'insert'];
 
   const hasShiftMovedFromTimecardCallback = () => {
-    document.title = generateDocumentTitle('Timecard ');
-    setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
   };
 
@@ -127,7 +125,7 @@ const Timecard = () => {
         <TimecardEntriesList
           timeEntries={timeEntries}
           timePeriodTypes={timePeriodTypes}
-          hasShiftMoved={hasShiftMovedFromTimecardCallback}
+          hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
         />
       )}
     </>
