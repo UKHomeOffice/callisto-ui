@@ -287,8 +287,8 @@ describe('Timecard', () => {
     renderWithTimecardContext(<Timecard />, {
       summaryMessages: {
         update: {
-          template: `singleDateMoved`,
-          variables: ['2022-09-21'],
+          template: `datesMoved`,
+          variables: { startDate: '2022-09-21' },
         },
       },
 

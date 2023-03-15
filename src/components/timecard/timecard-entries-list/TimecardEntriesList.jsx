@@ -34,29 +34,24 @@ const renderTimeEntry = ({
   index,
   hasShiftMovedCallback,
 }) => {
-  switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
-    case 'Shift':
-      return (
-        <EditShiftTimecard
-          timeEntry={timeEntry}
-          timeEntriesIndex={index}
-          hasShiftMovedCallback={hasShiftMovedCallback}
-        />
-      );
-    case 'Scheduled rest day':
-    case 'Non-working day':
-    case 'On call':
-    case 'Absence':
-    case 'Training':
-    case 'Overtime':
-    default:
-      return (
-        <SimpleTimePeriod
-          timeEntry={timeEntry}
-          timeEntriesIndex={index}
-          timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
-        />
-      );
+  const periodType = timePeriodTypesMap[timeEntry.timePeriodTypeId];
+
+  if (periodType === 'Shift') {
+    return (
+      <EditShiftTimecard
+        timeEntry={timeEntry}
+        timeEntriesIndex={index}
+        hasShiftMovedCallback={hasShiftMovedCallback}
+      />
+    );
+  } else {
+    return (
+      <SimpleTimePeriod
+        timeEntry={timeEntry}
+        timeEntriesIndex={index}
+        timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
+      />
+    );
   }
 };
 

@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import SingleDateMoved from '../message-item-types/SingleDateMoved';
-import DoubleDateMoved from '../message-item-types/DoubleDateMoved';
+import DatesMoved from '../message-item-types/DatesMoved';
 
 const components = {
-  singleDateMoved: SingleDateMoved,
-  doubleDateMoved: DoubleDateMoved,
+  datesMoved: DatesMoved,
 };
 
 const MessageItem = ({

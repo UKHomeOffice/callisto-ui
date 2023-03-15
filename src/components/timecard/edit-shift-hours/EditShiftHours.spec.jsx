@@ -925,8 +925,8 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             update: {
-              template: 'doubleDateMoved',
-              variables: ['2022-09-02', '2022-09-02'],
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02', endDate: '2022-09-02' },
             },
           });
         });
@@ -978,8 +978,8 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             update: {
-              template: 'singleDateMoved',
-              variables: ['2022-09-02'],
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02' },
             },
           });
         });

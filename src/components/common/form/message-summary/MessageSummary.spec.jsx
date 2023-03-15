@@ -8,8 +8,8 @@ describe('MessageSummary', () => {
   it('should render a summary component with all messages details', () => {
     const summaryMessages = {
       update: {
-        template: `singleDateMoved`,
-        variables: ['2022-09-21'],
+        template: `datesMoved`,
+        variables: { startDate: '2022-09-21' },
       },
     };
     renderWithTimecardContext(

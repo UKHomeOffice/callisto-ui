@@ -233,15 +233,15 @@ const EditShiftHours = ({
 
     if (!finishEntryExists) {
       summaryMessages['update'] = {
-        template: `singleDateMoved`,
-        variables: [formattedStart],
+        template: `datesMoved`,
+        variables: { startDate: formattedStart },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
     } else {
       summaryMessages['update'] = {
-        template: `doubleDateMoved`,
-        variables: [formattedStart, formattedEnd],
+        template: `datesMoved`,
+        variables: { startDate: formattedStart, endDate: formattedEnd },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);

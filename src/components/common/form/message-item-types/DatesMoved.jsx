@@ -2,20 +2,18 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDateNoYear } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
-const SingleDateMoved = ({
-  variables,
-  setSummaryMessages,
-  setIsAlertVisible,
-}) => {
+const DatesMoved = ({ variables, setSummaryMessages, setIsAlertVisible }) => {
   const clearSummary = () => {
     setSummaryMessages({});
     setIsAlertVisible(false);
   };
 
-  const startDate = variables[0];
+  const startDate = variables.startDate;
+  const endDate = variables.endDate;
   const formattedStart = formatDateNoYear(startDate);
+  const formattedEnd = formatDateNoYear(endDate);
   return (
-    <div>
+    <div className="dates-moved-container">
       The time period starts on&nbsp;
       <Link
         onClick={() => {
@@ -26,14 +24,28 @@ const SingleDateMoved = ({
       >
         {formattedStart}
       </Link>
+      {endDate && (
+        <>
+          &nbsp;and finishes on&nbsp;
+          <Link
+            onClick={() => {
+              clearSummary();
+            }}
+            className="govuk-link govuk-link--no-visited-state"
+            to={`/timecard/${endDate}`}
+          >
+            {formattedEnd}
+          </Link>
+        </>
+      )}
     </div>
   );
 };
 
-export default SingleDateMoved;
+export default DatesMoved;
 
-SingleDateMoved.propTypes = {
-  variables: PropTypes.array,
+DatesMoved.propTypes = {
+  variables: PropTypes.object,
   setSummaryMessages: PropTypes.func,
   setIsAlertVisible: PropTypes.func,
 };
