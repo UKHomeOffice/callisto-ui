@@ -31,7 +31,6 @@ import {
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
-import DatesMoved from '../../common/form/message-item-types/DatesMoved';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
