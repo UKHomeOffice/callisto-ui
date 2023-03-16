@@ -210,20 +210,18 @@ const EditShiftHours = ({
   };
 
   const hasShiftMovedFromTimecard = (startDate, endDate) => {
-    const startDayTime = dayjs(timecardDate).startOf('day');
-    const endDayTime = dayjs(timecardDate).endOf('day');
-    const currentDayStart = new Date(startDayTime).getTime();
-    const currentDayEnd = new Date(endDayTime).getTime();
-    const startDay = new Date(startDate).getTime();
-    const endDay = new Date(endDate).getTime();
+    const startTimecard = dayjs(timecardDate).startOf('day');
+    const endTimecard = dayjs(timecardDate).endOf('day');
+    const shiftStart = dayjs(startDate);
+    const shiftEnd = dayjs(endDate);
 
     const singleDateMoved =
       !finishEntryExists &&
-      (startDay < currentDayStart || startDay > currentDayEnd);
+      (shiftStart.isBefore(startTimecard) || shiftStart.isAfter(endTimecard));
 
     const bothDatesMoved =
       finishEntryExists &&
-      (startDay > currentDayEnd || endDay < currentDayStart);
+      (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
 
     if (singleDateMoved || bothDatesMoved) {
       hasShiftMovedCallback();
