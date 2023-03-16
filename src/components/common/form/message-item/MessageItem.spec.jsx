@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import { renderWithTimecardContext } from '../../../../test/helpers/TimecardContext';
-
 import MessageItem from './MessageItem';
 
 describe('MessageItem', () => {
@@ -12,14 +11,10 @@ describe('MessageItem', () => {
         variables: { startDate: '2022-09-21' },
       },
     };
-    renderWithTimecardContext(
-      <MessageItem
-        keys={['update']}
-        messageSummary={summaryMessages}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
-      />
-    );
+    renderWithTimecardContext(<MessageItem />, {
+      summaryMessages: summaryMessages,
+      setSummaryMessages: jest.fn(),
+    });
 
     const updateMessage = screen.getByText('The time period starts on');
 
@@ -33,14 +28,10 @@ describe('MessageItem', () => {
         variables: { startDate: '2022-09-21', endDate: '2022-09-21' },
       },
     };
-    renderWithTimecardContext(
-      <MessageItem
-        keys={['update']}
-        messageSummary={summaryMessages}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
-      />
-    );
+    renderWithTimecardContext(<MessageItem />, {
+      summaryMessages: summaryMessages,
+      setSummaryMessages: jest.fn(),
+    });
 
     const updateMessage = screen.getByText(
       'The time period starts on and finishes on'
@@ -56,14 +47,10 @@ describe('MessageItem', () => {
         variables: { startDate: '2022-09-21' },
       },
     };
-    renderWithTimecardContext(
-      <MessageItem
-        keys={['unknownKey']}
-        messageSummary={summaryMessages}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
-      />
-    );
+    renderWithTimecardContext(<MessageItem />, {
+      summaryMessages: summaryMessages,
+      setSummaryMessages: jest.fn(),
+    });
 
     const updateMessage = screen.queryByText('The time period starts on');
 

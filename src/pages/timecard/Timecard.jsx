@@ -20,7 +20,7 @@ import { useApplicationContext } from '../../context/ApplicationContext';
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import { inputNames } from '../../utils/constants';
+import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
 
@@ -49,7 +49,11 @@ const Timecard = () => {
     'timePeriod',
   ];
 
-  const desiredMessageOrder = ['delete', 'update', 'insert'];
+  const desiredMessageOrder = [
+    messageKeys.delete,
+    messageKeys.update,
+    messageKeys.insert,
+  ];
 
   const hasShiftMovedFromTimecardCallback = () => {
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
@@ -72,9 +76,6 @@ const Timecard = () => {
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
-          messageSummary={summaryMessages}
-          setSummaryMessages={setSummaryMessages}
-          setIsAlertVisible={setIsAlertVisible}
         />
       )}
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (

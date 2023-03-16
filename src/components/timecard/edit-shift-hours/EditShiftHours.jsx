@@ -23,10 +23,15 @@ import {
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import { clashingProperties, inputNames } from '../../../utils/constants';
+import {
+  clashingProperties,
+  inputNames,
+  messageKeys,
+} from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
+import DatesMoved from '../../common/form/message-item-types/DatesMoved';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
@@ -232,14 +237,14 @@ const EditShiftHours = ({
     const formattedEnd = formatDate(endDate);
 
     if (!finishEntryExists) {
-      summaryMessages['update'] = {
+      summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
         variables: { startDate: formattedStart },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
     } else {
-      summaryMessages['update'] = {
+      summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
         variables: { startDate: formattedStart, endDate: formattedEnd },
       };
