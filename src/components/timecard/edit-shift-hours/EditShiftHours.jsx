@@ -23,13 +23,20 @@ import {
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import { clashingProperties, inputNames } from '../../../utils/constants';
+import {
+  clashingProperties,
+  inputNames,
+  messageKeys,
+} from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
+import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
+import Checkbox from '../../common/form/checkbox/Checkbox';
 
 const EditShiftHours = ({
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
+  hasShiftMovedCallback,
 }) => {
   const {
     register,
@@ -44,20 +51,38 @@ const EditShiftHours = ({
 
   const inputName = 'shift';
   const { setServiceError, userId } = useApplicationContext();
+  const [isChecked, setIsChecked] = useState(false);
+  const [clashingProperty, setClashingProperty] = useState(null);
+  const [clashingTimes, setClashingTimes] = useState(null);
+
   const {
     timeEntries,
     setTimeEntries,
     timecardDate,
     summaryErrors,
     setSummaryErrors,
+    setIsAlertVisible,
+    summaryMessages,
+    setSummaryMessages,
   } = useTimecardContext();
 
-  const [clashingProperty, setClashingProperty] = useState(null);
-  const [clashingTimes, setClashingTimes] = useState(null);
+  const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
+  const finishEntryExists =
+    !!timeEntry?.finishTime && timeEntry.finishTime !== '';
+  const [localStartDate, setLocalStartDate] = useState(
+    startEntryExists ? timeEntry.startTime : timecardDate
+  );
+  const [localEndDate, setLocalEndDate] = useState(
+    finishEntryExists ? timeEntry.finishTime : timecardDate
+  );
 
   useEffect(() => {
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
+
+  const handleCheckboxChange = () => {
+    setIsChecked((isChecked) => !isChecked);
+  };
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -114,7 +139,7 @@ const EditShiftHours = ({
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
-    const actualStartDate = formatDate(timecardDate);
+    const actualStartDate = formatDate(localStartDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = formatDateTimeISO(
       actualStartDate + ' ' + actualStartTime
@@ -123,7 +148,9 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = getFinishTimeDate(actualStartDate);
+      const actualEndDate = timeEntry.finishNextDay
+        ? getFinishTimeDate(actualStartDate)
+        : formatDate(localEndDate);
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
@@ -165,6 +192,12 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
+          if (
+            startEntryExists &&
+            hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
+          ) {
+            setMessages(actualStartDateTime, actualEndDateTime);
+          }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
@@ -173,6 +206,48 @@ const EditShiftHours = ({
       true,
       handleServerValidationErrors
     );
+  };
+
+  const hasShiftMovedFromTimecard = (startDate, endDate) => {
+    const startTimecard = dayjs(timecardDate).startOf('day');
+    const endTimecard = dayjs(timecardDate).endOf('day');
+    const shiftStart = dayjs(startDate);
+    const shiftEnd = dayjs(endDate);
+
+    const singleDateMoved =
+      !finishEntryExists &&
+      (shiftStart.isBefore(startTimecard) || shiftStart.isAfter(endTimecard));
+
+    const bothDatesMoved =
+      finishEntryExists &&
+      (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
+
+    if (singleDateMoved || bothDatesMoved) {
+      hasShiftMovedCallback();
+      return true;
+    }
+    return false;
+  };
+
+  const setMessages = (startDate, endDate) => {
+    const formattedStart = formatDate(startDate);
+    const formattedEnd = formatDate(endDate);
+
+    if (!finishEntryExists) {
+      summaryMessages[messageKeys.update] = {
+        template: `datesMoved`,
+        variables: { startDate: formattedStart },
+      };
+      setSummaryMessages(summaryMessages);
+      setIsAlertVisible(true);
+    } else {
+      summaryMessages[messageKeys.update] = {
+        template: `datesMoved`,
+        variables: { startDate: formattedStart, endDate: formattedEnd },
+      };
+      setSummaryMessages(summaryMessages);
+      setIsAlertVisible(true);
+    }
   };
 
   return (
@@ -198,6 +273,28 @@ const EditShiftHours = ({
           }
           timeEntriesIndex={timeEntriesIndex}
         />
+        <Checkbox
+          text="View or edit dates"
+          name="viewOrEditDates"
+          checked={isChecked}
+          handleChange={handleCheckboxChange}
+        />
+        {isChecked && (
+          <StartFinishDateInput
+            name="Date"
+            errors={errors}
+            startTimeValue={localStartDate}
+            finishTimeValue={localEndDate}
+            startEntryExists={startEntryExists}
+            timecardDate={timecardDate}
+            register={register}
+            formState={formState}
+            finishNextDay={timeEntry.finishNextDay}
+            getFormValues={getValues}
+            setStartDate={setLocalStartDate}
+            setEndDate={setLocalEndDate}
+          />
+        )}
         <div className="govuk-button-group">
           <button className="govuk-button" type="submit">
             Save
@@ -213,4 +310,5 @@ EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
+  hasShiftMovedCallback: PropTypes.func,
 };

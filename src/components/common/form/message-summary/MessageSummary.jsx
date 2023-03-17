@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { HashLink } from 'react-router-hash-link';
+import MessageItem from '../message-item/MessageItem';
 
-const MessageSummary = ({ messages, keys }) => {
+const MessageSummary = ({ keys }) => {
   return (
     <div
       className="govuk-notification-banner"
@@ -13,7 +13,7 @@ const MessageSummary = ({ messages, keys }) => {
           className="govuk-notification-banner__title"
           id="govuk-notification-banner-title"
         >
-          Update Successful
+          Hours changed
         </h2>
       </div>
       <div className="govuk-notification-banner__content">
@@ -24,9 +24,7 @@ const MessageSummary = ({ messages, keys }) => {
               id={`summary-message-${key}`}
               data-testid="message-body"
             >
-              <HashLink id={`summary-message-${key}-message`} to={`#${key}`}>
-                {messages[key].message}
-              </HashLink>
+              <MessageItem />
             </li>
           ))}
         </ul>
@@ -38,6 +36,5 @@ const MessageSummary = ({ messages, keys }) => {
 export default MessageSummary;
 
 MessageSummary.propTypes = {
-  messages: PropTypes.any,
   keys: PropTypes.array,
 };

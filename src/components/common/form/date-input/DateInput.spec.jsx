@@ -50,13 +50,14 @@ describe('DateInput', () => {
       />
     );
 
-    const dayInput = screen.getByTestId('day-input');
-    const monthInput = screen.getByTestId('month-input');
-    const yearInput = screen.getByTestId('year-input');
+    const dayInput = screen.getByTestId('test-day-input');
+    const monthInput = screen.getByTestId('test-month-input');
+    const yearInput = screen.getByTestId('test-year-input');
 
     fireEvent.change(dayInput, { target: { value: '01' } });
     fireEvent.change(monthInput, { target: { value: '03' } });
     fireEvent.change(yearInput, { target: { value: '2022' } });
+    fireEvent.focusOut(yearInput);
 
     expect(dayInput.value).toBe('01');
     expect(monthInput.value).toBe('03');
@@ -77,9 +78,9 @@ describe('DateInput', () => {
       />
     );
 
-    const dayInput = screen.getByTestId('day-input');
-    const monthInput = screen.getByTestId('month-input');
-    const yearInput = screen.getByTestId('year-input');
+    const dayInput = screen.getByTestId('test-day-input');
+    const monthInput = screen.getByTestId('test-month-input');
+    const yearInput = screen.getByTestId('test-year-input');
 
     expect(dayInput.value).toBe('01');
     expect(monthInput.value).toBe('01');
@@ -125,7 +126,7 @@ describe('DateInput', () => {
         />
       );
 
-      const dayInputBox = screen.getByTestId('day-input');
+      const dayInputBox = screen.getByTestId('test-day-input');
       expect(dayInputBox.className).toContain('govuk-input--error');
     });
 
@@ -140,7 +141,7 @@ describe('DateInput', () => {
         />
       );
 
-      const monthInputBox = screen.getByTestId('month-input');
+      const monthInputBox = screen.getByTestId('test-month-input');
       expect(monthInputBox.className).toContain('govuk-input--error');
     });
 
@@ -155,7 +156,7 @@ describe('DateInput', () => {
         />
       );
 
-      const yearInputBox = screen.getByTestId('year-input');
+      const yearInputBox = screen.getByTestId('test-year-input');
       expect(yearInputBox.className).toContain('govuk-input--error');
     });
   });

@@ -286,9 +286,10 @@ describe('Timecard', () => {
 
     renderWithTimecardContext(<Timecard />, {
       summaryMessages: {
-        delete: { inputName: 'delete', message: 'Row Deleted' },
-        update: { inputName: 'update', message: 'Row Updated' },
-        insert: { inputName: 'insert', message: 'Row Inserted' },
+        update: {
+          template: `datesMoved`,
+          variables: { startDate: '2022-09-21' },
+        },
       },
 
       setSummaryMessages: jest.fn(),
@@ -306,8 +307,7 @@ describe('Timecard', () => {
       setTimecardDate: jest.fn(),
     });
 
-    expect(screen.getByText('Row Deleted')).toBeTruthy();
-    expect(screen.getByText('Row Deleted')).toBeTruthy();
+    expect(screen.getByText('The time period starts on')).toBeTruthy();
   });
 
   describe('navigation', () => {
@@ -318,6 +318,7 @@ describe('Timecard', () => {
         name: 'Previous day',
       });
       expect(previousDayLink.pathname).toBe('/timecard/2022-06-30');
+      fireEvent.click(previousDayLink);
     });
 
     it('should contain a link to next day', () => {
@@ -325,6 +326,7 @@ describe('Timecard', () => {
 
       const nextDayLink = screen.getByRole('link', { name: 'Next day' });
       expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
+      fireEvent.click(nextDayLink);
     });
 
     it('should contain a link to the calendar', () => {
@@ -334,6 +336,18 @@ describe('Timecard', () => {
         name: 'Select another date',
       });
       expect(calendarLink.pathname).toBe('/calendar');
+    });
+
+    it('should clear message summary when navigating from page', () => {
+      renderWithTimecardContext(<Timecard />);
+
+      const nextDayLink = screen.getByRole('link', { name: 'Next day' });
+      expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
+      fireEvent.click(nextDayLink);
+
+      expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith(
+        {}
+      );
     });
   });
 });
