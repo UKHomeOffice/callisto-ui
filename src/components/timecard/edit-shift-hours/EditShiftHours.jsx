@@ -23,7 +23,11 @@ import {
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import { clashingProperties, inputNames } from '../../../utils/constants';
+import {
+  clashingProperties,
+  inputNames,
+  messageKeys,
+} from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
@@ -32,6 +36,7 @@ const EditShiftHours = ({
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
+  hasShiftMovedCallback,
 }) => {
   const {
     register,
@@ -204,22 +209,24 @@ const EditShiftHours = ({
   };
 
   const hasShiftMovedFromTimecard = (startDate, endDate) => {
-    const startDayTime = dayjs(timecardDate).startOf('day');
-    const endDayTime = dayjs(timecardDate).endOf('day');
-    const currentDayStart = new Date(startDayTime).getTime();
-    const currentDayEnd = new Date(endDayTime).getTime();
-    const startDay = new Date(startDate).getTime();
-    const endDay = new Date(endDate).getTime();
+    const startTimecard = dayjs(timecardDate).startOf('day');
+    const endTimecard = dayjs(timecardDate).endOf('day');
+    const shiftStart = dayjs(startDate);
+    const shiftEnd = dayjs(endDate);
 
     const singleDateMoved =
       !finishEntryExists &&
-      (startDay < currentDayStart || startDay > currentDayEnd);
+      (shiftStart.isBefore(startTimecard) || shiftStart.isAfter(endTimecard));
 
     const bothDatesMoved =
       finishEntryExists &&
-      (startDay > currentDayEnd || endDay < currentDayStart);
+      (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
 
-    return singleDateMoved || bothDatesMoved ? true : false;
+    if (singleDateMoved || bothDatesMoved) {
+      hasShiftMovedCallback();
+      return true;
+    }
+    return false;
   };
 
   const setMessages = (startDate, endDate) => {
@@ -227,16 +234,16 @@ const EditShiftHours = ({
     const formattedEnd = formatDate(endDate);
 
     if (!finishEntryExists) {
-      summaryMessages['update'] = {
-        template: `singleDateMoved`,
-        variables: [formattedStart],
+      summaryMessages[messageKeys.update] = {
+        template: `datesMoved`,
+        variables: { startDate: formattedStart },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
     } else {
-      summaryMessages['update'] = {
-        template: `doubleDateMoved`,
-        variables: [formattedStart, formattedEnd],
+      summaryMessages[messageKeys.update] = {
+        template: `datesMoved`,
+        variables: { startDate: formattedStart, endDate: formattedEnd },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
@@ -303,4 +310,5 @@ EditShiftHours.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
+  hasShiftMovedCallback: PropTypes.func,
 };

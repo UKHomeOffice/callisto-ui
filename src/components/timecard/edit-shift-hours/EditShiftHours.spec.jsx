@@ -896,6 +896,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMovedCallback={jest.fn()}
           />,
           defaultTimecardContext
         );
@@ -924,8 +925,8 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             update: {
-              template: 'doubleDateMoved',
-              variables: ['2022-09-02', '2022-09-02'],
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02', endDate: '2022-09-02' },
             },
           });
         });
@@ -953,6 +954,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMovedCallback={jest.fn()}
           />,
           defaultTimecardContext
         );
@@ -976,8 +978,8 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
             update: {
-              template: 'singleDateMoved',
-              variables: ['2022-09-02'],
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02' },
             },
           });
         });
