@@ -337,5 +337,17 @@ describe('Timecard', () => {
       });
       expect(calendarLink.pathname).toBe('/calendar');
     });
+
+    it('should clear message summary when navigating from page', () => {
+      renderWithTimecardContext(<Timecard />);
+
+      const nextDayLink = screen.getByRole('link', { name: 'Next day' });
+      expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
+      fireEvent.click(nextDayLink);
+
+      expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith(
+        {}
+      );
+    });
   });
 });

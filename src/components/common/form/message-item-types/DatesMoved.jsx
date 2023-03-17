@@ -47,5 +47,8 @@ const DatesMoved = ({ variables }) => {
 export default DatesMoved;
 
 DatesMoved.propTypes = {
-  variables: PropTypes.object,
+  variables: PropTypes.shape({
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string,
+  }),
 };

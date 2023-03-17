@@ -5,14 +5,10 @@ import {
 } from '../../../../test/helpers/TimecardContext';
 import DatesMoved from './DatesMoved';
 
-describe('DoubleDateMoved', () => {
+describe('DatesMoved', () => {
   it('should render a summary message with one date links', async () => {
     renderWithTimecardContext(
-      <DatesMoved
-        variables={{ startDate: '2022-09-21' }}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
-      />
+      <DatesMoved variables={{ startDate: '2022-09-21' }} />
     );
 
     await waitFor(() => {
@@ -28,8 +24,6 @@ describe('DoubleDateMoved', () => {
     renderWithTimecardContext(
       <DatesMoved
         variables={{ startDate: '2022-09-21', endDate: '2022-09-22' }}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
       />
     );
 
@@ -52,11 +46,7 @@ describe('DoubleDateMoved', () => {
     defaultTimecardContext.setSummaryMessages = jest.fn();
 
     renderWithTimecardContext(
-      <DatesMoved
-        variables={{ startDate: '2022-09-21' }}
-        setSummaryMessages={jest.fn()}
-        setIsAlertVisible={jest.fn()}
-      />,
+      <DatesMoved variables={{ startDate: '2022-09-21' }} />,
       defaultTimecardContext
     );
 
