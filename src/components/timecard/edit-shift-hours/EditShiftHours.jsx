@@ -253,17 +253,17 @@ const EditShiftHours = ({
     const formattedStart = formatDate(startDate);
     const formattedEnd = formatDate(endDate);
 
-    if (!finishEntryExists) {
+    if (startDate !== '' && endDate !== '') {
       summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
-        variables: { startDate: formattedStart },
+        variables: { startDate: formattedStart, endDate: formattedEnd },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
     } else {
       summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
-        variables: { startDate: formattedStart, endDate: formattedEnd },
+        variables: { startDate: formattedStart },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
