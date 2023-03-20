@@ -163,7 +163,7 @@ const EditShiftHours = ({
     }
 
     if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
-      summaryErrors['timePeriod'] = {
+      summaryErrors[inputNames.shiftStartTime] = {
         message: 'Start time must be before end time',
       };
 
