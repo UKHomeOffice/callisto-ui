@@ -77,9 +77,6 @@ const Timecard = () => {
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
-          messageSummary={summaryMessages}
-          setSummaryMessages={setSummaryMessages}
-          setIsAlertVisible={setIsAlertVisible}
         />
       )}
       {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
