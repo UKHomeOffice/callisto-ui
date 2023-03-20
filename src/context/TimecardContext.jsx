@@ -10,6 +10,7 @@ export const TimecardProvider = ({ children }) => {
   const [newTimeEntry, setNewTimeEntry] = useState();
   const [summaryMessages, setSummaryMessages] = useState({});
   const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const value = {
     summaryErrors,
@@ -24,6 +25,8 @@ export const TimecardProvider = ({ children }) => {
     setSummaryMessages,
     isAlertVisible,
     setIsAlertVisible,
+    isErrorVisible,
+    setIsErrorVisible,
   };
 
   return (

@@ -64,6 +64,7 @@ const EditShiftHours = ({
     setIsAlertVisible,
     summaryMessages,
     setSummaryMessages,
+    setIsErrorVisible,
   } = useTimecardContext();
 
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
@@ -146,18 +147,30 @@ const EditShiftHours = ({
     );
 
     const endTime = formData[`${inputName}-finish-time`] || null;
-    const endDate = `${formData['finishDate-year']}-${formData['finishDate-month']}-${formData['finishDate-day']}`;
     let actualEndDateTime = '';
     if (endTime) {
       let actualEndDate;
       if (isChecked) {
-        actualEndDate = formatDate(endDate);
+        actualEndDate = formatDate(
+          `${formData['finishDate-year']}-${formData['finishDate-month']}-${formData['finishDate-day']}`
+        );
       } else {
         actualEndDate = timeEntry.finishNextDay
           ? getFinishTimeDate(actualStartDate)
           : formatDate(localEndDate);
       }
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+    }
+
+    if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
+      summaryErrors['timePeriod'] = {
+        message: 'Start time must be before end time',
+      };
+
+      setSummaryErrors(summaryErrors);
+      setIsErrorVisible(true);
+      focusErrors();
+      return;
     }
 
     const timecardPayload = {
@@ -207,6 +220,7 @@ const EditShiftHours = ({
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
+          setIsErrorVisible(false);
         }
       },
       true,

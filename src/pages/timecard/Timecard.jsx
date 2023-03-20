@@ -36,6 +36,7 @@ const Timecard = () => {
     isAlertVisible,
     setSummaryMessages,
     setIsAlertVisible,
+    isErrorVisible,
   } = useTimecardContext();
   const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
 
@@ -63,7 +64,7 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes]);
+  }, [date, timePeriodTypes, isErrorVisible]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
