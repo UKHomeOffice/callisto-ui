@@ -1053,15 +1053,6 @@ describe('EditShiftHours', () => {
         target: { value: '23:00' },
       });
 
-      // const checkBox = screen.getByText('View or edit dates');
-      // fireEvent.click(checkBox);
-
-      // const startDay = screen.getByTestId(testInputNames.startDay);
-      // fireEvent.change(startDay, {
-      //   target: { value: '01' },
-      // });
-      // fireEvent.focusOut(startDay);
-
       const saveButton = screen.getByText('Save');
       fireEvent.click(saveButton);
     });
