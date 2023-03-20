@@ -145,6 +145,9 @@ const updateTimeEntryContextData = async (
     .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
 
+  const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
+  const timeCardEnd = dayjs(date).endOf('day');
+
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 

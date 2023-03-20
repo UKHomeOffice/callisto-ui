@@ -28,7 +28,7 @@ const filterEndTimeEntriesOnDate = (resourceDateProperty, date) => {
   );
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
-    dayjs(date).add(incluedTwoExtraDays, 'day')
+    dayjs(date).add(includeTwoExtraDays, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];
 };
