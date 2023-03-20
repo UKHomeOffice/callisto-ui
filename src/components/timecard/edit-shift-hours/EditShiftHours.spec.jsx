@@ -106,7 +106,6 @@ describe('EditShiftHours', () => {
 
     it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
       const timeEntryId = '1';
-      const inputtedEndTime = '06:00';
 
       const existingTimeEntry = {
         ...newTimeEntry,
