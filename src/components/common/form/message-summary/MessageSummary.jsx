@@ -37,7 +37,4 @@ export default MessageSummary;
 
 MessageSummary.propTypes = {
   keys: PropTypes.array,
-  messageSummary: PropTypes.object,
-  setSummaryMessages: PropTypes.func,
-  setIsAlertVisible: PropTypes.func,
 };
