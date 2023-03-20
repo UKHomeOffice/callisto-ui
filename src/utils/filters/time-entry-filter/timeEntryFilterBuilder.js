@@ -7,7 +7,7 @@ import {
 } from '../resource-filter-builder/resourceFilterBuilder';
 
 const includeExtraDay = 1;
-const incluedTwoExtraDays = 2;
+const includeTwoExtraDays = 2;
 
 const filterStartTimeEntriesOnDate = (resourceDateProperty, date) => {
   const startOfDateFilter = filterOnOrAfterDate(
