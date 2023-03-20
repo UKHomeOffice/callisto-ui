@@ -148,7 +148,14 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = formatDate(localEndDate);
+      let actualEndDate;
+      if (isChecked){
+        actualEndDate = formatDate(localEndDate);
+      } else {
+        actualEndDate = timeEntry.finishNextDay
+        ? getFinishTimeDate(actualStartDate)
+        : formatDate(localEndDate);
+      }
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
     }
 
