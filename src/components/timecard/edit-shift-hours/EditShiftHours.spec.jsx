@@ -1059,7 +1059,7 @@ describe('EditShiftHours', () => {
 
     await waitFor(() => {
       expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
-        ['timePeriod']: {
+        [inputNames.shiftStartTime]: {
           message: 'Start time must be before end time',
         },
       });
