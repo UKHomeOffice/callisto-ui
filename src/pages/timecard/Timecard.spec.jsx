@@ -3,13 +3,8 @@ import {
   defaultApplicationContext,
   renderWithTimecardContext,
   defaultTimecardContext,
-  createDefaultTimecardContext,
 } from '../../test/helpers/TimecardContext';
-import {
-  shiftTimeEntry,
-  shiftTimeEntryMultipleDays,
-  timeCardPeriodTypes,
-} from '../../../mocks/mockData';
+import { shiftTimeEntry, timeCardPeriodTypes } from '../../../mocks/mockData';
 import Timecard from './Timecard';
 import { getTimeEntries } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
@@ -26,10 +21,6 @@ jest.mock('react-router-dom', () => ({
 }));
 
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
-
-const multipleDayShiftTimeEntryApiResponse = getApiResponseWithItems(
-  shiftTimeEntryMultipleDays
-);
 
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
