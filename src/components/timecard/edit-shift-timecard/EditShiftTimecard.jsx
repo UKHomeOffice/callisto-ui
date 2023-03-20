@@ -20,11 +20,8 @@ const EditShiftTimecard = ({
   hasShiftMovedCallback,
 }) => {
   const { setServiceError } = useApplicationContext();
-  const {
-    timeEntries,
-    setTimeEntries,
-    setSummaryErrors,
-  } = useTimecardContext();
+  const { timeEntries, setTimeEntries, setSummaryErrors } =
+    useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
