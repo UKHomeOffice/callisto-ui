@@ -209,6 +209,22 @@ const shiftTimeEntryMultipleDays = createTimeEntry({
   actualEndTime: dayjs('2022-02-02T00:00:00Z').format('YYYY-MM-DDTHH:mm:ssZ'),
 });
 
+const shiftTimeEntryPreviousDayNoEndTime = createTimeEntry({
+  id: 'c0a80040-82cf-1986-8182-cfedbbd50006',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  ownerId: userId,
+  actualStartTime: dayjs('2022-01-31T09:00:00Z').format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: '',
+});
+
+const shiftTimeEntryTodayNoEndTime = createTimeEntry({
+  id: 'c0a80040-82cf-1986-8182-cfedbbd50005',
+  timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+  ownerId: userId,
+  actualStartTime: dayjs('2022-02-01T09:00:00Z').format('YYYY-MM-DDTHH:mm:ssZ'),
+  actualEndTime: '',
+});
+
 const srdEntry = createTimeEntry({
   id: '0a650b0a-8346-158f-8183-471def7e0004',
   timePeriodTypeId: '00000000-0000-0000-0000-000000000002',
@@ -305,6 +321,8 @@ module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
   shiftTimeEntryMultipleDays,
+  shiftTimeEntryPreviousDayNoEndTime,
+  shiftTimeEntryTodayNoEndTime,
   userId,
   srdEntry,
   nwdEntry,
