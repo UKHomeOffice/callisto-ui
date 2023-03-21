@@ -156,7 +156,9 @@ const updateTimeEntryContextData = async (
         (timeEntry) => {
           return !(
             dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
-            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd)
+            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd) ||
+            (dayjs(timeEntry.actualStartTime).isBefore(timeCardStart) &&
+              timeEntry.actualEndTime === '')
           );
         }
       );
