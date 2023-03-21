@@ -140,7 +140,7 @@ describe('Shift spanning mutiple days', () => {
     });
   });
 
-  it('should call setTimeEntries with the correct timeEntries when a two shifts end with no end date', async () => {
+  it('should call setTimeEntries with the correct timeEntries when two shifts end with no end date and one is on the day before', async () => {
     mockDate = '2022-02-01';
     getTimeEntries.mockImplementation(() => {
       return {
