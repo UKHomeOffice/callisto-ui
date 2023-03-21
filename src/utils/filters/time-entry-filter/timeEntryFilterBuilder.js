@@ -6,17 +6,17 @@ import {
   joinAndConditions,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-const includeExtraDay = 1;
-const includeTwoExtraDays = 2;
+const startDateOffset = 1
+const endDateOffset = 2;
 
 const filterStartTimeEntriesOnDate = (resourceDateProperty, date) => {
   const startOfDateFilter = filterOnOrAfterDate(
     resourceDateProperty,
-    dayjs(date).subtract(includeExtraDay, 'day')
+    dayjs(date).subtract(startDateOffset, 'day')
   );
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
-    dayjs(date).add(includeExtraDay, 'day')
+    dayjs(date).add(startDateOffset, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];
 };
@@ -28,7 +28,7 @@ const filterEndTimeEntriesOnDate = (resourceDateProperty, date) => {
   );
   const endOfDateFilter = filterBeforeDate(
     resourceDateProperty,
-    dayjs(date).add(includeTwoExtraDays, 'day')
+    dayjs(date).add(endDateOffset, 'day')
   );
   return [startOfDateFilter, endOfDateFilter];
 };
