@@ -64,7 +64,7 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes, isErrorVisible, isAlertVisible]);
+  }, [date, timePeriodTypes, isErrorVisible]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
