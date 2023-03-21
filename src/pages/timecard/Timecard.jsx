@@ -150,11 +150,11 @@ const updateTimeEntryContextData = async (
 
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
-    console.log('actualEndTime ', timeEntry.actualEndTime);
 
     if (timeEntriesResponse.data.items?.length > 0) {
       const filteredTimeEntries = timeEntriesResponse.data.items.filter(
         (timeEntry) => {
+          console.log('actualEndTime ', timeEntry.actualEndTime);
           return !(
             dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
             dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd) ||
