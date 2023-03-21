@@ -106,7 +106,6 @@ describe('EditShiftHours', () => {
 
     it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
       const timeEntryId = '1';
-      const inputtedEndTime = '06:00';
 
       const existingTimeEntry = {
         ...newTimeEntry,
@@ -129,12 +128,12 @@ describe('EditShiftHours', () => {
       act(() => {
         const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
-          target: { value: inputtedStartTime },
+          target: { value: '09:00' },
         });
 
         const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
-          target: { value: inputtedEndTime },
+          target: { value: '16:00' },
         });
 
         const saveButton = screen.getByText('Save');
@@ -147,8 +146,8 @@ describe('EditShiftHours', () => {
           {
             ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            actualStartTime: expectedActualStartTime,
-            actualEndTime: `${timecardDate}T${inputtedEndTime}:00+00:00`,
+            actualStartTime: '2022-09-01T09:00:00+00:00',
+            actualEndTime: '2022-09-01T16:00:00+00:00',
           },
           new URLSearchParams([
             ['tenantId', '00000000-0000-0000-0000-000000000000'],
@@ -688,52 +687,6 @@ describe('EditShiftHours', () => {
       });
     });
 
-    it('should redirect to new date when the finish date is updated and save selected', async () => {
-      updateTimeEntry.mockResolvedValue({
-        data: getApiResponseWithItems(shiftTimeEntry),
-      });
-
-      const timeEntryId = '1';
-      const timecardDate = '2022-09-01';
-
-      const existingTimeEntry = {
-        ...newTimeEntry,
-        timeEntryId: timeEntryId,
-        startTime: '2022-09-01 08:00:00+00:00',
-        finishTime: '2022-09-01 16:00:00+00:00',
-        finishNextDay: false,
-      };
-
-      defaultTimecardContext.timecardDate = timecardDate;
-
-      renderWithTimecardContext(
-        <EditShiftHours
-          setShowEditShiftHours={jest.fn()}
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={0}
-        />,
-        defaultTimecardContext
-      );
-
-      act(() => {
-        const checkBox = screen.getByText('View or edit dates');
-        fireEvent.click(checkBox);
-
-        const endDay = screen.getByTestId(testInputNames.endDay);
-        fireEvent.change(endDay, {
-          target: { value: '02' },
-        });
-        fireEvent.focusOut(endDay);
-
-        const saveButton = screen.getByText('Save');
-        fireEvent.click(saveButton);
-      });
-
-      await waitFor(async () => {
-        expect(mockNavigate).toHaveBeenCalledWith('/timecard/2022-09-02');
-      });
-    });
-
     it('end date should move to next day when check box is selected and finishNextDay is true', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-02';
@@ -842,7 +795,6 @@ describe('EditShiftHours', () => {
       });
 
       await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/timecard/2022-09-01');
         expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
           timeEntryId,
           {
@@ -921,7 +873,7 @@ describe('EditShiftHours', () => {
     });
 
     describe('setMessages', () => {
-      it('should set summary messages when dates have moved and finish entry exists', async () => {
+      it('should set summary messages when dates have moved from the timecard date to the next day', async () => {
         updateTimeEntry.mockResolvedValue({
           data: getApiResponseWithItems(shiftTimeEntry),
         });
@@ -943,6 +895,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMovedCallback={jest.fn()}
           />,
           defaultTimecardContext
         );
@@ -950,6 +903,11 @@ describe('EditShiftHours', () => {
         act(() => {
           const checkBox = screen.getByText('View or edit dates');
           fireEvent.click(checkBox);
+
+          const startDay = screen.getByTestId(testInputNames.startDay);
+          fireEvent.change(startDay, {
+            target: { value: '02' },
+          });
 
           const endDay = screen.getByTestId(testInputNames.endDay);
           fireEvent.change(endDay, {
@@ -965,9 +923,9 @@ describe('EditShiftHours', () => {
           expect(
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
-            ['update']: {
-              message:
-                'The time period starts on 01 September and finishes on 02 September',
+            update: {
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02', endDate: '2022-09-02' },
             },
           });
         });
@@ -995,6 +953,7 @@ describe('EditShiftHours', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
+            hasShiftMovedCallback={jest.fn()}
           />,
           defaultTimecardContext
         );
@@ -1017,59 +976,9 @@ describe('EditShiftHours', () => {
           expect(
             defaultTimecardContext.setSummaryMessages
           ).toHaveBeenCalledWith({
-            ['update']: {
-              message: 'The time period starts on 02 September',
-            },
-          });
-        });
-      });
-
-      it('should set summary messages with both dates when dates have moved to start and end on same day', async () => {
-        updateTimeEntry.mockResolvedValue({
-          data: getApiResponseWithItems(shiftTimeEntry),
-        });
-
-        const timeEntryId = '1';
-        const existingTimeEntry = {
-          ...newTimeEntry,
-          timeEntryId: timeEntryId,
-          startTime: '2022-09-01 08:00:00+00:00',
-          finishTime: '2022-09-02 17:00:00+00:00',
-          finishNextDay: false,
-        };
-
-        const defaultTimecardContext = createDefaultTimecardContext();
-        defaultTimecardContext.setSummaryMessages = jest.fn();
-
-        renderWithTimecardContext(
-          <EditShiftHours
-            setShowEditShiftHours={jest.fn()}
-            timeEntry={existingTimeEntry}
-            timeEntriesIndex={0}
-          />,
-          defaultTimecardContext
-        );
-
-        act(() => {
-          const checkBox = screen.getByText('View or edit dates');
-          fireEvent.click(checkBox);
-
-          const startDay = screen.getByTestId(testInputNames.startDay);
-          fireEvent.change(startDay, {
-            target: { value: '02' },
-          });
-          fireEvent.focusOut(startDay);
-
-          const saveButton = screen.getByText('Save');
-          fireEvent.click(saveButton);
-        });
-
-        await waitFor(() => {
-          expect(
-            defaultTimecardContext.setSummaryMessages
-          ).toHaveBeenCalledWith({
-            ['update']: {
-              message: 'The time period now starts and ends on 02 September',
+            update: {
+              template: 'datesMoved',
+              variables: { startDate: '2022-09-02' },
             },
           });
         });
@@ -1105,6 +1014,54 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).not.toHaveBeenCalled();
         });
+      });
+    });
+  });
+
+  it('Should display an error when start time is forced after end time', async () => {
+    const timeEntryId = '1';
+    const timecardDate = '2022-09-02';
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '2022-09-02 08:00:00+00:00',
+      finishTime: '2022-09-02 16:00:00+00:00',
+      finishNextDay: false,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+        localStartDate={'2022-09-02 08:00:00+00:00'}
+        localEndDate={'2022-09-02 16:00:00+00:00'}
+        startEntryExists={true}
+        setSummaryMessages={jest.fn()}
+        isErrorVisible={true}
+        setIsErrorVisible={jest.fn()}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '23:00' },
+      });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        [inputNames.shiftStartTime]: {
+          message: 'Start time must be before end time',
+        },
       });
     });
   });

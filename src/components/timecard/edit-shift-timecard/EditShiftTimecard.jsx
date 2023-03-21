@@ -13,8 +13,13 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
+import dayjs from 'dayjs';
 
-const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
+const EditShiftTimecard = ({
+  timeEntry,
+  timeEntriesIndex,
+  hasShiftMovedCallback,
+}) => {
   const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, setSummaryErrors, timecardDate } =
     useTimecardContext();
@@ -108,7 +113,10 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
               `${formatTime(timeEntry.startTime)} to ${
                 timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
               } ${
-                timeEntry.finishNextDay
+                dayjs(timeEntry.finishTime).isAfter(
+                  dayjs(timeEntry.startTime),
+                  'day'
+                )
                   ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
                   : ''
               }`}
@@ -133,6 +141,7 @@ const EditShiftTimecard = ({ timeEntry, timeEntriesIndex }) => {
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
+                hasShiftMovedCallback={hasShiftMovedCallback}
               />
             </dt>
           </div>
@@ -173,4 +182,5 @@ export default EditShiftTimecard;
 EditShiftTimecard.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
+  hasShiftMovedCallback: PropTypes.func,
 };

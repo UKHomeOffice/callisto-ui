@@ -9,23 +9,20 @@ import generateDocumentTitle from '../../utils/generate-document-title/generateD
 import { getTimeEntries } from '../../api/services/timecardService';
 import {
   formatDate,
-  getTimePeriodTypesMap,
   formatTime,
   isFinishTimeOnNextDay,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
-import EditShiftTimecard from '../../components/timecard/edit-shift-timecard/EditShiftTimecard';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 
 import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import SimpleTimePeriod from '../../components/timecard/simple-time-period/SimpleTimePeriod';
-import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
-import { inputNames } from '../../utils/constants';
+import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
+import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
 
 const Timecard = () => {
   const {
@@ -37,9 +34,11 @@ const Timecard = () => {
     setNewTimeEntry,
     summaryMessages,
     isAlertVisible,
+    setSummaryMessages,
+    setIsAlertVisible,
+    isErrorVisible,
   } = useTimecardContext();
   const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
-  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
   const { date } = useParams();
   const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
@@ -51,20 +50,32 @@ const Timecard = () => {
     'timePeriod',
   ];
 
-  const desiredMessageOrder = ['delete', 'update', 'insert'];
+  const desiredMessageOrder = [
+    messageKeys.delete,
+    messageKeys.update,
+    messageKeys.insert,
+  ];
+
+  const hasShiftMovedFromTimecardCallback = () => {
+    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
+  };
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes]);
+  }, [date, timePeriodTypes, isErrorVisible]);
+
+  const clearMessageSummary = () => {
+    setSummaryMessages({});
+    setIsAlertVisible(false);
+  };
 
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
-          messages={summaryMessages}
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
         />
       )}
@@ -80,6 +91,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
@@ -89,6 +101,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
@@ -98,6 +111,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             setNewTimeEntry(false);
+            clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"
@@ -110,34 +124,14 @@ const Timecard = () => {
         <SelectTimecardPeriodType />
       )}
       {!newTimeEntry && timeEntries.length !== 0 && (
-        <>
-          {timeEntries.map((timeEntry, index) => (
-            <div key={index} className="govuk-!-margin-bottom-6">
-              {renderTimeEntry(timePeriodTypesMap, timeEntry, index)}
-            </div>
-          ))}
-          <AddTimeCardPeriod />
-        </>
+        <TimecardEntriesList
+          timeEntries={timeEntries}
+          timePeriodTypes={timePeriodTypes}
+          hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
+        />
       )}
     </>
   );
-};
-
-const renderTimeEntry = (timePeriodTypesMap, timeEntry, index) => {
-  switch (timePeriodTypesMap[timeEntry.timePeriodTypeId]) {
-    case 'Shift':
-      return (
-        <EditShiftTimecard timeEntry={timeEntry} timeEntriesIndex={index} />
-      );
-    default:
-      return (
-        <SimpleTimePeriod
-          timeEntry={timeEntry}
-          timeEntriesIndex={index}
-          timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
-        />
-      );
-  }
 };
 
 const updateTimeEntryContextData = async (
@@ -151,26 +145,36 @@ const updateTimeEntryContextData = async (
     .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
 
+  const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
+  const timeCardEnd = dayjs(date).endOf('day');
+
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     if (timeEntriesResponse.data.items?.length > 0) {
-      const existingTimeEntries = timeEntriesResponse.data.items.map(
+      const filteredTimeEntries = timeEntriesResponse.data.items.filter(
         (timeEntry) => {
-          return new ContextTimeEntry(
-            timeEntry.id,
-            timeEntry.actualStartTime,
-            timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
-            timeEntry.timePeriodTypeId,
-            timeEntry.finishNextDay ??
-              isFinishTimeOnNextDay(
-                formatTime(timeEntry.actualStartTime),
-                formatTime(timeEntry.actualEndTime)
-              )
+          return !(
+            dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
+            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd) ||
+            (dayjs(timeEntry.actualStartTime).isBefore(timeCardStart) &&
+              !timeEntry.actualEndTime)
           );
         }
       );
-
+      const existingTimeEntries = filteredTimeEntries.map((timeEntry) => {
+        return new ContextTimeEntry(
+          timeEntry.id,
+          timeEntry.actualStartTime,
+          timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+          timeEntry.timePeriodTypeId,
+          timeEntry.finishNextDay ??
+            isFinishTimeOnNextDay(
+              formatTime(timeEntry.actualStartTime),
+              formatTime(timeEntry.actualEndTime)
+            )
+        );
+      });
       setTimeEntries(existingTimeEntries);
     } else {
       setTimeEntries([]);
