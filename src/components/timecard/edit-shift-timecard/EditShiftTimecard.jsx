@@ -107,22 +107,21 @@ const EditShiftTimecard = ({
             className="govuk-summary-list__value govuk-!-width-full"
             style={{ whiteSpace: 'nowrap' }}
           >
-            {!showEditShiftHours &&
-              timeEntryExists &&
-              `${formatTime(timeEntry.startTime)}${
-                dayjs(timeEntry.finishTime).isAfter(dayjs(timeEntry.startTime))
-                  ? ` on ${formatDateNoYear(timeEntry.startTime)}`
-                  : ''
-              } to ${
-                timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
-              }${
-                dayjs(timeEntry.finishTime).isAfter(
+            {!showEditShiftHours && timeEntryExists && (
+              <div>
+                {formatTime(timeEntry.startTime)}
+                {dayjs(timeEntry.finishTime).isAfter(
+                  dayjs(timeEntry.startTime)
+                ) && ` on ${formatDateNoYear(timeEntry.startTime)}`}{' '}
+                to
+                <br />
+                {timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'}
+                {dayjs(timeEntry.finishTime).isAfter(
                   dayjs(timeEntry.startTime),
                   'day'
-                )
-                  ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
-                  : ''
-              }`}
+                ) && ` on ${formatDateNoYear(timeEntry.finishTime)}`}
+              </div>
+            )}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
