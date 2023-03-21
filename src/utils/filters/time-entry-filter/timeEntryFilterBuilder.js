@@ -6,7 +6,7 @@ import {
   joinAndConditions,
 } from '../resource-filter-builder/resourceFilterBuilder';
 
-const startDateOffset = 1
+const startDateOffset = 1;
 const endDateOffset = 2;
 
 const filterStartTimeEntriesOnDate = (resourceDateProperty, date) => {
