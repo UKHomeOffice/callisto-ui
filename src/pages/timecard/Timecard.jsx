@@ -150,6 +150,7 @@ const updateTimeEntryContextData = async (
 
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
+    console.log('actualEndTime ', timeEntry.actualEndTime);
 
     if (timeEntriesResponse.data.items?.length > 0) {
       const filteredTimeEntries = timeEntriesResponse.data.items.filter(
