@@ -76,8 +76,7 @@ const EditShiftTimecard = ({
             style={{ whiteSpace: 'nowrap' }}
           >
             {timeEntryExists
-              ? timecardDate === formatDate(timeEntry.startTime) ||
-                timecardDate === formatDate(timeEntry.finishTime)
+              ? timecardDate === formatDate(timeEntry.startTime)
                 ? 'Shift'
                 : 'Shift (continued)'
               : null}
@@ -110,9 +109,13 @@ const EditShiftTimecard = ({
           >
             {!showEditShiftHours &&
               timeEntryExists &&
-              `${formatTime(timeEntry.startTime)} to ${
+              `${formatTime(timeEntry.startTime)}${
+                dayjs(timeEntry.finishTime).isAfter(dayjs(timeEntry.startTime))
+                  ? ` on ${formatDateNoYear(timeEntry.startTime)}`
+                  : ''
+              } to ${
                 timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
-              } ${
+              }${
                 dayjs(timeEntry.finishTime).isAfter(
                   dayjs(timeEntry.startTime),
                   'day'
