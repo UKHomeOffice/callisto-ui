@@ -112,9 +112,18 @@ const EditShiftTimecard = ({
                 {formatTime(timeEntry.startTime)}
                 {dayjs(timeEntry.finishTime).isAfter(
                   dayjs(timeEntry.startTime)
-                ) && ` on ${formatDateNoYear(timeEntry.startTime)}`}{' '}
+                ) &&
+                  (dayjs(timeEntry.finishTime).diff(
+                    dayjs(timeEntry.startTime),
+                    'day'
+                  ) > 0
+                    ? ` on ${formatDateNoYear(timeEntry.startTime)}`
+                    : '')}{' '}
                 to
-                <br />
+                {dayjs(timeEntry.finishTime).isAfter(
+                  dayjs(timeEntry.startTime),
+                  'day'
+                ) && <br />}
                 {timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'}
                 {dayjs(timeEntry.finishTime).isAfter(
                   dayjs(timeEntry.startTime),
