@@ -36,6 +36,7 @@ const Timecard = () => {
     isAlertVisible,
     setSummaryMessages,
     setIsAlertVisible,
+    isErrorVisible,
   } = useTimecardContext();
   const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
 
@@ -63,7 +64,7 @@ const Timecard = () => {
     document.title = generateDocumentTitle('Timecard ');
     setTimecardDate(date);
     updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes]);
+  }, [date, timePeriodTypes, isErrorVisible]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
@@ -144,26 +145,36 @@ const updateTimeEntryContextData = async (
     .setFilter(buildTimeEntriesFilter(date, userId))
     .getUrlSearchParams();
 
+  const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
+  const timeCardEnd = dayjs(date).endOf('day');
+
   validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     if (timeEntriesResponse.data.items?.length > 0) {
-      const existingTimeEntries = timeEntriesResponse.data.items.map(
+      const filteredTimeEntries = timeEntriesResponse.data.items.filter(
         (timeEntry) => {
-          return new ContextTimeEntry(
-            timeEntry.id,
-            timeEntry.actualStartTime,
-            timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
-            timeEntry.timePeriodTypeId,
-            timeEntry.finishNextDay ??
-              isFinishTimeOnNextDay(
-                formatTime(timeEntry.actualStartTime),
-                formatTime(timeEntry.actualEndTime)
-              )
+          return !(
+            dayjs(timeEntry.actualEndTime).isBefore(timeCardStart) ||
+            dayjs(timeEntry.actualStartTime).isAfter(timeCardEnd) ||
+            (dayjs(timeEntry.actualStartTime).isBefore(timeCardStart) &&
+              !timeEntry.actualEndTime)
           );
         }
       );
-
+      const existingTimeEntries = filteredTimeEntries.map((timeEntry) => {
+        return new ContextTimeEntry(
+          timeEntry.id,
+          timeEntry.actualStartTime,
+          timeEntry.actualEndTime ? timeEntry.actualEndTime : '',
+          timeEntry.timePeriodTypeId,
+          timeEntry.finishNextDay ??
+            isFinishTimeOnNextDay(
+              formatTime(timeEntry.actualStartTime),
+              formatTime(timeEntry.actualEndTime)
+            )
+        );
+      });
       setTimeEntries(existingTimeEntries);
     } else {
       setTimeEntries([]);

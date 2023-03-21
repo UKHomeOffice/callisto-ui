@@ -106,7 +106,6 @@ describe('EditShiftHours', () => {
 
     it('should call updateTimeEntry when pressing save when there is an existing time entry', async () => {
       const timeEntryId = '1';
-      const inputtedEndTime = '06:00';
 
       const existingTimeEntry = {
         ...newTimeEntry,
@@ -129,12 +128,12 @@ describe('EditShiftHours', () => {
       act(() => {
         const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
         fireEvent.change(startTimeInput, {
-          target: { value: inputtedStartTime },
+          target: { value: '09:00' },
         });
 
         const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
-          target: { value: inputtedEndTime },
+          target: { value: '16:00' },
         });
 
         const saveButton = screen.getByText('Save');
@@ -147,8 +146,8 @@ describe('EditShiftHours', () => {
           {
             ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            actualStartTime: expectedActualStartTime,
-            actualEndTime: `${timecardDate}T${inputtedEndTime}:00+00:00`,
+            actualStartTime: '2022-09-01T09:00:00+00:00',
+            actualEndTime: '2022-09-01T16:00:00+00:00',
           },
           new URLSearchParams([
             ['tenantId', '00000000-0000-0000-0000-000000000000'],
@@ -1015,6 +1014,54 @@ describe('EditShiftHours', () => {
             defaultTimecardContext.setSummaryMessages
           ).not.toHaveBeenCalled();
         });
+      });
+    });
+  });
+
+  it('Should display an error when start time is forced after end time', async () => {
+    const timeEntryId = '1';
+    const timecardDate = '2022-09-02';
+
+    const existingTimeEntry = {
+      ...newTimeEntry,
+      timeEntryId: timeEntryId,
+      startTime: '2022-09-02 08:00:00+00:00',
+      finishTime: '2022-09-02 16:00:00+00:00',
+      finishNextDay: false,
+    };
+
+    defaultTimecardContext.timecardDate = timecardDate;
+
+    renderWithTimecardContext(
+      <EditShiftHours
+        setShowEditShiftHours={jest.fn()}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+        localStartDate={'2022-09-02 08:00:00+00:00'}
+        localEndDate={'2022-09-02 16:00:00+00:00'}
+        startEntryExists={true}
+        setSummaryMessages={jest.fn()}
+        isErrorVisible={true}
+        setIsErrorVisible={jest.fn()}
+      />,
+      defaultTimecardContext
+    );
+
+    act(() => {
+      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+      fireEvent.change(startTimeInput, {
+        target: { value: '23:00' },
+      });
+
+      const saveButton = screen.getByText('Save');
+      fireEvent.click(saveButton);
+    });
+
+    await waitFor(() => {
+      expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        [inputNames.shiftStartTime]: {
+          message: 'Start time must be before end time',
+        },
       });
     });
   });

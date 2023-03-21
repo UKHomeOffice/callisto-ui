@@ -34,6 +34,8 @@ export const defaultTimecardContext = {
   setSummaryMessages: jest.fn(),
   isAlertVisible: false,
   setIsAlertVisible: jest.fn(),
+  isErrorVisible: false,
+  setIsErrorVisible: jest.fn(),
 };
 
 export const createDefaultTimecardContext = () => {
@@ -50,6 +52,8 @@ export const createDefaultTimecardContext = () => {
     setSummaryMessages: jest.fn(),
     isAlertVisible: false,
     setIsAlertVisible: jest.fn(),
+    isErrorVisible: false,
+    setIsErrorVisible: jest.fn(),
   };
 };
 

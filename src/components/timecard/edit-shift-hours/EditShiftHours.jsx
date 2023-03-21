@@ -64,6 +64,7 @@ const EditShiftHours = ({
     setIsAlertVisible,
     summaryMessages,
     setSummaryMessages,
+    setIsErrorVisible,
   } = useTimecardContext();
 
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
@@ -148,10 +149,28 @@ const EditShiftHours = ({
     const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
     if (endTime) {
-      const actualEndDate = timeEntry.finishNextDay
-        ? getFinishTimeDate(actualStartDate)
-        : formatDate(localEndDate);
+      let actualEndDate;
+      if (isChecked) {
+        actualEndDate = formatDate(
+          `${formData['finishDate-year']}-${formData['finishDate-month']}-${formData['finishDate-day']}`
+        );
+      } else {
+        actualEndDate = timeEntry.finishNextDay
+          ? getFinishTimeDate(actualStartDate)
+          : formatDate(localEndDate);
+      }
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+    }
+
+    if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
+      summaryErrors[inputNames.shiftStartTime] = {
+        message: 'Start time must be before end time',
+      };
+
+      setSummaryErrors(summaryErrors);
+      setIsErrorVisible(true);
+      focusErrors();
+      return;
     }
 
     const timecardPayload = {
@@ -201,6 +220,7 @@ const EditShiftHours = ({
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
+          setIsErrorVisible(false);
         }
       },
       true,
@@ -233,17 +253,17 @@ const EditShiftHours = ({
     const formattedStart = formatDate(startDate);
     const formattedEnd = formatDate(endDate);
 
-    if (!finishEntryExists) {
+    if (startDate !== '' && endDate !== '') {
       summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
-        variables: { startDate: formattedStart },
+        variables: { startDate: formattedStart, endDate: formattedEnd },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
     } else {
       summaryMessages[messageKeys.update] = {
         template: `datesMoved`,
-        variables: { startDate: formattedStart, endDate: formattedEnd },
+        variables: { startDate: formattedStart },
       };
       setSummaryMessages(summaryMessages);
       setIsAlertVisible(true);
