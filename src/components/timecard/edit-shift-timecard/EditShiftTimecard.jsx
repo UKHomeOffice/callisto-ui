@@ -119,7 +119,7 @@ const EditShiftTimecard = ({
                   ) > 0
                     ? ` on ${formatDateNoYear(timeEntry.startTime)}`
                     : '')}{' '}
-                to
+                to{' '}
                 {dayjs(timeEntry.finishTime).isAfter(
                   dayjs(timeEntry.startTime),
                   'day'
