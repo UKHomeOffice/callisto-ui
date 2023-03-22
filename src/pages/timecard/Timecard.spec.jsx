@@ -205,7 +205,7 @@ describe('Timecard', () => {
   it('should render a timecard component with the correct date', () => {
     renderWithTimecardContext(<Timecard />);
 
-    const screenDate = screen.getByText('01 July 2022');
+    const screenDate = screen.getByText('1 July 2022');
     expect(screenDate).toBeTruthy();
   });
 
@@ -233,7 +233,7 @@ describe('Timecard', () => {
     });
 
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Shift')).toBeTruthy();
+    expect(screen.getByText('Time period')).toBeTruthy();
 
     fireEvent.click(screen.getByText('Remove'));
 
@@ -259,7 +259,7 @@ describe('Timecard', () => {
     expect(screen.queryByText('Add a new time period')).toBeFalsy();
     expect(screen.getByText('Start time')).toBeTruthy();
     expect(screen.getByText('Finish time')).toBeTruthy();
-    expect(screen.getByText('Shift')).toBeTruthy();
+    expect(screen.getByText('Time period')).toBeTruthy();
   });
 
   test.each([

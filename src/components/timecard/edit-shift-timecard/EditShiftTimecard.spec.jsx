@@ -44,7 +44,7 @@ describe('EditShiftTimecard', () => {
       <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
     );
 
-    const shiftDetailsTitles = ['Time Period', 'Hours', 'Meal break'];
+    const shiftDetailsTitles = ['Time period', 'Hours', 'Meal break'];
 
     shiftDetailsTitles.map((title) => {
       expect(screen.getByText(title)).toBeTruthy();
