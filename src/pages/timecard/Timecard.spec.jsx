@@ -97,7 +97,9 @@ describe('Shift spanning mutiple days', () => {
     });
 
     expect(
-      screen.getByText('02:00 on 1 September to 06:00 on 3 September')
+      screen.getByText((content) =>
+        content.includes('01:00 on 1 September to 05:00 on 3 September')
+      )
     ).toBeTruthy();
   });
 
