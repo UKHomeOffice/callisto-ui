@@ -51,6 +51,16 @@ describe('EditShiftTimecard', () => {
     });
   });
 
+  it('should display Shift title', () => {
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+    );
+
+    expect(
+      screen.getByText((content) => content.startsWith('Shift'))
+    ).toBeTruthy();
+  });
+
   it('should show EditShiftHours component when first directed to page', async () => {
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
