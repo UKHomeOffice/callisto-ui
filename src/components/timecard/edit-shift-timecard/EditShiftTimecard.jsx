@@ -61,6 +61,37 @@ const EditShiftTimecard = ({
     );
   };
 
+  function renderShiftHoursText({
+    timeEntryExists,
+    timeEntry,
+    formatTime,
+    formatDateNoYear,
+  }) {
+    if (!timeEntryExists) {
+      return null;
+    }
+
+    const startTime = timeEntry.startTime;
+    const finishTime = timeEntry.finishTime;
+
+    const shouldShowStartDate = dayjs(finishTime).isAfter(
+      dayjs(startTime),
+      'day'
+    );
+    const shouldShowLineBreak =
+      finishTime && !dayjs(finishTime).isSame(startTime, 'day');
+
+    return (
+      <div>
+        {formatTime(startTime)}
+        {shouldShowStartDate && <> on {formatDateNoYear(startTime)}</>} to{' '}
+        {shouldShowLineBreak && <br />}
+        {finishTime ? formatTime(finishTime) : '-'}
+        {shouldShowStartDate && <> on {formatDateNoYear(finishTime)}</>}
+      </div>
+    );
+  }
+
   return (
     <div className="grey-border">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
@@ -107,30 +138,14 @@ const EditShiftTimecard = ({
             className="govuk-summary-list__value govuk-!-width-full"
             style={{ whiteSpace: 'nowrap' }}
           >
-            {!showEditShiftHours && timeEntryExists && (
-              <div>
-                {formatTime(timeEntry.startTime)}
-                {dayjs(timeEntry.finishTime).isAfter(
-                  dayjs(timeEntry.startTime)
-                ) &&
-                  (dayjs(timeEntry.finishTime).diff(
-                    dayjs(timeEntry.startTime),
-                    'day'
-                  ) > 0
-                    ? ` on ${formatDateNoYear(timeEntry.startTime)}`
-                    : '')}{' '}
-                to{' '}
-                {dayjs(timeEntry.finishTime).isAfter(
-                  dayjs(timeEntry.startTime),
-                  'day'
-                ) && <br />}
-                {timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'}
-                {dayjs(timeEntry.finishTime).isAfter(
-                  dayjs(timeEntry.startTime),
-                  'day'
-                ) && ` on ${formatDateNoYear(timeEntry.finishTime)}`}
-              </div>
-            )}
+            {!showEditShiftHours &&
+              timeEntryExists &&
+              renderShiftHoursText({
+                timeEntryExists,
+                timeEntry,
+                formatTime,
+                formatDateNoYear,
+              })}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
