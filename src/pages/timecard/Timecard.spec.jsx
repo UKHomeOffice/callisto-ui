@@ -87,8 +87,8 @@ describe('Shift spanning mutiple days', () => {
       timeEntries: [
         {
           timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-09-01 01:00:00+00:00',
-          finishTime: '2022-09-03 05:00:00+00:00',
+          startTime: '2022-09-01T11:59:00+00:00',
+          finishTime: '2022-09-02 0:00:00+00:00',
         },
       ],
       setTimeEntries: jest.fn(),
@@ -98,7 +98,7 @@ describe('Shift spanning mutiple days', () => {
 
     expect(
       screen.getByText((content) =>
-        content.includes('01:00 on 1 September to 05:00 on 3 September')
+        content.includes('11:59 on 1 September to 00:00 on 2 September')
       )
     ).toBeTruthy();
   });
