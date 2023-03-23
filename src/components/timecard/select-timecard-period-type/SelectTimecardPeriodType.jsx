@@ -2,14 +2,16 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useTimecardContext } from '../../../context/TimecardContext';
-
 import Radios from '../../common/form/radios/Radios';
-import { useApplicationContext } from '../../../context/ApplicationContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
 
-const SelectTimecardPeriodType = (timePeriodTypes) => {
+const SelectTimecardPeriodType = (
+  timePeriodTypes,
+  timeEntries,
+  setTimeEntries
+) => {
   const {
     register,
     handleSubmit,
@@ -25,13 +27,8 @@ const SelectTimecardPeriodType = (timePeriodTypes) => {
 
   const radioName = 'timePeriod';
 
-  const {
-    timeEntries,
-    setTimeEntries,
-    summaryErrors,
-    setSummaryErrors,
-    setNewTimeEntry,
-  } = useTimecardContext();
+  const { summaryErrors, setSummaryErrors, setNewTimeEntry } =
+    useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -87,4 +84,6 @@ export default SelectTimecardPeriodType;
 
 SelectTimecardPeriodType.propTypes = {
   setTimecardEntryExists: PropTypes.func,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
 };

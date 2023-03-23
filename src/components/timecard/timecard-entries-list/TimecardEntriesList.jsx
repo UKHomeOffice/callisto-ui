@@ -7,6 +7,7 @@ import { PropTypes } from 'prop-types';
 const TimecardEntriesList = ({
   timecardDate,
   timeEntries,
+  setTimeEntries,
   timePeriodTypes,
   hasShiftMovedCallback,
 }) => {
@@ -22,6 +23,7 @@ const TimecardEntriesList = ({
             timeEntry,
             index,
             hasShiftMovedCallback,
+            setTimeEntries,
           })}
         </div>
       ))}
@@ -36,6 +38,8 @@ const renderTimeEntry = ({
   timeEntry,
   index,
   hasShiftMovedCallback,
+  timeEntries,
+  setTimeEntries,
 }) => {
   const periodType = timePeriodTypesMap[timeEntry.timePeriodTypeId];
 
@@ -46,6 +50,8 @@ const renderTimeEntry = ({
         timeEntry={timeEntry}
         timeEntriesIndex={index}
         hasShiftMovedCallback={hasShiftMovedCallback}
+        timeEntries={timeEntries}
+        setTimeEntries={setTimeEntries}
       />
     );
   } else {
@@ -55,6 +61,8 @@ const renderTimeEntry = ({
         timeEntry={timeEntry}
         timeEntriesIndex={index}
         timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
+        timeEntries={timeEntries}
+        setTimeEntries={setTimeEntries}
       />
     );
   }
@@ -65,6 +73,7 @@ export default TimecardEntriesList;
 TimecardEntriesList.propTypes = {
   timecardDate: PropTypes.string,
   timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
   timePeriodTypes: PropTypes.array,
   hasShiftMovedCallback: PropTypes.func,
 };

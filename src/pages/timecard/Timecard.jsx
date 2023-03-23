@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
@@ -27,8 +27,6 @@ import TimecardEntriesList from '../../components/timecard/timecard-entries-list
 const Timecard = () => {
   const {
     summaryErrors,
-    timeEntries,
-    setTimeEntries,
     newTimeEntry,
     setNewTimeEntry,
     summaryMessages,
@@ -38,6 +36,8 @@ const Timecard = () => {
     isErrorVisible,
   } = useTimecardContext();
   const { setServiceError, userId } = useApplicationContext();
+
+  const [timeEntries, setTimeEntries] = useState([]);
 
   let timePeriodTypes;
 
@@ -143,12 +143,17 @@ const Timecard = () => {
       </div>
 
       {(newTimeEntry || timeEntries.length === 0) && (
-        <SelectTimecardPeriodType timePeriodTypes={timePeriodTypes} />
+        <SelectTimecardPeriodType
+          timePeriodTypes={timePeriodTypes}
+          timeEntries={timeEntries}
+          setTimeEntries={setTimeEntries}
+        />
       )}
       {!newTimeEntry && timeEntries.length !== 0 && (
         <TimecardEntriesList
           timecardDate={timecardDate}
           timeEntries={timeEntries}
+          setTimeEntries={setTimeEntries}
           timePeriodTypes={timePeriodTypes}
           hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
         />

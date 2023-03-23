@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 export const TimecardContext = createContext();
 
 export const TimecardProvider = ({ children }) => {
-  const [timePeriodTypes, setTimePeriodTypes] = useState([]);
   const [summaryErrors, setSummaryErrors] = useState({});
-  const [timeEntries, setTimeEntries] = useState([]);
-  const [timecardDate, setTimecardDate] = useState();
   const [newTimeEntry, setNewTimeEntry] = useState();
   const [summaryMessages, setSummaryMessages] = useState({});
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -16,8 +13,6 @@ export const TimecardProvider = ({ children }) => {
   const value = {
     summaryErrors, //to go
     setSummaryErrors,
-    timeEntries, //to go
-    setTimeEntries,
     newTimeEntry, //to go
     setNewTimeEntry,
     summaryMessages, //to go

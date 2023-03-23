@@ -6,7 +6,7 @@ import {
   defaultTimecardContext,
   renderWithTimecardContext,
 } from '../../../test/helpers/TimecardContext';
-import EditShiftHours from './EditShiftHours';
+import EditShiftHours from './EditShift';
 import {
   createTimeEntry,
   updateTimeEntry,

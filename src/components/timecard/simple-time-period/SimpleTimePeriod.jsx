@@ -9,7 +9,6 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useApplicationContext } from '../../../context/ApplicationContext';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
   createTimeEntry,
@@ -23,9 +22,10 @@ const SimpleTimePeriod = ({
   timeEntry,
   timeEntriesIndex,
   timePeriodTitle,
+  timeEntries,
+  setTimeEntries,
 }) => {
   const { setServiceError, userId } = useApplicationContext();
-  const { timeEntries, setTimeEntries } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
   const handleClickRemoveButton = async (event) => {
@@ -157,4 +157,6 @@ SimpleTimePeriod.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   timePeriodTitle: PropTypes.string,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
 };

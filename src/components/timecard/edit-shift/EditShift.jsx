@@ -32,12 +32,14 @@ import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-uti
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
 
-const EditShiftHours = ({
+const EditShift = ({
   timecardDate,
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
   hasShiftMovedCallback,
+  timeEntries,
+  setTimeEntries,
 }) => {
   const {
     register,
@@ -57,8 +59,6 @@ const EditShiftHours = ({
   const [clashingTimes, setClashingTimes] = useState(null);
 
   const {
-    timeEntries,
-    setTimeEntries,
     summaryErrors,
     setSummaryErrors,
     setIsAlertVisible,
@@ -325,11 +325,13 @@ const EditShiftHours = ({
   );
 };
 
-export default EditShiftHours;
-EditShiftHours.propTypes = {
+export default EditShift;
+EditShift.propTypes = {
   timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
   hasShiftMovedCallback: PropTypes.func,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
 };

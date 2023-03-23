@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import EditShiftHours from '../edit-shift-hours/EditShiftHours';
+import EditShift from '../edit-shift/EditShift';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useTimecardContext } from '../../../context/TimecardContext';
@@ -19,13 +19,11 @@ const Shift = ({
   timeEntry,
   timeEntriesIndex,
   hasShiftMovedCallback,
+  timeEntries,
+  setTimeEntries,
 }) => {
   const { setServiceError } = useApplicationContext();
-  const {
-    timeEntries,
-    setTimeEntries,
-    setSummaryErrors,
-  } = useTimecardContext();
+  const { setSummaryErrors } = useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
@@ -130,12 +128,14 @@ const Shift = ({
         {showEditShiftHours && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
-              <EditShiftHours
+              <EditShift
                 timecardDate={timecardDate}
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
                 hasShiftMovedCallback={hasShiftMovedCallback}
+                timeEntries={timeEntries}
+                setTimeEntries={setTimeEntries}
               />
             </dt>
           </div>
@@ -178,4 +178,6 @@ Shift.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   hasShiftMovedCallback: PropTypes.func,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
 };

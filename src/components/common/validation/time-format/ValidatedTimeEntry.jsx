@@ -16,9 +16,9 @@ const ValidatedTimeEntry = ({
   timeEntry,
   timeEntriesIndex,
 }) => {
-  const { timeEntries, setTimeEntries } = useTimecardContext();
+  const { timeEntries, setTimeEntries } = useTimecardContext(); //shouldn't be here
 
-  const setFinishTimeText = () => {
+  const setFinishTimeText = () => { //shouldn't be here
     const startTimeValue = getFormValues(inputNames.shiftStartTime);
     const finishTimeValue = getFormValues(inputNames.shiftFinishTime);
     const newTimeEntries = deepCloneJson(timeEntries);
