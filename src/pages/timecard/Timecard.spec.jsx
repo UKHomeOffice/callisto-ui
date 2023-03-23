@@ -122,6 +122,25 @@ describe('Shift spanning mutiple days', () => {
     expect(screen.getByText('Shift (continued)')).toBeTruthy();
   });
 
+  it('should not display Shift(continued) if timecard spans more than one date and we are on start date', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01 01:00:00+00:00',
+          finishTime: '2022-09-03 05:00:00+00:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-09-01',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('Shift')).toBeTruthy();
+  });
+
   it('should call setTimeEntries when time entry spans over timecard date', async () => {
     mockDate = '2022-01-31';
     getTimeEntries.mockImplementation(() => {
