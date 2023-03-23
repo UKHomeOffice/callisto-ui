@@ -14,14 +14,18 @@ import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import dayjs from 'dayjs';
 
-const EditShiftTimecard = ({
+const Shift = ({
+  timecardDate,
   timeEntry,
   timeEntriesIndex,
   hasShiftMovedCallback,
 }) => {
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, setSummaryErrors } =
-    useTimecardContext();
+  const {
+    timeEntries,
+    setTimeEntries,
+    setSummaryErrors,
+  } = useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
@@ -127,6 +131,7 @@ const EditShiftTimecard = ({
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
               <EditShiftHours
+                timecardDate={timecardDate}
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
@@ -166,9 +171,10 @@ const EditShiftTimecard = ({
   );
 };
 
-export default EditShiftTimecard;
+export default Shift;
 
-EditShiftTimecard.propTypes = {
+Shift.propTypes = {
+  timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   hasShiftMovedCallback: PropTypes.func,

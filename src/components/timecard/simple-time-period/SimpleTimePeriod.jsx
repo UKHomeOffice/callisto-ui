@@ -18,9 +18,14 @@ import {
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
-const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
+const SimpleTimePeriod = ({
+  timecardDate,
+  timeEntry,
+  timeEntriesIndex,
+  timePeriodTitle,
+}) => {
   const { setServiceError, userId } = useApplicationContext();
-  const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
+  const { timeEntries, setTimeEntries } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
   const handleClickRemoveButton = async (event) => {
@@ -148,6 +153,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
 export default SimpleTimePeriod;
 
 SimpleTimePeriod.propTypes = {
+  timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   timePeriodTitle: PropTypes.string,

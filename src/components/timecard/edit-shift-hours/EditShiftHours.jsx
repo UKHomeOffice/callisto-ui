@@ -33,6 +33,7 @@ import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInpu
 import Checkbox from '../../common/form/checkbox/Checkbox';
 
 const EditShiftHours = ({
+  timecardDate,
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
@@ -58,7 +59,6 @@ const EditShiftHours = ({
   const {
     timeEntries,
     setTimeEntries,
-    timecardDate,
     summaryErrors,
     setSummaryErrors,
     setIsAlertVisible,
@@ -327,6 +327,7 @@ const EditShiftHours = ({
 
 export default EditShiftHours;
 EditShiftHours.propTypes = {
+  timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,

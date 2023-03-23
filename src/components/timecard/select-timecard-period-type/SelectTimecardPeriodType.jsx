@@ -9,7 +9,7 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
 
-const SelectTimecardPeriodType = () => {
+const SelectTimecardPeriodType = (timePeriodTypes) => {
   const {
     register,
     handleSubmit,
@@ -18,8 +18,6 @@ const SelectTimecardPeriodType = () => {
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
   });
-
-  const { timePeriodTypes } = useApplicationContext();
 
   const timePeriodTypeNames = timePeriodTypes.map((timePeriodType) => {
     return timePeriodType.name;

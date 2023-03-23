@@ -1,10 +1,11 @@
 import AddTimeCardPeriod from '../add-timecard-period/AddTimeCardPeriod';
 import { getTimePeriodTypesMap } from '../../../utils/time-entry-utils/timeEntryUtils';
-import EditShiftTimecard from '../edit-shift-timecard/EditShiftTimecard';
+import Shift from '../shift/Shift';
 import SimpleTimePeriod from '../simple-time-period/SimpleTimePeriod';
 import { PropTypes } from 'prop-types';
 
 const TimecardEntriesList = ({
+  timecardDate,
   timeEntries,
   timePeriodTypes,
   hasShiftMovedCallback,
@@ -16,6 +17,7 @@ const TimecardEntriesList = ({
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
           {renderTimeEntry({
+            timecardDate,
             timePeriodTypesMap,
             timeEntry,
             index,
@@ -29,6 +31,7 @@ const TimecardEntriesList = ({
 };
 
 const renderTimeEntry = ({
+  timecardDate,
   timePeriodTypesMap,
   timeEntry,
   index,
@@ -38,7 +41,8 @@ const renderTimeEntry = ({
 
   if (periodType === 'Shift') {
     return (
-      <EditShiftTimecard
+      <Shift
+        timecardDate={timecardDate}
         timeEntry={timeEntry}
         timeEntriesIndex={index}
         hasShiftMovedCallback={hasShiftMovedCallback}
@@ -47,6 +51,7 @@ const renderTimeEntry = ({
   } else {
     return (
       <SimpleTimePeriod
+        timecardDate={timecardDate}
         timeEntry={timeEntry}
         timeEntriesIndex={index}
         timePeriodTitle={timePeriodTypesMap[timeEntry.timePeriodTypeId]}
@@ -58,6 +63,7 @@ const renderTimeEntry = ({
 export default TimecardEntriesList;
 
 TimecardEntriesList.propTypes = {
+  timecardDate: PropTypes.string,
   timeEntries: PropTypes.array,
   timePeriodTypes: PropTypes.array,
   hasShiftMovedCallback: PropTypes.func,

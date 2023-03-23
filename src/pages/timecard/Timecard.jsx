@@ -29,7 +29,6 @@ const Timecard = () => {
     summaryErrors,
     timeEntries,
     setTimeEntries,
-    setTimecardDate,
     newTimeEntry,
     setNewTimeEntry,
     summaryMessages,
@@ -38,11 +37,13 @@ const Timecard = () => {
     setIsAlertVisible,
     isErrorVisible,
   } = useTimecardContext();
-  const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
 
-  const { date } = useParams();
-  const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
-  const nextDay = formatDate(dayjs(date).add(1, 'day'));
+  let timePeriodTypes;
+
+  const { date: timecardDate } = useParams();
+  const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
+  const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
   const desiredErrorOrder = [
     inputNames.shiftStartTime,
@@ -57,14 +58,33 @@ const Timecard = () => {
   ];
 
   const hasShiftMovedFromTimecardCallback = () => {
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
+    updateTimeEntryContextData(
+      timecardDate,
+      setTimeEntries,
+      setServiceError,
+      userId
+    );
   };
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes, isErrorVisible]);
+    updateTimeEntryContextData(
+      timecardDate,
+      setTimeEntries,
+      setServiceError,
+      userId
+    );
+
+    timePeriodTypes = async () => {
+      const params = new UrlSearchParamBuilder()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
+
+      validateServiceErrors(setServiceError, async () => {
+        return await getTimePeriodTypes(params).data?.items;
+      });
+    };
+  }, [timecardDate, timePeriodTypes, isErrorVisible]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
@@ -86,7 +106,9 @@ const Timecard = () => {
         />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
-      <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
+      <h2 className="govuk-heading-m">
+        {dayjs(timecardDate).format('DD MMMM YYYY')}
+      </h2>
       <div className="govuk-button-group">
         <Link
           onClick={() => {
@@ -121,10 +143,11 @@ const Timecard = () => {
       </div>
 
       {(newTimeEntry || timeEntries.length === 0) && (
-        <SelectTimecardPeriodType />
+        <SelectTimecardPeriodType timePeriodTypes={timePeriodTypes} />
       )}
       {!newTimeEntry && timeEntries.length !== 0 && (
         <TimecardEntriesList
+          timecardDate={timecardDate}
           timeEntries={timeEntries}
           timePeriodTypes={timePeriodTypes}
           hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}

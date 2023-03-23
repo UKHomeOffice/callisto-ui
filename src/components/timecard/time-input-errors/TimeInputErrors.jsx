@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
+import { useEffect } from 'react';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import { clashingProperties } from '../../../utils/constants';
 import {
@@ -9,8 +10,23 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const TimeInputErrors = ({ clashingProperty, clashes }) => {
-  const { timePeriodTypes } = useApplicationContext();
-  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
+  let timePeriodTypes;
+
+  const { setServiceError } = useApplicationContext();
+
+  const timePeriodTypesMap = await getTimePeriodTypesMap(timePeriodTypes);
+
+  useEffect(() => {
+    timePeriodTypes = async () => {
+      const params = new UrlSearchParamBuilder()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
+  
+      validateServiceErrors(setServiceError, async () => {
+        return await getTimePeriodTypes(params).data?.items;
+      });
+    };
+  })
 
   const displayClashingProperty = () => {
     if (clashingProperty === clashingProperties.startTime) {
