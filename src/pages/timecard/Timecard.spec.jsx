@@ -80,7 +80,7 @@ describe('Shift spanning mutiple days', () => {
     });
   });
 
-  it('should display start and finish time on timecard when both times have been entered', async () => {
+  it('should display start and finish time, and start and finish date when shift spans multiple days', async () => {
     renderWithTimecardContext(<Timecard />, {
       summaryErrors: {},
       setSummaryErrors: jest.fn(),
