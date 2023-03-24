@@ -79,7 +79,6 @@ const Timecard = () => {
       userId
     );
 
-
     const fetchTimePeriodTypeData = async () => {
       const periodTypes = await getTimePeriodTypes(params);
       const periodItems = periodTypes.data?.items;

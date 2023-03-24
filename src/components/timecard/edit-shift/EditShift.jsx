@@ -155,19 +155,24 @@ const EditShift = ({
       const response = !timeEntry.timeEntryId
         ? await createTimeEntry(timecardPayload, params)
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
-      if (response.ok) {
+      if (response.status === 200) {
         if (startEntryExists) {
           //to be made better
-          timeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
-            .setStartTime(validatedData.startDateTime)
-            .setFinishTime(validatedData.finishDateTime);
+          setTimeEntries([
+            ...timeEntries.slice(0, timeEntriesIndex),
+            ContextTimeEntry.createFrom(timeEntry)
+              .setStartTime(validatedData.startDateTime)
+              .setFinishTime(validatedData.finishDateTime),
+            ...timeEntries.slice(timeEntriesIndex + 1),
+          ]);
         } else {
-          timeEntries.push(
+          setTimeEntries([
+            ...timeEntries,
             ContextTimeEntry.createFrom(timeEntry)
               .setStartTime(validatedData.startDateTime)
               .setFinishTime(validatedData.finishDateTime)
-              .setTimeEntryId(response.data.items[0].id)
-          );
+              .setTimeEntryId(response.data.items[0].id),
+          ]).push();
         }
       }
     }

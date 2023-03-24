@@ -23,6 +23,7 @@ const TimecardEntriesList = ({
             timeEntry,
             index,
             hasShiftMovedCallback,
+            timeEntries,
             setTimeEntries,
           })}
         </div>
