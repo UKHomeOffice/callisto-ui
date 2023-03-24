@@ -86,7 +86,7 @@ const Timecard = () => {
         />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
-      <h2 className="govuk-heading-m">{dayjs(date).format('DD MMMM YYYY')}</h2>
+      <h2 className="govuk-heading-m">{dayjs(date).format('D MMMM YYYY')}</h2>
       <div className="govuk-button-group">
         <Link
           onClick={() => {

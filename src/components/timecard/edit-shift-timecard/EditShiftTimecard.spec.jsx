@@ -39,16 +39,26 @@ const otherTimeEntry = {
 };
 
 describe('EditShiftTimecard', () => {
-  it('should display a summary list with titles for shift, hours and meal break', () => {
+  it('should display a summary list with titles for time period, hours and meal break', () => {
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
     );
 
-    const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
+    const shiftDetailsTitles = ['Time period', 'Hours', 'Meal break'];
 
     shiftDetailsTitles.map((title) => {
       expect(screen.getByText(title)).toBeTruthy();
     });
+  });
+
+  it('should display Shift title', () => {
+    renderWithTimecardContext(
+      <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+    );
+
+    expect(
+      screen.getByText((content) => content.startsWith('Shift'))
+    ).toBeTruthy();
   });
 
   it('should show EditShiftHours component when first directed to page', async () => {
@@ -87,7 +97,7 @@ describe('EditShiftTimecard', () => {
     });
   });
 
-  it('should render the "Remove" and "Change" buttons when there is timecard data', async () => {
+  it('should render the "Remove" and "Edit" buttons when there is timecard data', async () => {
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
     );
@@ -103,7 +113,7 @@ describe('EditShiftTimecard', () => {
     expect(mealBreakChangeButton).toBeTruthy();
   });
 
-  it('should show EditShiftHours component when clicking "Change" button', async () => {
+  it('should show EditShiftHours component when clicking "Edit" button', async () => {
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
     );
@@ -119,7 +129,7 @@ describe('EditShiftTimecard', () => {
     });
   });
 
-  it('should not render the "Remove" or "Change" buttons when there is no timecard data', async () => {
+  it('should not render the "Remove" or "Edit" buttons when there is no timecard data', async () => {
     renderWithTimecardContext(
       <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
