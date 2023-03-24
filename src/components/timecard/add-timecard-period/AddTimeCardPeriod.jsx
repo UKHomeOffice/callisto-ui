@@ -2,12 +2,12 @@ import { useTimecardContext } from '../../../context/TimecardContext';
 import { Link } from 'react-router-dom';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AddTimeCardPeriod = () => {
-  const { setSummaryErrors, setNewTimeEntry } = useTimecardContext();
+const AddTimeCardPeriod = (setSummaryErrors) => {
+  const { setNewTimeEntry } = useTimecardContext();
 
   const handleAddTimePeriod = (event) => {
     event.preventDefault();
-    setSummaryErrors({});
+    setSummaryErrors([]);
     setNewTimeEntry(true);
   };
 

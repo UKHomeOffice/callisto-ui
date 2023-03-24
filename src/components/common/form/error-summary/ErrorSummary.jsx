@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 
+// This class needs looking at to check it works as we want
+
 const ErrorSummary = ({ errors, keys }) => {
   return (
     <div

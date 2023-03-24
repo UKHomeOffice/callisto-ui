@@ -1,10 +1,11 @@
-import AddTimeCardPeriod from '../add-timecard-period/AddTimeCardPeriod';
 import { getTimePeriodTypesMap } from '../../../utils/time-entry-utils/timeEntryUtils';
 import Shift from '../shift/Shift';
 import SimpleTimePeriod from '../simple-time-period/SimpleTimePeriod';
 import { PropTypes } from 'prop-types';
 
 const TimecardEntriesList = ({
+  summaryErrors,
+  setSummaryErrors,
   timecardDate,
   timeEntries,
   setTimeEntries,
@@ -18,6 +19,8 @@ const TimecardEntriesList = ({
       {timeEntries.map((timeEntry, index) => (
         <div key={index} className="govuk-!-margin-bottom-6">
           {renderTimeEntry({
+            summaryErrors,
+            setSummaryErrors,
             timecardDate,
             timePeriodTypesMap,
             timeEntry,
@@ -28,12 +31,13 @@ const TimecardEntriesList = ({
           })}
         </div>
       ))}
-      <AddTimeCardPeriod />
     </div>
   );
 };
 
 const renderTimeEntry = ({
+  summaryErrors,
+  setSummaryErrors,
   timecardDate,
   timePeriodTypesMap,
   timeEntry,
@@ -47,6 +51,8 @@ const renderTimeEntry = ({
   if (periodType === 'Shift') {
     return (
       <Shift
+        summaryErrors={summaryErrors}
+        setSummaryErrors={setSummaryErrors}
         timecardDate={timecardDate}
         timeEntry={timeEntry}
         timeEntriesIndex={index}

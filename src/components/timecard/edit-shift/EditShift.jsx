@@ -33,6 +33,8 @@ import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInpu
 import Checkbox from '../../common/form/checkbox/Checkbox';
 
 const EditShift = ({
+  summaryErrors,
+  setSummaryErrors,
   timecardDate,
   setShowEditShiftHours,
   timeEntry,
@@ -59,8 +61,6 @@ const EditShift = ({
   const [clashingTimes, setClashingTimes] = useState(null);
 
   const {
-    summaryErrors,
-    setSummaryErrors,
     setIsAlertVisible,
     summaryMessages,
     setSummaryMessages,
@@ -97,45 +97,45 @@ const EditShift = ({
     }
   };
 
-  const handleServerValidationErrors = (errors) => {
-    if (errors === null || !Array.isArray(errors)) {
-      return false;
-    }
-    const summaryErrors = {};
-    let errorsHandled = true;
+  // const handleServerValidationErrors = (errors) => {
+  //   if (errors === null || !Array.isArray(errors)) {
+  //     return false;
+  //   }
+  //   const summaryErrors = {};
+  //   let errorsHandled = true;
 
-    for (const error of errors) {
-      if (error.field === clashingProperties.startAndEndTime) {
-        setClashingTimes(error.data);
-        setClashingProperty(error.field);
-        summaryErrors[inputNames.shiftStartTime] = {
-          message:
-            'Your start and finish times must not overlap with another time period',
-        };
-      } else if (error.field === clashingProperties.startTime) {
-        setClashingTimes(error.data);
-        setClashingProperty(error.field);
-        summaryErrors[inputNames.shiftStartTime] = {
-          message: 'Your start time must not overlap with another time period',
-        };
-      } else if (error.field === clashingProperties.endTime) {
-        setClashingTimes(error.data);
-        setClashingProperty(error.field);
-        summaryErrors[inputNames.shiftFinishTime] = {
-          message: 'Your finish time must not overlap with another time period',
-        };
-      } else {
-        errorsHandled = false;
-        break;
-      }
-    }
-    if (errorsHandled) {
-      setSummaryErrors(summaryErrors);
-      return true;
-    }
+  //   for (const error of errors) {
+  //     if (error.field === clashingProperties.startAndEndTime) {
+  //       setClashingTimes(error.data);
+  //       setClashingProperty(error.field);
+  //       summaryErrors[inputNames.shiftStartTime] = {
+  //         message:
+  //           'Your start and finish times must not overlap with another time period',
+  //       };
+  //     } else if (error.field === clashingProperties.startTime) {
+  //       setClashingTimes(error.data);
+  //       setClashingProperty(error.field);
+  //       summaryErrors[inputNames.shiftStartTime] = {
+  //         message: 'Your start time must not overlap with another time period',
+  //       };
+  //     } else if (error.field === clashingProperties.endTime) {
+  //       setClashingTimes(error.data);
+  //       setClashingProperty(error.field);
+  //       summaryErrors[inputNames.shiftFinishTime] = {
+  //         message: 'Your finish time must not overlap with another time period',
+  //       };
+  //     } else {
+  //       errorsHandled = false;
+  //       break;
+  //     }
+  //   }
+  //   if (errorsHandled) {
+  //     setSummaryErrors(summaryErrors);
+  //     return true;
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   const onSubmit = async (formData) => {
     const validatedData = validateSubmittedData(formData);
@@ -174,7 +174,11 @@ const EditShift = ({
               .setTimeEntryId(response.data.items[0].id),
           ]).push();
         }
+      } else {
+        // Handle response errors here
       }
+    } else {
+      handleError(validatedData.errors);
     }
   };
 
@@ -182,15 +186,28 @@ const EditShift = ({
     //move to utils
     dayjs.extend(utc);
 
+    let newErrors = [];
+
     const startTime = formData[`${inputName}-start-time`];
     const finishTime = formData[`${inputName}-finish-time`];
 
     let isValid = true;
-    if (
-      !isTimeValid(startTime, 'start time') ||
-      !isTimeValid(finishTime, 'finish time')
-    ) {
+    if (!isTimeValid(startTime, 'start time')) {
       isValid = false;
+      newErrors.push({
+        inputName: 'shift-start-time',
+        message:
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800`',
+      });
+    }
+
+    if (!isTimeValid(finishTime, 'finish time')) {
+      isValid = false;
+      newErrors.push({
+        inputName: 'shift-start-time',
+        message:
+          'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800`',
+      });
     }
 
     if (!dayjs(localStartDate).isValid || !dayjs(localEndDate).isValid) {
@@ -209,12 +226,17 @@ const EditShift = ({
 
     if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
       isValid = false;
+      newErrors.push({
+        inputName: 'shift-start-time',
+        message: 'Start time must be before end time`',
+      });
     }
 
     const validatedData = {
       isValid: isValid,
       startDateTime: actualStartDateTime,
       finishDateTime: actualEndDateTime,
+      errors: newErrors,
     };
 
     return validatedData;

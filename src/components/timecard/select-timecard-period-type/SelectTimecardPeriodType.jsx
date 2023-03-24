@@ -8,6 +8,8 @@ import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryU
 import { focusErrors } from '../../../utils/common-utils/common-utils';
 
 const SelectTimecardPeriodType = ({
+  summaryErrors,
+  setSummaryErrors,
   timePeriodTypes,
   timeEntries,
   setTimeEntries,
@@ -27,8 +29,11 @@ const SelectTimecardPeriodType = ({
 
   const radioName = 'timePeriod';
 
-  const { summaryErrors, setSummaryErrors, setNewTimeEntry } =
-    useTimecardContext();
+  const {
+    summaryErrors,
+    setSummaryErrors,
+    setNewTimeEntry,
+  } = useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);

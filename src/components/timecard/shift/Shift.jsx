@@ -15,6 +15,8 @@ import { useApplicationContext } from '../../../context/ApplicationContext';
 import dayjs from 'dayjs';
 
 const Shift = ({
+  summaryErrors,
+  setSummaryErrors,
   timecardDate,
   timeEntry,
   timeEntriesIndex,
@@ -23,7 +25,6 @@ const Shift = ({
   setTimeEntries,
 }) => {
   const { setServiceError } = useApplicationContext();
-  const { setSummaryErrors } = useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const [showEditShiftHours, setShowEditShiftHours] = useState(
@@ -129,6 +130,8 @@ const Shift = ({
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__key">
               <EditShift
+                summaryErrors={summaryErrors}
+                setSummaryErrors={setSummaryErrors}
                 timecardDate={timecardDate}
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
