@@ -14,13 +14,11 @@ import {
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import dayjs from 'dayjs';
-import { getTimePeriodTypesMap } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShiftTimecard = ({
   timeEntry,
   timeEntriesIndex,
   hasShiftMovedCallback,
-  timePeriodTypes,
 }) => {
   const { setServiceError } = useApplicationContext();
   const { timeEntries, setTimeEntries, setSummaryErrors, timecardDate } =
@@ -35,8 +33,6 @@ const EditShiftTimecard = ({
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
-  const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
-  const periodType = timePeriodTypesMap[timeEntry.timePeriodTypeId];
   useEffect(() => {
     if (timeEntryExists === false) {
       setShowEditShiftHours(true);
@@ -111,8 +107,8 @@ const EditShiftTimecard = ({
           >
             {timeEntryExists
               ? timecardDate === formatDate(timeEntry.startTime)
-                ? periodType
-                : `${periodType} (continued)`
+                ? 'Shift'
+                : 'Shift (continued)'
               : null}
           </dd>
           <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>

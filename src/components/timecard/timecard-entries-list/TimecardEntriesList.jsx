@@ -20,7 +20,6 @@ const TimecardEntriesList = ({
             timeEntry,
             index,
             hasShiftMovedCallback,
-            timePeriodTypes,
           })}
         </div>
       ))}
@@ -34,7 +33,6 @@ const renderTimeEntry = ({
   timeEntry,
   index,
   hasShiftMovedCallback,
-  timePeriodTypes,
 }) => {
   const periodType = timePeriodTypesMap[timeEntry.timePeriodTypeId];
 
@@ -44,7 +42,6 @@ const renderTimeEntry = ({
         timeEntry={timeEntry}
         timeEntriesIndex={index}
         hasShiftMovedCallback={hasShiftMovedCallback}
-        timePeriodTypes={timePeriodTypes}
       />
     );
   } else {
