@@ -46,11 +46,11 @@ export const formatJustYear = (dateTime) => {
   return dayjs(dateTime).format('YYYY');
 };
 
-export const removeTimecardContextEntry = (
+export const removeTimecardContextEntry = ({
   timeEntries,
   setTimeEntries,
-  removeAtIndex
-) => {
+  removeAtIndex,
+}) => {
   const newTimeEntries = deepCloneJson(timeEntries);
   newTimeEntries.splice(removeAtIndex, 1);
   setTimeEntries(newTimeEntries);

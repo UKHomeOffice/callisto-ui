@@ -7,11 +7,11 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
 
-const SelectTimecardPeriodType = (
+const SelectTimecardPeriodType = ({
   timePeriodTypes,
   timeEntries,
-  setTimeEntries
-) => {
+  setTimeEntries,
+}) => {
   const {
     register,
     handleSubmit,
@@ -83,7 +83,7 @@ const SelectTimecardPeriodType = (
 export default SelectTimecardPeriodType;
 
 SelectTimecardPeriodType.propTypes = {
-  setTimecardEntryExists: PropTypes.func,
+  timePeriodTypes: PropTypes.array,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
 };

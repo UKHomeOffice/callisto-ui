@@ -138,137 +138,230 @@ const EditShift = ({
   };
 
   const onSubmit = async (formData) => {
+    const validatedData = validateSubmittedData(formData);
+
+    if (validatedData.isValid) {
+      const timecardPayload = {
+        ownerId: userId,
+        timePeriodTypeId: timeEntry.timePeriodTypeId,
+        actualStartTime: validatedData.startDateTime,
+        actualEndTime: validatedData.finishDateTime,
+      };
+
+      const params = new UrlSearchParamBuilder()
+        .setTenantId('00000000-0000-0000-0000-000000000000')
+        .getUrlSearchParams();
+
+      const response = !timeEntry.timeEntryId
+        ? await createTimeEntry(timecardPayload, params)
+        : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
+      if (response.ok) {
+        if (startEntryExists) {
+          //to be made better
+          timeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(timeEntry)
+            .setStartTime(validatedData.startDateTime)
+            .setFinishTime(validatedData.finishDateTime);
+        } else {
+          timeEntries.push(
+            ContextTimeEntry.createFrom(timeEntry)
+              .setStartTime(validatedData.startDateTime)
+              .setFinishTime(validatedData.finishDateTime)
+              .setTimeEntryId(response.data.items[0].id)
+          );
+        }
+      }
+    }
+  };
+
+  const validateSubmittedData = (formData) => {
+    //move to utils
     dayjs.extend(utc);
 
-    const actualStartDate = formatDate(localStartDate);
-    const actualStartTime = formData[`${inputName}-start-time`];
+    const startTime = formData[`${inputName}-start-time`];
+    const finishTime = formData[`${inputName}-finish-time`];
+
+    let isValid = true;
+    if (
+      !isTimeValid(startTime, 'start time') ||
+      !isTimeValid(finishTime, 'finish time')
+    ) {
+      isValid = false;
+    }
+
+    if (!dayjs(localStartDate).isValid || !dayjs(localEndDate).isValid) {
+      isValid = false;
+    }
+
     const actualStartDateTime = formatDateTimeISO(
-      actualStartDate + ' ' + actualStartTime
+      formatDate(localStartDate) + ' ' + startTime
     );
 
-    const endTime = formData[`${inputName}-finish-time`] || null;
     let actualEndDateTime = '';
-    if (endTime) {
-      let actualEndDate;
-      if (isChecked) {
-        actualEndDate = formatDate(
-          `${formData['finishDate-year']}-${formData['finishDate-month']}-${formData['finishDate-day']}`
-        );
-      } else {
-        actualEndDate = timeEntry.finishNextDay
-          ? getFinishTimeDate(actualStartDate)
-          : formatDate(localEndDate);
-      }
-      actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+    if (finishTime) {
+      const actualEndDate = formatDate(localEndDate);
+      actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + finishTime);
     }
 
     if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
-      summaryErrors[inputNames.shiftStartTime] = {
-        message: 'Start time must be before end time',
-      };
-
-      setSummaryErrors(summaryErrors);
-      setIsErrorVisible(true);
-      focusErrors();
-      return;
+      isValid = false;
     }
 
-    const timecardPayload = {
-      ownerId: userId,
-      timePeriodTypeId: timeEntry.timePeriodTypeId,
-      actualStartTime: actualStartDateTime,
-      actualEndTime: actualEndDateTime,
+    const validatedData = {
+      isValid: isValid,
+      startDateTime: actualStartDateTime,
+      finishDateTime: actualEndDateTime,
     };
 
-    validateServiceErrors(
-      setServiceError,
-      async () => {
-        const params = new UrlSearchParamBuilder()
-          .setTenantId('00000000-0000-0000-0000-000000000000')
-          .getUrlSearchParams();
-
-        const response = !timeEntry.timeEntryId
-          ? await createTimeEntry(timecardPayload, params)
-          : await updateTimeEntry(
-              timeEntry.timeEntryId,
-              timecardPayload,
-              params
-            );
-
-        if (response?.data?.items?.length > 0) {
-          const responseItem = response.data.items[0];
-          const formattedStartTime = responseItem.actualStartTime;
-          const formattedEndTime = responseItem.actualEndTime
-            ? responseItem.actualEndTime
-            : '';
-
-          const newTimeEntries = deepCloneJson(timeEntries);
-          newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
-            timeEntry
-          )
-            .setStartTime(formattedStartTime)
-            .setFinishTime(formattedEndTime)
-            .setTimeEntryId(responseItem.id)
-            .setFinishNextDay(timeEntry.finishNextDay);
-
-          if (
-            startEntryExists &&
-            hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
-          ) {
-            setMessages(actualStartDateTime, actualEndDateTime);
-          }
-          setTimeEntries(newTimeEntries);
-          setSummaryErrors({});
-          setShowEditShiftHours(false);
-          setIsErrorVisible(false);
-        }
-      },
-      true,
-      handleServerValidationErrors
-    );
+    return validatedData;
   };
 
-  const hasShiftMovedFromTimecard = (startDate, endDate) => {
-    const startTimecard = dayjs(timecardDate).startOf('day');
-    const endTimecard = dayjs(timecardDate).endOf('day');
-    const shiftStart = dayjs(startDate);
-    const shiftEnd = dayjs(endDate);
-
-    const singleDateMoved =
-      !finishEntryExists &&
-      (shiftStart.isBefore(startTimecard) || shiftStart.isAfter(endTimecard));
-
-    const bothDatesMoved =
-      finishEntryExists &&
-      (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
-
-    if (singleDateMoved || bothDatesMoved) {
-      hasShiftMovedCallback();
+  const isTimeValid = (time, timeType) => {
+    // Move to utils
+    if (time.length < 3 && time.length > 0) {
+      const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
+      return hhTimeRegEx.test(time);
+    } else if (time.length > 3 && time.length < 6) {
+      const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+      return hhmmTimeRegEx.test(time);
+    } else if (time.length == 0 && timeType === 'finish time') {
       return true;
-    }
-    return false;
-  };
-
-  const setMessages = (startDate, endDate) => {
-    const formattedStart = formatDate(startDate);
-    const formattedEnd = formatDate(endDate);
-
-    if (startDate !== '' && endDate !== '') {
-      summaryMessages[messageKeys.update] = {
-        template: `datesMoved`,
-        variables: { startDate: formattedStart, endDate: formattedEnd },
-      };
-      setSummaryMessages(summaryMessages);
-      setIsAlertVisible(true);
     } else {
-      summaryMessages[messageKeys.update] = {
-        template: `datesMoved`,
-        variables: { startDate: formattedStart },
-      };
-      setSummaryMessages(summaryMessages);
-      setIsAlertVisible(true);
+      return false;
     }
   };
+
+  // const oldOnSubmit = async (formData) => {
+  //   dayjs.extend(utc);
+
+  //   const actualStartDate = formatDate(localStartDate);
+  //   const actualStartTime = formData[`${inputName}-start-time`];
+  //   const actualStartDateTime = formatDateTimeISO(
+  //     actualStartDate + ' ' + actualStartTime
+  //   );
+
+  //   const endTime = formData[`${inputName}-finish-time`] || null;
+  //   let actualEndDateTime = '';
+  //   if (endTime) {
+  //     let actualEndDate;
+  //     if (isChecked) {
+  //       actualEndDate = formatDate(
+  //         `${formData['finishDate-year']}-${formData['finishDate-month']}-${formData['finishDate-day']}`
+  //       );
+  //     } else {
+  //       actualEndDate = timeEntry.finishNextDay
+  //         ? getFinishTimeDate(actualStartDate)
+  //         : formatDate(localEndDate);
+  //     }
+  //     actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + endTime);
+  //   }
+
+  //   if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
+  //     summaryErrors[inputNames.shiftStartTime] = {
+  //       message: 'Start time must be before end time',
+  //     };
+
+  //     setSummaryErrors(summaryErrors);
+  //     setIsErrorVisible(true);
+  //     focusErrors();
+  //     return;
+  //   }
+
+  //   const timecardPayload = {
+  //     ownerId: userId,
+  //     timePeriodTypeId: timeEntry.timePeriodTypeId,
+  //     actualStartTime: actualStartDateTime,
+  //     actualEndTime: actualEndDateTime,
+  //   };
+
+  //   validateServiceErrors(
+  //     setServiceError,
+  //     async () => {
+  //       const params = new UrlSearchParamBuilder()
+  //         .setTenantId('00000000-0000-0000-0000-000000000000')
+  //         .getUrlSearchParams();
+
+  //       const response = !timeEntry.timeEntryId
+  //         ? await createTimeEntry(timecardPayload, params)
+  //         : await updateTimeEntry(
+  //             timeEntry.timeEntryId,
+  //             timecardPayload,
+  //             params
+  //           );
+
+  //       if (response?.data?.items?.length > 0) {
+  //         const responseItem = response.data.items[0];
+  //         const formattedStartTime = responseItem.actualStartTime;
+  //         const formattedEndTime = responseItem.actualEndTime
+  //           ? responseItem.actualEndTime
+  //           : '';
+
+  //         const newTimeEntries = deepCloneJson(timeEntries);
+  //         newTimeEntries[timeEntriesIndex] = ContextTimeEntry.createFrom(
+  //           timeEntry
+  //         )
+  //           .setStartTime(formattedStartTime)
+  //           .setFinishTime(formattedEndTime)
+  //           .setTimeEntryId(responseItem.id)
+  //           .setFinishNextDay(timeEntry.finishNextDay);
+
+  //         if (
+  //           startEntryExists &&
+  //           hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
+  //         ) {
+  //           setMessages(actualStartDateTime, actualEndDateTime);
+  //         }
+  //         setTimeEntries(newTimeEntries);
+  //         setSummaryErrors({});
+  //         setShowEditShiftHours(false);
+  //         setIsErrorVisible(false);
+  //       }
+  //     },
+  //     true,
+  //     handleServerValidationErrors
+  //   );
+  // };
+
+  // const hasShiftMovedFromTimecard = (startDate, endDate) => {
+  //   const startTimecard = dayjs(timecardDate).startOf('day');
+  //   const endTimecard = dayjs(timecardDate).endOf('day');
+  //   const shiftStart = dayjs(startDate);
+  //   const shiftEnd = dayjs(endDate);
+
+  //   const singleDateMoved =
+  //     !finishEntryExists &&
+  //     (shiftStart.isBefore(startTimecard) || shiftStart.isAfter(endTimecard));
+
+  //   const bothDatesMoved =
+  //     finishEntryExists &&
+  //     (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
+
+  //   if (singleDateMoved || bothDatesMoved) {
+  //     hasShiftMovedCallback();
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
+  // const setMessages = (startDate, endDate) => {
+  //   const formattedStart = formatDate(startDate);
+  //   const formattedEnd = formatDate(endDate);
+
+  //   if (startDate !== '' && endDate !== '') {
+  //     summaryMessages[messageKeys.update] = {
+  //       template: `datesMoved`,
+  //       variables: { startDate: formattedStart, endDate: formattedEnd },
+  //     };
+  //     setSummaryMessages(summaryMessages);
+  //     setIsAlertVisible(true);
+  //   } else {
+  //     summaryMessages[messageKeys.update] = {
+  //       template: `datesMoved`,
+  //       variables: { startDate: formattedStart },
+  //     };
+  //     setSummaryMessages(summaryMessages);
+  //     setIsAlertVisible(true);
+  //   }
+  // };
 
   return (
     <div>

@@ -19,15 +19,15 @@ const ValidatedTimeEntry = ({
   const { timeEntries, setTimeEntries } = useTimecardContext(); //shouldn't be here
 
   const setFinishTimeText = () => { //shouldn't be here
-    const startTimeValue = getFormValues(inputNames.shiftStartTime);
-    const finishTimeValue = getFormValues(inputNames.shiftFinishTime);
-    const newTimeEntries = deepCloneJson(timeEntries);
+    // const startTimeValue = getFormValues(inputNames.shiftStartTime);
+    // const finishTimeValue = getFormValues(inputNames.shiftFinishTime);
+    // const newTimeEntries = deepCloneJson(timeEntries);
 
-    const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
+    // const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
 
-    newTimeEntries[timeEntriesIndex] =
-      ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
-    setTimeEntries(newTimeEntries);
+    // newTimeEntries[timeEntriesIndex] =
+    //   ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
+    // setTimeEntries(newTimeEntries);
   };
 
   const isTimeValid = (time) => {

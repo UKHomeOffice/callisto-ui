@@ -8,25 +8,31 @@ import {
   formatTime,
   getTimePeriodTypesMap,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
+import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
+import { getTimePeriodTypes } from '../../../api/services/timecardService';
 
 const TimeInputErrors = ({ clashingProperty, clashes }) => {
   let timePeriodTypes;
+  let timePeriodTypesMap;
 
   const { setServiceError } = useApplicationContext();
-
-  const timePeriodTypesMap = await getTimePeriodTypesMap(timePeriodTypes);
 
   useEffect(() => {
     timePeriodTypes = async () => {
       const params = new UrlSearchParamBuilder()
         .setTenantId('00000000-0000-0000-0000-000000000000')
         .getUrlSearchParams();
-  
+
       validateServiceErrors(setServiceError, async () => {
         return await getTimePeriodTypes(params).data?.items;
       });
     };
-  })
+
+    timePeriodTypesMap = async () => {
+      return await getTimePeriodTypesMap(timePeriodTypes);
+    };
+  });
 
   const displayClashingProperty = () => {
     if (clashingProperty === clashingProperties.startTime) {

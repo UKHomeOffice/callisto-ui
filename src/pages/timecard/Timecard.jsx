@@ -23,6 +23,7 @@ import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry'
 import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
+import { getTimePeriodTypes } from '../../api/services/timecardService';
 
 const Timecard = () => {
   const {
@@ -37,9 +38,12 @@ const Timecard = () => {
   } = useTimecardContext();
   const { setServiceError, userId } = useApplicationContext();
 
-  const [timeEntries, setTimeEntries] = useState([]);
+  const params = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .getUrlSearchParams();
 
-  let timePeriodTypes;
+  const [timeEntries, setTimeEntries] = useState([]);
+  const [timePeriodTypes, setTimePeriodTypes] = useState([]);
 
   const { date: timecardDate } = useParams();
   const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
@@ -75,16 +79,14 @@ const Timecard = () => {
       userId
     );
 
-    timePeriodTypes = async () => {
-      const params = new UrlSearchParamBuilder()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .getUrlSearchParams();
 
-      validateServiceErrors(setServiceError, async () => {
-        return await getTimePeriodTypes(params).data?.items;
-      });
+    const fetchTimePeriodTypeData = async () => {
+      const periodTypes = await getTimePeriodTypes(params);
+      const periodItems = periodTypes.data?.items;
+      setTimePeriodTypes(periodItems);
     };
-  }, [timecardDate, timePeriodTypes, isErrorVisible]);
+    fetchTimePeriodTypeData();
+  }, [timecardDate, isErrorVisible]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
@@ -142,21 +144,37 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {(newTimeEntry || timeEntries.length === 0) && (
-        <SelectTimecardPeriodType
-          timePeriodTypes={timePeriodTypes}
-          timeEntries={timeEntries}
-          setTimeEntries={setTimeEntries}
-        />
+      {timePeriodTypes.length === 0 && (
+        <div className="loaderWrapper">
+          <div className="loader">
+            <img
+              src="/emblem.jpg"
+              alt="Home Office emblem"
+              className="rounded"
+            />
+            <img src="/spinner.gif" alt="Loading spinner" />
+          </div>
+        </div>
       )}
-      {!newTimeEntry && timeEntries.length !== 0 && (
-        <TimecardEntriesList
-          timecardDate={timecardDate}
-          timeEntries={timeEntries}
-          setTimeEntries={setTimeEntries}
-          timePeriodTypes={timePeriodTypes}
-          hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
-        />
+      {timePeriodTypes.length > 0 && (
+        <>
+          {(newTimeEntry || timeEntries.length === 0) && (
+            <SelectTimecardPeriodType
+              timePeriodTypes={timePeriodTypes}
+              timeEntries={timeEntries}
+              setTimeEntries={setTimeEntries}
+            />
+          )}
+          {!newTimeEntry && timeEntries.length !== 0 && (
+            <TimecardEntriesList
+              timecardDate={timecardDate}
+              timeEntries={timeEntries}
+              setTimeEntries={setTimeEntries}
+              timePeriodTypes={timePeriodTypes}
+              hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
+            />
+          )}
+        </>
       )}
     </>
   );
