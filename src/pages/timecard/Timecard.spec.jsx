@@ -139,6 +139,9 @@ describe('Shift spanning mutiple days', () => {
     });
 
     expect(screen.getByText('Shift')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.queryByText('Shift (continued)')).toBeFalsy();
+    });
   });
 
   it('should call setTimeEntries when time entry spans over timecard date', async () => {
