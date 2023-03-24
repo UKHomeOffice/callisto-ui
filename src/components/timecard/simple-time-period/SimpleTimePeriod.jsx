@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import {
   formatDateTimeISO,
   formatTime,
-  formatDate,
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
@@ -108,15 +107,8 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
           >
             Time period
           </dt>
-          <dd
-            className="govuk-summary-list__value"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
-              {timeEntryExists &&
-                timecardDate === formatDate(timeEntry.startTime) &&
-                timePeriodTitle}
-            </dt>
+          <dd className="govuk-summary-list__value govuk-!-width-two-thirds">
+            {timePeriodTitle}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
