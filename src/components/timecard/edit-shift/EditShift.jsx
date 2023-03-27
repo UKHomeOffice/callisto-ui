@@ -195,6 +195,7 @@ const EditShift = ({
     if (!isTimeValid(startTime, 'start time')) {
       isValid = false;
       newErrors.push({
+        key: 'invalidStart',
         inputName: 'shift-start-time',
         message:
           'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800',
@@ -205,6 +206,7 @@ const EditShift = ({
     if (!isTimeValid(finishTime, 'finish time')) {
       isValid = false;
       newErrors.push({
+        key: 'invalidEnd',
         inputName: 'shift-finish-time',
         message:
           'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800',
@@ -229,20 +231,27 @@ const EditShift = ({
     if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
       isValid = false;
       newErrors.push({
+        key: 'startAfterEnd',
         inputName: 'shift-start-time',
         message: 'Start time must be before end time',
         errorPriority: 1,
       });
     }
 
+    const sortedErrors = sortErrors(newErrors);
+
     const validatedData = {
       isValid: isValid,
       startDateTime: actualStartDateTime,
       finishDateTime: actualEndDateTime,
-      errors: newErrors,
+      errors: sortedErrors,
     };
 
     return validatedData;
+  };
+
+  const sortErrors = (errors) => {
+    return errors.sort((a, b) => (a.errorPriority > b.errorPriority ? 1 : -1));
   };
 
   const isTimeValid = (time, timeType) => {

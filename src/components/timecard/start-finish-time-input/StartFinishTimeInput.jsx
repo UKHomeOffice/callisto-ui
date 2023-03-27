@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
-import { sortErrorKeys } from '../../../utils/sort-errors/sortErrors';
+import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 import { inputNames } from '../../../utils/constants';
 
 const StartFinishTimeInput = ({
@@ -46,7 +46,7 @@ const StartFinishTimeInput = ({
       }`}
     >
       <div className="govuk-grid-row" data-testid="error-box">
-        {sortErrorKeys(errors, desiredErrorOrder).map((error, i) => (
+        {sortErrors(errors, desiredErrorOrder).map((error, i) => (
           <div
             id={`${name}-${i}-error`}
             key={i}

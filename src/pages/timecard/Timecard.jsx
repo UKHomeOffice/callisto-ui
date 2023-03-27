@@ -17,7 +17,7 @@ import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 
-import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
+import { sortErrors } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import { inputNames, messageKeys } from '../../utils/constants';
@@ -85,7 +85,7 @@ const Timecard = () => {
       setTimePeriodTypes(periodItems);
     };
     fetchTimePeriodTypeData();
-  }, [timecardDate, summaryErrors]);
+  }, [timecardDate]);
 
   const clearMessageSummary = () => {
     setSummaryMessages({});
@@ -97,14 +97,11 @@ const Timecard = () => {
       <BackLink text="Back to calendar" link="/calendar" />
       {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
         <MessageSummary
-          keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
+          keys={sortErrors(summaryMessages, desiredMessageOrder)}
         />
       )}
       {summaryErrors && summaryErrors.length !== 0 && (
-        <ErrorSummary
-          errors={summaryErrors}
-          keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
-        />
+        <ErrorSummary errors={summaryErrors} />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
       <h2 className="govuk-heading-m">
