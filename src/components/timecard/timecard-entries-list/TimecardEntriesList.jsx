@@ -45,6 +45,8 @@ const renderTimeEntry = ({
   hasShiftMovedCallback,
   timeEntries,
   setTimeEntries,
+  summaryMessages,
+  setSummaryMessages,
 }) => {
   const periodType = timePeriodTypesMap[timeEntry.timePeriodTypeId];
 
@@ -59,6 +61,8 @@ const renderTimeEntry = ({
         hasShiftMovedCallback={hasShiftMovedCallback}
         timeEntries={timeEntries}
         setTimeEntries={setTimeEntries}
+        summaryMessages={summaryMessages}
+        setSummaryMessages={setSummaryMessages}
       />
     );
   } else {
@@ -83,4 +87,6 @@ TimecardEntriesList.propTypes = {
   setTimeEntries: PropTypes.func,
   timePeriodTypes: PropTypes.array,
   hasShiftMovedCallback: PropTypes.func,
+  summaryMessages: PropTypes.array,
+  setSummaryMessages: PropTypes.func,
 };

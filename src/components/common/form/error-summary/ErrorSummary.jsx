@@ -16,19 +16,22 @@ const ErrorSummary = ({ errors }) => {
       </h2>
       <div className="govuk-error-summary__body">
         <ul className="govuk-list govuk-error-summary__list">
-          {errors.forEach((error) => {
-            <li
-              key={error.key}
-              id={`summary-error-${error.key}`}
-              data-testid="error-message-body"
-            >
-              <HashLink
-                id={`summary-error-message-${error.key}`}
-                to={`#${error.inputName}`}
+          {errors.map((error) => {
+            return (
+              <li
+                key={error.key}
+                id={`summary-error-${error.key}`}
+                data-testid={`error-message-body-${error.key}`}
               >
-                {error.message}
-              </HashLink>
-            </li>;
+                <HashLink
+                  id={`summary-error-message-${error.key}`}
+                  to={`#${error.inputName}`}
+                >
+                  {error.message}
+                </HashLink>
+                {/*needs replacing with normal link after replacing hash router*/}
+              </li>
+            );
           })}
         </ul>
       </div>

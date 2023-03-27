@@ -27,15 +27,9 @@ import { getTimePeriodTypes } from '../../api/services/timecardService';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
-  const {
-    newTimeEntry,
-    setNewTimeEntry,
-    summaryMessages,
-    isAlertVisible,
-    setSummaryMessages,
-    setIsAlertVisible,
-  } = useTimecardContext();
+  const { newTimeEntry, setNewTimeEntry } = useTimecardContext();
   const { setServiceError, userId } = useApplicationContext();
+  const [summaryMessages, setSummaryMessages] = useState([]);
 
   const params = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
@@ -48,18 +42,6 @@ const Timecard = () => {
   const { date: timecardDate } = useParams();
   const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
-
-  const desiredErrorOrder = [
-    inputNames.shiftStartTime,
-    inputNames.shiftFinishTime,
-    'timePeriod',
-  ];
-
-  const desiredMessageOrder = [
-    messageKeys.delete,
-    messageKeys.update,
-    messageKeys.insert,
-  ];
 
   const hasShiftMovedFromTimecardCallback = () => {
     updateTimeEntryContextData(
@@ -88,17 +70,14 @@ const Timecard = () => {
   }, [timecardDate]);
 
   const clearMessageSummary = () => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
+    setSummaryMessages([]);
   };
 
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
-      {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
-        <MessageSummary
-          keys={sortErrors(summaryMessages, desiredMessageOrder)}
-        />
+      {summaryMessages && summaryMessages.length !== 0 && (
+        <MessageSummary messages={summaryMessages} />
       )}
       {summaryErrors && summaryErrors.length !== 0 && (
         <ErrorSummary errors={summaryErrors} />
@@ -173,6 +152,8 @@ const Timecard = () => {
                 setTimeEntries={setTimeEntries}
                 timePeriodTypes={timePeriodTypes}
                 hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
+                summaryMessages={summaryMessages}
+                setSummaryMessages={setSummaryMessages}
               />
               <AddTimeCardPeriod setSummaryErrors={setSummaryErrors} />
             </>

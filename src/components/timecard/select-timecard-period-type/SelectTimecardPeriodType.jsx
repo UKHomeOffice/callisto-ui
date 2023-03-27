@@ -39,21 +39,51 @@ const SelectTimecardPeriodType = ({
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
 
+  const onSubmit = (data) => {
+    const validatedData = validateSubmittedData(data);
+    if (validatedData.isValid) {
+      const timePeriodTypeId = timePeriodTypes.find(
+        (timePeriodType) => timePeriodType.name === data[radioName]
+      ).id;
+
+      setTimeEntries([
+        ...timeEntries,
+        ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
+      ]);
+      setNewTimeEntry(false);
+      setSummaryErrors([]);
+    } else {
+      handleError(validatedData.errors);
+    }
+  };
+
+  const validateSubmittedData = (formData) => {
+    let isValid = true;
+    let newErrors = [];
+
+    if (!formData.timePeriod) {
+      isValid = false;
+      newErrors.push({
+        key: 'radioName',
+        inputName: 'timePeriod',
+        message: 'You must select a time period',
+        errorPriority: 1,
+      });
+    }
+
+    const validatedData = {
+      isValid: isValid,
+      errors: newErrors,
+    };
+
+    return validatedData;
+  };
+
   return (
     <>
       <form
         className="grey-border"
-        onSubmit={handleSubmit((data) => {
-          const timePeriodTypeId = timePeriodTypes.find(
-            (timePeriodType) => timePeriodType.name === data[radioName]
-          ).id;
-          setTimeEntries([
-            ...timeEntries,
-            ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
-          ]);
-          setNewTimeEntry(false);
-          setSummaryErrors([]);
-        }, handleError)}
+        onSubmit={handleSubmit(onSubmit, handleError)}
       >
         <Radios
           name={radioName}
@@ -62,10 +92,10 @@ const SelectTimecardPeriodType = ({
           options={timePeriodTypeNames}
           errors={errors}
           {...register(radioName, {
-            required: {
-              value: true,
-              message: 'You must select a time period',
-            },
+            // required: {
+            //   value: true,
+            //   message: 'You must select a time period',
+            // },
           })}
         />
 

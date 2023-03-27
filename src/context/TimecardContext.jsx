@@ -5,17 +5,10 @@ export const TimecardContext = createContext();
 
 export const TimecardProvider = ({ children }) => {
   const [newTimeEntry, setNewTimeEntry] = useState(); //Needs replacing with edit mode or similar
-  const [summaryMessages, setSummaryMessages] = useState({});
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
-  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const value = {
     newTimeEntry, //to go
     setNewTimeEntry,
-    summaryMessages, //to go
-    setSummaryMessages,
-    isAlertVisible, //to be deleted
-    setIsAlertVisible,
   };
 
   return (

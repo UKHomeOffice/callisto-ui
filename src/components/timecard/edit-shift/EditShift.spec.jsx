@@ -1041,8 +1041,6 @@ describe('EditShiftHours', () => {
         localEndDate={'2022-09-02 16:00:00+00:00'}
         startEntryExists={true}
         setSummaryMessages={jest.fn()}
-        isErrorVisible={true}
-        setIsErrorVisible={jest.fn()}
       />,
       defaultTimecardContext
     );
