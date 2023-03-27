@@ -4,7 +4,6 @@ import {
   createTimeEntry,
   updateTimeEntry,
 } from '../../../api/services/timecardService';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
@@ -61,8 +60,6 @@ const EditShift = ({
   const [isChecked, setIsChecked] = useState(false);
   const [clashingProperty, setClashingProperty] = useState(null);
   const [clashingTimes, setClashingTimes] = useState(null);
-
-  const { setIsAlertVisible } = useTimecardContext();
 
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const finishEntryExists =
@@ -153,24 +150,26 @@ const EditShift = ({
         ? await createTimeEntry(timecardPayload, params)
         : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
       if (response.status === 200) {
-        if (startEntryExists) {
-          //to be made better
-          setTimeEntries([
-            ...timeEntries.slice(0, timeEntriesIndex),
-            ContextTimeEntry.createFrom(timeEntry)
-              .setStartTime(validatedData.startDateTime)
-              .setFinishTime(validatedData.finishDateTime),
-            ...timeEntries.slice(timeEntriesIndex + 1),
-          ]);
-        } else {
-          setTimeEntries([
-            ...timeEntries,
-            ContextTimeEntry.createFrom(timeEntry)
-              .setStartTime(validatedData.startDateTime)
-              .setFinishTime(validatedData.finishDateTime)
-              .setTimeEntryId(response.data.items[0].id),
-          ]).push();
-        }
+        // if (startEntryExists) {
+        //to be made better
+        setTimeEntries([
+          ...timeEntries.slice(0, timeEntriesIndex),
+          ContextTimeEntry.createFrom(timeEntry)
+            .setStartTime(validatedData.startDateTime)
+            .setFinishTime(validatedData.finishDateTime)
+            .setTimeEntryId(response.data.items[0].id),
+          ...timeEntries.slice(timeEntriesIndex + 1),
+        ]);
+        // } else {
+        //   setTimeEntries([
+        //     ...timeEntries,
+        //     ContextTimeEntry.createFrom(timeEntry)
+        //       .setStartTime(validatedData.startDateTime)
+        //       .setFinishTime(validatedData.finishDateTime)
+        //       .setTimeEntryId(response.data.items[0].id),
+        //   ]);
+        // }
+        setShowEditShiftHours(false);
       } else {
         // Handle response errors here
       }
@@ -306,7 +305,6 @@ const EditShift = ({
         variables: { startDate: formattedStart, endDate: formattedEnd },
       });
       setSummaryMessages(newSummaryMessages);
-      setIsAlertVisible(true);
     } else {
       newSummaryMessages.push({
         key: 'datesMoved',
