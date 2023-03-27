@@ -64,13 +64,13 @@ const ValidatedTimeEntry = ({
       type="text"
       {...register(name, {
         onChange: () => setFinishTimeText(),
-        required: {
-          value: isRequired,
-          message: errorMessage,
-        },
-        validate: {
-          validateTimeEntry: (value) => isTimeValid(value) || errorMessage,
-        },
+        // required: {
+        //   value: isRequired,
+        //   message: errorMessage,
+        // },
+        // validate: {
+        //   validateTimeEntry: (value) => isTimeValid(value) || errorMessage,
+        // },
       })}
     />
   );

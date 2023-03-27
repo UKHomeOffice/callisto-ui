@@ -197,16 +197,18 @@ const EditShift = ({
       newErrors.push({
         inputName: 'shift-start-time',
         message:
-          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800`',
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800',
+        errorPriority: 1,
       });
     }
 
     if (!isTimeValid(finishTime, 'finish time')) {
       isValid = false;
       newErrors.push({
-        inputName: 'shift-start-time',
+        inputName: 'shift-finish-time',
         message:
-          'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800`',
+          'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800',
+        errorPriority: 2,
       });
     }
 
@@ -228,7 +230,8 @@ const EditShift = ({
       isValid = false;
       newErrors.push({
         inputName: 'shift-start-time',
-        message: 'Start time must be before end time`',
+        message: 'Start time must be before end time',
+        errorPriority: 1,
       });
     }
 

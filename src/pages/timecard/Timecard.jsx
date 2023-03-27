@@ -24,7 +24,7 @@ import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
 import { getTimePeriodTypes } from '../../api/services/timecardService';
-import AddTimeCardPeriod from '../add-timecard-period/AddTimeCardPeriod';
+import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
   const {
@@ -100,7 +100,7 @@ const Timecard = () => {
           keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
         />
       )}
-      {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
+      {summaryErrors && summaryErrors.length !== 0 && (
         <ErrorSummary
           errors={summaryErrors}
           keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}

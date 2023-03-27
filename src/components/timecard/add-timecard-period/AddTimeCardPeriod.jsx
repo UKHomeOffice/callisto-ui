@@ -1,8 +1,9 @@
 import { useTimecardContext } from '../../../context/TimecardContext';
 import { Link } from 'react-router-dom';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { PropTypes } from 'prop-types';
 
-const AddTimeCardPeriod = (setSummaryErrors) => {
+const AddTimeCardPeriod = ({ setSummaryErrors }) => {
   const { setNewTimeEntry } = useTimecardContext();
 
   const handleAddTimePeriod = (event) => {
@@ -37,3 +38,6 @@ const AddTimeCardPeriod = (setSummaryErrors) => {
 };
 
 export default AddTimeCardPeriod;
+AddTimeCardPeriod.propTypes = {
+  setSummaryErrors: PropTypes.func,
+};
