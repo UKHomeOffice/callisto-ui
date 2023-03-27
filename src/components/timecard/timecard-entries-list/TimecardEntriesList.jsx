@@ -11,6 +11,8 @@ const TimecardEntriesList = ({
   setTimeEntries,
   timePeriodTypes,
   hasShiftMovedCallback,
+  summaryMessages,
+  setSummaryMessages,
 }) => {
   const timePeriodTypesMap = getTimePeriodTypesMap(timePeriodTypes);
 
@@ -28,6 +30,8 @@ const TimecardEntriesList = ({
             hasShiftMovedCallback,
             timeEntries,
             setTimeEntries,
+            summaryMessages,
+            setSummaryMessages,
           })}
         </div>
       ))}

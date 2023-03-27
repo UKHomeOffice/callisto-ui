@@ -5,11 +5,9 @@ import { useTimecardContext } from '../../../../context/TimecardContext';
 
 const DatesMoved = ({ variables }) => {
   const clearSummary = () => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
+    //setSummaryMessages([]);
   };
 
-  const { setSummaryMessages, setIsAlertVisible } = useTimecardContext();
   const startDate = variables.startDate;
   const endDate = variables.endDate;
   const formattedStart = formatDateNoYear(startDate);

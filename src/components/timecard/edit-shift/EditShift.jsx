@@ -301,16 +301,16 @@ const EditShift = ({
 
     if (startDate !== '' && endDate !== '') {
       newSummaryMessages.push({
-        key: 'bothDatesMoved',
-        template: `datesMoved`,
+        key: 'datesMoved',
+        template: `DatesMoved`,
         variables: { startDate: formattedStart, endDate: formattedEnd },
       });
       setSummaryMessages(newSummaryMessages);
       setIsAlertVisible(true);
     } else {
       newSummaryMessages.push({
-        key: 'startDateMoved',
-        template: `datesMoved`,
+        key: 'datesMoved',
+        template: `DatesMoved`,
         variables: { startDate: formattedStart },
       });
       setSummaryMessages(newSummaryMessages);

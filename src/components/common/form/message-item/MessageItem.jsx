@@ -1,20 +1,18 @@
 import DatesMoved from '../message-item-types/DatesMoved';
 import { messageKeys } from '../../../../utils/constants';
+import PropTypes from 'prop-types';
 
-const components = {
-  datesMoved: DatesMoved,
-};
-
-const MessageItem = (message) => {
-  if (messageKeys.update == message.key) {
-    const template = message.template;
+const MessageItem = ({ message }) => {
+  if (messageKeys.datesMoved === message.template) {
     const variables = message.variables;
 
-    const Component = components[template];
-    return <Component variables={variables} />;
+    return <DatesMoved variables={variables} />;
   } else {
     return null;
   }
 };
 
 export default MessageItem;
+MessageItem.propTypes = {
+  message: PropTypes.object,
+};

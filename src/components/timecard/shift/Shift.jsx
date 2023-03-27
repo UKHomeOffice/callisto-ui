@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import EditShift from '../edit-shift/EditShift';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import {
   formatDateNoYear,
   formatTime,
@@ -23,6 +22,8 @@ const Shift = ({
   hasShiftMovedCallback,
   timeEntries,
   setTimeEntries,
+  summaryMessages,
+  setSummaryMessages,
 }) => {
   const { setServiceError } = useApplicationContext();
 
@@ -139,6 +140,8 @@ const Shift = ({
                 hasShiftMovedCallback={hasShiftMovedCallback}
                 timeEntries={timeEntries}
                 setTimeEntries={setTimeEntries}
+                summaryMessages={summaryMessages}
+                setSummaryMessages={setSummaryMessages}
               />
             </dt>
           </div>
@@ -177,10 +180,14 @@ const Shift = ({
 export default Shift;
 
 Shift.propTypes = {
+  summaryErrors: PropTypes.array,
+  setSummaryErrors: PropTypes.func,
   timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   hasShiftMovedCallback: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
+  summaryMessages: PropTypes.array,
+  setSummaryMessages: PropTypes.func,
 };
