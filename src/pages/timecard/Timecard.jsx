@@ -77,7 +77,10 @@ const Timecard = () => {
     <>
       <BackLink text="Back to calendar" link="/calendar" />
       {summaryMessages && summaryMessages.length !== 0 && (
-        <MessageSummary summaryMessages={summaryMessages} />
+        <MessageSummary
+          summaryMessages={summaryMessages}
+          setSummaryMessages={setSummaryMessages}
+        />
       )}
       {summaryErrors && summaryErrors.length !== 0 && (
         <ErrorSummary errors={summaryErrors} />
