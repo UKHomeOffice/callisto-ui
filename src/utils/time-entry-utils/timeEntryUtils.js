@@ -49,11 +49,14 @@ export const formatJustYear = (dateTime) => {
 export const removeTimecardContextEntry = ({
   timeEntries,
   setTimeEntries,
-  removeAtIndex,
+  timeEntriesIndex,
 }) => {
-  const newTimeEntries = deepCloneJson(timeEntries);
-  newTimeEntries.splice(removeAtIndex, 1);
-  setTimeEntries(newTimeEntries);
+  if (timeEntriesIndex === 0){
+    setTimeEntries([...timeEntries.slice(1)]);
+  } else {
+    setTimeEntries([...timeEntries.slice(0, timeEntriesIndex), ...timeEntries.slice(timeEntriesIndex + 1)]);
+  }
+  
 };
 
 export const getTimePeriodTypesMap = (timePeriodTypes) => {
