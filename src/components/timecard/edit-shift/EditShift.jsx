@@ -14,6 +14,7 @@ import {
   formatDate,
   formatDateTimeISO,
   formatTime,
+  removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -38,7 +39,6 @@ const EditShift = ({
   setShowEditShiftHours,
   timeEntry,
   timeEntriesIndex,
-  hasShiftMovedCallback,
   timeEntries,
   setTimeEntries,
   summaryMessages,
@@ -152,23 +152,6 @@ const EditShift = ({
       if (response.status === 200) {
         // if (startEntryExists) {
         //to be made better
-        setTimeEntries([
-          ...timeEntries.slice(0, timeEntriesIndex),
-          ContextTimeEntry.createFrom(timeEntry)
-            .setStartTime(validatedData.startDateTime)
-            .setFinishTime(validatedData.finishDateTime)
-            .setTimeEntryId(response.data.items[0].id),
-          ...timeEntries.slice(timeEntriesIndex + 1),
-        ]);
-        // } else {
-        //   setTimeEntries([
-        //     ...timeEntries,
-        //     ContextTimeEntry.createFrom(timeEntry)
-        //       .setStartTime(validatedData.startDateTime)
-        //       .setFinishTime(validatedData.finishDateTime)
-        //       .setTimeEntryId(response.data.items[0].id),
-        //   ]);
-        // }
         if (
           startEntryExists &&
           hasShiftMovedFromTimecard(
@@ -180,7 +163,30 @@ const EditShift = ({
             validatedData.startDateTime,
             validatedData.finishDateTime
           );
+          removeTimecardContextEntry({
+            timeEntries,
+            setTimeEntries,
+            timeEntriesIndex,
+          });
+        } else {
+          setTimeEntries([
+            ...timeEntries.slice(0, timeEntriesIndex),
+            ContextTimeEntry.createFrom(timeEntry)
+              .setStartTime(validatedData.startDateTime)
+              .setFinishTime(validatedData.finishDateTime)
+              .setTimeEntryId(response.data.items[0].id),
+            ...timeEntries.slice(timeEntriesIndex + 1),
+          ]);
         }
+        // } else {
+        //   setTimeEntries([
+        //     ...timeEntries,
+        //     ContextTimeEntry.createFrom(timeEntry)
+        //       .setStartTime(validatedData.startDateTime)
+        //       .setFinishTime(validatedData.finishDateTime)
+        //       .setTimeEntryId(response.data.items[0].id),
+        //   ]);
+        // }
         setShowEditShiftHours(false);
       } else {
         // Handle response errors here
@@ -299,7 +305,6 @@ const EditShift = ({
       (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
 
     if (singleDateMoved || bothDatesMoved) {
-      hasShiftMovedCallback();
       return true;
     }
     return false;
@@ -390,7 +395,6 @@ EditShift.propTypes = {
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
-  hasShiftMovedCallback: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
   summaryMessages: PropTypes.array,

@@ -46,7 +46,6 @@ const renderTimeEntry = ({
   timePeriodTypesMap,
   timeEntry,
   index,
-  hasShiftMovedCallback,
   timeEntries,
   setTimeEntries,
   summaryMessages,
@@ -62,7 +61,6 @@ const renderTimeEntry = ({
         timecardDate={timecardDate}
         timeEntry={timeEntry}
         timeEntriesIndex={index}
-        hasShiftMovedCallback={hasShiftMovedCallback}
         timeEntries={timeEntries}
         setTimeEntries={setTimeEntries}
         summaryMessages={summaryMessages}
@@ -86,11 +84,12 @@ const renderTimeEntry = ({
 export default TimecardEntriesList;
 
 TimecardEntriesList.propTypes = {
+  summaryErrors: PropTypes.array,
+  setSummaryErrors: PropTypes.func,
   timecardDate: PropTypes.string,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
   timePeriodTypes: PropTypes.array,
-  hasShiftMovedCallback: PropTypes.func,
   summaryMessages: PropTypes.array,
   setSummaryMessages: PropTypes.func,
 };

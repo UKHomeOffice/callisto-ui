@@ -39,26 +39,6 @@ const Timecard = () => {
   const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
-  const hasShiftMovedFromTimecardCallback = () => {
-    // updateTimeEntryContextData(
-    //   timecardDate,
-    //   setTimeEntries,
-    //   setServiceError,
-    //   userId
-    // );
-  };
-
-  useEffect(() => {
-    document.title = generateDocumentTitle('Timecard ');
-
-    const fetchTimePeriodTypeData = async () => {
-      const periodTypes = await getTimePeriodTypes(params);
-      const periodItems = periodTypes.data?.items;
-      setTimePeriodTypes(periodItems);
-    };
-    fetchTimePeriodTypeData();
-  }, [timeEntries]);
-
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
     updateTimeEntryContextData(
@@ -161,7 +141,6 @@ const Timecard = () => {
                 timeEntries={timeEntries}
                 setTimeEntries={setTimeEntries}
                 timePeriodTypes={timePeriodTypes}
-                hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
                 summaryMessages={summaryMessages}
                 setSummaryMessages={setSummaryMessages}
               />
