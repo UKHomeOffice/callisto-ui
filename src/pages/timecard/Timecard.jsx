@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
@@ -16,11 +15,8 @@ import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuild
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
-
-import { sortErrors } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
 import { getTimePeriodTypes } from '../../api/services/timecardService';
@@ -44,13 +40,24 @@ const Timecard = () => {
   const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
   const hasShiftMovedFromTimecardCallback = () => {
-    updateTimeEntryContextData(
-      timecardDate,
-      setTimeEntries,
-      setServiceError,
-      userId
-    );
+    // updateTimeEntryContextData(
+    //   timecardDate,
+    //   setTimeEntries,
+    //   setServiceError,
+    //   userId
+    // );
   };
+
+  useEffect(() => {
+    document.title = generateDocumentTitle('Timecard ');
+
+    const fetchTimePeriodTypeData = async () => {
+      const periodTypes = await getTimePeriodTypes(params);
+      const periodItems = periodTypes.data?.items;
+      setTimePeriodTypes(periodItems);
+    };
+    fetchTimePeriodTypeData();
+  }, [timeEntries]);
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');

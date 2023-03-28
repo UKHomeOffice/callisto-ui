@@ -169,6 +169,18 @@ const EditShift = ({
         //       .setTimeEntryId(response.data.items[0].id),
         //   ]);
         // }
+        if (
+          startEntryExists &&
+          hasShiftMovedFromTimecard(
+            validatedData.startDateTime,
+            validatedData.finishDateTime
+          )
+        ) {
+          setMessages(
+            validatedData.startDateTime,
+            validatedData.finishDateTime
+          );
+        }
         setShowEditShiftHours(false);
       } else {
         // Handle response errors here
@@ -234,12 +246,12 @@ const EditShift = ({
       });
     }
 
-    if (
-      startEntryExists &&
-      hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
-    ) {
-      setMessages(actualStartDateTime, actualEndDateTime);
-    }
+    // if (
+    //   startEntryExists &&
+    //   hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
+    // ) {
+    //   setMessages(actualStartDateTime, actualEndDateTime);
+    // }
 
     const sortedErrors = sortErrors(newErrors);
 
