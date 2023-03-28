@@ -19,7 +19,6 @@ const Shift = ({
   timecardDate,
   timeEntry,
   timeEntriesIndex,
-  hasShiftMovedCallback,
   timeEntries,
   setTimeEntries,
   summaryMessages,
@@ -137,7 +136,6 @@ const Shift = ({
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
-                hasShiftMovedCallback={hasShiftMovedCallback}
                 timeEntries={timeEntries}
                 setTimeEntries={setTimeEntries}
                 summaryMessages={summaryMessages}
@@ -185,7 +183,6 @@ Shift.propTypes = {
   timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
-  hasShiftMovedCallback: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
   summaryMessages: PropTypes.array,
