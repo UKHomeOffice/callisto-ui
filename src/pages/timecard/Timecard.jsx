@@ -13,7 +13,6 @@ import {
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
-import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
@@ -23,9 +22,9 @@ import { getTimePeriodTypes } from '../../api/services/timecardService';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
-  const { newTimeEntry, setNewTimeEntry } = useTimecardContext();
   const { setServiceError, userId } = useApplicationContext();
   const [summaryMessages, setSummaryMessages] = useState([]);
+  const [addNewTimeEntry, setAddNewTimeEntry] = useState();
 
   const params = new UrlSearchParamBuilder()
     .setTenantId('00000000-0000-0000-0000-000000000000')
@@ -80,6 +79,8 @@ const Timecard = () => {
     setSummaryMessages([]);
   };
 
+  const addNewTimePeriod = () => {};
+
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
@@ -99,7 +100,6 @@ const Timecard = () => {
       <div className="govuk-button-group">
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
@@ -109,7 +109,6 @@ const Timecard = () => {
         </Link>
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
@@ -119,7 +118,6 @@ const Timecard = () => {
         </Link>
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
@@ -143,16 +141,17 @@ const Timecard = () => {
       )}
       {timePeriodTypes.length > 0 && (
         <>
-          {(newTimeEntry || timeEntries.length === 0) && (
+          {(timeEntries.length === 0 || addNewTimeEntry) && (
             <SelectTimecardPeriodType
               summaryErrors={summaryErrors}
               setSummaryErrors={setSummaryErrors}
               timePeriodTypes={timePeriodTypes}
               timeEntries={timeEntries}
               setTimeEntries={setTimeEntries}
+              setAddNewTimeEntry={setAddNewTimeEntry}
             />
           )}
-          {!newTimeEntry && timeEntries.length !== 0 && (
+          {timeEntries.length !== 0 && !addNewTimeEntry && (
             <>
               <TimecardEntriesList
                 summaryErrors={summaryErrors}
@@ -165,7 +164,10 @@ const Timecard = () => {
                 summaryMessages={summaryMessages}
                 setSummaryMessages={setSummaryMessages}
               />
-              <AddTimeCardPeriod setSummaryErrors={setSummaryErrors} />
+              <AddTimeCardPeriod
+                setSummaryErrors={setSummaryErrors}
+                setAddNewTimeEntry={setAddNewTimeEntry}
+              />
             </>
           )}
         </>

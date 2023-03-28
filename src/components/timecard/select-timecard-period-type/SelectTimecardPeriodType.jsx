@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import Radios from '../../common/form/radios/Radios';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
@@ -13,6 +12,7 @@ const SelectTimecardPeriodType = ({
   timePeriodTypes,
   timeEntries,
   setTimeEntries,
+  setAddNewTimeEntry,
 }) => {
   const {
     register,
@@ -28,8 +28,6 @@ const SelectTimecardPeriodType = ({
   });
 
   const radioName = 'timePeriod';
-
-  const { setNewTimeEntry } = useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -50,7 +48,7 @@ const SelectTimecardPeriodType = ({
         ...timeEntries,
         ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
       ]);
-      setNewTimeEntry(false);
+      setAddNewTimeEntry(false);
       setSummaryErrors([]);
     } else {
       handleError(validatedData.errors);

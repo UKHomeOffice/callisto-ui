@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useTimecardContext } from '../../../../context/TimecardContext';
 import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
 import { inputNames } from '../../../../utils/constants';
 import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
@@ -16,15 +15,12 @@ const ValidatedTimeEntry = ({
   timeEntry,
   timeEntriesIndex,
 }) => {
-  const { timeEntries, setTimeEntries } = useTimecardContext(); //shouldn't be here
-
-  const setFinishTimeText = () => { //shouldn't be here
+  const setFinishTimeText = () => {
+    //shouldn't be here
     // const startTimeValue = getFormValues(inputNames.shiftStartTime);
     // const finishTimeValue = getFormValues(inputNames.shiftFinishTime);
     // const newTimeEntries = deepCloneJson(timeEntries);
-
     // const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
-
     // newTimeEntries[timeEntriesIndex] =
     //   ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
     // setTimeEntries(newTimeEntries);
