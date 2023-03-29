@@ -5,7 +5,8 @@ export function combineExistingAndTimeClashErrors(
   errors,
   summaryErrors,
   clashingProperty,
-  clashingTimes
+  clashingTimes,
+  timePeriodTypesMap
 ) {
   const existingErrors =
     Object.keys(errors).length > 0 ? errors : summaryErrors;
@@ -15,7 +16,8 @@ export function combineExistingAndTimeClashErrors(
   if (clashingProperty === clashingProperties.startAndEndTime) {
     combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
       clashingProperty,
-      clashingTimes
+      clashingTimes,
+      timePeriodTypesMap
     );
     combinedErrors[inputNames.shiftFinishTime] = {
       message: '',
@@ -23,24 +25,31 @@ export function combineExistingAndTimeClashErrors(
   } else if (clashingProperty === clashingProperties.startTime) {
     combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
       clashingProperty,
-      clashingTimes
+      clashingTimes,
+      timePeriodTypesMap
     );
   } else if (clashingProperty === clashingProperties.endTime) {
     combinedErrors[inputNames.shiftFinishTime] = clashErrorMessage(
       clashingProperty,
-      clashingTimes
+      clashingTimes,
+      timePeriodTypesMap
     );
   }
 
   return combinedErrors;
 }
 
-function clashErrorMessage(clashingProperty, clashingTimes) {
+function clashErrorMessage(
+  clashingProperty,
+  clashingTimes,
+  timePeriodTypesMap
+) {
   return {
     message: (
       <TimeInputErrors
         clashingProperty={clashingProperty}
         clashes={clashingTimes}
+        timePeriodTypesMap={timePeriodTypesMap}
       />
     ),
   };

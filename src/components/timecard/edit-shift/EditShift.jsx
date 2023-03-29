@@ -43,6 +43,7 @@ const EditShift = ({
   setTimeEntries,
   summaryMessages,
   setSummaryMessages,
+  timePeriodTypesMap,
 }) => {
   const {
     register,
@@ -91,45 +92,54 @@ const EditShift = ({
     }
   };
 
-  // const handleServerValidationErrors = (errors) => {
-  //   if (errors === null || !Array.isArray(errors)) {
-  //     return false;
-  //   }
-  //   const summaryErrors = {};
-  //   let errorsHandled = true;
+  const handleServerValidationErrors = (errors) => {
+    if (errors === null || !Array.isArray(errors)) {
+      return false;
+    }
+    let newErrors = [];
+    let errorsHandled = true;
 
-  //   for (const error of errors) {
-  //     if (error.field === clashingProperties.startAndEndTime) {
-  //       setClashingTimes(error.data);
-  //       setClashingProperty(error.field);
-  //       summaryErrors[inputNames.shiftStartTime] = {
-  //         message:
-  //           'Your start and finish times must not overlap with another time period',
-  //       };
-  //     } else if (error.field === clashingProperties.startTime) {
-  //       setClashingTimes(error.data);
-  //       setClashingProperty(error.field);
-  //       summaryErrors[inputNames.shiftStartTime] = {
-  //         message: 'Your start time must not overlap with another time period',
-  //       };
-  //     } else if (error.field === clashingProperties.endTime) {
-  //       setClashingTimes(error.data);
-  //       setClashingProperty(error.field);
-  //       summaryErrors[inputNames.shiftFinishTime] = {
-  //         message: 'Your finish time must not overlap with another time period',
-  //       };
-  //     } else {
-  //       errorsHandled = false;
-  //       break;
-  //     }
-  //   }
-  //   if (errorsHandled) {
-  //     setSummaryErrors(summaryErrors);
-  //     return true;
-  //   }
+    for (const error of errors) {
+      if (error.field === clashingProperties.startAndEndTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        newErrors.push({
+          key: 'bothDatesOverlapping',
+          inputName: 'shift-start-time',
+          message:
+            'Your start and finish times must not overlap with another time period',
+          errorPriority: 1,
+        });
+      } else if (error.field === clashingProperties.startTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        newErrors.push({
+          key: 'overlappingStart',
+          inputName: 'shift-start-time',
+          message: 'Your start time must not overlap with another time period',
+          errorPriority: 1,
+        });
+      } else if (error.field === clashingProperties.endTime) {
+        setClashingTimes(error.data);
+        setClashingProperty(error.field);
+        newErrors.push({
+          key: 'overlappingFinish',
+          inputName: 'shift-finish-time',
+          message: 'Your finish time must not overlap with another time period',
+          errorPriority: 2,
+        });
+      } else {
+        errorsHandled = false;
+        break;
+      }
+    }
+    if (errorsHandled) {
+      setSummaryErrors(newErrors);
+      return true;
+    }
 
-  //   return false;
-  // };
+    return false;
+  };
 
   const onSubmit = async (formData) => {
     const validatedData = validateSubmittedData(formData);
@@ -142,55 +152,54 @@ const EditShift = ({
         actualEndTime: validatedData.finishDateTime,
       };
 
-      const params = new UrlSearchParamBuilder()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .getUrlSearchParams();
+      validateServiceErrors(
+        setServiceError,
+        async () => {
+          const params = new UrlSearchParamBuilder()
+            .setTenantId('00000000-0000-0000-0000-000000000000')
+            .getUrlSearchParams();
 
-      const response = !timeEntry.timeEntryId
-        ? await createTimeEntry(timecardPayload, params)
-        : await updateTimeEntry(timeEntry.timeEntryId, timecardPayload, params);
-      if (response.status === 200) {
-        // if (startEntryExists) {
-        //to be made better
-        if (
-          startEntryExists &&
-          hasShiftMovedFromTimecard(
-            validatedData.startDateTime,
-            validatedData.finishDateTime
-          )
-        ) {
-          setMessages(
-            validatedData.startDateTime,
-            validatedData.finishDateTime
-          );
-          removeTimecardContextEntry({
-            timeEntries,
-            setTimeEntries,
-            timeEntriesIndex,
-          });
-        } else {
-          setTimeEntries([
-            ...timeEntries.slice(0, timeEntriesIndex),
-            ContextTimeEntry.createFrom(timeEntry)
-              .setStartTime(validatedData.startDateTime)
-              .setFinishTime(validatedData.finishDateTime)
-              .setTimeEntryId(response.data.items[0].id),
-            ...timeEntries.slice(timeEntriesIndex + 1),
-          ]);
-        }
-        // } else {
-        //   setTimeEntries([
-        //     ...timeEntries,
-        //     ContextTimeEntry.createFrom(timeEntry)
-        //       .setStartTime(validatedData.startDateTime)
-        //       .setFinishTime(validatedData.finishDateTime)
-        //       .setTimeEntryId(response.data.items[0].id),
-        //   ]);
-        // }
-        setShowEditShiftHours(false);
-      } else {
-        // Handle response errors here
-      }
+          const response = !timeEntry.timeEntryId
+            ? await createTimeEntry(timecardPayload, params)
+            : await updateTimeEntry(
+                timeEntry.timeEntryId,
+                timecardPayload,
+                params
+              );
+          if (response.status === 200) {
+            //to be made better ^^
+            if (
+              startEntryExists &&
+              hasShiftMovedFromTimecard(
+                validatedData.startDateTime,
+                validatedData.finishDateTime
+              )
+            ) {
+              setMessages(
+                validatedData.startDateTime,
+                validatedData.finishDateTime
+              );
+              removeTimecardContextEntry({
+                timeEntries,
+                setTimeEntries,
+                timeEntriesIndex,
+              });
+            } else {
+              setTimeEntries([
+                ...timeEntries.slice(0, timeEntriesIndex),
+                ContextTimeEntry.createFrom(timeEntry)
+                  .setStartTime(validatedData.startDateTime)
+                  .setFinishTime(validatedData.finishDateTime)
+                  .setTimeEntryId(response.data.items[0].id),
+                ...timeEntries.slice(timeEntriesIndex + 1),
+              ]);
+            }
+            setShowEditShiftHours(false);
+          }
+        },
+        true,
+        handleServerValidationErrors
+      );
     } else {
       handleError(validatedData.errors);
     }
@@ -251,14 +260,6 @@ const EditShift = ({
         errorPriority: 1,
       });
     }
-
-    // if (
-    //   startEntryExists &&
-    //   hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
-    // ) {
-    //   setMessages(actualStartDateTime, actualEndDateTime);
-    // }
-
     const sortedErrors = sortErrors(newErrors);
 
     const validatedData = {
@@ -341,7 +342,8 @@ const EditShift = ({
             errors,
             summaryErrors,
             clashingProperty,
-            clashingTimes
+            clashingTimes,
+            timePeriodTypesMap
           )}
           register={register}
           formState={formState}
@@ -399,4 +401,5 @@ EditShift.propTypes = {
   setTimeEntries: PropTypes.func,
   summaryMessages: PropTypes.array,
   setSummaryMessages: PropTypes.func,
+  timePeriodTypesMap: PropTypes.any,
 };
