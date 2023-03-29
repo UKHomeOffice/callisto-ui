@@ -62,7 +62,18 @@ const StartFinishTimeInput = ({
         ))}
       </div>
 
-      <div className="govuk-grid-row">
+      <div
+        className={`govuk-grid-row ${
+          Object.keys(errors).length !== 0 &&
+          Object.values(errors).some(
+            (error) =>
+              error.inputName === 'shift-start-time' ||
+              error.inputName === 'shift-end-time'
+          )
+            ? 'govuk-form-group--error'
+            : ''
+        }`}
+      >
         <div className="govuk-grid-column-one-third">
           <label
             className="govuk-label govuk-label--s"
@@ -87,7 +98,7 @@ const StartFinishTimeInput = ({
         </div>
 
         <div className="govuk-grid-column-one-third">
-          <div className="govuk-form-group">
+          <div className="govuk-form-group ">
             <label
               className="govuk-label govuk-label--s responsive-margin"
               htmlFor={`${name}-finish-time`}
