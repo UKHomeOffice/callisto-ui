@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 import { inputNames } from '../../../utils/constants';
+import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const StartFinishTimeInput = ({
   name,
@@ -16,6 +17,7 @@ const StartFinishTimeInput = ({
   formState,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
+  const [finishTimeText, setFinishTimeText] = useState('words');
 
   const desiredErrorOrder = [
     inputNames.shiftStartTime,
@@ -37,6 +39,14 @@ const StartFinishTimeInput = ({
       });
     }
     setErrorMessages(relevantErrorMessages);
+  };
+
+  const updateFinishTimeText = () => {
+    const startTime = getFormValues(inputNames.shiftStartTime);
+    const finishTime = getFormValues(inputNames.shiftFinishTime);
+    setFinishTimeText(
+      isFinishTimeOnNextDay(startTime, finishTime) ? 'Finishes next day' : ''
+    );
   };
 
   return (
@@ -83,6 +93,7 @@ const StartFinishTimeInput = ({
             getFormValues={getFormValues}
             timeEntry={timeEntry}
             timeEntriesIndex={timeEntriesIndex}
+            updateFinishTimeText={updateFinishTimeText}
           />
         </div>
 
@@ -106,6 +117,7 @@ const StartFinishTimeInput = ({
               getFormValues={getFormValues}
               timeEntry={timeEntry}
               timeEntriesIndex={timeEntriesIndex}
+              updateFinishTimeText={updateFinishTimeText}
             />
           </div>
         </div>
@@ -113,7 +125,7 @@ const StartFinishTimeInput = ({
           id="end-next-day"
           className="govuk-hint govuk-grid-column-one-third govuk-!-padding-top-8 govuk-!-padding-right-0 govuk-!-padding-left-0"
         >
-          {timeEntry.finishNextDay ? 'Finishes next day' : ''}
+          {finishTimeText}
         </p>
       </div>
     </div>

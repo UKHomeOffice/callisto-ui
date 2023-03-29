@@ -10,36 +10,8 @@ const ValidatedTimeEntry = ({
   errors,
   defaultValue,
   register,
-  isRequired,
-  getFormValues,
-  timeEntry,
-  timeEntriesIndex,
+  updateFinishTimeText,
 }) => {
-  const setFinishTimeText = () => {
-    //shouldn't be here
-    // const startTimeValue = getFormValues(inputNames.shiftStartTime);
-    // const finishTimeValue = getFormValues(inputNames.shiftFinishTime);
-    // const newTimeEntries = deepCloneJson(timeEntries);
-    // const answer = isFinishTimeOnNextDay(startTimeValue, finishTimeValue);
-    // newTimeEntries[timeEntriesIndex] =
-    //   ContextTimeEntry.createFrom(timeEntry).setFinishNextDay(answer);
-    // setTimeEntries(newTimeEntries);
-  };
-
-  const isTimeValid = (time) => {
-    if (time.length < 3 && time.length > 0) {
-      const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
-      return hhTimeRegEx.test(time);
-    } else if (time.length > 3 && time.length < 6) {
-      const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-      return hhmmTimeRegEx.test(time);
-    } else if (time.length == 0 && timeType === 'finish time') {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const errorMessage = `Enter a ${timeType} in the 24 hour clock format, for example, 08:00 or 0800`;
 
   return (
@@ -59,14 +31,7 @@ const ValidatedTimeEntry = ({
       autoComplete="off"
       type="text"
       {...register(name, {
-        onChange: () => setFinishTimeText(),
-        // required: {
-        //   value: isRequired,
-        //   message: errorMessage,
-        // },
-        // validate: {
-        //   validateTimeEntry: (value) => isTimeValid(value) || errorMessage,
-        // },
+        onBlur: () => updateFinishTimeText(timeType),
       })}
     />
   );
@@ -85,4 +50,5 @@ ValidatedTimeEntry.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   timeEntry: PropTypes.object.isRequired,
   timeEntriesIndex: PropTypes.number.isRequired,
+  setFinishTimeText: PropTypes.func,
 };
