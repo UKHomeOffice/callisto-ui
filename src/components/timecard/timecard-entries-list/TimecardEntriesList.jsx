@@ -10,7 +10,6 @@ const TimecardEntriesList = ({
   timeEntries,
   setTimeEntries,
   timePeriodTypes,
-  hasShiftMovedCallback,
   summaryMessages,
   setSummaryMessages,
 }) => {
@@ -27,7 +26,6 @@ const TimecardEntriesList = ({
             timePeriodTypesMap,
             timeEntry,
             index,
-            hasShiftMovedCallback,
             timeEntries,
             setTimeEntries,
             summaryMessages,
@@ -65,6 +63,7 @@ const renderTimeEntry = ({
         setTimeEntries={setTimeEntries}
         summaryMessages={summaryMessages}
         setSummaryMessages={setSummaryMessages}
+        timePeriodTypesMap={timePeriodTypesMap}
       />
     );
   } else {

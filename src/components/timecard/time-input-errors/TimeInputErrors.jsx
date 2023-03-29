@@ -1,39 +1,12 @@
 import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
-import { useEffect } from 'react';
-import { useApplicationContext } from '../../../context/ApplicationContext';
 import { clashingProperties } from '../../../utils/constants';
 import {
   formatLongDate,
   formatTime,
-  getTimePeriodTypesMap,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
-import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
-import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
-import { getTimePeriodTypes } from '../../../api/services/timecardService';
 
-const TimeInputErrors = ({ clashingProperty, clashes }) => {
-  let timePeriodTypes;
-  let timePeriodTypesMap;
-
-  const { setServiceError } = useApplicationContext();
-
-  useEffect(() => {
-    timePeriodTypes = async () => {
-      const params = new UrlSearchParamBuilder()
-        .setTenantId('00000000-0000-0000-0000-000000000000')
-        .getUrlSearchParams();
-
-      validateServiceErrors(setServiceError, async () => {
-        return await getTimePeriodTypes(params).data?.items;
-      });
-    };
-
-    timePeriodTypesMap = async () => {
-      return await getTimePeriodTypesMap(timePeriodTypes);
-    };
-  });
-
+const TimeInputErrors = ({ clashingProperty, clashes, timePeriodTypesMap }) => {
   const displayClashingProperty = () => {
     if (clashingProperty === clashingProperties.startTime) {
       return <p>Your start time must not overlap with another time period</p>;
@@ -145,4 +118,5 @@ TimeInputErrors.propTypes = {
       endTime: PropTypes.string,
     })
   ).isRequired,
+  timePeriodTypesMap: PropTypes.any,
 };

@@ -23,6 +23,7 @@ const Shift = ({
   setTimeEntries,
   summaryMessages,
   setSummaryMessages,
+  timePeriodTypesMap,
 }) => {
   const { setServiceError } = useApplicationContext();
 
@@ -140,6 +141,7 @@ const Shift = ({
                 setTimeEntries={setTimeEntries}
                 summaryMessages={summaryMessages}
                 setSummaryMessages={setSummaryMessages}
+                timePeriodTypesMap={timePeriodTypesMap}
               />
             </dt>
           </div>
@@ -187,4 +189,5 @@ Shift.propTypes = {
   setTimeEntries: PropTypes.func,
   summaryMessages: PropTypes.array,
   setSummaryMessages: PropTypes.func,
+  timePeriodTypesMap: PropTypes.any,
 };
