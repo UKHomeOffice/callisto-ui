@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { HashLink } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 
 // This class needs looking at to check it works as we want
 
@@ -23,13 +23,12 @@ const ErrorSummary = ({ errors }) => {
                 id={`summary-error-${error.key}`}
                 data-testid={`error-message-body-${error.key}`}
               >
-                <HashLink
+                <Link
                   id={`summary-error-message-${error.key}`}
                   to={`#${error.inputName}`}
                 >
                   {error.message}
-                </HashLink>
-                {/*needs replacing with normal link after replacing hash router*/}
+                </Link>
               </li>
             );
           })}
