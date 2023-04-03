@@ -1,12 +1,15 @@
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import { timeCardPeriodTypes } from '../../../../mocks/mockData';
 import TimecardEntriesList from './TimecardEntriesList';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 
 describe('TimecardEntriesList', () => {
-  it('should render the EditShiftTimecard component when time period type is Shift', async () => {
-    renderWithTimecardContext(
+  it('should render the EditShift component when time period type is Shift', async () => {
+    renderWithApplicationContext(
       <TimecardEntriesList
+        summaryErrors={[]}
+        setSummaryErrors={jest.fn()}
+        timecardDate="2021-09-01"
         timeEntries={[
           {
             timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
@@ -14,15 +17,19 @@ describe('TimecardEntriesList', () => {
             finishTime: '',
           },
         ]}
+        setTimeEntries={jest.fn()}
         timePeriodTypes={timeCardPeriodTypes}
-        hasShiftMovedCallback={jest.fn()}
+        summaryMessages={[]}
+        setSummaryMessages={jest.fn()}
       />
     );
 
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Start time')).toBeTruthy();
-    expect(screen.getByText('Finish time')).toBeTruthy();
-    expect(screen.getByText('Shift')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(screen.getByText('Start time')).toBeTruthy();
+      expect(screen.getByText('Finish time')).toBeTruthy();
+      expect(screen.getByText('Shift')).toBeTruthy();
+    });
   });
 
   test.each([
@@ -31,8 +38,11 @@ describe('TimecardEntriesList', () => {
   ])(
     'should render the SimpleTimePeriod component when time period type is correct',
     async (testValue) => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimecardEntriesList
+          summaryErrors={[]}
+          setSummaryErrors={jest.fn()}
+          timecardDate="2021-09-01"
           timeEntries={[
             {
               timePeriodTypeId: testValue,
@@ -40,8 +50,10 @@ describe('TimecardEntriesList', () => {
               finishTime: '',
             },
           ]}
+          setTimeEntries={jest.fn()}
           timePeriodTypes={timeCardPeriodTypes}
-          hasShiftMovedCallback={jest.fn()}
+          summaryMessages={[]}
+          setSummaryMessages={jest.fn()}
         />
       );
 

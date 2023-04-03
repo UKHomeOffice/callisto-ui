@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import StartFinishDateInput from './StartFinishDateInput';
 import { screen } from '@testing-library/react';
 import { testInputNames } from '../../../utils/test-utils/testConstants';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 
 const mockRegister = jest.fn();
 
@@ -12,7 +12,7 @@ timeEntryWithFinishNextDay.setFinishNextDay(true);
 
 describe('StartFinishDateInput', () => {
   it('should display titles and hints for each input box', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
         errors={{}}
@@ -41,7 +41,7 @@ describe('StartFinishDateInput', () => {
   });
 
   it('should update the end date if finish next day is true on new records', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
         errors={{}}
@@ -78,7 +78,7 @@ describe('StartFinishDateInput', () => {
   });
 
   it('should update the end date if finish next day is true on and a record already exists', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
         errors={{}}

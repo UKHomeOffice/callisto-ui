@@ -1,7 +1,8 @@
 import { getNodeText, screen } from '@testing-library/react';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 import { clashingProperties } from '../../../utils/constants';
 import TimeInputErrors from './TimeInputErrors';
+import { timePeriodTypesMap } from '../../../../mocks/mockData';
 
 describe('TimeInputErrors', () => {
   const singleShiftClash = [
@@ -14,10 +15,11 @@ describe('TimeInputErrors', () => {
 
   describe('Clashing properties', () => {
     it('should display a single error for start time clash', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={singleShiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -28,10 +30,11 @@ describe('TimeInputErrors', () => {
     });
 
     it('should display a single error for finish time clash', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.endTime}
           clashes={singleShiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -42,10 +45,11 @@ describe('TimeInputErrors', () => {
     });
 
     it('should display a single error for start and finish time clash', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startAndEndTime}
           clashes={singleShiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -58,10 +62,11 @@ describe('TimeInputErrors', () => {
 
   describe('Single time clashes', () => {
     it('should display a single error for shift clash', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={singleShiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -80,10 +85,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={singleScheduledRestDayClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -102,10 +108,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={singleNonWorkingDayClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -123,10 +130,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -153,10 +161,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={twoShiftClashes}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -189,10 +198,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -225,10 +235,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -266,10 +277,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -302,10 +314,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftAndSRDClashes}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -334,10 +347,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -367,10 +381,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -395,10 +410,11 @@ describe('TimeInputErrors', () => {
         },
       ];
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <TimeInputErrors
           clashingProperty={clashingProperties.startTime}
           clashes={shiftClash}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -417,10 +433,11 @@ describe('TimeInputErrors', () => {
   describe('Invalid input', () => {
     it('should throw an error if no clashes are given', () => {
       expect(() =>
-        renderWithTimecardContext(
+        renderWithApplicationContext(
           <TimeInputErrors
             clashingProperty={clashingProperties.startTime}
             clashes={[]}
+            timePeriodTypesMap={timePeriodTypesMap}
           />
         )
       ).toThrow(

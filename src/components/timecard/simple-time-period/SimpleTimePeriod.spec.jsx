@@ -1,14 +1,13 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
-import {
-  defaultApplicationContext,
-  defaultTimecardContext,
-  renderWithTimecardContext,
-} from '../../../test/helpers/TimecardContext';
 import SimpleTimePeriod from './SimpleTimePeriod';
 import {
   createTimeEntry,
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
+import {
+  renderWithApplicationContext,
+  defaultApplicationContext,
+} from '../../../test/helpers/TestApplicationContext';
 const timecardDate = '2022-09-01';
 const midnight = '00:00';
 
@@ -46,9 +45,11 @@ jest.mock('../../../api/services/timecardService', () => ({
   deleteTimeEntry: jest.fn().mockResolvedValue({ status: 200 }),
 }));
 
+const mockSetTimeEntries = jest.fn();
+
 describe('SimpleTimePeriod', () => {
   it('should display the correct time period type', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <SimpleTimePeriod
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
@@ -61,7 +62,7 @@ describe('SimpleTimePeriod', () => {
   });
 
   it('should display the save and cancel buttons when there is no time entry', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <SimpleTimePeriod
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
@@ -77,7 +78,7 @@ describe('SimpleTimePeriod', () => {
   });
 
   it('should not display the save and cancel buttons when there is a time entry', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <SimpleTimePeriod
         timeEntry={existingTimeEntry}
         timeEntriesIndex={1}
@@ -103,17 +104,15 @@ describe('SimpleTimePeriod', () => {
         'createTimeEntry'
       );
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          timeEntries: [newTimeEntry],
-          setTimeEntries: jest.fn(),
-          timecardDate,
-        }
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       act(() => {
@@ -137,17 +136,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should update timecard context when pressing "Save" button', async () => {
-      const mockSetTimeEntries = jest.fn();
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          timeEntries: [newTimeEntry],
-          setTimeEntries: mockSetTimeEntries,
-        }
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const saveButton = screen.getByText('Save');
@@ -167,14 +164,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should not display any service errors when submitting a time entry is successful', async () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        defaultTimecardContext,
-        defaultApplicationContext
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const saveButton = screen.getByText('Save');
@@ -191,15 +189,15 @@ describe('SimpleTimePeriod', () => {
       createTimeEntry.mockImplementation(() => {
         throw Error();
       });
-
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        defaultTimecardContext,
-        defaultApplicationContext
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const saveButton = screen.getByText('Save');
@@ -216,22 +214,15 @@ describe('SimpleTimePeriod', () => {
 
   describe('Cancel button', () => {
     it('should delete time entry when clicking the "Cancel" button', async () => {
-      const mockSetTimeEntries = jest.fn();
-
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={'2022-09-01'}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          summaryErrors: {},
-          setSummaryErrors: jest.fn(),
-          timeEntries: [newTimeEntry],
-          setTimeEntries: mockSetTimeEntries,
-          timecardDate: '2022-09-01',
-          setTimecardDate: jest.fn(),
-        }
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const cancelButton = screen.getByText('Cancel');
@@ -241,22 +232,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should delete time entry when clicking the "Cancel" button with multiple time entries', async () => {
-      const mockSetTimeEntries = jest.fn();
-
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={'2022-09-01'}
           timeEntry={newTimeEntry}
-          timeEntriesIndex={1}
+          timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          summaryErrors: {},
-          setSummaryErrors: jest.fn(),
-          timeEntries: [existingTimeEntry, newTimeEntry],
-          setTimeEntries: mockSetTimeEntries,
-          timecardDate: '2022-09-01',
-          setTimecardDate: jest.fn(),
-        }
+          timeEntries={[existingTimeEntry, newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const cancelButton = screen.getByText('Cancel');
@@ -268,20 +252,15 @@ describe('SimpleTimePeriod', () => {
 
   describe('Remove button', () => {
     it('should delete time entry when clicking the "Remove" button', async () => {
-      const mockSetTimeEntries = jest.fn();
-
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={'2022-09-01'}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          timeEntries: [existingTimeEntry],
-          setTimeEntries: mockSetTimeEntries,
-          timecardDate: '2022-09-01',
-          setTimecardDate: jest.fn(),
-        }
+          timeEntries={[existingTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const removeButton = screen.getByText('Remove');
@@ -293,14 +272,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should not display any service errors when deleting a time entry is successful', async () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        defaultTimecardContext,
-        defaultApplicationContext
+          timeEntries={[existingTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const removeButton = screen.getByText('Remove');
@@ -317,16 +297,15 @@ describe('SimpleTimePeriod', () => {
       deleteTimeEntry.mockImplementation(() => {
         throw Error();
       });
-
-      const mockSetTimeEntries = jest.fn();
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={existingTimeEntry}
-          timeEntriesIndex={1}
+          timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        defaultTimecardContext,
-        defaultApplicationContext
+          timeEntries={[existingTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const removeButton = screen.getByText('Remove');
@@ -342,15 +321,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should not render the "Remove" button if time entry does not exist', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          timeEntries: [newTimeEntry],
-        }
+          timeEntries={[newTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const removeButton = screen.queryByText('Remove');
@@ -358,15 +337,15 @@ describe('SimpleTimePeriod', () => {
     });
 
     it('should render the "Remove" button if time entry exists', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SimpleTimePeriod
+          timecardDate={timecardDate}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={1}
           timePeriodTitle={timePeriodTitleSWD}
-        />,
-        {
-          timeEntries: [existingTimeEntry],
-        }
+          timeEntries={[existingTimeEntry]}
+          setTimeEntries={mockSetTimeEntries}
+        />
       );
 
       const removeButton = screen.getByText('Remove');

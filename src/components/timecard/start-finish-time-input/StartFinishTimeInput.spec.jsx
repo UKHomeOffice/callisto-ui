@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 import { inputNames } from '../../../utils/constants';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import StartFinishTimeInput from './StartFinishTimeInput';
@@ -12,7 +12,7 @@ timeEntryWithFinishNextDay.setFinishNextDay(true);
 
 describe('StartFinishTimeInput', () => {
   it('should display titles for each input box', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
         errors={{}}
@@ -31,7 +31,7 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should display hints for each input box', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
         errors={{}}
@@ -50,7 +50,7 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should update the input value on change', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
         errors={{}}
@@ -72,7 +72,7 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should pre-fill the inputs if values are passed in', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
         startTimeValue="07:00"
@@ -94,7 +94,7 @@ describe('StartFinishTimeInput', () => {
 
   describe('Finishes next day', () => {
     it('should display "Finishes next day" text if finishNextDay is true', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
@@ -113,7 +113,7 @@ describe('StartFinishTimeInput', () => {
     });
 
     it('should not display "Finishes next day" text if finishNextDay is false', () => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
@@ -137,7 +137,7 @@ describe('StartFinishTimeInput', () => {
       const startTimeErrorMessage =
         'You must enter a start time in the HH:MM 24 hour clock format';
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           errors={{
@@ -165,7 +165,7 @@ describe('StartFinishTimeInput', () => {
       const expectedErrorMessage =
         'Error:You must enter a start time in the HH:MM 24 hour clock format';
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <div>
           <StartFinishTimeInput
             name={'shift'}

@@ -1,19 +1,19 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
 import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
-import { shiftTimeEntry } from '../../../../mocks/mockData';
+import { shiftTimeEntry, timePeriodTypesMap } from '../../../../mocks/mockData';
 import {
   createTimeEntry,
   deleteTimeEntry,
 } from '../../../api/services/timecardService';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 
 import {
   defaultApplicationContext,
   defaultTimecardContext,
-  renderWithTimecardContext,
 } from '../../../test/helpers/TimecardContext';
 import { inputNames } from '../../../utils/constants';
-import EditShiftTimecard from './EditShiftTimecard';
+import EditShift from '../edit-shift/EditShift';
 
 jest.mock('../../../api/services/timecardService');
 
@@ -38,10 +38,23 @@ const otherTimeEntry = {
   timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
 };
 
-describe('EditShiftTimecard', () => {
+const timecardDate = '2022-09-01';
+
+describe('EditShift', () => {
   it('should display a summary list with titles for shift, hours and meal break', () => {
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift
+        summaryErrors={jest.fn()}
+        setSummaryErrors={[]}
+        timecardDate={timecardDate}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+        timeEntries={[existingTimeEntry]}
+        setTimeEntries={jest.fn()}
+        summaryMessages={[]}
+        setSummaryMessages={jest.fn()}
+        timePeriodTypesMap={timePeriodTypesMap}
+      />
     );
 
     const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
@@ -52,8 +65,8 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when first directed to page', async () => {
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
     expect(screen.getByText('Start time')).toBeTruthy();
@@ -65,8 +78,8 @@ describe('EditShiftTimecard', () => {
       data: getApiResponseWithItems(shiftTimeEntry),
     });
 
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
     const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -88,8 +101,19 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should render the "Remove" and "Change" buttons when there is timecard data', async () => {
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift
+        summaryErrors={jest.fn()}
+        setSummaryErrors={[]}
+        timecardDate={timecardDate}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+        timeEntries={[existingTimeEntry]}
+        setTimeEntries={jest.fn()}
+        summaryMessages={[]}
+        setSummaryMessages={jest.fn()}
+        timePeriodTypesMap={timePeriodTypesMap}
+      />
     );
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
@@ -104,8 +128,8 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
     );
 
     act(() => {
@@ -120,8 +144,8 @@ describe('EditShiftTimecard', () => {
   });
 
   it('should not render the "Remove" or "Change" buttons when there is no timecard data', async () => {
-    renderWithTimecardContext(
-      <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+    renderWithApplicationContext(
+      <EditShift timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
@@ -140,11 +164,8 @@ describe('EditShiftTimecard', () => {
       deleteTimeEntry.mockResolvedValue({ status: 200 });
       const mockSetTimeEntries = jest.fn();
 
-      renderWithTimecardContext(
-        <EditShiftTimecard
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={0}
-        />,
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
@@ -167,11 +188,8 @@ describe('EditShiftTimecard', () => {
       deleteTimeEntry.mockResolvedValue({ status: 200 });
       const mockSetTimeEntries = jest.fn();
 
-      renderWithTimecardContext(
-        <EditShiftTimecard
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={1}
-        />,
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={1} />,
         {
           summaryErrors: {},
           setSummaryErrors: jest.fn(),
@@ -193,11 +211,8 @@ describe('EditShiftTimecard', () => {
     it('should not display any service errors when deleting a time entry is successful', async () => {
       deleteTimeEntry.mockImplementation(() => {});
 
-      renderWithTimecardContext(
-        <EditShiftTimecard
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={0}
-        />,
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
         defaultTimecardContext,
         defaultApplicationContext
       );
@@ -217,11 +232,8 @@ describe('EditShiftTimecard', () => {
         throw Error();
       });
 
-      renderWithTimecardContext(
-        <EditShiftTimecard
-          timeEntry={existingTimeEntry}
-          timeEntriesIndex={0}
-        />,
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />,
         defaultTimecardContext,
         defaultApplicationContext
       );
@@ -243,32 +255,32 @@ describe('EditShiftTimecard', () => {
       existingTimeEntry.finishTime = '';
       existingTimeEntry.finishDate = '';
 
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.getByText('08:00 to -')).toBeTruthy();
     });
 
     it('should display start and finish time on timecard when both times have been entered', async () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
     });
 
     it('should not display start and finish time on timecard when nothing has been entered', async () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={newTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
     });
 
     it('should not display start and finish time with date on timecard when nothing has been entered', async () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={newTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
@@ -276,8 +288,8 @@ describe('EditShiftTimecard', () => {
     });
 
     it('should not display start, finish time on timecard when edit hours toggle is open', async () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
@@ -294,8 +306,8 @@ describe('EditShiftTimecard', () => {
     });
 
     it('should not display start, finish time and date on timecard when edit hours toggle is open', async () => {
-      renderWithTimecardContext(
-        <EditShiftTimecard timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      renderWithApplicationContext(
+        <EditShift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
       );
 
       expect(screen.getByText(`08:00 to 16:00`)).toBeTruthy();

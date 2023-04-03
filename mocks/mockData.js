@@ -314,6 +314,16 @@ const shiftTimeCardPeriodType = {
   ],
 };
 
+const timePeriodTypesMap = {
+  '00000000-0000-0000-0000-000000000001': 'Shift',
+  '00000000-0000-0000-0000-000000000002': 'Scheduled rest day',
+  '00000000-0000-0000-0000-000000000003': 'Non-working day',
+  '00000000-0000-0000-0000-000000000004': 'On call',
+  '00000000-0000-0000-0000-000000000005': 'Absence',
+  '00000000-0000-0000-0000-000000000006': 'Training',
+  '00000000-0000-0000-0000-000000000007': 'Overtime',
+};
+
 const timeEntryFilter =
   "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='2022-10-28T00:00:00+00:00'&&actualStartTime<='2022-10-29T23:59:00+00:00'||ownerId=='00000000-0000-0000-0000-000000000000'&&actualEndTime>='2022-10-29T00:00:00+00:00'&&actualEndTime<='2022-10-30T23:59:00+00:00'";
 
@@ -333,4 +343,5 @@ module.exports = {
   accruals,
   people,
   artists,
+  timePeriodTypesMap,
 };
