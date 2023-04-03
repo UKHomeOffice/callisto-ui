@@ -4,6 +4,7 @@ import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTim
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 import { inputNames } from '../../../utils/constants';
 import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
+import dayjs from 'dayjs';
 
 const StartFinishTimeInput = ({
   name,
@@ -15,9 +16,11 @@ const StartFinishTimeInput = ({
   timeEntriesIndex,
   register,
   formState,
+  localStartDate,
+  setLocalEndDate,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
-  const [finishTimeText, setFinishTimeText] = useState('words');
+  const [finishTimeText, setFinishTimeText] = useState('');
 
   const desiredErrorOrder = [
     inputNames.shiftStartTime,
@@ -44,10 +47,14 @@ const StartFinishTimeInput = ({
   const updateFinishTimeText = () => {
     const startTime = getFormValues(inputNames.shiftStartTime);
     const finishTime = getFormValues(inputNames.shiftFinishTime);
-    setFinishTimeText(
-      isFinishTimeOnNextDay(startTime, finishTime) ? 'Finishes next day' : ''
+    const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
+    setFinishTimeText(nextDay ? 'Finishes next day' : '');
+    setLocalEndDate(
+      nextDay ? dayjs(localStartDate).add(1, 'day') : dayjs(localStartDate)
     );
   };
+
+  const checkFinishesNextDay = () => {};
 
   return (
     <div

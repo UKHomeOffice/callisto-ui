@@ -31,6 +31,7 @@ import {
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
+import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShift = ({
   summaryErrors,
@@ -206,6 +207,10 @@ const EditShift = ({
   };
 
   const validateSubmittedData = (formData) => {
+    if (!isChecked && isFinishTimeOnNextDay(localStartDate, localEndDate)) {
+      localEndDate = dayjs(localStartDate).add(1, 'day');
+    }
+
     //move to utils
     dayjs.extend(utc);
 
@@ -356,6 +361,8 @@ const EditShift = ({
             timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
           }
           timeEntriesIndex={timeEntriesIndex}
+          setLocalEndDate={setLocalEndDate}
+          localStartDate={localStartDate}
         />
         <Checkbox
           text="View or edit dates"
