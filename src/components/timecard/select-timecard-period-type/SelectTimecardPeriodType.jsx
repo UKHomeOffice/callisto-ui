@@ -112,7 +112,10 @@ const SelectTimecardPeriodType = ({
 export default SelectTimecardPeriodType;
 
 SelectTimecardPeriodType.propTypes = {
+  summaryErrors: PropTypes.array,
+  setSummaryErrors: PropTypes.func,
   timePeriodTypes: PropTypes.array,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
+  setAddNewTimeEntry: PropTypes.func,
 };

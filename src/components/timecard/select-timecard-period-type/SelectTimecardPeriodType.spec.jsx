@@ -1,7 +1,8 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
+import timePeriodTypesMap from '../../../../mocks/mockData';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
@@ -18,11 +19,16 @@ const expectedTimePeriodTypes = [
 
 describe('SelectTimecardPeriodType', () => {
   it('should render a radios component with the correct time periods', async () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <SelectTimecardPeriodType
         register={mockRegister}
         handleSubmit={handleSubmit}
-        errors={errors}
+        summaryErrors={errors}
+        setSummaryErrors={jest.fn()}
+        timePeriodTypes={timePeriodTypesMap}
+        timeEntries={[]}
+        setTimeEntries={jest.fn()}
+        setAddNewTimeEntry={jest.fn()}
       />
     );
 
@@ -35,7 +41,7 @@ describe('SelectTimecardPeriodType', () => {
 
   it('should display an error message when pressing submit with nothing selected', async () => {
     await waitFor(() => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SelectTimecardPeriodType
           register={mockRegister}
           handleSubmit={handleSubmit}
@@ -57,7 +63,7 @@ describe('SelectTimecardPeriodType', () => {
 
   it('should not display an error message when pressing submit with something selected', async () => {
     await waitFor(() => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SelectTimecardPeriodType
           register={mockRegister}
           handleSubmit={handleSubmit}
