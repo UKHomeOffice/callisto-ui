@@ -15,7 +15,10 @@ import {
   renderWithApplicationContext,
   defaultApplicationContext,
 } from '../../test/helpers/TestApplicationContext';
-import { getTimePeriodTypes } from '../../api/services/timecardService';
+import {
+  getTimePeriodTypes,
+  deleteTimeEntry,
+} from '../../api/services/timecardService';
 
 let mockDate;
 const mockNavigate = jest.fn();
@@ -365,6 +368,48 @@ describe('Timecard', () => {
       fireEvent.click(nextDayLink);
 
       expect(setTimeEntrySpy).toHaveBeenCalledWith([]);
+    });
+  });
+
+  describe('Remove shift', () => {
+    it('should delete time entry when clicking the "Remove" button with multiple time entries', async () => {
+      mockDate = '2022-01-30';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
+
+      renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+
+      await waitFor(() => {
+        const removeShiftButton = screen.getByText('Remove');
+        fireEvent.click(removeShiftButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('00:00 to 00:00 on 02 February')).toBeFalsy();
+      });
+    });
+
+    it('should not display any service errors when deleting a time entry is successful', async () => {
+      mockDate = '2022-01-30';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
+
+      renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+
+      await waitFor(() => {
+        const removeShiftButton = screen.getByText('Remove');
+        fireEvent.click(removeShiftButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('There is a problem')).toBeFalsy();
+      });
     });
   });
 });
