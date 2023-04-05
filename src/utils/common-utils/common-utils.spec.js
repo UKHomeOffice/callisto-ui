@@ -1,7 +1,7 @@
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import { deepCloneJson, focusErrors } from './common-utils';
-import { renderWithTimecardContext } from '../../test/helpers/TimecardContext';
 import { screen } from '@testing-library/react';
+import { renderWithApplicationContext } from '../../test/helpers/TestApplicationContext';
 
 describe('common-utils', () => {
   describe('deepClone', () => {
@@ -25,19 +25,21 @@ describe('common-utils', () => {
   describe('focusErrors', () => {
     it('should set the summary error to have focus and scroll into view', () => {
       const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
-      const testErrors = {
-        test: { inputName: 'test', message: 'Date cannot be blank' },
-        'test-day': { inputName: 'test-day', message: 'Enter a day' },
-        'test-month': { inputName: 'test-month', message: 'Enter a month' },
-        'test-year': { inputName: 'test-year', message: 'Enter a year' },
-      };
-      renderWithTimecardContext(
-        <ErrorSummary
-          errors={testErrors}
-          keys={['test', 'test-day', 'test-month', 'test-year']}
-        />
-      );
-      const errorSummary = screen.getByText('Date cannot be blank');
+      const testErrors = [];
+      testErrors.push({
+        key: 'invalidEnd',
+        inputName: 'shift-finish-time',
+        message: 'Test message for end time',
+        errorPriority: 2,
+      });
+      testErrors.push({
+        key: 'invalidStart',
+        inputName: 'shift-start-time',
+        message: 'Test message for start time',
+        errorPriority: 1,
+      });
+      renderWithApplicationContext(<ErrorSummary errors={testErrors} />);
+      const errorSummary = screen.getByText('Test message for start time');
       focusErrors(errorSummary);
       expect(scroll).toBeCalled();
       expect(errorSummary).toHaveFocus;
