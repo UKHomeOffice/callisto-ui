@@ -20,6 +20,7 @@ import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEnt
 import {
   deepCloneJson,
   focusErrors,
+  sortErrors,
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
@@ -73,7 +74,7 @@ const EditShift = ({
   );
 
   useEffect(() => {
-    focusErrors(document.getElementById('summary-error-0-message'));
+    focusErrors(document.querySelector('[id^="summary-error"] a'));
   }, [summaryErrors]);
 
   const handleCheckboxChange = () => {
@@ -204,19 +205,103 @@ const EditShift = ({
       handleError(validatedData.errors);
     }
   };
+  const validateFormDates = (fieldType, formData, validatedData, newErrors) => {
+    const day = `${fieldType}Date-day`;
+    const month = `${fieldType}Date-month`;
+    const year = `${fieldType}Date-year`;
+    const priority = fieldType === 'start' ? 3 : 4;
+    let datesValid = true;
+
+    if (!formData[day]) {
+      validatedData.isValid = false;
+      datesValid = false;
+      newErrors.push({
+        key: `empty${fieldType}Day`,
+        inputName: day,
+        message: `Enter a ${fieldType} day`,
+        errorPriority: priority,
+      });
+    }
+
+    if (!formData[month]) {
+      validatedData.isValid = false;
+      datesValid = false;
+      newErrors.push({
+        key: `empty${fieldType}Month`,
+        inputName: month,
+        message: `Enter a ${fieldType} month`,
+        errorPriority: priority,
+      });
+    }
+    if (!formData[year]) {
+      validatedData.isValid = false;
+      datesValid = false;
+      newErrors.push({
+        key: `empty${fieldType}Year`,
+        inputName: year,
+        message: `Enter a ${fieldType} year`,
+        errorPriority: priority,
+      });
+    }
+    return datesValid;
+  };
+
+  const checkDateFormat = (fieldType, formData, validatedData, newErrors) => {
+    const day = `${fieldType}Date-day`;
+    const month = `${fieldType}Date-month`;
+    const year = `${fieldType}Date-year`;
+    const priority = fieldType === 'start' ? 3 : 4;
+
+    if (!formData[day].match(/^([1-9]|0[1-9]|[12]\d|3[01])$/)) {
+      if (!newErrors.some((error) => error.key === `empty${fieldType}Day`)) {
+        newErrors.push({
+          key: `invalid${fieldType}Day`,
+          inputName: day,
+          message: `Enter a valid ${fieldType} day`,
+          errorPriority: priority,
+        });
+      }
+      validatedData.isValid = false;
+    }
+
+    if (!formData[month].match(/^([1-9]|0[1-9]|1[012])$/)) {
+      if (!newErrors.some((error) => error.key === `empty${fieldType}Month`)) {
+        newErrors.push({
+          key: `invalid${fieldType}Month`,
+          inputName: month,
+          message: `Enter a valid ${fieldType} month`,
+          errorPriority: priority,
+        });
+      }
+      validatedData.isValid = false;
+    }
+
+    if (!formData[year].match(/^\d{4}$/)) {
+      if (!newErrors.some((error) => error.key === `empty${fieldType}Year`)) {
+        newErrors.push({
+          key: `invalid${fieldType}Year`,
+          inputName: year,
+          message: `Enter a valid ${fieldType} year`,
+          errorPriority: priority,
+        });
+      }
+      validatedData.isValid = false;
+    }
+  };
 
   const validateSubmittedData = (formData) => {
+    const validatedData = {
+      isValid: true,
+    };
     //move to utils
     dayjs.extend(utc);
-
     let newErrors = [];
 
     const startTime = formData[`${inputName}-start-time`];
     const finishTime = formData[`${inputName}-finish-time`];
 
-    let isValid = true;
     if (!isTimeValid(startTime, 'start time')) {
-      isValid = false;
+      validatedData.isValid = false;
       newErrors.push({
         key: 'invalidStart',
         inputName: 'shift-start-time',
@@ -227,7 +312,7 @@ const EditShift = ({
     }
 
     if (!isTimeValid(finishTime, 'finish time')) {
-      isValid = false;
+      validatedData.isValid = false;
       newErrors.push({
         key: 'invalidEnd',
         inputName: 'shift-finish-time',
@@ -237,8 +322,17 @@ const EditShift = ({
       });
     }
 
-    if (!dayjs(localStartDate).isValid || !dayjs(localEndDate).isValid) {
-      isValid = false;
+    if (isChecked) {
+      if (validateFormDates('start', formData, validatedData, newErrors)) {
+        checkDateFormat('start', formData, validatedData, newErrors);
+      }
+
+      if (
+        finishTime !== '' &&
+        validateFormDates('finish', formData, validatedData, newErrors)
+      ) {
+        checkDateFormat('finish', formData, validatedData, newErrors);
+      }
     }
 
     const actualStartDateTime = formatDateTimeISO(
@@ -252,7 +346,7 @@ const EditShift = ({
     }
 
     if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
-      isValid = false;
+      validatedData.isValid = false;
       newErrors.push({
         key: 'startAfterEnd',
         inputName: 'shift-start-time',
@@ -262,19 +356,16 @@ const EditShift = ({
     }
     const sortedErrors = sortErrors(newErrors);
 
-    const validatedData = {
-      isValid: isValid,
-      startDateTime: actualStartDateTime,
-      finishDateTime: actualEndDateTime,
-      errors: sortedErrors,
-    };
+    validatedData.startDateTime = actualStartDateTime;
+    validatedData.finishDateTime = actualEndDateTime;
+    validatedData.errors = sortedErrors;
 
     return validatedData;
   };
 
-  const sortErrors = (errors) => {
-    return errors.sort((a, b) => (a.errorPriority > b.errorPriority ? 1 : -1));
-  };
+  // const sortErrors = (errors) => {
+  //   return errors.sort((a, b) => a.errorPriority - b.errorPriority);
+  // };
 
   const isTimeValid = (time, timeType) => {
     // Move to utils
@@ -366,7 +457,11 @@ const EditShift = ({
         {isChecked && (
           <StartFinishDateInput
             name="Date"
-            errors={errors}
+            errors={combineExistingAndTimeClashErrors(
+              errors,
+              summaryErrors,
+              timePeriodTypesMap
+            )}
             startTimeValue={localStartDate}
             finishTimeValue={localEndDate}
             startEntryExists={startEntryExists}
