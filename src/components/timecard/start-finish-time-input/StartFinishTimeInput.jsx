@@ -29,11 +29,15 @@ const StartFinishTimeInput = ({
   const updateErrorMessages = () => {
     const findErrors =
       errors &&
-      Object.keys(errors).filter((inputName) => inputName.includes(name));
+      Object.values(errors).filter(
+        (error) =>
+          error.inputName === 'shift-start-time' ||
+          error.inputName === 'shift-finish-time'
+      );
     let relevantErrorMessages = [];
     if (findErrors) {
-      relevantErrorMessages = findErrors.map((inputName) => {
-        return errors[inputName].message;
+      relevantErrorMessages = findErrors.map((error) => {
+        return error.message;
       });
     }
     setErrorMessages(relevantErrorMessages);
@@ -42,38 +46,50 @@ const StartFinishTimeInput = ({
   return (
     <div
       className={`govuk-form-group ${
-        errorMessages.length > 0 && 'govuk-form-group--error'
+        errorMessages.length > 0 &&
+        Object.values(errors).some(
+          (error) =>
+            error.inputName === 'shift-start-time' ||
+            error.inputName === 'shift-end-time'
+        )
+          ? 'govuk-form-group--error'
+          : ''
       }`}
     >
+      {/* kinda works, need to fix the error messages so the correct one is displayed */}
       <div className="govuk-grid-row" data-testid="error-box">
-        {sortErrors(errors, desiredErrorOrder).map((error, i) => (
+        {errorMessages.map((message, i) => (
           <div
             id={`${name}-${i}-error`}
             key={i}
             className="govuk-error-message govuk-!-margin-left-3"
           >
-            {errors[error]?.message && (
-              <div>
-                <span className="govuk-visually-hidden">Error:</span>
-                {errors[error]?.message}
-              </div>
-            )}
+            <span className="govuk-visually-hidden">Error:</span>
+            {message}
           </div>
         ))}
       </div>
 
-      <div
-        className={`govuk-grid-row ${
-          Object.keys(errors).length !== 0 &&
-          Object.values(errors).some(
-            (error) =>
-              error.inputName === 'shift-start-time' ||
-              error.inputName === 'shift-end-time'
-          )
-            ? 'govuk-form-group--error'
-            : ''
-        }`}
-      >
+      {/* <div className="govuk-grid-row" data-testid="error-box">
+        {sortErrors(errors, desiredErrorOrder).map((error, i) => {
+          return (
+            <div
+              id={`${name}-${i}-error`}
+              key={i}
+              className="govuk-error-message govuk-!-margin-left-3"
+            >
+              {errors[error]?.message && (
+                <div>
+                  <span className="govuk-visually-hidden">Error:</span>
+                  {errors[error]?.message}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div> */}
+
+      <div className="govuk-grid-row">
         <div className="govuk-grid-column-one-third">
           <label
             className="govuk-label govuk-label--s"
