@@ -20,11 +20,7 @@ const ValidatedTimeEntry = ({
       name={name}
       className={`govuk-input ${
         Object.keys(errors).length !== 0 &&
-        Object.values(errors).some(
-          (error) =>
-            error.inputName === 'shift-start-time' ||
-            error.inputName === 'shift-end-time'
-        )
+        Object.values(errors).some((error) => error.inputName === name)
           ? 'govuk-input--error'
           : ''
       } govuk-input--width-5`}
