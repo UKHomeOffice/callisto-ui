@@ -29,7 +29,6 @@ const ErrorSummary = ({ errors }) => {
                 >
                   {error.message}
                 </HashLink>
-                {/*needs replacing with normal link after replacing hash router*/}
               </li>
             );
           })}

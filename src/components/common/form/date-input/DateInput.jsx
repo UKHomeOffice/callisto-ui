@@ -25,11 +25,11 @@ const DateInput = ({
   const updateErrorMessages = () => {
     const findErrors =
       errors &&
-      Object.keys(errors).filter((inputName) => inputName.includes(name));
+      Object.values(errors).filter((error) => error.inputName.includes(name));
     let relevantErrorMessages = [];
     if (findErrors) {
-      relevantErrorMessages = findErrors.map((inputName) => {
-        return errors[inputName].message;
+      relevantErrorMessages = findErrors.map((error) => {
+        return error.message;
       });
     }
     setErrorMessages(relevantErrorMessages);
@@ -165,14 +165,14 @@ const DateInputItem = ({
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
             onChange: () => setDates(),
-            required: {
-              value: true,
-              message: 'Enter a ' + dateType,
-            },
-            pattern: {
-              value: pattern,
-              message: 'Enter a valid ' + dateType,
-            },
+            // required: {
+            //   value: true,
+            //   message: 'Enter a ' + dateType,
+            // },
+            // pattern: {
+            //   value: pattern,
+            //   message: 'Enter a valid ' + dateType,
+            // },
           })}
         />
       </div>
