@@ -77,7 +77,7 @@ export default ValidatedTimeEntry;
 ValidatedTimeEntry.propTypes = {
   name: PropTypes.string.isRequired,
   timeType: PropTypes.string.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.array.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
   isRequired: PropTypes.bool,

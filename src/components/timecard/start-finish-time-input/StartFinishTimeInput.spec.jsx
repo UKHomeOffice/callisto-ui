@@ -15,11 +15,11 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -34,11 +34,11 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -53,11 +53,11 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -77,11 +77,11 @@ describe('StartFinishTimeInput', () => {
         name={'shift'}
         startTimeValue="07:00"
         finishTimeValue="17:00"
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -99,11 +99,11 @@ describe('StartFinishTimeInput', () => {
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="01:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntryWithFinishNextDay}
           timeEntriesIndex={0}
-          getValues={jest.fn()}
+          getFormValues={jest.fn()}
         />
       );
 
@@ -118,11 +118,11 @@ describe('StartFinishTimeInput', () => {
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="17:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          getValues={jest.fn()}
+          getFormValues={jest.fn()}
         />
       );
 
@@ -140,14 +140,20 @@ describe('StartFinishTimeInput', () => {
       renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
-          errors={{
-            'radio-error': { message: 'Select a radio button' }, // error message for another component
-            [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
-          }}
+          errors={[
+            {
+              key: 'radio-error',
+              message: 'Select a radio button', // error message for another component
+            },
+            {
+              key: [inputNames.shiftStartTime],
+              message: startTimeErrorMessage,
+            },
+          ]}
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          getValues={jest.fn()}
+          getFormValues={jest.fn()}
         />
       );
 
@@ -169,15 +175,19 @@ describe('StartFinishTimeInput', () => {
         <div>
           <StartFinishTimeInput
             name={'shift'}
-            errors={{
-              'radio-error': { message: 'Select a radio button' }, // error message for another component
-              [inputNames.shiftFinishTime]: { message: finishTimeErrorMessage },
-              [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
-            }}
+            errors={[
+              {
+                'radio-error': { message: 'Select a radio button' }, // error message for another component
+                [inputNames.shiftFinishTime]: {
+                  message: finishTimeErrorMessage,
+                },
+                [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
+              },
+            ]}
             register={mockRegister}
             timeEntry={timeEntry}
             timeEntriesIndex={0}
-            getValues={jest.fn()}
+            getFormValues={jest.fn()}
           />
         </div>
       );

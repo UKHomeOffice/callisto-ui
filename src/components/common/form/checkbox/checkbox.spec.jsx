@@ -7,6 +7,7 @@ test('text is showing on page', () => {
     <Checkbox
       text="Shift longer than 24 hours"
       name="shift-is-longer-than-24-hours"
+      handleChange={jest.fn()}
     />
   );
 
@@ -19,6 +20,7 @@ test('should set the checkbox to checked when it is selected', () => {
     <Checkbox
       text="Shift longer than 24 hours"
       name="shift-is-longer-than-24-hours"
+      handleChange={jest.fn()}
     />
   );
 

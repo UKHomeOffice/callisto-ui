@@ -4,7 +4,7 @@ import {
   renderWithApplicationContext,
   defaultApplicationContext,
 } from '../../../test/helpers/TestApplicationContext';
-import EditShiftHours from './EditShift';
+import EditShift from './EditShift';
 import {
   createTimeEntry,
   updateTimeEntry,
@@ -67,7 +67,7 @@ describe('EditShift', () => {
 
     it('should call createTimeEntry when pressing save with no existing time entry', async () => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -110,7 +110,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -159,7 +159,7 @@ describe('EditShift', () => {
         });
 
         renderWithApplicationContext(
-          <EditShiftHours
+          <EditShift
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
@@ -195,7 +195,7 @@ describe('EditShift', () => {
         });
 
         renderWithApplicationContext(
-          <EditShiftHours
+          <EditShift
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
@@ -231,7 +231,7 @@ describe('EditShift', () => {
     });
 
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
@@ -268,7 +268,7 @@ describe('EditShift', () => {
     });
 
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
@@ -298,7 +298,7 @@ describe('EditShift', () => {
 
   it('should display an error when pressing save with no start time added', async () => {
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
@@ -322,7 +322,7 @@ describe('EditShift', () => {
     'should display an error when pressing save with an invalid start time',
     async (testValue) => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -350,7 +350,7 @@ describe('EditShift', () => {
     'should not display an error when pressing save with a valid start time',
     async (testValue) => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -379,7 +379,7 @@ describe('EditShift', () => {
     'should display an error when pressing save with an invalid finish time',
     async (testValue) => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -407,7 +407,7 @@ describe('EditShift', () => {
     'should not display an error when pressing save with a valid finish time',
     async (testValue) => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -450,7 +450,7 @@ describe('EditShift', () => {
     };
 
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={existingTimeEntry}
         timeEntriesIndex={0}
@@ -501,7 +501,7 @@ describe('EditShift', () => {
     };
 
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={existingTimeEntry}
         timeEntriesIndex={0}
@@ -527,7 +527,7 @@ describe('EditShift', () => {
   describe('Dates and checkbox', () => {
     it('should show start and end dates when checking box', async () => {
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
@@ -574,7 +574,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -628,7 +628,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -678,7 +678,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -736,7 +736,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -795,7 +795,7 @@ describe('EditShift', () => {
       };
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
@@ -856,17 +856,16 @@ describe('EditShift', () => {
           finishNextDay: false,
         };
 
-        const defaultTimecardContext = createDefaultTimecardContext();
-        defaultTimecardContext.setSummaryMessages = jest.fn();
+        const setSummaryMessages = jest.fn();
 
         renderWithApplicationContext(
-          <EditShiftHours
+          <EditShift
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
-          />,
-          defaultTimecardContext
+            setSummaryMessages={setSummaryMessages}
+          />
         );
 
         act(() => {
@@ -889,9 +888,7 @@ describe('EditShift', () => {
         });
 
         await waitFor(() => {
-          expect(
-            defaultTimecardContext.setSummaryMessages
-          ).toHaveBeenCalledWith({
+          expect(setSummaryMessages).toHaveBeenCalledWith({
             update: {
               template: 'datesMoved',
               variables: { startDate: '2022-09-02', endDate: '2022-09-02' },
@@ -914,17 +911,16 @@ describe('EditShift', () => {
           finishNextDay: false,
         };
 
-        const defaultTimecardContext = createDefaultTimecardContext();
-        defaultTimecardContext.setSummaryMessages = jest.fn();
+        const setSummaryMessages = jest.fn();
 
         renderWithApplicationContext(
-          <EditShiftHours
+          <EditShift
             setShowEditShiftHours={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
-          />,
-          defaultTimecardContext
+            setSummaryMessages={setSummaryMessages}
+          />
         );
 
         act(() => {
@@ -942,9 +938,7 @@ describe('EditShift', () => {
         });
 
         await waitFor(() => {
-          expect(
-            defaultTimecardContext.setSummaryMessages
-          ).toHaveBeenCalledWith({
+          expect(setSummaryMessages).toHaveBeenCalledWith({
             update: {
               template: 'datesMoved',
               variables: { startDate: '2022-09-02' },
@@ -958,16 +952,18 @@ describe('EditShift', () => {
           data: getApiResponseWithItems(shiftTimeEntry),
         });
 
-        const defaultTimecardContext = createDefaultTimecardContext();
-        defaultTimecardContext.setSummaryMessages = jest.fn();
+        // const defaultTimecardContext = createDefaultTimecardContext();
+        // defaultTimecardContext.setSummaryMessages = jest.fn();
+
+        const setSummaryMessages = jest.fn();
 
         renderWithApplicationContext(
-          <EditShiftHours
+          <EditShift
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
-          />,
-          defaultTimecardContext
+            setSummaryMessages={setSummaryMessages}
+          />
         );
 
         act(() => {
@@ -979,9 +975,7 @@ describe('EditShift', () => {
         });
 
         await waitFor(() => {
-          expect(
-            defaultTimecardContext.setSummaryMessages
-          ).not.toHaveBeenCalled();
+          expect(setSummaryMessages).not.toHaveBeenCalled();
         });
       });
     });
@@ -999,19 +993,19 @@ describe('EditShift', () => {
       finishNextDay: false,
     };
 
-    defaultTimecardContext.timecardDate = timecardDate;
+    // defaultTimecardContext.timecardDate = timecardDate;
+    const setSummaryErrors = jest.fn();
 
     renderWithApplicationContext(
-      <EditShiftHours
+      <EditShift
         setShowEditShiftHours={jest.fn()}
         timeEntry={existingTimeEntry}
         timeEntriesIndex={0}
         localStartDate={'2022-09-02 08:00:00+00:00'}
         localEndDate={'2022-09-02 16:00:00+00:00'}
         startEntryExists={true}
-        setSummaryMessages={jest.fn()}
-      />,
-      defaultTimecardContext
+        setSummaryErrors={setSummaryErrors}
+      />
     );
 
     act(() => {
@@ -1025,7 +1019,7 @@ describe('EditShift', () => {
     });
 
     await waitFor(() => {
-      expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+      expect(setSummaryErrors).toHaveBeenCalledWith({
         [inputNames.shiftStartTime]: {
           message: 'Start time must be before end time',
         },
@@ -1054,14 +1048,14 @@ describe('EditShift', () => {
         };
       });
 
-      defaultTimecardContext.setSummaryErrors = jest.fn();
+      const setSummaryErrors = jest.fn();
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        defaultTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1076,7 +1070,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(defaultTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        expect(setSummaryErrors).toHaveBeenCalledWith({
           [inputNames.shiftStartTime]: {
             message:
               'Your start and finish times must not overlap with another time period',
@@ -1105,17 +1099,15 @@ describe('EditShift', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-      mockTimecardContext.setTimeEntries = jest.fn();
+      const setSummaryErrors = jest.fn();
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        mockTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1130,7 +1122,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        expect(setSummaryErrors).toHaveBeenCalledWith({
           [inputNames.shiftStartTime]: {
             message:
               'Your start time must not overlap with another time period',
@@ -1159,17 +1151,15 @@ describe('EditShift', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-      mockTimecardContext.setTimeEntries = jest.fn();
+      const setSummaryErrors = jest.fn();
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        mockTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1184,7 +1174,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).toHaveBeenCalledWith({
+        expect(setSummaryErrors).toHaveBeenCalledWith({
           [inputNames.shiftFinishTime]: {
             message:
               'Your finish time must not overlap with another time period',
@@ -1207,17 +1197,15 @@ describe('EditShift', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-      mockTimecardContext.setTimeEntries = jest.fn();
+      const setSummaryErrors = jest.fn();
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        mockTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1232,7 +1220,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+        expect(setSummaryErrors).not.toHaveBeenCalled();
       });
     });
 
@@ -1260,17 +1248,15 @@ describe('EditShift', () => {
         };
       });
 
-      const mockTimecardContext = deepCloneJson(defaultTimecardContext);
-      mockTimecardContext.setSummaryErrors = jest.fn();
-      mockTimecardContext.setTimeEntries = jest.fn();
+      const setSummaryErrors = jest.fn();
 
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        mockTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1285,7 +1271,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(mockTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+        expect(setSummaryErrors).not.toHaveBeenCalled();
       });
     });
 
@@ -1300,14 +1286,15 @@ describe('EditShift', () => {
         };
       });
 
-      defaultTimecardContext.setSummaryErrors = jest.fn();
+      const setSummaryErrors = jest.fn();
+
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
-        />,
-        defaultTimecardContext
+          setSummaryErrors={setSummaryErrors}
+        />
       );
 
       const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
@@ -1322,7 +1309,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(defaultTimecardContext.setSummaryErrors).not.toHaveBeenCalled();
+        expect(setSummaryErrors).not.toHaveBeenCalled();
       });
     });
 
@@ -1339,15 +1326,14 @@ describe('EditShift', () => {
         finishNextDay: true,
       };
 
-      defaultTimecardContext.timecardDate = timecardDate;
-
       renderWithApplicationContext(
-        <EditShiftHours
+        <EditShift
           setShowEditShiftHours={jest.fn()}
+          timecardDate={timecardDate}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
-        />,
-        defaultTimecardContext
+          setSummaryErrors={jest.fn()}
+        />
       );
 
       act(() => {

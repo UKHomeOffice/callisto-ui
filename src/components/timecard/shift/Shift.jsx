@@ -54,11 +54,11 @@ const Shift = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry({
+        removeTimecardContextEntry(
           timeEntries,
           setTimeEntries,
-          timeEntriesIndex,
-        });
+          timeEntriesIndex
+        );
       },
       true
     );

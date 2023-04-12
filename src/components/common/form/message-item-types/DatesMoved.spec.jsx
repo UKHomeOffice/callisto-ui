@@ -44,9 +44,12 @@ describe('DatesMoved', () => {
   });
 
   it('should clear message summary when date link clicked', async () => {
+    const setSummaryMessages = jest.fn();
     renderWithApplicationContext(
-      <DatesMoved variables={{ startDate: '2022-09-21' }}
-      setSummaryMessages={jest.fn()} />
+      <DatesMoved
+        variables={{ startDate: '2022-09-21' }}
+        setSummaryMessages={setSummaryMessages}
+      />
     );
 
     await waitFor(() => {
@@ -54,9 +57,7 @@ describe('DatesMoved', () => {
       expect(startDateLink.pathname).toBe('/timecard/2022-09-21');
       fireEvent.click(startDateLink);
 
-      expect(this.setSummaryMessages).toHaveBeenCalledWith(
-        []
-      );
+      expect(setSummaryMessages).toHaveBeenCalledWith([]);
     });
   });
 });

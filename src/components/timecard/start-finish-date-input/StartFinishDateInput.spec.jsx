@@ -15,15 +15,16 @@ describe('StartFinishDateInput', () => {
     renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
-        errors={{}}
-        startTimeValue='2022-09-02'
-        finishTimeValue='2022-09-02'
+        errors={[]}
+        startTimeValue="2022-09-02"
+        finishTimeValue="2022-09-02"
         startEntryExists={false}
         finishEntryExists={false}
-        timecardDate='2022-09-02'
+        timecardDate="2022-09-02"
         register={mockRegister}
         formState={jest.fn()}
         finishNextDay={false}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -44,15 +45,16 @@ describe('StartFinishDateInput', () => {
     renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
-        errors={{}}
-        startTimeValue='2022-09-02'
-        finishTimeValue='2022-09-02'
+        errors={[]}
+        startTimeValue="2022-09-02"
+        finishTimeValue="2022-09-02"
         startEntryExists={false}
         finishEntryExists={false}
-        timecardDate='2022-09-02'
+        timecardDate="2022-09-02"
         register={mockRegister}
         formState={jest.fn()}
         finishNextDay={true}
+        getFormValues={jest.fn()}
       />
     );
 
@@ -81,15 +83,16 @@ describe('StartFinishDateInput', () => {
     renderWithApplicationContext(
       <StartFinishDateInput
         name="Date"
-        errors={{}}
-        startTimeValue='2022-09-02'
-        finishTimeValue='2022-09-02'
+        errors={[]}
+        startTimeValue="2022-09-02"
+        finishTimeValue="2022-09-02"
         startEntryExists={true}
         finishEntryExists={true}
-        timecardDate='2022-09-02'
+        timecardDate="2022-09-02"
         register={mockRegister}
         formState={jest.fn()}
         finishNextDay={true}
+        getFormValues={jest.fn()}
       />
     );
 

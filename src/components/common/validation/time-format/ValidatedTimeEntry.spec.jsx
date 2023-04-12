@@ -29,7 +29,7 @@ describe('ValidatedTimeEntry', () => {
         timeType="finish time"
         errors={[]}
         register={jest.fn()}
-        geFormValues={jest.fn()}
+        getFormValues={jest.fn()}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
       />

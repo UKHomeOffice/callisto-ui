@@ -179,11 +179,11 @@ const EditShift = ({
                 validatedData.startDateTime,
                 validatedData.finishDateTime
               );
-              removeTimecardContextEntry({
+              removeTimecardContextEntry(
                 timeEntries,
                 setTimeEntries,
                 timeEntriesIndex,
-              });
+              );
             } else {
               setTimeEntries([
                 ...timeEntries.slice(0, timeEntriesIndex),

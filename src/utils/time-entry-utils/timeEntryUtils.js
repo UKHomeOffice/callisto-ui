@@ -46,11 +46,11 @@ export const formatJustYear = (dateTime) => {
   return dayjs(dateTime).format('YYYY');
 };
 
-export const removeTimecardContextEntry = ({
+export const removeTimecardContextEntry = (
   timeEntries,
   setTimeEntries,
   timeEntriesIndex,
-}) => {
+) => {
   if (timeEntriesIndex === 0) {
     setTimeEntries([...timeEntries.slice(1)]);
   } else {

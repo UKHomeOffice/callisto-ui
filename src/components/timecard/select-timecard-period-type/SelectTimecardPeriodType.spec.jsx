@@ -6,7 +6,7 @@ import timePeriodTypesMap from '../../../../mocks/mockData';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
-const errors = {};
+const errors = [];
 const expectedTimePeriodTypes = [
   'Shift',
   'Scheduled rest day',
