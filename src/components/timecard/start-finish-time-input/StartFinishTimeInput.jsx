@@ -29,6 +29,7 @@ const StartFinishTimeInput = ({
 
   useEffect(() => {
     updateErrorMessages();
+    updateFinishTimeText();
   }, [formState]);
 
   const updateErrorMessages = () => {
@@ -58,8 +59,6 @@ const StartFinishTimeInput = ({
     );
   };
 
-  const checkFinishesNextDay = () => {};
-
   return (
     <div
       className={`govuk-form-group ${
@@ -74,7 +73,7 @@ const StartFinishTimeInput = ({
       }`}
     >
       {/* kinda works, need to fix the error messages so the correct one is displayed */}
-      <div className="govuk-grid-row" data-testid="error-box">
+      {/* <div className="govuk-grid-row" data-testid="error-box">
         {errorMessages.map((message, i) => (
           <div
             id={`${name}-${i}-error`}
@@ -85,26 +84,26 @@ const StartFinishTimeInput = ({
             {message}
           </div>
         ))}
-      </div>
+      </div> */}
 
-      {/* <div className="govuk-grid-row" data-testid="error-box">
-        {sortErrors(errors, desiredErrorOrder).map((error, i) => {
+      <div className="govuk-grid-row" data-testid="error-box">
+        {sortErrors(errors).map((error) => {
           return (
             <div
-              id={`${name}-${i}-error`}
-              key={i}
+              id={`${name}-${error.key}-error`}
+              key={error.key}
               className="govuk-error-message govuk-!-margin-left-3"
             >
-              {errors[error]?.message && (
+              {error.message && (
                 <div>
                   <span className="govuk-visually-hidden">Error:</span>
-                  {errors[error]?.message}
+                  {error.message}
                 </div>
               )}
             </div>
           );
         })}
-      </div> */}
+      </div>
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-one-third">

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import StartFinishDateInput from './StartFinishDateInput';
 import { screen } from '@testing-library/react';
@@ -25,6 +24,8 @@ describe('StartFinishDateInput', () => {
         formState={jest.fn()}
         finishNextDay={false}
         getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -55,6 +56,8 @@ describe('StartFinishDateInput', () => {
         formState={jest.fn()}
         finishNextDay={true}
         getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -93,6 +96,8 @@ describe('StartFinishDateInput', () => {
         formState={jest.fn()}
         finishNextDay={true}
         getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 

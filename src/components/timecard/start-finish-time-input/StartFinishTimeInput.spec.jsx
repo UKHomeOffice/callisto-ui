@@ -15,11 +15,12 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
         getFormValues={jest.fn()}
+        setLocalEndDate={jest.fn()}
       />
     );
 
@@ -34,11 +35,12 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
         getFormValues={jest.fn()}
+        setLocalEndDate={jest.fn()}
       />
     );
 
@@ -53,11 +55,12 @@ describe('StartFinishTimeInput', () => {
     renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
         getFormValues={jest.fn()}
+        setLocalEndDate={jest.fn()}
       />
     );
 
@@ -77,11 +80,12 @@ describe('StartFinishTimeInput', () => {
         name={'shift'}
         startTimeValue="07:00"
         finishTimeValue="17:00"
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
         getFormValues={jest.fn()}
+        setLocalEndDate={jest.fn()}
       />
     );
 
@@ -93,76 +97,66 @@ describe('StartFinishTimeInput', () => {
   });
 
   describe('Finishes next day', () => {
-    it('should display "Finishes next day" text if finishNextDay is true', () => {
+    it('should display "Finishes next day" text if shift finishes next day', () => {
+      const getFormValues = jest
+        .fn()
+        .mockReturnValueOnce('07:00')
+        .mockReturnValueOnce('01:00');
+
+      const setLocalEndDate = jest.fn();
+
       renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="01:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntryWithFinishNextDay}
           timeEntriesIndex={0}
-          getFormValues={jest.fn()}
+          getFormValues={getFormValues}
+          setLocalEndDate={setLocalEndDate}
         />
       );
 
       const finishesNextDayText = screen.getByText('Finishes next day');
 
       expect(finishesNextDayText).toBeTruthy();
+
+      expect(setLocalEndDate).toHaveBeenCalled();
     });
 
-    it('should not display "Finishes next day" text if finishNextDay is false', () => {
+    it('should not display "Finishes next day" text if shift finishes same day', () => {
+      const getFormValues = jest
+        .fn()
+        .mockReturnValueOnce('07:00')
+        .mockReturnValueOnce('17:00');
+
+      const setLocalEndDate = jest.fn();
+
       renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="17:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          getFormValues={jest.fn()}
+          getFormValues={getFormValues}
+          setLocalEndDate={setLocalEndDate}
         />
       );
 
       const finishesNextDayText = screen.queryByText('Finishes next day');
 
       expect(finishesNextDayText).toBeFalsy();
+
+      expect(setLocalEndDate).toHaveBeenCalled();
     });
   });
 
   describe('error messages', () => {
-    it('should only display error messages for errors which contain matching input name', () => {
-      const startTimeErrorMessage =
-        'You must enter a start time in the HH:MM 24 hour clock format';
-
-      renderWithApplicationContext(
-        <StartFinishTimeInput
-          name={'shift'}
-          errors={[
-            {
-              key: 'radio-error',
-              message: 'Select a radio button', // error message for another component
-            },
-            {
-              key: [inputNames.shiftStartTime],
-              message: startTimeErrorMessage,
-            },
-          ]}
-          register={mockRegister}
-          timeEntry={timeEntry}
-          timeEntriesIndex={0}
-          getFormValues={jest.fn()}
-        />
-      );
-
-      const radioError = screen.queryByText('Select a radio button');
-      const startTimeError = screen.getByText(startTimeErrorMessage);
-
-      expect(radioError).toBeFalsy();
-      expect(startTimeError).toBeTruthy();
-    });
     it('should display error messages in the correct order', () => {
       const startTimeErrorMessage =
         'You must enter a start time in the HH:MM 24 hour clock format';
@@ -175,15 +169,25 @@ describe('StartFinishTimeInput', () => {
         <div>
           <StartFinishTimeInput
             name={'shift'}
-            errors={{
-              'radio-error': { message: 'Select a radio button' }, // error message for another component
-              [inputNames.shiftFinishTime]: { message: finishTimeErrorMessage },
-              [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
-            }}
+            errors={[
+              {
+                key: inputNames.shiftFinishTime,
+                inputName: inputNames.shiftFinishTime,
+                message: finishTimeErrorMessage,
+                errorPriority: 2,
+              },
+              {
+                key: inputNames.shiftStartTime,
+                inputName: inputNames.shiftStartTime,
+                message: startTimeErrorMessage,
+                errorPriority: 1,
+              },
+            ]}
             register={mockRegister}
             timeEntry={timeEntry}
             timeEntriesIndex={0}
             getFormValues={jest.fn()}
+            setLocalEndDate={jest.fn()}
           />
         </div>
       );
