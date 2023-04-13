@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { sortErrors } from '../../../../utils/sort-errors/sortErrors';
 
 const Radios = React.forwardRef(
   (
@@ -20,14 +21,12 @@ const Radios = React.forwardRef(
     return (
       <>
         <div
-          className={`govuk-form-group ${
-            errors && errors[name] && 'govuk-form-group--error'
-          }`}
+          className={`govuk-form-group ${errors && 'govuk-form-group--error'}`}
           data-testid="radio-buttons"
         >
           <fieldset
             className="govuk-fieldset"
-            aria-describedby={errors && errors[name] && `${name}-error`}
+            aria-describedby={errors && `${name}-error`}
           >
             <legend
               className={`govuk-fieldset__legend govuk-fieldset__legend--${headingSize}`}
@@ -37,12 +36,18 @@ const Radios = React.forwardRef(
             <div id="contact-hint" className="govuk-hint">
               {hint}
             </div>
-            {errors && errors[name] && (
-              <p id={`${name}-error`} className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span>{' '}
-                {errors[name].message}
-              </p>
-            )}
+            {sortErrors(errors).map((error) => {
+              return (
+                <p
+                  id={`${name}-error`}
+                  key={error.key}
+                  className="govuk-error-message"
+                >
+                  <span className="govuk-visually-hidden">Error:</span>{' '}
+                  {error.message}
+                </p>
+              );
+            })}
             <div
               className={`govuk-radios ${inline && 'govuk-radios--inline'}`}
               data-module="govuk-radios"
@@ -104,7 +109,7 @@ Radios.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   hint: PropTypes.string,
   value: PropTypes.string,
-  errors: PropTypes.any,
+  errors: PropTypes.array,
   onChange: PropTypes.func,
   defaultValue: PropTypes.string,
   inline: PropTypes.bool,

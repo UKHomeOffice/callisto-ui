@@ -463,6 +463,8 @@ const EditShift = ({
             errors={combineExistingAndTimeClashErrors(
               errors,
               summaryErrors,
+              clashingProperty,
+              clashingTimes,
               timePeriodTypesMap
             )}
             startTimeValue={localStartDate}

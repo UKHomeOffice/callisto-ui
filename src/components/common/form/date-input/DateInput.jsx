@@ -178,7 +178,7 @@ DateInput.propTypes = {
   heading: PropTypes.string.isRequired,
   headingSize: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.any,
+  errors: PropTypes.array,
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
@@ -192,7 +192,7 @@ DateInput.propTypes = {
 DateInputItem.propTypes = {
   name: PropTypes.string.isRequired,
   dateType: PropTypes.string,
-  errors: PropTypes.any,
+  errors: PropTypes.array,
   defaultValue: PropTypes.string,
   pattern: PropTypes.any,
   register: PropTypes.any.isRequired,

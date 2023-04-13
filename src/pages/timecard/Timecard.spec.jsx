@@ -19,6 +19,7 @@ import {
   getTimePeriodTypes,
   deleteTimeEntry,
 } from '../../api/services/timecardService';
+import { act } from 'react-test-renderer';
 
 let mockDate;
 const mockNavigate = jest.fn();
@@ -193,7 +194,7 @@ describe('Timecard', () => {
   //         finishNextDay: false,
   //       },
   //     ]);
-  //     expect(setTimecardDate).toHaveBeenCalledWith(mockDate);
+  //     // expect(setTimecardDate).toHaveBeenCalledWith(mockDate);
   //     expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
   //       hasError: false,
   //     });
@@ -210,14 +211,10 @@ describe('Timecard', () => {
   //     };
   //   });
 
-  //   const timeCardContextValues = defaultTimecardContext;
+  //   const timeCardContextValues = jest.spyOn;
   //   timeCardContextValues['timeEntries'] = [{}, {}];
 
-  //   renderWithTimecardContext(
-  //     <Timecard />,
-  //     timeCardContextValues,
-  //     defaultApplicationContext
-  //   );
+  //   renderWithApplicationContext(<Timecard />, defaultApplicationContext);
 
   //   await waitFor(() => {
   //     expect(timeCardContextValues.setTimeEntries).toHaveBeenCalledWith([]);
@@ -235,10 +232,7 @@ describe('Timecard', () => {
       throw Error();
     });
 
-    renderWithApplicationContext(
-      <Timecard setTimeEntries={setTimeEntrySpy} timecardDate={mockDate} />,
-      defaultApplicationContext
-    );
+    renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
       expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
@@ -251,53 +245,48 @@ describe('Timecard', () => {
   it('should display error summary messages when summary errors exist', async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-    const errors = [
-      {
-        key: 'radioName',
-        inputName: 'timePeriod',
-        message: 'You must select a time period',
-        errorPriority: 1,
-      },
-    ];
+    await waitFor(() => {
+      renderWithApplicationContext(<Timecard />);
+    });
 
-    (<Timecard setTimeEntries={setTimeEntrySpy} timecardDate={mockDate} />),
-      {
-        summaryErrors: errors,
-        setSummaryErrors: jest.fn(),
-      };
+    act(() => {
+      const addTimecardPeriodButton = screen.getByText('Add');
+      fireEvent.click(addTimecardPeriodButton);
+
+      const continueButton = screen.getByText('Continue');
+      fireEvent.click(continueButton);
+    });
 
     await waitFor(() => {
       expect(screen.getByText('There is a problem')).toBeTruthy();
-      expect(screen.getByText('You must select a time period')).toBeTruthy();
+      expect(screen.getAllByText('You must select a time period')).toHaveLength(
+        2
+      );
     });
   });
 
-  it('should render the SelectTimecardPeriodType component if newTimeEntry is true have been added', async () => {
-    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+  it('should render the SelectTimecardPeriodType component if there are no time entries', async () => {
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: {},
+      };
+    });
+
+    renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
+      expect(screen.queryByText('13:00 to 23:00')).not.toBeInTheDocument();
       const heading = screen.getByText(addTimePeriodHeading);
       expect(heading).toBeTruthy();
     });
   });
 
   it('should render the "Edit Shift" component for existing time entry', async () => {
-    getTimeEntries.mockImplementation(() => {
-      return {
-        data: [
-          {
-            timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-            startTime: '2022-02-02T08:00:00Z',
-            finishTime: '2022-02-02T16:00:00Z',
-          },
-        ],
-      };
-    });
-
     renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
     await waitFor(() => {
-      expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
+      expect(screen.getByText('Shift')).toBeInTheDocument();
+      expect(screen.getByText('13:00 to 23:00')).toBeInTheDocument();
       expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
     });
   });
@@ -357,17 +346,35 @@ describe('Timecard', () => {
       expect(calendarLink.pathname).toBe('/calendar');
     });
 
-    it('should clear message summary when navigating from page', () => {
-      renderWithApplicationContext(<Timecard timecardDate={mockDate} />, {
-        setTimeEntries: setTimeEntrySpy,
-        defaultApplicationContext,
+    it('should clear message summary when navigating from page', async () => {
+      await waitFor(() => {
+        renderWithApplicationContext(<Timecard />);
+      });
+
+      act(() => {
+        fireEvent.click(screen.getByTestId('hours-change-button'));
+        fireEvent.click(screen.getByText('View or edit dates'));
+
+        const dayInput = screen.getByTestId('finishDate-day-input');
+        fireEvent.change(dayInput, { target: { value: '01' } });
+
+        fireEvent.click(screen.getByText('Save'));
+      });
+
+      const summaryText = screen.getByText('Hours changed');
+      await waitFor(() => {
+        expect(summaryText).toBeTruthy();
       });
 
       const nextDayLink = screen.getByRole('link', { name: 'Next day' });
-      expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
-      fireEvent.click(nextDayLink);
 
-      expect(setTimeEntrySpy).toHaveBeenCalledWith([]);
+      act(() => {
+        fireEvent.click(nextDayLink);
+      });
+
+      await waitFor(() => {
+        expect(setTimeEntrySpy).toHaveBeenCalledWith([]);
+      });
     });
   });
 

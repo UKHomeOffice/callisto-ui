@@ -88,7 +88,7 @@ export default StartFinishDateInput;
 
 StartFinishDateInput.propTypes = {
   name: PropTypes.string,
-  errors: PropTypes.any.isRequired,
+  errors: PropTypes.array.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
   startEntryExists: PropTypes.bool,

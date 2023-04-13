@@ -169,7 +169,7 @@ export default StartFinishTimeInput;
 
 StartFinishTimeInput.propTypes = {
   name: PropTypes.string,
-  errors: PropTypes.any.isRequired,
+  errors: PropTypes.array.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
   getFormValues: PropTypes.func.isRequired,

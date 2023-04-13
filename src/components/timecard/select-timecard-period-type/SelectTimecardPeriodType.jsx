@@ -88,7 +88,7 @@ const SelectTimecardPeriodType = ({
           heading={addTimePeriodHeading}
           headingSize="s"
           options={timePeriodTypeNames}
-          errors={errors}
+          errors={summaryErrors}
           {...register(radioName, {})}
         />
 
