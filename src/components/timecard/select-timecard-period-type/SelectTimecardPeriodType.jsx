@@ -89,12 +89,7 @@ const SelectTimecardPeriodType = ({
           headingSize="s"
           options={timePeriodTypeNames}
           errors={errors}
-          {...register(radioName, {
-            // required: {
-            //   value: true,
-            //   message: 'You must select a time period',
-            // },
-          })}
+          {...register(radioName, {})}
         />
 
         <button

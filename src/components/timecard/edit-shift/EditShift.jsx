@@ -184,7 +184,7 @@ const EditShift = ({
               removeTimecardContextEntry(
                 timeEntries,
                 setTimeEntries,
-                timeEntriesIndex,
+                timeEntriesIndex
               );
             } else {
               setTimeEntries([
@@ -367,10 +367,6 @@ const EditShift = ({
 
     return validatedData;
   };
-
-  // const sortErrors = (errors) => {
-  //   return errors.sort((a, b) => a.errorPriority - b.errorPriority);
-  // };
 
   const isTimeValid = (time, timeType) => {
     // Move to utils

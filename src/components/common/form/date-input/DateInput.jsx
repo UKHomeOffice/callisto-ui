@@ -165,14 +165,6 @@ const DateInputItem = ({
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
             onChange: () => setDates(),
-            // required: {
-            //   value: true,
-            //   message: 'Enter a ' + dateType,
-            // },
-            // pattern: {
-            //   value: pattern,
-            //   message: 'Enter a valid ' + dateType,
-            // },
           })}
         />
       </div>
