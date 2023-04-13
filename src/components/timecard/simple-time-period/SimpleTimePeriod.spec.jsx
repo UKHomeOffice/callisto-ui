@@ -45,6 +45,10 @@ jest.mock('../../../api/services/timecardService', () => ({
   deleteTimeEntry: jest.fn().mockResolvedValue({ status: 200 }),
 }));
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 const mockSetTimeEntries = jest.fn();
 
 describe('SimpleTimePeriod', () => {
@@ -236,7 +240,7 @@ describe('SimpleTimePeriod', () => {
         <SimpleTimePeriod
           timecardDate={'2022-09-01'}
           timeEntry={newTimeEntry}
-          timeEntriesIndex={0}
+          timeEntriesIndex={1}
           timePeriodTitle={timePeriodTitleSWD}
           timeEntries={[existingTimeEntry, newTimeEntry]}
           setTimeEntries={mockSetTimeEntries}
