@@ -15,6 +15,9 @@ describe('DateInput', () => {
         heading="What is the date?"
         headingSize="l"
         register={registerMock}
+        getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -31,6 +34,9 @@ describe('DateInput', () => {
         headingSize="l"
         hint="eg. 01/01/2022"
         register={registerMock}
+        getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -47,6 +53,9 @@ describe('DateInput', () => {
         headingSize="l"
         hint="eg. 01/01/2022"
         register={registerMock}
+        getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -75,6 +84,9 @@ describe('DateInput', () => {
         monthValue={'01'}
         yearValue={'2022'}
         register={registerMock}
+        getFormValues={jest.fn()}
+        setStartDate={jest.fn()}
+        setEndDate={jest.fn()}
       />
     );
 
@@ -91,25 +103,40 @@ describe('DateInput', () => {
     it('should display all error messages', () => {
       render(
         <DateInput
-          name="test"
+          name="startDate"
           heading="What is the date?"
           headingSize="l"
-          errors={{
-            test: { message: 'Date cannot be blank' },
-            'test-day': { message: 'Enter a day' },
-            'test-month': { message: 'Enter a month' },
-            'test-year': { message: 'Enter a year' },
-          }}
+          errors={[
+            {
+              key: 'emptystartDateDay',
+              inputName: 'startDate-day',
+              message: 'Enter a start day',
+              errorPriority: 1,
+            },
+            {
+              key: 'emptystartDateMonth',
+              inputName: 'startDate-month',
+              message: 'Enter a start month',
+              errorPriority: 2,
+            },
+            {
+              key: 'emptystartDateYear',
+              inputName: 'startDate-year',
+              message: 'Enter a start year',
+              errorPriority: 3,
+            },
+          ]}
           register={registerMock}
+          getFormValues={jest.fn()}
+          setStartDate={jest.fn()}
+          setEndDate={jest.fn()}
         />
       );
 
-      const overallErrorMessage = screen.getByText('Date cannot be blank');
-      const dayErrorMessage = screen.getByText('Enter a day');
-      const monthErrorMessage = screen.getByText('Enter a month');
-      const yearErrorMessage = screen.getByText('Enter a year');
+      const dayErrorMessage = screen.getByText('Enter a start day');
+      const monthErrorMessage = screen.getByText('Enter a start month');
+      const yearErrorMessage = screen.getByText('Enter a start year');
 
-      expect(overallErrorMessage).toBeTruthy();
       expect(dayErrorMessage).toBeTruthy();
       expect(monthErrorMessage).toBeTruthy();
       expect(yearErrorMessage).toBeTruthy();
@@ -118,45 +145,43 @@ describe('DateInput', () => {
     it('should add error styling to day input box', () => {
       render(
         <DateInput
-          name="test"
+          name="startDate"
           heading="What is the date?"
           headingSize="l"
-          errors={{ 'test-day': { message: 'Enter a day' } }}
+          errors={[
+            {
+              key: 'emptystartDateDay',
+              inputName: 'startDate-day',
+              message: 'Enter a start day',
+              errorPriority: 1,
+            },
+            {
+              key: 'emptystartDateMonth',
+              inputName: 'startDate-month',
+              message: 'Enter a start month',
+              errorPriority: 2,
+            },
+            {
+              key: 'emptystartDateYear',
+              inputName: 'startDate-year',
+              message: 'Enter a start year',
+              errorPriority: 3,
+            },
+          ]}
           register={registerMock}
+          getFormValues={jest.fn()}
+          setStartDate={jest.fn()}
+          setEndDate={jest.fn()}
         />
       );
 
-      const dayInputBox = screen.getByTestId('test-day-input');
+      const dayInputBox = screen.getByTestId('startDate-day-input');
       expect(dayInputBox.className).toContain('govuk-input--error');
-    });
 
-    it('should add error styling to month input box', () => {
-      render(
-        <DateInput
-          name="test"
-          heading="What is the date?"
-          headingSize="l"
-          errors={{ 'test-month': { message: 'Enter a month' } }}
-          register={registerMock}
-        />
-      );
-
-      const monthInputBox = screen.getByTestId('test-month-input');
+      const monthInputBox = screen.getByTestId('startDate-month-input');
       expect(monthInputBox.className).toContain('govuk-input--error');
-    });
 
-    it('should add error styling to year input box', () => {
-      render(
-        <DateInput
-          name="test"
-          heading="What is the date?"
-          headingSize="l"
-          errors={{ 'test-year': { message: 'Enter a year' } }}
-          register={registerMock}
-        />
-      );
-
-      const yearInputBox = screen.getByTestId('test-year-input');
+      const yearInputBox = screen.getByTestId('startDate-year-input');
       expect(yearInputBox.className).toContain('govuk-input--error');
     });
   });

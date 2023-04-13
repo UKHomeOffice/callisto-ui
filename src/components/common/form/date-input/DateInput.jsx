@@ -113,14 +113,13 @@ const DateInputItem = ({
   dateType,
   errors,
   defaultValue,
-  pattern,
   register,
   getFormValues,
   setStartDate,
   setEndDate,
   width,
 }) => {
-  const capitilisedName = dateType[0].toUpperCase() + dateType.substring(1);
+  const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
   const setDates = () => {
     setStartDate(
@@ -147,13 +146,13 @@ const DateInputItem = ({
           className="govuk-label govuk-date-input__label"
           htmlFor={`${name}-${dateType}`}
         >
-          {capitilisedName}
+          {capitalisedName}
         </label>
         <input
           className={`govuk-input govuk-date-input__input govuk-input--width-${width} ${
             errors &&
-            Object.keys(errors).find((error) => {
-              return error === name + '-' + dateType;
+            errors.find((error) => {
+              return error.inputName === name + '-' + dateType;
             }) &&
             'govuk-input--error'
           }`}
