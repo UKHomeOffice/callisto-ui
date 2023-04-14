@@ -16,11 +16,10 @@ import {
   renderWithApplicationContext,
   defaultApplicationContext,
 } from '../../test/helpers/TestApplicationContext';
-import {
-  getTimePeriodTypes,
-  deleteTimeEntry,
-} from '../../api/services/timecardService';
+import { getTimePeriodTypes } from '../../api/services/timecardService';
 import { act } from 'react-test-renderer';
+import { inputNames } from '../../utils/constants';
+import { expectNeverToHappen } from '../../test/helpers/Helpers';
 
 let mockDate;
 const mockNavigate = jest.fn();
@@ -43,6 +42,23 @@ const twoShiftsNoEndDate = getApiResponseWithItems(
 
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 
+const invalidTimes = [
+  '-00:01',
+  '24:00',
+  'abcd',
+  '!',
+  '25',
+  '13am',
+  '24pm',
+  '3p',
+  '6m',
+  '7a',
+  '4am',
+  '5pm',
+];
+
+const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
+
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
   mockDate = '2022-07-01';
@@ -59,6 +75,7 @@ beforeEach(() => {
   });
 });
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 const setTimeEntrySpy = jest.fn();
 
 describe('Shift spanning mutiple days', () => {
@@ -258,29 +275,6 @@ describe('Timecard', () => {
     });
   });
 
-  it('should display error summary messages when summary errors exist', async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-    await waitFor(() => {
-      renderWithApplicationContext(<Timecard />);
-    });
-
-    act(() => {
-      const addTimecardPeriodButton = screen.getByText('Add');
-      fireEvent.click(addTimecardPeriodButton);
-
-      const continueButton = screen.getByText('Continue');
-      fireEvent.click(continueButton);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('There is a problem')).toBeTruthy();
-      expect(screen.getAllByText('You must select a time period')).toHaveLength(
-        2
-      );
-    });
-  });
-
   it('should render the SelectTimecardPeriodType component if there are no time entries', async () => {
     getTimeEntries.mockImplementation(() => {
       return {
@@ -379,6 +373,214 @@ describe('Timecard', () => {
     //     expect(summaryText).toBeFalsy();
     //   });
     // });
+  });
+
+  describe('Errors', () => {
+    it('should display error summary messages when summary errors exist', async () => {
+      await waitFor(() => {
+        renderWithApplicationContext(<Timecard />);
+      });
+
+      act(() => {
+        const addTimecardPeriodButton = screen.getByText('Add');
+        fireEvent.click(addTimecardPeriodButton);
+
+        const continueButton = screen.getByText('Continue');
+        fireEvent.click(continueButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText('There is a problem')).toBeTruthy();
+        expect(
+          screen.getAllByText('You must select a time period')
+        ).toHaveLength(2);
+      });
+    });
+
+    it('should display an error when pressing save with no start time added', async () => {
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: [],
+        };
+      });
+
+      await renderWithApplicationContext(<Timecard />);
+
+      act(() => {
+        fireEvent.click(screen.getByText('Shift'));
+        fireEvent.click(screen.getByText('Continue'));
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      });
+
+      act(() => {
+        fireEvent.click(screen.getByText('Save'));
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText('There is a problem')).toBeTruthy();
+        const errorMessage = screen.getAllByText(
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+        );
+        expect(errorMessage).toHaveLength(2);
+      });
+    });
+
+    test.each(invalidTimes)(
+      'should display an error when pressing save with an invalid start time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+          fireEvent.change(startTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          const errorMessage = screen.getAllByText(
+            'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+          );
+          expect(errorMessage).toHaveLength(2);
+        });
+      }
+    );
+
+    test.each(validTimes)(
+      'should not display an error when pressing save with a valid start time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+          fireEvent.change(startTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await expectNeverToHappen(() => {
+          expect(
+            screen.getByText(
+              'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+            )
+          ).toBeInTheDocument();
+        });
+      }
+    );
+
+    test.each(invalidTimes)(
+      'should display an error when pressing save with an invalid finish time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const finishTimeInput = screen.getByTestId(
+            inputNames.shiftFinishTime
+          );
+          fireEvent.change(finishTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          const errorMessage = screen.getAllByText(
+            'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
+          );
+          expect(errorMessage).toHaveLength(2);
+        });
+      }
+    );
+
+    test.each(validTimes)(
+      'should not display an error when pressing save with a valid finish time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const finishTimeInput = screen.getByTestId(
+            inputNames.shiftFinishTime
+          );
+          fireEvent.change(finishTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await expectNeverToHappen(() => {
+          expect(
+            screen.getByText(
+              'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
+            )
+          ).toBeInTheDocument();
+        });
+      }
+    );
   });
 
   describe('Remove shift', () => {
