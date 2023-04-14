@@ -28,9 +28,9 @@ const StartFinishTimeInput = ({
   ];
 
   useEffect(() => {
-    updateErrorMessages();
+    // updateErrorMessages();
     updateFinishTimeText();
-  }, [formState]);
+  }, []);
 
   const updateErrorMessages = () => {
     const findErrors =
