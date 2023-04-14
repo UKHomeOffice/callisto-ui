@@ -50,7 +50,7 @@ const EditShift = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     formState,
     getValues,
   } = useForm({
@@ -431,7 +431,6 @@ const EditShift = ({
         <StartFinishTimeInput
           name={inputName}
           errors={combineExistingAndTimeClashErrors(
-            errors,
             summaryErrors,
             clashingProperty,
             clashingTimes,
@@ -461,7 +460,6 @@ const EditShift = ({
           <StartFinishDateInput
             name="Date"
             errors={combineExistingAndTimeClashErrors(
-              errors,
               summaryErrors,
               clashingProperty,
               clashingTimes,
