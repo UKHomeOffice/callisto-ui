@@ -76,6 +76,68 @@ describe('Shift spanning mutiple days', () => {
     });
   });
 
+  it('should display start and finish time, and start and finish date when shift spans multiple days', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01T11:59:00+00:00',
+          finishTime: '2022-09-02 0:00:00+00:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(
+      screen.getByText((content) =>
+        content.includes('11:59 on 1 September to 00:00 on 2 September')
+      )
+    ).toBeTruthy();
+  });
+
+  it('should display Shift(continued) if timecard spans more than one date and we are not on start date', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01 01:00:00+00:00',
+          finishTime: '2022-09-03 05:00:00+00:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-09-02',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('Shift (continued)')).toBeTruthy();
+  });
+
+  it('should not display Shift(continued) if timecard spans more than one date and we are on start date', async () => {
+    renderWithTimecardContext(<Timecard />, {
+      summaryErrors: {},
+      setSummaryErrors: jest.fn(),
+      timeEntries: [
+        {
+          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
+          startTime: '2022-09-01 01:00:00+00:00',
+          finishTime: '2022-09-03 05:00:00+00:00',
+        },
+      ],
+      setTimeEntries: jest.fn(),
+      timecardDate: '2022-09-01',
+      setTimecardDate: jest.fn(),
+    });
+
+    expect(screen.getByText('Shift')).toBeTruthy();
+    expect(screen.queryByText('Shift (continued)')).toBeFalsy();
+  });
+
   it('should call setTimeEntries when time entry spans over timecard date', async () => {
     mockDate = '2022-01-31';
     getTimeEntries.mockImplementation(() => {
@@ -152,7 +214,7 @@ describe('Timecard', () => {
     renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
-      const screenDate = screen.getByText('01 July 2022');
+      const screenDate = screen.getByText('1 July 2022');
       expect(screenDate).toBeTruthy();
     });
   });
@@ -167,6 +229,48 @@ describe('Timecard', () => {
   });
 
   it('should render the SelectTimecardPeriodType component when the last time period is removed', async () => {
+    renderWithApplicationContext(<Timecard />);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(screen.getByText('Shift')).toBeTruthy();
+
+      fireEvent.click(screen.getByText('Remove'));
+
+      expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
+    });
+  });
+
+  it('should render the EditShiftTimecard component when time period type is Shift', async () => {
+    renderWithApplicationContext(<Timecard />);
+
+    expect(screen.queryByText('Add a new time period')).toBeFalsy();
+    expect(screen.getByText('Start time')).toBeTruthy();
+    expect(screen.getByText('Finish time')).toBeTruthy();
+    expect(screen.getByText('Time period')).toBeTruthy();
+  });
+
+  test.each([
+    '00000000-0000-0000-0000-000000000002',
+    '00000000-0000-0000-0000-000000000003',
+  ])(
+    'should render the SimpleTimePeriod component when time period type is correct',
+    async (testValue) => {
+      renderWithApplicationContext(<Timecard />);
+
+      await waitFor(() => {
+        expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        timeCardPeriodTypes.forEach((type) => {
+          if (type.id != testValue)
+            expect(screen.queryByText(type.name)).toBeFalsy();
+          else if (type.id === testValue)
+            expect(screen.queryByText(type.name)).toBeTruthy();
+        });
+      });
+    }
+  );
+
+  it('should set the time entries in the context if time entries exist for that date', async () => {
     renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {

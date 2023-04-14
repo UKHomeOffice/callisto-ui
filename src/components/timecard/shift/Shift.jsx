@@ -7,6 +7,7 @@ import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBu
 import {
   formatDateNoYear,
   formatTime,
+  formatDate,
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
@@ -36,7 +37,6 @@ const Shift = ({
     event.preventDefault();
     setShowEditShiftHours(!showEditShiftHours);
   };
-
   useEffect(() => {
     if (timeEntryExists === false) {
       setShowEditShiftHours(true);
@@ -64,6 +64,37 @@ const Shift = ({
     );
   };
 
+  function renderShiftHoursText({
+    timeEntryExists,
+    timeEntry,
+    formatTime,
+    formatDateNoYear,
+  }) {
+    if (!timeEntryExists) {
+      return null;
+    }
+
+    const startTime = timeEntry.startTime;
+    const finishTime = timeEntry.finishTime;
+
+    const shouldShowStartDate = dayjs(finishTime).isAfter(
+      dayjs(startTime),
+      'day'
+    );
+    const shouldShowLineBreak =
+      finishTime && !dayjs(finishTime).isSame(startTime, 'day');
+
+    return (
+      <div>
+        {formatTime(startTime)}
+        {shouldShowStartDate && <> on {formatDateNoYear(startTime)}</>} to{' '}
+        {shouldShowLineBreak && <br />}
+        {finishTime ? formatTime(finishTime) : '-'}
+        {shouldShowStartDate && <> on {formatDateNoYear(finishTime)}</>}
+      </div>
+    );
+  }
+
   return (
     <div className="grey-border">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
@@ -72,9 +103,18 @@ const Shift = ({
             className="govuk-summary-list__key govuk-!-width-two-thirds"
             style={{ paddingBottom: '20px', paddingTop: '10px' }}
           >
-            Shift
+            Time period
           </dt>
-          <dd className="govuk-summary-list__value"></dd>
+          <dd
+            className="govuk-summary-list__value"
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            {timeEntryExists
+              ? timecardDate === formatDate(timeEntry.startTime)
+                ? 'Shift'
+                : 'Shift (continued)'
+              : null}
+          </dd>
           <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
             {timeEntryExists && (
               <Link
@@ -103,16 +143,12 @@ const Shift = ({
           >
             {!showEditShiftHours &&
               timeEntryExists &&
-              `${formatTime(timeEntry.startTime)} to ${
-                timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '-'
-              } ${
-                dayjs(timeEntry.finishTime).isAfter(
-                  dayjs(timeEntry.startTime),
-                  'day'
-                )
-                  ? ` on ${formatDateNoYear(timeEntry.finishTime)}`
-                  : ''
-              }`}
+              renderShiftHoursText({
+                timeEntryExists,
+                timeEntry,
+                formatTime,
+                formatDateNoYear,
+              })}
           </dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
@@ -122,7 +158,7 @@ const Shift = ({
                 to={'/'}
                 data-testid="hours-change-button"
               >
-                Change<span className="govuk-visually-hidden"> hours</span>
+                Edit<span className="govuk-visually-hidden"> hours</span>
               </Link>
             )}
           </dd>
@@ -167,7 +203,7 @@ const Shift = ({
                 to={'/'}
                 data-testid="meal-break-change-button"
               >
-                Change<span className="govuk-visually-hidden"> meal break</span>
+                Edit<span className="govuk-visually-hidden"> meal break</span>
               </Link>
             )}
           </dd>
