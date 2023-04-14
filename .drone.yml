@@ -204,71 +204,71 @@ steps:
     depends_on:
       - upload to S3
 
----
-kind: pipeline
-type: kubernetes
-name: callisto-ui-branch-deploy
+# ---
+# kind: pipeline
+# type: kubernetes
+# name: callisto-ui-branch-deploy
 
-platform:
-  os: linux
-  arch: amd64
+# platform:
+#   os: linux
+#   arch: amd64
 
-depends_on:
-  - callisto-ui
+# depends_on:
+#   - callisto-ui
 
-trigger:
-  event:
-    - pull_request
+# trigger:
+#   event:
+#     - pull_request
 
-steps:
-  - name: build project
-    image: node:16.15.0
-    environment:
-      NPM_AUTH_TOKEN:
-        from_secret: npm_auth_token
-      VITE_KC_URL:
-        from_secret: kc_url_branch
-      VITE_KC_REALM: callisto
-      VITE_KC_CLIENTID:
-        from_secret: kc_clientid_dev
-      VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
-      VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
-    commands:
-      - npm ci
-      - npm run build
+# steps:
+#   - name: build project
+#     image: node:16.15.0
+#     environment:
+#       NPM_AUTH_TOKEN:
+#         from_secret: npm_auth_token
+#       VITE_KC_URL:
+#         from_secret: kc_url_branch
+#       VITE_KC_REALM: callisto
+#       VITE_KC_CLIENTID:
+#         from_secret: kc_clientid_dev
+#       VITE_TIMECARD_API_URL: 'https://timecard.dev.callisto-notprod.homeoffice.gov.uk/'
+#       VITE_ACCRUALS_API_URL: 'https://accruals.dev.callisto-notprod.homeoffice.gov.uk/'
+#     commands:
+#       - npm ci
+#       - npm run build
 
-  - name: deploy branch to S3
-    image: amazon/aws-cli
-    commands:
-      - >
-        aws s3 cp 
-        --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
-    environment:
-      AWS_DEFAULT_REGION: eu-west-2
-      AWS_ACCESS_KEY_ID:
-        from_secret: s3_aws_access_key_id
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: s3_aws_secret_access_key
-    depends_on:
-      - build project
+#   - name: deploy branch to S3
+#     image: amazon/aws-cli
+#     commands:
+#       - >
+#         aws s3 cp
+#         --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
+#     environment:
+#       AWS_DEFAULT_REGION: eu-west-2
+#       AWS_ACCESS_KEY_ID:
+#         from_secret: s3_aws_access_key_id
+#       AWS_SECRET_ACCESS_KEY:
+#         from_secret: s3_aws_secret_access_key
+#     depends_on:
+#       - build project
 
-  - name: branch_deploy
-    image: pelotech/drone-helm3
-    settings:
-      namespace: callisto-dev
-      mode: upgrade
-      chart: ./helm
-      values:
-        - branch=${DRONE_SOURCE_BRANCH%%/*}
-      values_files:
-        - ./helm/values/values.yaml
-      release: callisto-ui-${DRONE_SOURCE_BRANCH%%/*}
-      kube_certificate:
-        from_secret: notprod_kube_api_certificate
-      kube_api_server:
-        from_secret: dev_kube_api_url
-      kube_token:
-        from_secret: dev_kube_token
+#   - name: branch_deploy
+#     image: pelotech/drone-helm3
+#     settings:
+#       namespace: callisto-dev
+#       mode: upgrade
+#       chart: ./helm
+#       values:
+#         - branch=${DRONE_SOURCE_BRANCH%%/*}
+#       values_files:
+#         - ./helm/values/values.yaml
+#       release: callisto-ui-${DRONE_SOURCE_BRANCH%%/*}
+#       kube_certificate:
+#         from_secret: notprod_kube_api_certificate
+#       kube_api_server:
+#         from_secret: dev_kube_api_url
+#       kube_token:
+#         from_secret: dev_kube_token
 
 ---
 kind: pipeline
