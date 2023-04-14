@@ -59,6 +59,10 @@ const Timecard = () => {
     setSummaryMessages([]);
   };
 
+  const clearErrorSummary = () => {
+    setSummaryErrors([]);
+  };
+
   const addNewTimePeriod = () => {};
 
   return (
@@ -81,6 +85,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
@@ -90,6 +95,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
@@ -99,6 +105,7 @@ const Timecard = () => {
         <Link
           onClick={() => {
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"

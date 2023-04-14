@@ -21,12 +21,14 @@ const Radios = React.forwardRef(
     return (
       <>
         <div
-          className={`govuk-form-group ${errors && 'govuk-form-group--error'}`}
+          className={`govuk-form-group ${
+            errors.length > 0 && 'govuk-form-group--error'
+          }`}
           data-testid="radio-buttons"
         >
           <fieldset
             className="govuk-fieldset"
-            aria-describedby={errors && `${name}-error`}
+            aria-describedby={errors.length > 0 && `${name}-error`}
           >
             <legend
               className={`govuk-fieldset__legend govuk-fieldset__legend--${headingSize}`}
