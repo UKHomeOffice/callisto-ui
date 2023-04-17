@@ -42,7 +42,11 @@ export function combineExistingAndTimeClashErrors(
     combinedErrors.push({
       key: 'finishTimeClash',
       inputName: inputNames.shiftFinishTime,
-      message: '',
+      message: clashErrorMessage(
+        clashingProperty,
+        clashingTimes,
+        timePeriodTypesMap
+      ),
       errorPriority: 1,
     });
   }
