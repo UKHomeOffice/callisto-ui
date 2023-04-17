@@ -18,43 +18,42 @@
 
   .mobile-checkbox {
     margin-top: -5%;
-  } 
+  }
 
   .mobile-heading {
     margin-top: 0%;
-  } 
+  }
 
   .mobile-phase-banner {
     margin-bottom: -5%;
-  } 
+  }
 
   .mobile-banner {
     margin-bottom: 5%;
-  } 
+  }
 
   .mobile-date {
     margin-bottom: 2%;
-  } 
+  }
 
   .mobile-summary-list-row {
     display: flex;
     align-items: center;
     margin-bottom: 0%;
 
-    .govuk-summary-list__actions .govuk-link  {
+    .govuk-summary-list__actions .govuk-link {
       display: flex;
       justify-content: flex-end;
-      margin-left: auto; 
+      margin-left: auto;
     }
   }
 
   .mobile-summary-list-row dt,
   .mobile-summary-list-row dd {
     flex: 1;
-    
   }
-  
+
   .mobile-summary-list-row dd {
-    margin-left: 5%; 
+    margin-left: 5%;
   }
 }
