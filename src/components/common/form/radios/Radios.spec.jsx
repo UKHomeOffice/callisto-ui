@@ -105,11 +105,14 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errors={{
-          radios: {
+        errors={[
+          {
+            key: 'radioButton',
+            inputName: 'govuk-radios',
             message: 'Select a radio button',
+            errorPriority: 1,
           },
-        }}
+        ]}
       />
     );
 
@@ -124,11 +127,14 @@ describe('Radios', () => {
         heading="Where do you live?"
         headingSize="l"
         options={['England', 'Ireland', 'Scotland', 'Wales']}
-        errors={{
-          radios: {
+        errors={[
+          {
+            key: 'radioButton',
+            inputName: 'govuk-radios',
             message: 'Select a radio button',
+            errorPriority: 1,
           },
-        }}
+        ]}
       />
     );
 
