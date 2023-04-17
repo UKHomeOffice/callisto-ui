@@ -41,11 +41,15 @@
     align-items: center;
     margin-bottom: 0%;
 
+    /* stylelint-disable selector-class-pattern */
+
+    /* disabling rule due to Gov not using standard style class names */
     .govuk-summary-list__actions .govuk-link {
       display: flex;
       justify-content: flex-end;
       margin-left: auto;
     }
+    /* stylelint-enable selector-class-pattern */
   }
 
   .mobile-summary-list-row dt,
