@@ -30,6 +30,9 @@
     "testEnvironment": "jest-environment-jsdom",
     "setupFilesAfterEnv": [
       "./src/test/setupTests.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "/node_modules_linux/"
     ]
   },
   "babel": {
