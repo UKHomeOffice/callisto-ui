@@ -11,7 +11,7 @@ import {
 import Timecard from './Timecard';
 import {
   getTimeEntries,
-  createTimeEntry,
+  updateTimeEntry,
 } from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
@@ -340,12 +340,16 @@ describe('Timecard', () => {
       expect(calendarLink.pathname).toBe('/calendar');
     });
 
-    it('should clear message summary when navigating from page', async () => {
+    it('should show then clear message summary when navigating from page', async () => {
       mockDate = '2022-02-01';
       getTimeEntries.mockImplementation(() => {
         return {
           data: getApiResponseWithItems(shiftTimeEntryTodayNoEndTime),
         };
+      });
+      updateTimeEntry.mockResolvedValue({
+        status: 200,
+        data: getApiResponseWithItems(shiftTimeEntryTodayNoEndTime),
       });
 
       await waitFor(() => {
@@ -365,11 +369,11 @@ describe('Timecard', () => {
         fireEvent.click(screen.getByText('Save'));
       });
 
-      await waitFor(() => {});
-
       await waitFor(() => {
         screen.debug();
-        const summaryText = screen.getByText('Hours changed');
+        const summaryHeader = screen.getByText('Hours changed');
+        expect(summaryHeader).toBeTruthy();
+        const summaryText = screen.getByText('The time period starts on');
         expect(summaryText).toBeTruthy();
       });
 
