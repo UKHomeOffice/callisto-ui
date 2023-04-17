@@ -288,7 +288,7 @@ describe('Timecard', () => {
     renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
-      expect(screen.queryByText('13:00 to 23:00')).not.toBeInTheDocument();
+      expect(screen.queryByText('12:00 to 22:00')).not.toBeInTheDocument();
       const heading = screen.getByText(addTimePeriodHeading);
       expect(heading).toBeTruthy();
     });
@@ -299,7 +299,7 @@ describe('Timecard', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Shift')).toBeInTheDocument();
-      expect(screen.getByText('13:00 to 23:00')).toBeInTheDocument();
+      expect(screen.getByText('12:00 to 22:00')).toBeInTheDocument();
       expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
     });
   });

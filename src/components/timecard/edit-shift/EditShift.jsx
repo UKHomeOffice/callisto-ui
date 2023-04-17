@@ -292,7 +292,7 @@ const EditShift = ({
 
   const validateSubmittedData = (formData) => {
     if (!isChecked && isFinishTimeOnNextDay(localStartDate, localEndDate)) {
-      setLocalEndDate(dayjs(localStartDate).add(1, 'day').toString);
+      setLocalEndDate(dayjs(localStartDate).add(1, 'day').toString());
     }
 
     const validatedData = {
@@ -427,7 +427,7 @@ const EditShift = ({
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, handleError)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <StartFinishTimeInput
           name={inputName}
           errors={combineExistingAndTimeClashErrors(

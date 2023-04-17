@@ -306,104 +306,6 @@ describe('EditShift', () => {
     });
   });
 
-  it('should set finish date as next day when finish time is edited to less than start time', async () => {
-    const timeEntryId = '1';
-    const inputtedStartTime = '08:00';
-    const inputtedEndTime = '01:00';
-    const timecardDate = '2022-09-01';
-    const endDate = '2022-09-02';
-    const expectedActualStartTime = `${timecardDate}T${inputtedStartTime}:00+00:00`;
-    const expectedActualEndTime = `${endDate}T${inputtedEndTime}:00+00:00`;
-
-    const existingTimeEntry = {
-      ...newTimeEntry,
-      timeEntryId: timeEntryId,
-      startTime: '2022-09-01 08:00:00+00:00',
-      finishTime: '2022-09-01 10:00:00+00:00',
-      finishNextDay: true,
-    };
-
-    renderWithApplicationContext(
-      <EditShift
-        timeEntries={[]}
-        timecardDate={timecardDate}
-        summaryErrors={[]}
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={existingTimeEntry}
-        timeEntriesIndex={0}
-      />
-    );
-
-    act(() => {
-      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-      fireEvent.change(startTimeInput, {
-        target: { value: '08:00' },
-      });
-
-      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
-      fireEvent.change(endTimeInput, {
-        target: { value: '01:00' },
-      });
-
-      const saveButton = screen.getByText('Save');
-      fireEvent.click(saveButton);
-    });
-
-    await waitFor(() => {
-      expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
-        timeEntryId,
-        {
-          ownerId: 'c6ede784-b5fc-4c95-b550-2c51cc72f1f6',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          actualStartTime: expectedActualStartTime,
-          actualEndTime: expectedActualEndTime,
-        },
-        new URLSearchParams([
-          ['tenantId', '00000000-0000-0000-0000-000000000000'],
-        ])
-      );
-    });
-  });
-
-  it('should show "finishes next day" when finish time is edited to less than start time', async () => {
-    const timeEntryId = '1';
-    const timecardDate = '2022-09-01';
-
-    const existingTimeEntry = {
-      ...newTimeEntry,
-      timeEntryId: timeEntryId,
-      startTime: '08:00',
-      finishTime: '10:00',
-      finishNextDay: true,
-    };
-
-    renderWithApplicationContext(
-      <EditShift
-        timeEntries={[]}
-        timecardDate={timecardDate}
-        summaryErrors={[]}
-        setShowEditShiftHours={jest.fn()}
-        timeEntry={existingTimeEntry}
-        timeEntriesIndex={0}
-      />
-    );
-
-    act(() => {
-      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-      fireEvent.change(startTimeInput, {
-        target: { value: '08:00' },
-      });
-
-      const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
-      fireEvent.change(endTimeInput, {
-        target: { value: '01:00' },
-      });
-    });
-
-    const message = screen.getByText('Finishes next day');
-    expect(message).toBeTruthy();
-  });
-
   describe('Dates and checkbox', () => {
     it('should show start and end dates when checking box', async () => {
       renderWithApplicationContext(
@@ -500,7 +402,7 @@ describe('EditShift', () => {
       });
     });
 
-    it('should update finish date when the finish date box is changed and save selected', async () => {
+    it('should update finish date and show "finishes next day" when finish time is edited to less than start time', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-01';
 
@@ -538,6 +440,9 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
+        const message = screen.getByText('Finishes next day');
+        expect(message).toBeTruthy();
+
         expect(mockUpdateTimeEntry).toHaveBeenCalledWith(
           timeEntryId,
           {
@@ -562,7 +467,7 @@ describe('EditShift', () => {
         timeEntryId: timeEntryId,
         startTime: '2022-09-02 08:00:00+00:00',
         finishTime: '2022-09-02 16:00:00+00:00',
-        finishNextDay: true,
+        finishNextDay: false,
       };
 
       renderWithApplicationContext(
@@ -573,26 +478,20 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
-          localStartDate={'2022-09-02 08:00:00+00:00'}
-          localEndDate={'2022-09-02 16:00:00+00:00'}
+          localStartDate={'2022-09-02'}
+          localEndDate={'2022-09-02'}
           startEntryExists={true}
           setSummaryMessages={jest.fn()}
         />
       );
 
       act(() => {
-        const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-        fireEvent.change(startTimeInput, {
-          target: { value: '08:00' },
-        });
-
         const endTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
         fireEvent.change(endTimeInput, {
           target: { value: '01:00' },
         });
 
-        const checkBox = screen.getByText('View or edit dates');
-        fireEvent.click(checkBox);
+        fireEvent.focusOut(endTimeInput);
 
         const saveButton = screen.getByText('Save');
         fireEvent.click(saveButton);
@@ -685,7 +584,7 @@ describe('EditShift', () => {
         timeEntryId: timeEntryId,
         startTime: '2022-09-01 23:00:00+00:00',
         finishTime: '2022-09-02 16:00:00+00:00',
-        finishNextDay: false,
+        finishNextDay: true,
       };
 
       renderWithApplicationContext(
@@ -696,8 +595,8 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
-          localStartDate={'2022-09-01 23:00:00+00:00'}
-          localEndDate={'2022-09-02 16:00:00+00:00'}
+          localStartDate={'2022-09-01'}
+          localEndDate={'2022-09-02'}
           startEntryExists={true}
           setSummaryMessages={jest.fn()}
         />
@@ -860,9 +759,6 @@ describe('EditShift', () => {
           data: getApiResponseWithItems(shiftTimeEntry),
         });
 
-        // const defaultTimecardContext = createDefaultTimecardContext();
-        // defaultTimecardContext.setSummaryMessages = jest.fn();
-
         const setSummaryMessages = jest.fn();
 
         renderWithApplicationContext(
@@ -904,7 +800,6 @@ describe('EditShift', () => {
       finishNextDay: false,
     };
 
-    // defaultTimecardContext.timecardDate = timecardDate;
     const setSummaryErrors = jest.fn();
 
     renderWithApplicationContext(
@@ -933,15 +828,19 @@ describe('EditShift', () => {
     });
 
     await waitFor(() => {
-      expect(setSummaryErrors).toHaveBeenCalledWith({
-        [inputNames.shiftStartTime]: {
+      expect(setSummaryErrors).toHaveBeenCalledWith([
+        {
+          errorPriority: 1,
+          inputName: 'shift-start-time',
+          key: 'startAfterEnd',
           message: 'Start time must be before end time',
         },
-      });
+      ]);
     });
   });
 
   describe('Service errors', () => {
+    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -987,15 +886,19 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(setSummaryErrors).toHaveBeenCalledWith({
-          [inputNames.shiftStartTime]: {
+        expect(setSummaryErrors).toHaveBeenCalledWith([
+          {
+            errorPriority: 1,
+            inputName: inputNames.shiftStartTime,
+            key: 'bothDatesOverlapping',
             message:
               'Your start and finish times must not overlap with another time period',
           },
-        });
+        ]);
       });
     });
 
+    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -1051,6 +954,7 @@ describe('EditShift', () => {
       });
     });
 
+    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for end time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -1248,6 +1152,7 @@ describe('EditShift', () => {
       });
     });
 
+    //failing
     it('should generate an error message with focus errors called', async () => {
       const focusErrors = jest.fn();
       const timeEntryId = '1';
@@ -1267,7 +1172,6 @@ describe('EditShift', () => {
           timecardDate={timecardDate}
           summaryErrors={[]}
           setShowEditShiftHours={jest.fn()}
-          timecardDate={timecardDate}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}

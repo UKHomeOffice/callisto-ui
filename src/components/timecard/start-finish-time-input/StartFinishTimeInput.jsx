@@ -55,7 +55,7 @@ const StartFinishTimeInput = ({
     const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
     setFinishTimeText(nextDay ? 'Finishes next day' : '');
     setLocalEndDate(
-      nextDay ? dayjs(localStartDate).add(1, 'day').toString : localStartDate
+      nextDay ? dayjs(localStartDate).add(1, 'day').toString() : localStartDate
     );
   };
 
