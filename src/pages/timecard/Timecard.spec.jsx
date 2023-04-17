@@ -9,7 +9,10 @@ import {
   timecardPeriodTypes,
 } from '../../../mocks/mockData';
 import Timecard from './Timecard';
-import { getTimeEntries } from '../../api/services/timecardService';
+import {
+  getTimeEntries,
+  createTimeEntry,
+} from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
 import {
@@ -337,42 +340,50 @@ describe('Timecard', () => {
       expect(calendarLink.pathname).toBe('/calendar');
     });
 
-    // it('should clear message summary when navigating from page', async () => {
-    //   await waitFor(() => {
-    //     renderWithApplicationContext(<Timecard />);
-    //   });
+    it('should clear message summary when navigating from page', async () => {
+      mockDate = '2022-02-01';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: getApiResponseWithItems(shiftTimeEntryTodayNoEndTime),
+        };
+      });
 
-    //   act(() => {
-    //     fireEvent.click(screen.getByTestId('hours-change-button'));
-    //     fireEvent.click(screen.getByText('View or edit dates'));
+      await waitFor(() => {
+        renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+      });
 
-    //     const dayInput = screen.getByTestId('finishDate-day-input');
-    //     fireEvent.change(dayInput, { target: { value: '03' } });
+      act(() => {
+        expect(screen.getByText('09:00 to -')).toBeTruthy();
+        fireEvent.click(screen.getByTestId('hours-change-button'));
+        fireEvent.click(screen.getByText('View or edit dates'));
 
-    //     fireEvent.click(screen.getByText('View or edit dates'));
+        const dayInput = screen.getByTestId('startDate-day-input');
+        fireEvent.change(dayInput, { target: { value: '03' } });
 
-    //     fireEvent.click(screen.getByText('Save'));
-    //   });
+        fireEvent.click(screen.getByText('View or edit dates'));
 
-    //   await waitFor(() => {});
+        fireEvent.click(screen.getByText('Save'));
+      });
 
-    //   await waitFor(() => {
-    //     screen.debug();
-    //     const summaryText = screen.getByText('Hours changed');
-    //     expect(summaryText).toBeTruthy();
-    //   });
+      await waitFor(() => {});
 
-    //   const nextDayLink = screen.getByRole('link', { name: 'Next day' });
+      await waitFor(() => {
+        screen.debug();
+        const summaryText = screen.getByText('Hours changed');
+        expect(summaryText).toBeTruthy();
+      });
 
-    //   act(() => {
-    //     fireEvent.click(nextDayLink);
-    //   });
+      const nextDayLink = screen.getByRole('link', { name: 'Next day' });
 
-    //   await waitFor(() => {
-    //     const summaryText = screen.queryByText('Hours changed');
-    //     expect(summaryText).toBeFalsy();
-    //   });
-    // });
+      act(() => {
+        fireEvent.click(nextDayLink);
+      });
+
+      await waitFor(() => {
+        const summaryText = screen.queryByText('Hours changed');
+        expect(summaryText).toBeFalsy();
+      });
+    });
   });
 
   describe('Errors', () => {
