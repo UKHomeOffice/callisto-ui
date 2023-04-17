@@ -20,21 +20,25 @@ const newTimeEntry = {
 };
 
 describe('Shift', () => {
-  it('should display a summary list with titles for shift, hours and meal break', () => {
+  it('should display a summary list with titles for time period, hours and meal break', () => {
     renderWithApplicationContext(
-      <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      <Shift
+        summaryErrors={[]}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />
     );
 
-    const shiftDetailsTitles = ['Shift', 'Hours', 'Meal break'];
+    const shiftDetailsTitles = ['Time period', 'Hours', 'Meal break'];
 
-    shiftDetailsTitles.map((title) => {
+    shiftDetailsTitles.forEach((title) => {
       expect(screen.getByText(title)).toBeTruthy();
     });
   });
 
   it('should show EditShiftHours component when first directed to page', async () => {
     renderWithApplicationContext(
-      <Shift timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      <Shift summaryErrors={[]} timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
     expect(screen.getByText('Start time')).toBeTruthy();
@@ -43,7 +47,11 @@ describe('Shift', () => {
 
   it('should render the "Remove" and "Change" buttons when there is timecard data', async () => {
     renderWithApplicationContext(
-      <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      <Shift
+        summaryErrors={[]}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />
     );
 
     await waitFor(() => {
@@ -61,7 +69,11 @@ describe('Shift', () => {
 
   it('should show EditShiftHours component when clicking "Change" button', async () => {
     renderWithApplicationContext(
-      <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+      <Shift
+        summaryErrors={[]}
+        timeEntry={existingTimeEntry}
+        timeEntriesIndex={0}
+      />
     );
 
     act(() => {
@@ -77,7 +89,7 @@ describe('Shift', () => {
 
   it('should not render the "Remove" or "Change" buttons when there is no timecard data', async () => {
     renderWithApplicationContext(
-      <Shift timeEntry={newTimeEntry} timeEntriesIndex={0} />
+      <Shift summaryErrors={[]} timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
 
     const hoursChangeButton = screen.queryByTestId('hours-change-button');
@@ -97,7 +109,11 @@ describe('Shift', () => {
       existingTimeEntry.finishDate = '';
 
       renderWithApplicationContext(
-        <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+        <Shift
+          summaryErrors={[]}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />
       );
 
       expect(screen.getByText('08:00 to -')).toBeTruthy();
@@ -113,7 +129,11 @@ describe('Shift', () => {
 
     it('should not display start and finish time on timecard when nothing has been entered', async () => {
       renderWithApplicationContext(
-        <Shift timeEntry={newTimeEntry} timeEntriesIndex={0} />
+        <Shift
+          summaryErrors={[]}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />
       );
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
@@ -121,7 +141,11 @@ describe('Shift', () => {
 
     it('should not display start and finish time with date on timecard when nothing has been entered', async () => {
       renderWithApplicationContext(
-        <Shift timeEntry={newTimeEntry} timeEntriesIndex={0} />
+        <Shift
+          summaryErrors={[]}
+          timeEntry={newTimeEntry}
+          timeEntriesIndex={0}
+        />
       );
 
       expect(screen.queryByText('08:00 to 16:00')).toBeFalsy();
@@ -130,7 +154,11 @@ describe('Shift', () => {
 
     it('should not display start, finish time on timecard when edit hours toggle is open', async () => {
       renderWithApplicationContext(
-        <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+        <Shift
+          summaryErrors={[]}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />
       );
 
       expect(screen.getByText('08:00 to 16:00')).toBeTruthy();
@@ -148,7 +176,11 @@ describe('Shift', () => {
 
     it('should not display start, finish time and date on timecard when edit hours toggle is open', async () => {
       renderWithApplicationContext(
-        <Shift timeEntry={existingTimeEntry} timeEntriesIndex={0} />
+        <Shift
+          summaryErrors={[]}
+          timeEntry={existingTimeEntry}
+          timeEntriesIndex={0}
+        />
       );
 
       expect(screen.getByText(`08:00 to 16:00`)).toBeTruthy();
