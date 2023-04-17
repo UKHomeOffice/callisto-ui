@@ -4,7 +4,7 @@ const PhaseBanner = () => {
   return (
     <>
       <div
-        className="govuk-phase-banner"
+        className="govuk-phase-banner mobile-phase-banner"
         style={{ backgroundColor: 'white', borderTop: '1px solid #b1b4b6' }}
       >
         <p className="govuk-phase-banner__content">

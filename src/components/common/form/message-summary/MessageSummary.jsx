@@ -4,7 +4,7 @@ import MessageItem from '../message-item/MessageItem';
 const MessageSummary = ({ keys }) => {
   return (
     <div
-      className="govuk-notification-banner"
+      className="govuk-notification-banner mobile-banner"
       aria-labelledby="govuk-notification-banner-title"
       data-module="govuk-notification-banner"
     >

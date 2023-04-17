@@ -94,7 +94,7 @@ const EditShiftTimecard = ({
   return (
     <div className="grey-border">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
-        <div className="govuk-summary-list__row">
+        <div className="govuk-summary-list__row mobile-summary-list-row">
           <dt
             className="govuk-summary-list__key govuk-!-width-two-thirds"
             style={{ paddingBottom: '20px', paddingTop: '10px' }}
@@ -123,9 +123,9 @@ const EditShiftTimecard = ({
             )}
           </dd>
         </div>
-        <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
+        <div className="govuk-summary-list__row govuk-summary-list__row--no-border mobile-summary-list-row">
           <dt
-            className="govuk-summary-list__key"
+            className="govuk-summary-list__key mobile-summary-list-row"
             style={{
               paddingBottom: '20px',
               paddingTop: '20px',
@@ -134,7 +134,7 @@ const EditShiftTimecard = ({
             Hours
           </dt>
           <dd
-            className="govuk-summary-list__value govuk-!-width-full"
+            className="govuk-summary-list__value govuk-!-width-full mobile-summary-list-row"
             style={{ whiteSpace: 'nowrap' }}
           >
             {!showEditShiftHours &&
@@ -146,7 +146,7 @@ const EditShiftTimecard = ({
                 formatDateNoYear,
               })}
           </dd>
-          <dd className="govuk-summary-list__actions">
+          <dd className="govuk-summary-list__actions mobile-summary-list-row">
             {timeEntryExists && (
               <Link
                 onClick={toggleEditShiftHours}
@@ -172,7 +172,7 @@ const EditShiftTimecard = ({
           </div>
         )}
         <div
-          className="govuk-summary-list__row govuk-summary-list__row--no-border"
+          className="govuk-summary-list__row govuk-summary-list__row--no-border mobile-summary-list-row"
           style={{ borderTop: '1px solid #b1b4b6' }}
         >
           <dt
@@ -185,7 +185,7 @@ const EditShiftTimecard = ({
             Meal break
           </dt>
           <dd className="govuk-summary-list__value"></dd>
-          <dd className="govuk-summary-list__actions">
+          <dd className="govuk-summary-list__actions mobile-summary-list-row">
             {timeEntryExists && (
               <Link
                 className="govuk-link govuk-link--no-visited-state"
