@@ -292,7 +292,7 @@ const EditShift = ({
 
   const validateSubmittedData = (formData) => {
     if (!isChecked && isFinishTimeOnNextDay(localStartDate, localEndDate)) {
-      setLocalEndDate(dayjs(localStartDate).add(1, 'day'));
+      setLocalEndDate(dayjs(localStartDate).add(1, 'day').toString);
     }
 
     const validatedData = {

@@ -741,6 +741,7 @@ describe('EditShift', () => {
     describe('setMessages', () => {
       it('should set summary messages when dates have moved from the timecard date to the next day', async () => {
         updateTimeEntry.mockResolvedValue({
+          status: 200,
           data: getApiResponseWithItems(shiftTimeEntry),
         });
 
@@ -788,17 +789,19 @@ describe('EditShift', () => {
         });
 
         await waitFor(() => {
-          expect(setSummaryMessages).toHaveBeenCalledWith({
-            update: {
-              template: 'datesMoved',
+          expect(setSummaryMessages).toHaveBeenCalledWith([
+            {
+              key: 'datesMoved',
+              template: 'DatesMoved',
               variables: { startDate: '2022-09-02', endDate: '2022-09-02' },
             },
-          });
+          ]);
         });
       });
 
       it('should set summary messages without finish date when dates have moved and finish entry does not exist', async () => {
         updateTimeEntry.mockResolvedValue({
+          status: 200,
           data: getApiResponseWithItems(shiftTimeEntry),
         });
 
@@ -823,6 +826,7 @@ describe('EditShift', () => {
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
             setSummaryMessages={setSummaryMessages}
+            setTimeEntries={jest.fn()}
           />
         );
 
@@ -841,12 +845,13 @@ describe('EditShift', () => {
         });
 
         await waitFor(() => {
-          expect(setSummaryMessages).toHaveBeenCalledWith({
-            update: {
-              template: 'datesMoved',
+          expect(setSummaryMessages).toHaveBeenCalledWith([
+            {
+              key: 'datesMoved',
+              template: 'DatesMoved',
               variables: { startDate: '2022-09-02' },
             },
-          });
+          ]);
         });
       });
 
