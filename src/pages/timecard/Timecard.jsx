@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
@@ -85,11 +86,11 @@ const Timecard = () => {
           keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
         />
       )}
-      <h1 className="govuk-caption-m mobile-heading">My Timecard</h1>
-      <h2 className="govuk-heading-m mobile-date">
+      <h1 className="govuk-caption-m">My Timecard</h1>
+      <h2 className="govuk-heading-m">
         {dayjs(date).format('D MMMM YYYY')}
       </h2>
-      <div className="govuk-button-group mobile-link-group">
+      <div className="govuk-button-group button-group-row">
         <Link
           onClick={() => {
             setNewTimeEntry(false);

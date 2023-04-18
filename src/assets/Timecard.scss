@@ -1,21 +1,67 @@
-@media only screen and (max-width: 640px) {
-  .mobile-link-group {
+.govuk-notification-banner {
+  margin-bottom: 3px;
+}
+
+.govuk-main-wrapper {
+  padding-top: 0%;
+  padding-bottom: 40px;
+}
+
+.button-group-row {
+  flex-direction: row;
+  margin-bottom: 0%;
+}
+
+/* stylelint-disable selector-class-pattern */
+.govuk-summary-list__row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 17px 0;
+
+  /* disabling rule due to Gov not using standard style class names */
+  .govuk-summary-list__actions .govuk-link {
     display: flex;
-    flex-direction: row;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+  /* stylelint-enable selector-class-pattern */
+  dt,
+  dd {
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  dt,
+  dd,
+  div {
+    flex: 1;
+  }
+
+  dd {
+    margin-left: 5%;
+  }
+}
+
+.govuk-grid-row {
+  display: flex;
+
+  .govuk-hint {
+    white-space: normal;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .button-group-row {
     justify-content: space-between;
-    margin-bottom: 0%;
   }
 
   .govuk-caption-m {
-    margin-top: 2%;
+    margin-top: 0%;
   }
 
   .mobile-checkbox {
     margin-top: -5%;
-  }
-
-  .mobile-heading {
-    margin-top: 0%;
   }
 
   .mobile-phase-banner {
@@ -26,32 +72,16 @@
     margin-bottom: 5%;
   }
 
-  .mobile-date {
+  .govuk-heading-m {
     margin-bottom: 2%;
   }
 
-  .mobile-summary-list-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0%;
-
-    /* stylelint-disable selector-class-pattern */
-
-    /* disabling rule due to Gov not using standard style class names */
-    .govuk-summary-list__actions .govuk-link {
-      display: flex;
-      justify-content: flex-end;
-      margin-left: auto;
-    }
-    /* stylelint-enable selector-class-pattern */
+  .govuk-notification-banner {
+    margin-bottom: 12px;
   }
 
-  .mobile-summary-list-row dt,
-  .mobile-summary-list-row dd {
-    flex: 1;
-  }
-
-  .mobile-summary-list-row dd {
-    margin-left: 5%;
+  .govuk-main-wrapper {
+    padding-top: 15px;
+    padding-bottom: 40px;
   }
 }
