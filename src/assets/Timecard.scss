@@ -12,6 +12,7 @@
   margin-bottom: 0%;
 }
 
+/* disabling rule due to Gov not using standard style class names */
 /* stylelint-disable selector-class-pattern */
 .govuk-summary-list__row {
   display: flex;
@@ -19,7 +20,6 @@
   margin-bottom: 0;
   padding: 17px 0;
 
-  /* disabling rule due to Gov not using standard style class names */
   .govuk-summary-list__actions .govuk-link {
     display: flex;
     justify-content: flex-end;
