@@ -12,20 +12,12 @@ const StartFinishTimeInput = ({
   startTimeValue,
   finishTimeValue,
   getFormValues,
-  timeEntry,
-  timeEntriesIndex,
   register,
-  formState,
   localStartDate,
   setLocalEndDate,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
   const [finishTimeText, setFinishTimeText] = useState('');
-
-  const desiredErrorOrder = [
-    inputNames.shiftStartTime,
-    inputNames.shiftFinishTime,
-  ];
 
   useEffect(() => {
     // updateErrorMessages();
@@ -72,20 +64,6 @@ const StartFinishTimeInput = ({
           : ''
       }`}
     >
-      {/* kinda works, need to fix the error messages so the correct one is displayed */}
-      {/* <div className="govuk-grid-row" data-testid="error-box">
-        {errorMessages.map((message, i) => (
-          <div
-            id={`${name}-${i}-error`}
-            key={i}
-            className="govuk-error-message govuk-!-margin-left-3"
-          >
-            <span className="govuk-visually-hidden">Error:</span>
-            {message}
-          </div>
-        ))}
-      </div> */}
-
       <div className="govuk-grid-row" data-testid="error-box">
         {sortErrors(errors).map((error) => {
           return (
@@ -123,9 +101,6 @@ const StartFinishTimeInput = ({
             defaultValue={startTimeValue}
             register={register}
             isRequired={true}
-            getFormValues={getFormValues}
-            timeEntry={timeEntry}
-            timeEntriesIndex={timeEntriesIndex}
             updateFinishTimeText={updateFinishTimeText}
           />
         </div>
@@ -147,9 +122,6 @@ const StartFinishTimeInput = ({
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
-              getFormValues={getFormValues}
-              timeEntry={timeEntry}
-              timeEntriesIndex={timeEntriesIndex}
               updateFinishTimeText={updateFinishTimeText}
             />
           </div>
@@ -173,8 +145,5 @@ StartFinishTimeInput.propTypes = {
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
   getFormValues: PropTypes.func.isRequired,
-  timeEntry: PropTypes.object.isRequired,
-  timeEntriesIndex: PropTypes.number.isRequired,
   register: PropTypes.any.isRequired,
-  formState: PropTypes.any,
 };

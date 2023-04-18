@@ -1,8 +1,4 @@
 import PropTypes from 'prop-types';
-import { deepCloneJson } from '../../../../utils/common-utils/common-utils';
-import { inputNames } from '../../../../utils/constants';
-import { ContextTimeEntry } from '../../../../utils/time-entry-utils/ContextTimeEntry';
-import { isFinishTimeOnNextDay } from '../../../../utils/time-entry-utils/timeEntryUtils';
 
 const ValidatedTimeEntry = ({
   name,
@@ -12,8 +8,6 @@ const ValidatedTimeEntry = ({
   register,
   updateFinishTimeText,
 }) => {
-  const errorMessage = `Enter a ${timeType} in the 24 hour clock format, for example, 08:00 or 0800`;
-
   return (
     <input
       id={name}
@@ -43,10 +37,5 @@ ValidatedTimeEntry.propTypes = {
   errors: PropTypes.array.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
-  isRequired: PropTypes.bool,
-  formState: PropTypes.any,
-  getFormValues: PropTypes.func.isRequired,
-  timeEntry: PropTypes.object.isRequired,
-  timeEntriesIndex: PropTypes.number.isRequired,
-  setFinishTimeText: PropTypes.func,
+  updateFinishTimeText: PropTypes.func,
 };
