@@ -16,10 +16,10 @@ const AddTimeCardPeriod = () => {
       <div className="grey-border">
         <div className="govuk-summary-list govuk-!-margin-bottom-0">
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
-            <p className="govuk-heading-s govuk-!-width-two-thirds">
+            <p className="govuk-heading-s govuk-!-width-two-thirds govuk-!-margin-bottom-0">
               {addTimePeriodHeading}
             </p>
-            <div className="govuk-summary-list__actions">
+            <div className="govuk-summary-list__actions govuk-!-margin-bottom-0">
               <Link
                 onClick={handleAddTimePeriod}
                 className="govuk-link govuk-link--no-visited-state"

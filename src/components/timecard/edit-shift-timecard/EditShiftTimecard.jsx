@@ -81,13 +81,13 @@ const EditShiftTimecard = ({
       finishTime && !dayjs(finishTime).isSame(startTime, 'day');
 
     return (
-      <div>
+      <>
         {formatTime(startTime)}
         {shouldShowStartDate && <> on {formatDateNoYear(startTime)}</>} to{' '}
         {shouldShowLineBreak && <br />}
         {finishTime ? formatTime(finishTime) : '-'}
         {shouldShowStartDate && <> on {formatDateNoYear(finishTime)}</>}
-      </div>
+      </>
     );
   }
 
@@ -95,23 +95,17 @@ const EditShiftTimecard = ({
     <div className="grey-border">
       <dl className="govuk-summary-list govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
-          <dt
-            className="govuk-summary-list__key govuk-!-width-two-thirds"
-            style={{ paddingBottom: '20px', paddingTop: '10px' }}
-          >
+          <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
             Time period
           </dt>
-          <dd
-            className="govuk-summary-list__value"
-            style={{ whiteSpace: 'nowrap' }}
-          >
+          <dd className="govuk-summary-list__value">
             {timeEntryExists
               ? timecardDate === formatDate(timeEntry.startTime)
                 ? 'Shift'
                 : 'Shift (continued)'
               : null}
           </dd>
-          <dd className="govuk-summary-list__actions" style={{ width: '43%' }}>
+          <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
               <Link
                 onClick={handleClickRemoveShiftButton}
@@ -123,20 +117,9 @@ const EditShiftTimecard = ({
             )}
           </dd>
         </div>
-        <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
-          <dt
-            className="govuk-summary-list__key"
-            style={{
-              paddingBottom: '20px',
-              paddingTop: '20px',
-            }}
-          >
-            Hours
-          </dt>
-          <dd
-            className="govuk-summary-list__value govuk-!-width-full"
-            style={{ whiteSpace: 'nowrap' }}
-          >
+        <div className="govuk-summary-list__row">
+          <dt className="govuk-summary-list__key">Hours</dt>
+          <dd className="govuk-summary-list__value govuk-!-width-full">
             {!showEditShiftHours &&
               timeEntryExists &&
               renderShiftHoursText({
@@ -161,7 +144,7 @@ const EditShiftTimecard = ({
         </div>
         {showEditShiftHours && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
-            <dt className="govuk-summary-list__key">
+            <dt className="govuk-summary-list__row">
               <EditShiftHours
                 setShowEditShiftHours={setShowEditShiftHours}
                 timeEntry={timeEntry}
@@ -171,19 +154,8 @@ const EditShiftTimecard = ({
             </dt>
           </div>
         )}
-        <div
-          className="govuk-summary-list__row govuk-summary-list__row--no-border"
-          style={{ borderTop: '1px solid #b1b4b6' }}
-        >
-          <dt
-            className="govuk-summary-list__key"
-            style={{
-              paddingBottom: '10px',
-              paddingTop: '20px',
-            }}
-          >
-            Meal break
-          </dt>
+        <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
+          <dt className="govuk-summary-list__key">Meal break</dt>
           <dd className="govuk-summary-list__value"></dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (

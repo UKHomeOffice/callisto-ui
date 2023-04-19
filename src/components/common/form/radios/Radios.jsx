@@ -20,7 +20,7 @@ const Radios = React.forwardRef(
     return (
       <>
         <div
-          className={`govuk-form-group ${
+          className={`govuk-form-group govuk-!-margin-top-3 ${
             errors && errors[name] && 'govuk-form-group--error'
           }`}
           data-testid="radio-buttons"
