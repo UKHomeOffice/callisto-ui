@@ -101,10 +101,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
     <div className="grey-border">
       <dl className="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
         <div className="govuk-summary-list__row">
-          <dt
-            className="govuk-summary-list__key govuk-!-width-two-thirds"
-            style={{ paddingBottom: '20px', paddingTop: '10px' }}
-          >
+          <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
             Time period
           </dt>
           <dd className="govuk-summary-list__value govuk-!-width-two-thirds">
