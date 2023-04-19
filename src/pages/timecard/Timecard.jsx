@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -81,7 +82,7 @@ const Timecard = () => {
       <h2 className="govuk-heading-m">
         {dayjs(timecardDate).format('D MMMM YYYY')}
       </h2>
-      <div className="govuk-button-group">
+      <div className="govuk-button-group button-group-row">
         <Link
           onClick={() => {
             clearMessageSummary();

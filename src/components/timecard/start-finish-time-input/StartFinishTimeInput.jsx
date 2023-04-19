@@ -108,7 +108,7 @@ const StartFinishTimeInput = ({
         <div className="govuk-grid-column-one-third">
           <div className="govuk-form-group ">
             <label
-              className="govuk-label govuk-label--s responsive-margin"
+              className="govuk-label govuk-label--s"
               htmlFor={`${name}-finish-time`}
             >
               Finish time
