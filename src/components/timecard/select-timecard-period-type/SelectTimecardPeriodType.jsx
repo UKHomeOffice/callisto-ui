@@ -14,11 +14,7 @@ const SelectTimecardPeriodType = ({
   setTimeEntries,
   setAddNewTimeEntry,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
   });

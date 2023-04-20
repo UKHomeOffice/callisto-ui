@@ -42,7 +42,11 @@ describe('timeEntryUtils', () => {
     const existingTimeEntries = [timeEntry1, timeEntry2];
     const timeEntryIndex = 1;
     const mockSetTimeEntries = jest.fn();
-    removeTimecardContextEntry(existingTimeEntries, mockSetTimeEntries, timeEntryIndex);
+    removeTimecardContextEntry(
+      existingTimeEntries,
+      mockSetTimeEntries,
+      timeEntryIndex
+    );
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
   });
 
