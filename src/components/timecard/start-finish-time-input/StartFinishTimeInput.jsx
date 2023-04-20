@@ -16,30 +16,12 @@ const StartFinishTimeInput = ({
   localStartDate,
   setLocalEndDate,
 }) => {
-  const [errorMessages, setErrorMessages] = useState([]);
+  const errorMessages = [];
   const [finishTimeText, setFinishTimeText] = useState('');
 
   useEffect(() => {
-    // updateErrorMessages();
     updateFinishTimeText();
   }, []);
-
-  const updateErrorMessages = () => {
-    const findErrors =
-      errors &&
-      Object.values(errors).filter(
-        (error) =>
-          error.inputName === 'shift-start-time' ||
-          error.inputName === 'shift-finish-time'
-      );
-    let relevantErrorMessages = [];
-    if (findErrors) {
-      relevantErrorMessages = findErrors.map((error) => {
-        return error.message;
-      });
-    }
-    setErrorMessages(relevantErrorMessages);
-  };
 
   const updateFinishTimeText = () => {
     const startTime = getFormValues(inputNames.shiftStartTime);
@@ -146,4 +128,6 @@ StartFinishTimeInput.propTypes = {
   finishTimeValue: PropTypes.string,
   getFormValues: PropTypes.func.isRequired,
   register: PropTypes.any.isRequired,
+  localStartDate: PropTypes.string,
+  setLocalEndDate: PropTypes.func,
 };

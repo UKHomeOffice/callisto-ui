@@ -1,11 +1,9 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
   shiftTimeEntry,
-  timeCardPeriodTypes,
   shiftTimeEntryMultipleDays,
   shiftTimeEntryPreviousDayNoEndTime,
   shiftTimeEntryTodayNoEndTime,
-  shiftTimeCardPeriodType,
   timecardPeriodTypes,
 } from '../../../mocks/mockData';
 import Timecard from './Timecard';

@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { deepCloneJson } from '../common-utils/common-utils';
 
 dayjs.extend(isSameOrBefore);
 
@@ -49,7 +48,7 @@ export const formatJustYear = (dateTime) => {
 export const removeTimecardContextEntry = (
   timeEntries,
   setTimeEntries,
-  timeEntriesIndex,
+  timeEntriesIndex
 ) => {
   if (timeEntriesIndex === 0) {
     setTimeEntries([...timeEntries.slice(1)]);

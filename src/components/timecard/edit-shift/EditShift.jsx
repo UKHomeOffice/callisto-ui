@@ -18,17 +18,12 @@ import {
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
-  deepCloneJson,
   focusErrors,
   sortErrors,
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import {
-  clashingProperties,
-  inputNames,
-  messageKeys,
-} from '../../../utils/constants';
+import { clashingProperties } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
@@ -43,7 +38,6 @@ const EditShift = ({
   timeEntriesIndex,
   timeEntries,
   setTimeEntries,
-  summaryMessages,
   setSummaryMessages,
   timePeriodTypesMap,
 }) => {
@@ -84,14 +78,6 @@ const EditShift = ({
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
-  };
-
-  const getFinishTimeDate = (actualStartDate) => {
-    if (timeEntry.finishNextDay) {
-      return formatDate(dayjs(actualStartDate).add(1, 'day'));
-    } else {
-      return actualStartDate;
-    }
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -497,7 +483,6 @@ EditShift.propTypes = {
   setShowEditShiftHours: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
-  summaryMessages: PropTypes.array,
   setSummaryMessages: PropTypes.func,
   timePeriodTypesMap: PropTypes.any,
 };

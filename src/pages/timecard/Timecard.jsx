@@ -6,7 +6,7 @@ import BackLink from '../../components/common/form/navigation/backlink/BackLink'
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
-import { getTimeEntries } from '../../api/services/timecardService';
+import { getTimeEntries, getTimePeriodTypes } from '../../api/services/timecardService';
 import {
   formatDate,
   formatTime,
@@ -19,7 +19,6 @@ import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/ti
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
-import { getTimePeriodTypes } from '../../api/services/timecardService';
 import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
@@ -63,8 +62,6 @@ const Timecard = () => {
   const clearErrorSummary = () => {
     setSummaryErrors([]);
   };
-
-  const addNewTimePeriod = () => {};
 
   return (
     <>

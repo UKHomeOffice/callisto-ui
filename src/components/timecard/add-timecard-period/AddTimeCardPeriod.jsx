@@ -37,4 +37,5 @@ const AddTimeCardPeriod = ({ setSummaryErrors, setAddNewTimeEntry }) => {
 export default AddTimeCardPeriod;
 AddTimeCardPeriod.propTypes = {
   setSummaryErrors: PropTypes.func,
+  setAddNewTimeEntry: PropTypes.func,
 };
