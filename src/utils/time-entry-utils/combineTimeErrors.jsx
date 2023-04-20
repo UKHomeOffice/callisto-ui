@@ -1,6 +1,4 @@
-import TimeInputErrors, {
-  createClashErrorsObject,
-} from '../../components/timecard/time-input-errors/TimeInputErrors';
+import { createClashErrorsObject } from '../../components/timecard/time-input-errors/TimeInputErrors';
 import { clashingProperties, inputNames } from '../constants';
 
 export function combineExistingAndTimeClashErrors(
