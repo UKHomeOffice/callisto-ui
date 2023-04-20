@@ -34,7 +34,7 @@ const StartFinishTimeInput = ({
   };
 
   const formatErrorDisplay = (error) => {
-    if (error.key === 'startTimeClash' || error.key === 'finishTimeClash') {
+    if (error.key === 'overlappingStart' || error.key === 'overlappingFinish') {
       return (
         <>
           <p>{error.message.summaryMessage}</p>
