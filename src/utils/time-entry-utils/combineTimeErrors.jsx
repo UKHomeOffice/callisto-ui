@@ -7,7 +7,7 @@ export function combineExistingAndTimeClashErrors(
   clashingTimes,
   timePeriodTypesMap
 ) {
-  const combinedErrors = [...summaryErrors];
+  let combinedErrors = [...summaryErrors];
 
   if (clashingProperty === clashingProperties.startAndEndTime) {
     combinedErrors.push({
@@ -28,16 +28,32 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 2,
     });
   } else if (clashingProperty === clashingProperties.startTime) {
-    combinedErrors.push({
-      key: 'startTimeClash',
-      inputName: inputNames.shiftStartTime,
-      message: clashErrorMessage(
+    let error = summaryErrors.find((error) => error.key === 'overlappingStart');
+    if (error) {
+      error.message = clashErrorMessage(
         clashingProperty,
         clashingTimes,
         timePeriodTypesMap
-      ),
-      errorPriority: 1,
-    });
+      );
+
+      const index = summaryErrors.indexOf(error);
+      combinedErrors = [
+        ...combinedErrors.slice(0, index),
+        error,
+        ...combinedErrors.slice(index + 1),
+      ];
+    }
+
+    // combinedErrors.push({
+    //   key: 'startTimeClash',
+    //   inputName: inputNames.shiftStartTime,
+    //   message: clashErrorMessage(
+    //     clashingProperty,
+    //     clashingTimes,
+    //     timePeriodTypesMap
+    //   ),
+    //   errorPriority: 1,
+    // });
   } else if (clashingProperty === clashingProperties.endTime) {
     combinedErrors.push({
       key: 'finishTimeClash',
