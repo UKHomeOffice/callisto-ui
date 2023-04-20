@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
-import { inputNames } from '../../../utils/constants';
+import { clashingProperties, inputNames } from '../../../utils/constants';
 import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
 import dayjs from 'dayjs';
 
@@ -51,6 +51,37 @@ const StartFinishTimeInput = ({
     );
   };
 
+  const formatErrorDisplay = (error) => {
+    if (
+      error.key === clashingProperties.startTime ||
+      error.key === clashingProperties.endTime ||
+      error.key === clashingProperties.startAndEndTime
+    ) {
+      return (
+        <>
+          <p>{error.message.summaryMessage}</p>
+          <div>
+            <p>{error.message.fieldErrorSummary}</p>
+            <ul>
+              {error.message.clashMessages.map((message, index) => (
+                <li key={index} data-testid="test">
+                  {message}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <div>
+          <span className="govuk-visually-hidden">Error:</span>
+          {error.message}
+        </div>
+      );
+    }
+  };
+
   return (
     <div
       className={`govuk-form-group ${
@@ -72,12 +103,7 @@ const StartFinishTimeInput = ({
               key={error.key}
               className="govuk-error-message govuk-!-margin-left-3"
             >
-              {error.message && (
-                <div>
-                  <span className="govuk-visually-hidden">Error:</span>
-                  {error.message}
-                </div>
-              )}
+              {error.message && <>{formatErrorDisplay(error)}</>}
             </div>
           );
         })}

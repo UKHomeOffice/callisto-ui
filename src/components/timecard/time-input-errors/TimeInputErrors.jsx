@@ -9,18 +9,14 @@ import {
 const TimeInputErrors = ({ clashingProperty, clashes, timePeriodTypesMap }) => {
   const displayClashingProperty = () => {
     if (clashingProperty === clashingProperties.startTime) {
-      return <p>Your start time must not overlap with another time period</p>;
+      return 'Your start time must not overlap with another time period';
     }
 
     if (clashingProperty === clashingProperties.endTime) {
-      return <p>Your finish time must not overlap with another time period</p>;
+      return 'Your finish time must not overlap with another time period';
     }
 
-    return (
-      <p>
-        Your start and finish times must not overlap with another time period
-      </p>
-    );
+    return 'Your start and finish times must not overlap with another time period';
   };
 
   const displaySingleTimeClash = () => {
@@ -30,38 +26,44 @@ const TimeInputErrors = ({ clashingProperty, clashes, timePeriodTypesMap }) => {
       );
     }
     const clash = clashes[0];
-    let text;
+    let fieldErrorSummary;
+    let clashMessages = [];
 
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      text = `You are already assigned to work from 
-      ${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`;
+      fieldErrorSummary = 'You are already assigned to work from:';
+      clashMessages.push(
+        `${formatStartDateTime(clash.startTime)} ${getEndTimeText(
+          clash.endTime
+        )}`
+      );
     } else {
-      text = `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
-        clash.startTime
-      )}`;
+      fieldErrorSummary = 'You are already assigned a:';
+      clashMessages.push(
+        `${timePeriodType.toLowerCase()} on ${formatLongDate(clash.startTime)}`
+      );
     }
 
-    return <p>{text}</p>;
+    return {
+      fieldErrorSummary: fieldErrorSummary,
+      clashMessages: clashMessages,
+    };
   };
 
   const displayMultipleTimeClashes = () => {
     sortByStartTime(clashes);
 
-    const times = (
-      <div>
-        <p>You are already assigned to the following time periods:</p>
-        <ul>
-          {clashes.map((clash, index) => (
-            <li key={index} data-testid="test">
-              {timePeriodClashToText(clash)}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-    return times;
+    const clashMessages = [];
+    clashes.map((clash) => {
+      clashMessages.push(timePeriodClashToText(clash));
+    });
+
+    return {
+      fieldErrorSummary:
+        'You are already assigned to the following time periods:',
+      clashMessages: clashMessages,
+    };
   };
 
   const sortByStartTime = (clashes) => {
@@ -74,7 +76,9 @@ const TimeInputErrors = ({ clashingProperty, clashes, timePeriodTypesMap }) => {
     const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
     if (timePeriodType === 'Shift') {
-      return `${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`;
+      return `${formatStartDateTime(clash.startTime)} ${getEndTimeText(
+        clash.endTime
+      )}`;
     }
 
     return `${timePeriodType.toLowerCase()} on ${formatLongDate(
@@ -98,14 +102,13 @@ const TimeInputErrors = ({ clashingProperty, clashes, timePeriodTypesMap }) => {
     return `${formatTime(clash.startTime)}${startDate}`;
   };
 
-  return (
-    <>
-      {displayClashingProperty()}
-      {clashes.length > 1
+  return {
+    summaryMessage: displayClashingProperty(),
+    clashMessages:
+      clashes.length > 1
         ? displayMultipleTimeClashes()
-        : displaySingleTimeClash()}
-    </>
-  );
+        : displaySingleTimeClash(),
+  };
 };
 
 export default TimeInputErrors;
