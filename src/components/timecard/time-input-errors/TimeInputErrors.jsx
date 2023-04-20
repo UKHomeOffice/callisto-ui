@@ -33,7 +33,7 @@ const displaySingleTimeClash = (clashes, timePeriodTypesMap) => {
   if (timePeriodType === 'Shift') {
     fieldErrorSummary = 'You are already assigned to work from:';
     clashMessages.push(
-      `${formatStartDateTime(clash.startTime)} ${getEndTimeText(clash.endTime)}`
+      `${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`
     );
   } else {
     fieldErrorSummary = 'You are already assigned a:';
@@ -73,9 +73,7 @@ const timePeriodClashToText = (clash, timePeriodTypesMap) => {
   const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
   if (timePeriodType === 'Shift') {
-    return `${formatStartDateTime(clash.startTime)} ${getEndTimeText(
-      clash.endTime
-    )}`;
+    return `${formatStartDateTime(clash)} ${getEndTimeText(clash.endTime)}`;
   }
 
   return `${timePeriodType.toLowerCase()} on ${formatLongDate(

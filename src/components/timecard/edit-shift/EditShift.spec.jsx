@@ -888,6 +888,7 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
+        jest.di;
         expect(setSummaryErrors).toHaveBeenCalledWith([
           {
             errorPriority: 1,
@@ -911,8 +912,8 @@ describe('EditShift', () => {
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-                    startTime: null,
-                    endTime: null,
+                    startTime: '08:00',
+                    endTime: '09:00',
                   },
                 ],
               },
@@ -932,6 +933,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -947,12 +949,15 @@ describe('EditShift', () => {
       });
 
       await waitFor(() => {
-        expect(setSummaryErrors).toHaveBeenCalledWith({
-          [inputNames.shiftStartTime]: {
+        expect(setSummaryErrors).toHaveBeenCalledWith([
+          {
+            errorPriority: 1,
+            inputName: 'shift-start-time',
+            key: 'overlappingStart',
             message:
               'Your start time must not overlap with another time period',
           },
-        });
+        ]);
       });
     });
 
@@ -967,8 +972,8 @@ describe('EditShift', () => {
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-                    startTime: null,
-                    endTime: null,
+                    startTime: '08:00',
+                    endTime: '09:00',
                   },
                 ],
               },
@@ -988,6 +993,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
@@ -1073,8 +1079,8 @@ describe('EditShift', () => {
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-                    startTime: null,
-                    endTime: null,
+                    startTime: '09:00',
+                    endTime: '08:00',
                   },
                 ],
               },
@@ -1094,6 +1100,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
