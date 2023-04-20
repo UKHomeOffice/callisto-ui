@@ -34,22 +34,20 @@ const StartFinishTimeInput = ({
   };
 
   const formatErrorDisplay = (error) => {
-    if (
-      error.key === clashingProperties.startTime ||
-      error.key === clashingProperties.endTime ||
-      error.key === clashingProperties.startAndEndTime
-    ) {
+    if (error.key === 'startTimeClash' || error.key === 'finishTimeClash') {
       return (
         <>
           <p>{error.message.summaryMessage}</p>
           <div>
-            <p>{error.message.fieldErrorSummary}</p>
+            <p>{error.message.clashMessages.fieldErrorSummary}</p>
             <ul>
-              {error.message.clashMessages.map((message, index) => (
-                <li key={index} data-testid="test">
-                  {message}
-                </li>
-              ))}
+              {error.message.clashMessages.clashMessages.map(
+                (message, index) => (
+                  <li key={index} data-testid="test">
+                    {message}
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </>

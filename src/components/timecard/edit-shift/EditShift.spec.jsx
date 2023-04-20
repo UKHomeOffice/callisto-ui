@@ -13,6 +13,7 @@ import { getApiResponseWithItems } from '../../../../mocks/mock-utils';
 import {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
+  timePeriodTypesMap,
 } from '../../../../mocks/mockData';
 
 import { clashingProperties, inputNames } from '../../../utils/constants';
@@ -851,8 +852,8 @@ describe('EditShift', () => {
                 data: [
                   {
                     timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-                    startTime: null,
-                    endTime: null,
+                    startTime: '08:00',
+                    endTime: '09:00',
                   },
                 ],
               },
@@ -871,6 +872,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          timePeriodTypesMap={timePeriodTypesMap}
         />
       );
 
