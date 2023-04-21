@@ -20,6 +20,10 @@
   margin-bottom: 0;
   padding: 17px 0;
 
+  .govuk-summary-list__actions {
+    text-align: right;
+  }
+
   /* stylelint-enable selector-class-pattern */
   dt,
   dd {
