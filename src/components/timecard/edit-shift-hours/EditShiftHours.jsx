@@ -332,5 +332,4 @@ EditShiftHours.propTypes = {
   timeEntriesIndex: PropTypes.number,
   setShowEditShiftHours: PropTypes.func,
   hasShiftMovedCallback: PropTypes.func,
-  setSummaryMessages: PropTypes.func,
 };
