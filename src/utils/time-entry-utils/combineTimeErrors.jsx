@@ -10,23 +10,25 @@ export function combineExistingAndTimeClashErrors(
   let combinedErrors = [...summaryErrors];
 
   if (clashingProperty === clashingProperties.startAndEndTime) {
-    let error = summaryErrors.find(
+    let index = summaryErrors.findIndex(
       (error) => error.key === 'bothDatesOverlapping'
     );
-    if (error) {
-      error.message = clashErrorMessage(
+    const error = {
+      key: 'bothDatesOverlapping',
+      inputName: 'shift-start-time',
+      message: clashErrorMessage(
         clashingProperty,
         clashingTimes,
         timePeriodTypesMap
-      );
+      ),
+      errorPriority: 1,
+    };
 
-      const index = summaryErrors.indexOf(error);
-      combinedErrors = [
-        ...combinedErrors.slice(0, index),
-        error,
-        ...combinedErrors.slice(index + 1),
-      ];
-    }
+    combinedErrors = [
+      ...combinedErrors.slice(0, index),
+      error,
+      ...combinedErrors.slice(index + 1),
+    ];
 
     // combinedErrors.push({
     //   key: 'startTimeClash',
@@ -46,21 +48,25 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 2,
     });
   } else if (clashingProperty === clashingProperties.startTime) {
-    let error = summaryErrors.find((error) => error.key === 'overlappingStart');
-    if (error) {
-      error.message = clashErrorMessage(
+    let index = summaryErrors.findIndex(
+      (error) => error.key === 'overlappingStart'
+    );
+    const error = {
+      key: 'overlappingStart',
+      inputName: 'shift-start-time',
+      message: clashErrorMessage(
         clashingProperty,
         clashingTimes,
         timePeriodTypesMap
-      );
+      ),
+      errorPriority: 1,
+    };
 
-      const index = summaryErrors.indexOf(error);
-      combinedErrors = [
-        ...combinedErrors.slice(0, index),
-        error,
-        ...combinedErrors.slice(index + 1),
-      ];
-    }
+    combinedErrors = [
+      ...combinedErrors.slice(0, index),
+      error,
+      ...combinedErrors.slice(index + 1),
+    ];
 
     // combinedErrors.push({
     //   key: 'startTimeClash',
@@ -73,23 +79,26 @@ export function combineExistingAndTimeClashErrors(
     //   errorPriority: 1,
     // });
   } else if (clashingProperty === clashingProperties.endTime) {
-    let error = summaryErrors.find(
+    let index = summaryErrors.findIndex(
       (error) => error.key === 'overlappingFinish'
     );
-    if (error) {
-      error.message = clashErrorMessage(
+    const error = {
+      key: 'overlappingFinish',
+      inputName: 'shift-finish-time',
+      message: clashErrorMessage(
         clashingProperty,
         clashingTimes,
         timePeriodTypesMap
-      );
+      ),
+      errorPriority: 1,
+    };
 
-      const index = summaryErrors.indexOf(error);
-      combinedErrors = [
-        ...combinedErrors.slice(0, index),
-        error,
-        ...combinedErrors.slice(index + 1),
-      ];
-    }
+    const index = summaryErrors.indexOf(error);
+    combinedErrors = [
+      ...combinedErrors.slice(0, index),
+      error,
+      ...combinedErrors.slice(index + 1),
+    ];
 
     // combinedErrors.push({
     //   key: 'finishTimeClash',
