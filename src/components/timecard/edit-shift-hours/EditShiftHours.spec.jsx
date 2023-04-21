@@ -1141,6 +1141,7 @@ describe('EditShiftHours', () => {
       const mockTimecardContext = deepCloneJson(defaultTimecardContext);
       mockTimecardContext.setSummaryErrors = jest.fn();
       mockTimecardContext.setTimeEntries = jest.fn();
+      mockTimecardContext.setSummaryMessages = jest.fn();
 
       renderWithTimecardContext(
         <EditShiftHours
@@ -1195,6 +1196,7 @@ describe('EditShiftHours', () => {
       const mockTimecardContext = deepCloneJson(defaultTimecardContext);
       mockTimecardContext.setSummaryErrors = jest.fn();
       mockTimecardContext.setTimeEntries = jest.fn();
+      mockTimecardContext.setSummaryMessages = jest.fn();
 
       renderWithTimecardContext(
         <EditShiftHours
@@ -1243,6 +1245,7 @@ describe('EditShiftHours', () => {
       const mockTimecardContext = deepCloneJson(defaultTimecardContext);
       mockTimecardContext.setSummaryErrors = jest.fn();
       mockTimecardContext.setTimeEntries = jest.fn();
+      mockTimecardContext.setSummaryMessages = jest.fn();
 
       renderWithTimecardContext(
         <EditShiftHours
@@ -1296,6 +1299,7 @@ describe('EditShiftHours', () => {
       const mockTimecardContext = deepCloneJson(defaultTimecardContext);
       mockTimecardContext.setSummaryErrors = jest.fn();
       mockTimecardContext.setTimeEntries = jest.fn();
+      mockTimecardContext.setSummaryMessages = jest.fn();
 
       renderWithTimecardContext(
         <EditShiftHours
