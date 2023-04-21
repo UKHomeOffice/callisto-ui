@@ -11,27 +11,15 @@ const StartFinishTimeInput = ({
   errors,
   startTimeValue,
   finishTimeValue,
-  getFormValues,
   register,
-  localStartDate,
-  setLocalEndDate,
+  updateFinishTimeText,
+  finishTimeText,
 }) => {
   const errorMessages = [];
-  const [finishTimeText, setFinishTimeText] = useState('');
 
   useEffect(() => {
     updateFinishTimeText();
   }, []);
-
-  const updateFinishTimeText = () => {
-    const startTime = getFormValues(inputNames.shiftStartTime);
-    const finishTime = getFormValues(inputNames.shiftFinishTime);
-    const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
-    setFinishTimeText(nextDay ? 'Finishes next day' : '');
-    setLocalEndDate(
-      nextDay ? dayjs(localStartDate).add(1, 'day').toString() : localStartDate
-    );
-  };
 
   const formatErrorDisplay = (error) => {
     if (
@@ -154,8 +142,7 @@ StartFinishTimeInput.propTypes = {
   errors: PropTypes.array.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
-  getFormValues: PropTypes.func.isRequired,
   register: PropTypes.any.isRequired,
-  localStartDate: PropTypes.string,
-  setLocalEndDate: PropTypes.func,
+  updateFinishTimeText: PropTypes.func,
+  finishTimeText: PropTypes.string,
 };

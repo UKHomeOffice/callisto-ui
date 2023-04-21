@@ -7,7 +7,7 @@ import {
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
-import dayjs from 'dayjs';
+import dayjs, { locale } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
@@ -23,7 +23,7 @@ import {
 } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
-import { clashingProperties } from '../../../utils/constants';
+import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
@@ -68,6 +68,8 @@ const EditShift = ({
     finishEntryExists ? timeEntry.finishTime : timecardDate
   );
 
+  const [finishTimeText, setFinishTimeText] = useState('');
+
   useEffect(() => {
     focusErrors(document.querySelector('[id^="summary-error"] a'));
   }, [summaryErrors]);
@@ -78,6 +80,24 @@ const EditShift = ({
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
+  };
+
+  const updateFinishTimeText = () => {
+    if (dayjs(localStartDate).isBefore(dayjs(localEndDate))) {
+      setFinishTimeText('Finishes next day');
+    } else if (dayjs(localStartDate).isAfter(dayjs(localEndDate))) {
+      setFinishTimeText('');
+    } else {
+      const startTime = getValues(inputNames.shiftStartTime);
+      const finishTime = getValues(inputNames.shiftFinishTime);
+      const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
+      setFinishTimeText(nextDay ? 'Finishes next day' : '');
+      setLocalEndDate(
+        nextDay
+          ? dayjs(localStartDate).add(1, 'day').toString()
+          : localStartDate
+      );
+    }
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -424,14 +444,9 @@ const EditShift = ({
           )}
           register={register}
           formState={formState}
-          getFormValues={getValues}
           timeEntry={timeEntry}
-          startTimeValue={
-            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
-          }
-          finishTimeValue={
-            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
-          }
+          updateFinishTimeText={updateFinishTimeText}
+          finishTimeText={finishTimeText}
           timeEntriesIndex={timeEntriesIndex}
           setLocalEndDate={setLocalEndDate}
           localStartDate={localStartDate}
