@@ -144,7 +144,7 @@ describe('combineExistingAndTimeClashErrors', () => {
         errorPriority: 1,
       },
       {
-        key: 'overlappingFinish',
+        key: 'finishDateClash',
         inputName: inputNames.shiftFinishTime,
         message: '',
         errorPriority: 2,

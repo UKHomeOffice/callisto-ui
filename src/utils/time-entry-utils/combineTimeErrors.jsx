@@ -31,7 +31,7 @@ export function combineExistingAndTimeClashErrors(
     ];
 
     combinedErrors.push({
-      key: 'overlappingFinish',
+      key: 'finishDateClash',
       inputName: inputNames.shiftFinishTime,
       message: '',
       errorPriority: 2,
