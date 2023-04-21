@@ -468,7 +468,7 @@ describe('EditShift', () => {
         timeEntryId: timeEntryId,
         startTime: '2022-09-02 08:00:00+00:00',
         finishTime: '2022-09-02 16:00:00+00:00',
-        finishNextDay: false,
+        finishNextDay: true,
       };
 
       renderWithApplicationContext(
