@@ -5,14 +5,7 @@ import {
   formatTime,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const displayClashingProperty = (
-  clashingProperty,
-  clashes,
-  timePeriodTypesMap
-) => {
-  const clash = clashes[0];
-  const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
-
+const displayClashingProperty = (clashingProperty) => {
   if (clashingProperty === clashingProperties.startTime) {
     return 'Your start time must not overlap with another time period';
   }
@@ -21,13 +14,7 @@ const displayClashingProperty = (
     return 'Your finish time must not overlap with another time period';
   }
 
-  if (timePeriodType === 'Shift') {
-    return 'Your start and finish times must not overlap with another time period';
-  } else {
-    return `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
-      clash.startTime
-    )}`;
-  }
+  return 'Your start and finish times must not overlap with another time period';
 };
 
 const displaySingleTimeClash = (clashes, timePeriodTypesMap) => {
@@ -116,11 +103,7 @@ export const createClashErrorsObject = (
   }
 
   return {
-    summaryMessage: displayClashingProperty(
-      clashingProperty,
-      clashes,
-      timePeriodTypesMap
-    ),
+    summaryMessage: displayClashingProperty(clashingProperty),
     clashMessages:
       clashes.length > 1
         ? displayMultipleTimeClashes(clashes, timePeriodTypesMap)
