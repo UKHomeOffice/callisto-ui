@@ -86,7 +86,7 @@ describe('TimeInputErrors', () => {
           fieldErrorSummary: 'You are already assigned a:',
         },
         summaryMessage:
-          'You are already assigned a scheduled rest day on 3 November 2022',
+          'Your start and finish times must not overlap with another time period',
       };
 
       const result = createClashErrorsObject(
@@ -113,7 +113,7 @@ describe('TimeInputErrors', () => {
           fieldErrorSummary: 'You are already assigned a:',
         },
         summaryMessage:
-          'You are already assigned a non-working day on 3 November 2022',
+          'Your start and finish times must not overlap with another time period',
       };
 
       const result = createClashErrorsObject(
@@ -249,7 +249,7 @@ describe('TimeInputErrors', () => {
             'You are already assigned to the following time periods:',
         },
         summaryMessage:
-          'You are already assigned a non-working day on 3 November 2022',
+          'Your start and finish times must not overlap with another time period',
       };
 
       const result = createClashErrorsObject(
