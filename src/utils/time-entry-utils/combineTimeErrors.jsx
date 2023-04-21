@@ -30,17 +30,6 @@ export function combineExistingAndTimeClashErrors(
       ...combinedErrors.slice(index + 1),
     ];
 
-    // combinedErrors.push({
-    //   key: 'startTimeClash',
-    //   inputName: inputNames.shiftStartTime,
-    //   message: clashErrorMessage(
-    //     clashingProperty,
-    //     clashingTimes,
-    //     timePeriodTypesMap
-    //   ),
-    //   errorPriority: 1,
-    // });
-
     combinedErrors.push({
       key: 'overlappingFinish',
       inputName: inputNames.shiftFinishTime,
@@ -67,17 +56,6 @@ export function combineExistingAndTimeClashErrors(
       error,
       ...combinedErrors.slice(index + 1),
     ];
-
-    // combinedErrors.push({
-    //   key: 'startTimeClash',
-    //   inputName: inputNames.shiftStartTime,
-    //   message: clashErrorMessage(
-    //     clashingProperty,
-    //     clashingTimes,
-    //     timePeriodTypesMap
-    //   ),
-    //   errorPriority: 1,
-    // });
   } else if (clashingProperty === clashingProperties.endTime) {
     let index = summaryErrors.findIndex(
       (error) => error.key === 'overlappingFinish'
@@ -93,23 +71,11 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 1,
     };
 
-    const index = summaryErrors.indexOf(error);
     combinedErrors = [
       ...combinedErrors.slice(0, index),
       error,
       ...combinedErrors.slice(index + 1),
     ];
-
-    // combinedErrors.push({
-    //   key: 'finishTimeClash',
-    //   inputName: inputNames.shiftFinishTime,
-    //   message: clashErrorMessage(
-    //     clashingProperty,
-    //     clashingTimes,
-    //     timePeriodTypesMap
-    //   ),
-    //   errorPriority: 1,
-    // });
   }
 
   return combinedErrors;
