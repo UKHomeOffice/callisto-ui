@@ -19,8 +19,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getFormValues={jest.fn()}
-        setLocalEndDate={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -39,8 +38,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getFormValues={jest.fn()}
-        setLocalEndDate={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -59,8 +57,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getFormValues={jest.fn()}
-        setLocalEndDate={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -84,8 +81,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getFormValues={jest.fn()}
-        setLocalEndDate={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -97,14 +93,7 @@ describe('StartFinishTimeInput', () => {
   });
 
   describe('Finishes next day', () => {
-    it('should display "Finishes next day" text if shift finishes next day', () => {
-      const getFormValues = jest
-        .fn()
-        .mockReturnValueOnce('07:00')
-        .mockReturnValueOnce('01:00');
-
-      const setLocalEndDate = jest.fn();
-
+    it('should display "Finishes next day" text if its passed into the componenet', () => {
       renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
@@ -114,26 +103,17 @@ describe('StartFinishTimeInput', () => {
           register={mockRegister}
           timeEntry={timeEntryWithFinishNextDay}
           timeEntriesIndex={0}
-          getFormValues={getFormValues}
-          setLocalEndDate={setLocalEndDate}
+          updateFinishTimeText={jest.fn()}
+          finishTimeText={'Finishes next day'}
         />
       );
 
       const finishesNextDayText = screen.getByText('Finishes next day');
 
       expect(finishesNextDayText).toBeTruthy();
-
-      expect(setLocalEndDate).toHaveBeenCalled();
     });
 
     it('should not display "Finishes next day" text if shift finishes same day', () => {
-      const getFormValues = jest
-        .fn()
-        .mockReturnValueOnce('07:00')
-        .mockReturnValueOnce('17:00');
-
-      const setLocalEndDate = jest.fn();
-
       renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
@@ -143,16 +123,14 @@ describe('StartFinishTimeInput', () => {
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          getFormValues={getFormValues}
-          setLocalEndDate={setLocalEndDate}
+          updateFinishTimeText={jest.fn()}
+          finishTimeText={''}
         />
       );
 
       const finishesNextDayText = screen.queryByText('Finishes next day');
 
       expect(finishesNextDayText).toBeFalsy();
-
-      expect(setLocalEndDate).toHaveBeenCalled();
     });
   });
 
@@ -186,8 +164,7 @@ describe('StartFinishTimeInput', () => {
             register={mockRegister}
             timeEntry={timeEntry}
             timeEntriesIndex={0}
-            getFormValues={jest.fn()}
-            setLocalEndDate={jest.fn()}
+            updateFinishTimeText={jest.fn()}
           />
         </div>
       );
