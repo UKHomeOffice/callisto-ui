@@ -41,13 +41,7 @@ const EditShift = ({
   setSummaryMessages,
   timePeriodTypesMap,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors },
-    formState,
-    getValues,
-  } = useForm({
+  const { register, handleSubmit, formState, getValues } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
   });
@@ -442,14 +436,15 @@ const EditShift = ({
             clashingTimes,
             timePeriodTypesMap
           )}
+          startTimeValue={
+            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
+          }
+          finishTimeValue={
+            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
+          }
           register={register}
-          formState={formState}
-          timeEntry={timeEntry}
           updateFinishTimeText={updateFinishTimeText}
           finishTimeText={finishTimeText}
-          timeEntriesIndex={timeEntriesIndex}
-          setLocalEndDate={setLocalEndDate}
-          localStartDate={localStartDate}
         />
         <Checkbox
           text="View or edit dates"

@@ -15,8 +15,6 @@ const StartFinishTimeInput = ({
   updateFinishTimeText,
   finishTimeText,
 }) => {
-  const errorMessages = [];
-
   useEffect(() => {
     updateFinishTimeText();
   }, []);
@@ -46,10 +44,10 @@ const StartFinishTimeInput = ({
       );
     } else {
       return (
-        <div>
+        <>
           <span className="govuk-visually-hidden">Error:</span>
           {error.message}
-        </div>
+        </>
       );
     }
   };
@@ -57,7 +55,7 @@ const StartFinishTimeInput = ({
   return (
     <div
       className={`govuk-form-group ${
-        errorMessages.length > 0 &&
+        errors.length > 0 &&
         Object.values(errors).some(
           (error) =>
             error.inputName === 'shift-start-time' ||
@@ -67,16 +65,19 @@ const StartFinishTimeInput = ({
           : ''
       }`}
     >
-      <div className="govuk-grid-row" data-testid="error-box">
+      <div className="govuk-error-summary__body" data-testid="error-box">
         {sortErrors(errors).map((error) => {
           return (
-            <div
-              id={`${name}-${error.key}-error`}
-              key={error.key}
-              className="govuk-error-message govuk-!-margin-left-3"
-            >
-              {error.message && <>{formatErrorDisplay(error)}</>}
-            </div>
+            <>
+              <div
+                id={`${name}-${error.key}-error`}
+                key={error.key}
+                className="govuk-error-message govuk-!-margin-bottom-0"
+              >
+                {error.message && <>{formatErrorDisplay(error)}</>}
+              </div>
+              <br />
+            </>
           );
         })}
       </div>
@@ -98,7 +99,6 @@ const StartFinishTimeInput = ({
             errors={errors}
             defaultValue={startTimeValue}
             register={register}
-            isRequired={true}
             updateFinishTimeText={updateFinishTimeText}
           />
         </div>

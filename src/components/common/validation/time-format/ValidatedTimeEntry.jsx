@@ -18,7 +18,7 @@ const ValidatedTimeEntry = ({
           ? 'govuk-input--error'
           : ''
       } govuk-input--width-5`}
-      defaultValue={defaultValue}
+      value={defaultValue}
       data-testid={name}
       autoComplete="off"
       type="text"
