@@ -1,12 +1,18 @@
 import dayjs from 'dayjs';
-import { PropTypes } from 'prop-types';
 import { clashingProperties } from '../../../utils/constants';
 import {
   formatLongDate,
   formatTime,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const displayClashingProperty = (clashingProperty) => {
+const displayClashingProperty = (
+  clashingProperty,
+  clashes,
+  timePeriodTypesMap
+) => {
+  const clash = clashes[0];
+  const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
+
   if (clashingProperty === clashingProperties.startTime) {
     return 'Your start time must not overlap with another time period';
   }
@@ -15,15 +21,16 @@ const displayClashingProperty = (clashingProperty) => {
     return 'Your finish time must not overlap with another time period';
   }
 
-  return 'Your start and finish times must not overlap with another time period';
+  if (timePeriodType === 'Shift') {
+    return 'Your start and finish times must not overlap with another time period';
+  } else {
+    return `You are already assigned a ${timePeriodType.toLowerCase()} on ${formatLongDate(
+      clash.startTime
+    )}`;
+  }
 };
 
 const displaySingleTimeClash = (clashes, timePeriodTypesMap) => {
-  if (clashes.length === 0) {
-    throw new Error(
-      'The time clashes data did not contain at least one time clash.'
-    );
-  }
   const clash = clashes[0];
   let fieldErrorSummary;
   let clashMessages = [];
@@ -102,8 +109,18 @@ export const createClashErrorsObject = (
   clashes,
   timePeriodTypesMap
 ) => {
+  if (clashes.length === 0) {
+    throw new Error(
+      'The time clashes data did not contain at least one time clash.'
+    );
+  }
+
   return {
-    summaryMessage: displayClashingProperty(clashingProperty),
+    summaryMessage: displayClashingProperty(
+      clashingProperty,
+      clashes,
+      timePeriodTypesMap
+    ),
     clashMessages:
       clashes.length > 1
         ? displayMultipleTimeClashes(clashes, timePeriodTypesMap)

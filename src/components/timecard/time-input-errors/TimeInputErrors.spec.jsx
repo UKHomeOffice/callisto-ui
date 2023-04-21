@@ -1,7 +1,5 @@
-import { getNodeText, screen } from '@testing-library/react';
-import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 import { clashingProperties } from '../../../utils/constants';
-import TimeInputErrors, { createClashErrorsObject } from './TimeInputErrors';
+import { createClashErrorsObject } from './TimeInputErrors';
 import { timePeriodTypesMap } from '../../../../mocks/mockData';
 
 describe('TimeInputErrors', () => {
@@ -251,7 +249,7 @@ describe('TimeInputErrors', () => {
             'You are already assigned to the following time periods:',
         },
         summaryMessage:
-          'Your start and finish times must not overlap with another time period',
+          'You are already assigned a non-working day on 3 November 2022',
       };
 
       const result = createClashErrorsObject(
