@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
-import { clashingProperties, inputNames } from '../../../utils/constants';
+import { inputNames } from '../../../utils/constants';
 import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
 import dayjs from 'dayjs';
 

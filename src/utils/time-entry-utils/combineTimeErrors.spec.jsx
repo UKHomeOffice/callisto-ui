@@ -1,5 +1,4 @@
 import { timePeriodTypesMap } from '../../../mocks/mockData';
-import TimeInputErrors from '../../components/timecard/time-input-errors/TimeInputErrors';
 import { clashingProperties, inputNames } from '../constants';
 import { combineExistingAndTimeClashErrors } from './combineTimeErrors';
 
