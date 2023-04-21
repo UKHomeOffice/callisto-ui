@@ -33,7 +33,7 @@ const displayClashingProperty = (
 const displaySingleTimeClash = (clashes, timePeriodTypesMap) => {
   const clash = clashes[0];
   let fieldErrorSummary;
-  let clashMessages = [];
+  const clashMessages = [];
 
   const timePeriodType = timePeriodTypesMap[clash.timePeriodTypeId];
 
