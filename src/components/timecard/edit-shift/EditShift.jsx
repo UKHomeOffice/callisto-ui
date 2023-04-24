@@ -7,7 +7,7 @@ import {
 import { useApplicationContext } from '../../../context/ApplicationContext';
 
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
-import dayjs, { locale } from 'dayjs';
+import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
@@ -77,13 +77,15 @@ const EditShift = ({
   };
 
   const updateFinishTimeText = () => {
-    if (timeEntry.finishNextDay) {
-      setFinishTimeText('Finishes next day');
-    } else if (dayjs(localStartDate).isAfter(dayjs(localEndDate))) {
-      setFinishTimeText('');
-    } else {
-      const startTime = getValues(inputNames.shiftStartTime);
-      const finishTime = getValues(inputNames.shiftFinishTime);
+    if (!isChecked) {
+      let startTime = getValues(inputNames.shiftStartTime);
+      let finishTime = getValues(inputNames.shiftFinishTime);
+      if (!startTime) {
+        startTime = formatTime(timeEntry.startTime);
+      }
+      if (!finishTime) {
+        finishTime = formatTime(timeEntry.finishTime);
+      }
       const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
       setFinishTimeText(nextDay ? 'Finishes next day' : '');
       if (nextDay) {
@@ -97,6 +99,10 @@ const EditShift = ({
           ? dayjs(localStartDate).add(1, 'day').toString()
           : localStartDate
       );
+    } else if (dayjs(localEndDate).isAfter(dayjs(localStartDate))) {
+      setFinishTimeText('Finishes next day');
+    } else {
+      setFinishTimeText('');
     }
   };
 
@@ -481,6 +487,7 @@ const EditShift = ({
             getFormValues={getValues}
             setStartDate={setLocalStartDate}
             setEndDate={setLocalEndDate}
+            updateFinishTimeText={updateFinishTimeText}
           />
         )}
         <div className="govuk-button-group">

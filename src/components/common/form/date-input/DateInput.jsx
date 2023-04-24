@@ -15,6 +15,7 @@ const DateInput = ({
   getFormValues,
   setStartDate,
   setEndDate,
+  updateFinishTimeText,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -73,6 +74,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
+              updateFinishTimeText={updateFinishTimeText}
             />
 
             <DateInputItem
@@ -85,6 +87,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
+              updateFinishTimeText={updateFinishTimeText}
             />
 
             <DateInputItem
@@ -97,6 +100,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={3}
+              updateFinishTimeText={updateFinishTimeText}
             />
           </div>
         </fieldset>
@@ -115,8 +119,14 @@ const DateInputItem = ({
   setStartDate,
   setEndDate,
   width,
+  updateFinishTimeText,
 }) => {
   const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
+
+  const triggerOnChangeUpdated = () => {
+    updateFinishTimeText();
+    setDates();
+  };
 
   const setDates = () => {
     setStartDate(
@@ -160,7 +170,7 @@ const DateInputItem = ({
           data-testid={`${name}-${dateType}-input`}
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
-            onChange: () => setDates(),
+            onChange: () => triggerOnChangeUpdated(),
           })}
         />
       </div>
@@ -184,6 +194,7 @@ DateInput.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
+  updateFinishTimeText: PropTypes.func,
 };
 
 DateInputItem.propTypes = {
@@ -197,4 +208,5 @@ DateInputItem.propTypes = {
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
+  updateFinishTimeText: PropTypes.func,
 };

@@ -57,6 +57,7 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -103,6 +104,7 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -155,6 +157,7 @@ describe('EditShift', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
+            setSummaryErrors={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -194,6 +197,7 @@ describe('EditShift', () => {
             setShowEditShiftHours={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
+            setSummaryErrors={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -236,6 +240,7 @@ describe('EditShift', () => {
         timeEntries={[]}
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
+        setSummaryErrors={jest.fn()}
       />
     );
 
@@ -283,6 +288,7 @@ describe('EditShift', () => {
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
+        setSummaryErrors={jest.fn()}
       />
     );
 
@@ -366,6 +372,7 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -403,7 +410,7 @@ describe('EditShift', () => {
       });
     });
 
-    it('should update finish date and show "finishes next day" when finish time is edited to less than start time', async () => {
+    it('should update finish date and show "finishes next day" when finish date is edited to be the next day', async () => {
       const timeEntryId = '1';
       const timecardDate = '2022-09-01';
 
@@ -423,6 +430,7 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -468,7 +476,7 @@ describe('EditShift', () => {
         timeEntryId: timeEntryId,
         startTime: '2022-09-02 08:00:00+00:00',
         finishTime: '2022-09-02 16:00:00+00:00',
-        finishNextDay: true,
+        finishNextDay: false,
       };
 
       renderWithApplicationContext(
@@ -483,6 +491,7 @@ describe('EditShift', () => {
           localEndDate={'2022-09-02'}
           startEntryExists={true}
           setSummaryMessages={jest.fn()}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -534,10 +543,9 @@ describe('EditShift', () => {
           setShowEditShiftHours={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
-          localStartDate={'2022-09-02 08:00:00+00:00'}
-          localEndDate={'2022-09-02 16:00:00+00:00'}
           startEntryExists={true}
           setSummaryMessages={jest.fn()}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -554,7 +562,11 @@ describe('EditShift', () => {
         fireEvent.change(startDay, {
           target: { value: '01' },
         });
-        fireEvent.focusOut(startDay);
+        const endDay = screen.getByTestId(testInputNames.endDay);
+        fireEvent.change(endDay, {
+          target: { value: '02' },
+        });
+        fireEvent.focusOut(endDay);
 
         const saveButton = screen.getByText('Save');
         fireEvent.click(saveButton);
@@ -600,6 +612,7 @@ describe('EditShift', () => {
           localEndDate={'2022-09-02'}
           startEntryExists={true}
           setSummaryMessages={jest.fn()}
+          setSummaryErrors={jest.fn()}
         />
       );
 
@@ -616,7 +629,11 @@ describe('EditShift', () => {
         fireEvent.change(startDay, {
           target: { value: '02' },
         });
-        fireEvent.focusOut(startDay);
+        const endDay = screen.getByTestId(testInputNames.endDay);
+        fireEvent.change(endDay, {
+          target: { value: '02' },
+        });
+        fireEvent.focusOut(endDay);
 
         const saveButton = screen.getByText('Save');
         fireEvent.click(saveButton);
@@ -651,7 +668,7 @@ describe('EditShift', () => {
           timeEntryId: timeEntryId,
           startTime: '2022-09-01 08:00:00+00:00',
           finishTime: '2022-09-01 16:00:00+00:00',
-          finishNextDay: false,
+          finishNextDay: true,
         };
 
         const setSummaryMessages = jest.fn();
@@ -666,6 +683,7 @@ describe('EditShift', () => {
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
             setSummaryMessages={setSummaryMessages}
+            setSummaryErrors={jest.fn()}
           />
         );
 
@@ -727,6 +745,7 @@ describe('EditShift', () => {
             hasShiftMovedCallback={jest.fn()}
             setSummaryMessages={setSummaryMessages}
             setTimeEntries={jest.fn()}
+            setSummaryErrors={jest.fn()}
           />
         );
 
@@ -771,6 +790,7 @@ describe('EditShift', () => {
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryMessages={setSummaryMessages}
+            setSummaryErrors={jest.fn()}
           />
         );
 

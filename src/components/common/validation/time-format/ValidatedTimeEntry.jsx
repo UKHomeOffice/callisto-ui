@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const ValidatedTimeEntry = ({
   name,
@@ -8,6 +9,9 @@ const ValidatedTimeEntry = ({
   register,
   updateFinishTimeText,
 }) => {
+  useEffect(() => {
+    updateFinishTimeText();
+  }, []);
   return (
     <input
       id={name}
@@ -23,7 +27,7 @@ const ValidatedTimeEntry = ({
       autoComplete="off"
       type="text"
       {...register(name, {
-        onBlur: () => updateFinishTimeText(timeType),
+        onChange: () => updateFinishTimeText(),
       })}
     />
   );
