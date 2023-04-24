@@ -819,9 +819,17 @@ describe('EditShift', () => {
     );
 
     act(() => {
-      const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
-      fireEvent.change(startTimeInput, {
-        target: { value: '23:00' },
+      const finishTimeInput = screen.getByTestId(inputNames.shiftFinishTime);
+      fireEvent.change(finishTimeInput, {
+        target: { value: '05:00' },
+      });
+
+      const checkBox = screen.getByText('View or edit dates');
+      fireEvent.click(checkBox);
+
+      const endDay = screen.getByTestId(testInputNames.endDay);
+      fireEvent.change(endDay, {
+        target: { value: '02' },
       });
 
       const saveButton = screen.getByText('Save');

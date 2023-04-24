@@ -77,7 +77,7 @@ const EditShift = ({
   };
 
   const updateFinishTimeText = () => {
-    if (dayjs(localStartDate).isBefore(dayjs(localEndDate))) {
+    if (timeEntry.finishNextDay) {
       setFinishTimeText('Finishes next day');
     } else if (dayjs(localStartDate).isAfter(dayjs(localEndDate))) {
       setFinishTimeText('');
@@ -86,6 +86,12 @@ const EditShift = ({
       const finishTime = getValues(inputNames.shiftFinishTime);
       const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
       setFinishTimeText(nextDay ? 'Finishes next day' : '');
+      if (nextDay) {
+        timeEntry.finishNextDay = true;
+      } else {
+        timeEntry.finishNextDay = false;
+      }
+
       setLocalEndDate(
         nextDay
           ? dayjs(localStartDate).add(1, 'day').toString()
@@ -144,6 +150,7 @@ const EditShift = ({
   };
 
   const onSubmit = async (formData) => {
+    setSummaryErrors([]);
     const validatedData = validateSubmittedData(formData);
 
     if (validatedData.isValid) {
@@ -350,7 +357,10 @@ const EditShift = ({
       actualEndDateTime = formatDateTimeISO(actualEndDate + ' ' + finishTime);
     }
 
-    if (dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime))) {
+    if (
+      dayjs(actualStartDateTime).isAfter(dayjs(actualEndDateTime)) &&
+      isChecked
+    ) {
       validatedData.isValid = false;
       newErrors.push({
         key: 'startAfterEnd',
