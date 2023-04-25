@@ -17,10 +17,7 @@ import {
   removeTimecardContextEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
-import {
-  focusErrors,
-  sortErrors,
-} from '../../../utils/common-utils/common-utils';
+import { focusErrors } from '../../../utils/common-utils/common-utils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useEffect, useState } from 'react';
 import { clashingProperties, inputNames } from '../../../utils/constants';
@@ -28,6 +25,7 @@ import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-uti
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
 import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
+import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 
 const EditShift = ({
   summaryErrors,
