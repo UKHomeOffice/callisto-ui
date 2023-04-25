@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
-import { inputNames } from '../../../utils/constants';
-import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
-import dayjs from 'dayjs';
 
 const StartFinishTimeInput = ({
   name,
@@ -95,7 +92,6 @@ const StartFinishTimeInput = ({
           </div>
           <ValidatedTimeEntry
             name={`${name}-start-time`}
-            timeType="start time"
             errors={errors}
             defaultValue={startTimeValue}
             register={register}
@@ -116,7 +112,6 @@ const StartFinishTimeInput = ({
             </div>
             <ValidatedTimeEntry
               name={`${name}-finish-time`}
-              timeType="finish time"
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}

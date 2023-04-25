@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 const ValidatedTimeEntry = ({
   name,
-  timeType,
   errors,
   defaultValue,
   register,
@@ -37,7 +36,6 @@ export default ValidatedTimeEntry;
 
 ValidatedTimeEntry.propTypes = {
   name: PropTypes.string.isRequired,
-  timeType: PropTypes.string.isRequired,
   errors: PropTypes.array.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
