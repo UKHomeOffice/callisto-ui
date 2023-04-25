@@ -98,7 +98,7 @@ const EditShift = ({
         timeEntry.finishNextDay = false;
         setLocalEndDate(actualStartDate);
       }
-    } else if (dayjs(actualStartDate).isAfter(dayjs(actualEndDate))) {
+    } else if (dayjs(actualEndDate).isAfter(dayjs(actualStartDate))) {
       setFinishTimeText('Finishes next day');
     } else {
       setFinishTimeText('');
