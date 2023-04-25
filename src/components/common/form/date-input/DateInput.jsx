@@ -124,26 +124,29 @@ const DateInputItem = ({
   const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
   const triggerOnChangeUpdated = () => {
-    updateFinishTimeText();
     setDates();
   };
 
   const setDates = () => {
-    setStartDate(
+    const startDate =
       getFormValues(`startDate-year`) +
-        '-' +
-        getFormValues(`startDate-month`) +
-        '-' +
-        getFormValues(`startDate-day`)
-    );
+      '-' +
+      getFormValues(`startDate-month`) +
+      '-' +
+      getFormValues(`startDate-day`);
 
-    setEndDate(
+    setStartDate(startDate);
+
+    const endDate =
       getFormValues(`finishDate-year`) +
-        '-' +
-        getFormValues(`finishDate-month`) +
-        '-' +
-        getFormValues(`finishDate-day`)
-    );
+      '-' +
+      getFormValues(`finishDate-month`) +
+      '-' +
+      getFormValues(`finishDate-day`);
+
+    setEndDate(endDate);
+
+    updateFinishTimeText(startDate, endDate);
   };
 
   return (

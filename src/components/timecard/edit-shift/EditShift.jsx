@@ -76,7 +76,10 @@ const EditShift = ({
     setSummaryErrors(errorFields);
   };
 
-  const updateFinishTimeText = () => {
+  const updateFinishTimeText = (startDate, endDate) => {
+    const actualStartDate = startDate ? startDate : localStartDate;
+    const actualEndDate = endDate ? endDate : localEndDate;
+
     if (!isChecked) {
       let startTime = getValues(inputNames.shiftStartTime);
       let finishTime = getValues(inputNames.shiftFinishTime);
@@ -90,16 +93,12 @@ const EditShift = ({
       setFinishTimeText(nextDay ? 'Finishes next day' : '');
       if (nextDay) {
         timeEntry.finishNextDay = true;
+        setLocalEndDate(dayjs(actualStartDate).add(1, 'day').toString());
       } else {
         timeEntry.finishNextDay = false;
+        setLocalEndDate(actualStartDate);
       }
-
-      setLocalEndDate(
-        nextDay
-          ? dayjs(localStartDate).add(1, 'day').toString()
-          : localStartDate
-      );
-    } else if (dayjs(localEndDate).isAfter(dayjs(localStartDate))) {
+    } else if (dayjs(actualStartDate).isAfter(dayjs(actualEndDate))) {
       setFinishTimeText('Finishes next day');
     } else {
       setFinishTimeText('');
