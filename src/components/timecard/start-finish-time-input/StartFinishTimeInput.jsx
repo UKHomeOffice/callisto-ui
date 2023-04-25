@@ -28,13 +28,11 @@ const StartFinishTimeInput = ({
           <div>
             <p>{error.message.clashMessages.fieldErrorSummary}</p>
             <ul>
-              {error.message.clashMessages.clashMessages.map(
-                (message, index) => (
-                  <li key={index} data-testid="test">
-                    {message}
-                  </li>
-                )
-              )}
+              {error.message.clashMessages.clashMessages.map((message) => (
+                <li key={error.key} data-testid="test">
+                  {message}
+                </li>
+              ))}
             </ul>
           </div>
         </>
