@@ -140,6 +140,7 @@ const EditShiftHours = ({
   const onSubmit = async (formData) => {
     dayjs.extend(utc);
 
+    setSummaryMessages([]);
     const actualStartDate = formatDate(localStartDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = formatDateTimeISO(
