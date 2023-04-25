@@ -15,6 +15,7 @@ import {
   formatDateTimeISO,
   formatTime,
   removeTimecardContextEntry,
+  isFinishTimeOnNextDay,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import {
@@ -27,7 +28,6 @@ import { clashingProperties, inputNames } from '../../../utils/constants';
 import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-utils/combineTimeErrors';
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
-import { isFinishTimeOnNextDay } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const EditShift = ({
   summaryErrors,
@@ -412,10 +412,7 @@ const EditShift = ({
       finishEntryExists &&
       (shiftStart.isAfter(endTimecard) || shiftEnd.isBefore(startTimecard));
 
-    if (singleDateMoved || bothDatesMoved) {
-      return true;
-    }
-    return false;
+    return singleDateMoved || bothDatesMoved ? true : false;
   };
 
   const setMessages = (startDate, endDate) => {

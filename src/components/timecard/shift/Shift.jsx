@@ -94,6 +94,12 @@ const Shift = ({
       </>
     );
   }
+  let timePeriodText = null;
+  if (timeEntryExists && timecardDate === formatDate(timeEntry.startTime)) {
+    timePeriodText = 'Shift';
+  } else if (timeEntryExists) {
+    timePeriodText = 'Shift (continued)';
+  }
 
   return (
     <div className="grey-border">
@@ -102,13 +108,7 @@ const Shift = ({
           <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
             Time period
           </dt>
-          <dd className="govuk-summary-list__value">
-            {timeEntryExists
-              ? timecardDate === formatDate(timeEntry.startTime)
-                ? 'Shift'
-                : 'Shift (continued)'
-              : null}
-          </dd>
+          <dd className="govuk-summary-list__value">{timePeriodText}</dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
               <Link
