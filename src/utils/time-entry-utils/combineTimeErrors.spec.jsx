@@ -31,7 +31,7 @@ describe('combineExistingAndTimeClashErrors', () => {
         'Your start time must not overlap with another time period',
       clashMessages: {
         fieldErrorSummary: 'You are already assigned to work from:',
-        clashMessages: ['08:00 to 11:00 on 20 April 2023'],
+        clashMessages: ['07:00 to 10:00 on 20 April 2023'],
       },
     };
 
@@ -71,7 +71,7 @@ describe('combineExistingAndTimeClashErrors', () => {
         'Your finish time must not overlap with another time period',
       clashMessages: {
         fieldErrorSummary: 'You are already assigned to work from:',
-        clashMessages: ['08:00 to 11:00 on 20 April 2023'],
+        clashMessages: ['07:00 to 10:00 on 20 April 2023'],
       },
     };
 
@@ -111,7 +111,7 @@ describe('combineExistingAndTimeClashErrors', () => {
         'Your start and finish times must not overlap with another time period',
       clashMessages: {
         fieldErrorSummary: 'You are already assigned to work from:',
-        clashMessages: ['08:00 to 11:00 on 20 April 2023'],
+        clashMessages: ['07:00 to 10:00 on 20 April 2023'],
       },
     };
 

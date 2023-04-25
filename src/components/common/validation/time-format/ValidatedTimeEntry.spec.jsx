@@ -16,6 +16,7 @@ describe('ValidatedTimeEntry', () => {
         getFormValues={jest.fn()}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -32,6 +33,7 @@ describe('ValidatedTimeEntry', () => {
         getFormValues={jest.fn()}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
