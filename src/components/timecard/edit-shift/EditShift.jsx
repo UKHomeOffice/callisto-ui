@@ -26,6 +26,9 @@ import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-uti
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const EditShift = ({
   summaryErrors,
@@ -60,7 +63,8 @@ const EditShift = ({
     finishEntryExists ? timeEntry.finishTime : timecardDate
   );
 
-  const [finishTimeText, setFinishTimeText] = useState('');
+  const [dynamicShiftText, setDynamicShiftText] = useState('');
+  const DAY_IN_MINUTES = 1440;
 
   useEffect(() => {
     focusErrors(document.querySelector('[id^="summary-error"] a'));
@@ -74,21 +78,33 @@ const EditShift = ({
     setSummaryErrors(errorFields);
   };
 
-  const updateFinishTimeText = (startDate, endDate) => {
+  const updateShiftLengthAndEndDate = (startDate, endDate) => {
     const actualStartDate = startDate ? startDate : localStartDate;
     const actualEndDate = endDate ? endDate : localEndDate;
 
-    if (!isChecked) {
-      let startTime = getValues(inputNames.shiftStartTime);
-      let finishTime = getValues(inputNames.shiftFinishTime);
-      if (!startTime) {
-        startTime = formatTime(timeEntry.startTime);
-      }
-      if (!finishTime) {
-        finishTime = formatTime(timeEntry.finishTime);
-      }
+    let startTime = getValues(inputNames.shiftStartTime);
+    let finishTime = getValues(inputNames.shiftFinishTime);
+    if (!startTime) {
+      startTime = formatTime(timeEntry.startTime);
+    }
+    if (!finishTime) {
+      finishTime = formatTime(timeEntry.finishTime);
+    }
+
+    const startDateTime = dayjs(`${formatDate(actualStartDate)} ${startTime}`);
+    const finishDateTime = dayjs(`${formatDate(actualEndDate)} ${finishTime}`);
+    const shiftLength = dayjs(finishDateTime).diff(startDateTime, 'minute');
+    let shiftString = '';
+    let shiftHours = 0;
+    let shiftMins = 0;
+    if (shiftLength > 0) {
+      shiftHours = Math.trunc(shiftLength / 60);
+      shiftMins = shiftLength % 60;
+      shiftString = `${shiftHours} hours ${shiftMins} minutes`;
+    }
+
+    if (!isChecked && shiftLength < DAY_IN_MINUTES) {
       const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
-      setFinishTimeText(nextDay ? 'Finishes next day' : '');
       if (nextDay) {
         timeEntry.finishNextDay = true;
         setLocalEndDate(dayjs(actualStartDate).add(1, 'day').toString());
@@ -96,11 +112,8 @@ const EditShift = ({
         timeEntry.finishNextDay = false;
         setLocalEndDate(actualStartDate);
       }
-    } else if (dayjs(actualEndDate).isAfter(dayjs(actualStartDate))) {
-      setFinishTimeText('Finishes next day');
-    } else {
-      setFinishTimeText('');
     }
+    setDynamicShiftText(shiftString);
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -453,8 +466,8 @@ const EditShift = ({
             timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
           }
           register={register}
-          updateFinishTimeText={updateFinishTimeText}
-          finishTimeText={finishTimeText}
+          updateDynamicText={updateShiftLengthAndEndDate}
+          finishTimeText={dynamicShiftText}
         />
         <Checkbox
           text="View or edit dates"
@@ -481,7 +494,7 @@ const EditShift = ({
             getFormValues={getValues}
             setStartDate={setLocalStartDate}
             setEndDate={setLocalEndDate}
-            updateFinishTimeText={updateFinishTimeText}
+            updateDynamicText={updateShiftLengthAndEndDate}
           />
         )}
         <div className="govuk-button-group">

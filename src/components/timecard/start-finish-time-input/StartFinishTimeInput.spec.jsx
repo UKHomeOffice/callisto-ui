@@ -19,7 +19,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        updateFinishTimeText={jest.fn()}
+        updateDynamicText={jest.fn()}
       />
     );
 
@@ -38,7 +38,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        updateFinishTimeText={jest.fn()}
+        updateDynamicText={jest.fn()}
       />
     );
 
@@ -57,7 +57,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        updateFinishTimeText={jest.fn()}
+        updateDynamicText={jest.fn()}
       />
     );
 
@@ -81,7 +81,7 @@ describe('StartFinishTimeInput', () => {
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        updateFinishTimeText={jest.fn()}
+        updateDynamicText={jest.fn()}
       />
     );
 
@@ -103,7 +103,7 @@ describe('StartFinishTimeInput', () => {
           register={mockRegister}
           timeEntry={timeEntryWithFinishNextDay}
           timeEntriesIndex={0}
-          updateFinishTimeText={jest.fn()}
+          updateDynamicText={jest.fn()}
           finishTimeText={'Finishes next day'}
         />
       );
@@ -123,7 +123,7 @@ describe('StartFinishTimeInput', () => {
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          updateFinishTimeText={jest.fn()}
+          updateDynamicText={jest.fn()}
           finishTimeText={''}
         />
       );
@@ -164,7 +164,7 @@ describe('StartFinishTimeInput', () => {
             register={mockRegister}
             timeEntry={timeEntry}
             timeEntriesIndex={0}
-            updateFinishTimeText={jest.fn()}
+            updateDynamicText={jest.fn()}
           />
         </div>
       );

@@ -21,7 +21,7 @@ const StartFinishDateInput = ({
   getFormValues,
   setStartDate,
   setEndDate,
-  updateFinishTimeText,
+  updateDynamicText,
 }) => {
   const calculateEndDate = () => {
     return startEntryExists
@@ -53,7 +53,7 @@ const StartFinishDateInput = ({
         dayValue={formatJustDay(startTimeValue)}
         monthValue={formatJustMonth(startTimeValue)}
         yearValue={formatJustYear(startTimeValue)}
-        updateFinishTimeText={updateFinishTimeText}
+        updateDynamicText={updateDynamicText}
       />
       <DateInput
         name={`finish${name}`}
@@ -81,7 +81,7 @@ const StartFinishDateInput = ({
             ? formatJustYear(calculateEndDate())
             : formatJustYear(finishTimeValue)
         }
-        updateFinishTimeText={updateFinishTimeText}
+        updateDynamicText={updateDynamicText}
       />
     </div>
   );
@@ -102,5 +102,5 @@ StartFinishDateInput.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
-  updateFinishTimeText: PropTypes.func,
+  updateDynamicText: PropTypes.func,
 };

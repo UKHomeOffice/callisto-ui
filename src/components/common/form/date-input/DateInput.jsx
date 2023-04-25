@@ -15,7 +15,7 @@ const DateInput = ({
   getFormValues,
   setStartDate,
   setEndDate,
-  updateFinishTimeText,
+  updateDynamicText,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -74,7 +74,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
-              updateFinishTimeText={updateFinishTimeText}
+              updateDynamicText={updateDynamicText}
             />
 
             <DateInputItem
@@ -87,7 +87,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
-              updateFinishTimeText={updateFinishTimeText}
+              updateDynamicText={updateDynamicText}
             />
 
             <DateInputItem
@@ -100,7 +100,7 @@ const DateInput = ({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={3}
-              updateFinishTimeText={updateFinishTimeText}
+              updateDynamicText={updateDynamicText}
             />
           </div>
         </fieldset>
@@ -119,7 +119,7 @@ const DateInputItem = ({
   setStartDate,
   setEndDate,
   width,
-  updateFinishTimeText,
+  updateDynamicText,
 }) => {
   const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
@@ -146,7 +146,7 @@ const DateInputItem = ({
 
     setEndDate(endDate);
 
-    updateFinishTimeText(startDate, endDate);
+    updateDynamicText(startDate, endDate);
   };
 
   return (
@@ -197,7 +197,7 @@ DateInput.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
-  updateFinishTimeText: PropTypes.func,
+  updateDynamicText: PropTypes.func,
 };
 
 DateInputItem.propTypes = {
@@ -211,5 +211,5 @@ DateInputItem.propTypes = {
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
-  updateFinishTimeText: PropTypes.func,
+  updateDynamicText: PropTypes.func,
 };

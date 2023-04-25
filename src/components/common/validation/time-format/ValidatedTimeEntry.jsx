@@ -6,10 +6,10 @@ const ValidatedTimeEntry = ({
   errors,
   defaultValue,
   register,
-  updateFinishTimeText,
+  updateDynamicText,
 }) => {
   useEffect(() => {
-    updateFinishTimeText();
+    updateDynamicText();
   }, []);
   return (
     <input
@@ -26,7 +26,7 @@ const ValidatedTimeEntry = ({
       autoComplete="off"
       type="text"
       {...register(name, {
-        onChange: () => updateFinishTimeText(),
+        onChange: () => updateDynamicText(),
       })}
     />
   );
@@ -39,5 +39,5 @@ ValidatedTimeEntry.propTypes = {
   errors: PropTypes.array.isRequired,
   defaultValue: PropTypes.string,
   register: PropTypes.any.isRequired,
-  updateFinishTimeText: PropTypes.func,
+  updateDynamicText: PropTypes.func,
 };

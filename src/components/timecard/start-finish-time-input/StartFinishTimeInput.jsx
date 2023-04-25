@@ -9,11 +9,11 @@ const StartFinishTimeInput = ({
   startTimeValue,
   finishTimeValue,
   register,
-  updateFinishTimeText,
+  updateDynamicText,
   finishTimeText,
 }) => {
   useEffect(() => {
-    updateFinishTimeText();
+    updateDynamicText();
   }, []);
 
   const formatErrorDisplay = (error) => {
@@ -93,7 +93,7 @@ const StartFinishTimeInput = ({
             errors={errors}
             defaultValue={startTimeValue}
             register={register}
-            updateFinishTimeText={updateFinishTimeText}
+            updateDynamicText={updateDynamicText}
           />
         </div>
 
@@ -113,7 +113,7 @@ const StartFinishTimeInput = ({
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
-              updateFinishTimeText={updateFinishTimeText}
+              updateDynamicText={updateDynamicText}
             />
           </div>
         </div>
@@ -136,6 +136,6 @@ StartFinishTimeInput.propTypes = {
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
   register: PropTypes.any.isRequired,
-  updateFinishTimeText: PropTypes.func,
+  updateDynamicText: PropTypes.func,
   finishTimeText: PropTypes.string,
 };
