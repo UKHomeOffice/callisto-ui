@@ -108,19 +108,19 @@ describe('DateInput', () => {
           headingSize="l"
           errors={[
             {
-              key: 'emptystartDateDay',
+              key: 'startDateDayEmpty',
               inputName: 'startDate-day',
               message: 'Enter a start day',
               errorPriority: 1,
             },
             {
-              key: 'emptystartDateMonth',
+              key: 'startDateMonthEmpty',
               inputName: 'startDate-month',
               message: 'Enter a start month',
               errorPriority: 2,
             },
             {
-              key: 'emptystartDateYear',
+              key: 'startDateYearEmpty',
               inputName: 'startDate-year',
               message: 'Enter a start year',
               errorPriority: 3,
@@ -150,19 +150,19 @@ describe('DateInput', () => {
           headingSize="l"
           errors={[
             {
-              key: 'emptystartDateDay',
+              key: 'startDateDayEmpty',
               inputName: 'startDate-day',
               message: 'Enter a start day',
               errorPriority: 1,
             },
             {
-              key: 'emptystartDateMonth',
+              key: 'startDateMonthEmpty',
               inputName: 'startDate-month',
               message: 'Enter a start month',
               errorPriority: 2,
             },
             {
-              key: 'emptystartDateYear',
+              key: 'startDateYearEmpty',
               inputName: 'startDate-year',
               message: 'Enter a start year',
               errorPriority: 3,
