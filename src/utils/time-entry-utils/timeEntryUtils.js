@@ -45,7 +45,7 @@ export const formatJustYear = (dateTime) => {
   return dayjs(dateTime).format('YYYY');
 };
 
-export const removeTimecardContextEntry = (
+export const removeTimecardEntry = (
   timeEntries,
   setTimeEntries,
   timeEntriesIndex

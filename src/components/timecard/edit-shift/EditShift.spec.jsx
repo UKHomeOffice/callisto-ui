@@ -869,7 +869,6 @@ describe('EditShift', () => {
   });
 
   describe('Service errors', () => {
-    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start and end time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -929,7 +928,6 @@ describe('EditShift', () => {
       });
     });
 
-    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for start time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -989,7 +987,6 @@ describe('EditShift', () => {
       });
     });
 
-    //failing
     it('should set time entry clashing errors in summaryErrors when error is returned from the server for end time', async () => {
       createTimeEntry.mockImplementation(() => {
         throw {
@@ -1189,7 +1186,6 @@ describe('EditShift', () => {
       });
     });
 
-    //failing
     it('should generate an error message with focus errors called', async () => {
       const focusErrors = jest.fn();
       const timeEntryId = '1';

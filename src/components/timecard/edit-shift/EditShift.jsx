@@ -14,7 +14,7 @@ import {
   formatDate,
   formatDateTimeISO,
   formatTime,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
   isFinishTimeOnNextDay,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
@@ -179,7 +179,6 @@ const EditShift = ({
                 params
               );
           if (response.status === 200) {
-            //to be made better ^^
             if (
               startEntryExists &&
               hasShiftMovedFromTimecard(
@@ -191,7 +190,7 @@ const EditShift = ({
                 validatedData.startDateTime,
                 validatedData.finishDateTime
               );
-              removeTimecardContextEntry(
+              removeTimecardEntry(
                 timeEntries,
                 setTimeEntries,
                 timeEntriesIndex

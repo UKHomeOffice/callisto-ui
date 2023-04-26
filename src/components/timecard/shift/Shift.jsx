@@ -8,7 +8,7 @@ import {
   formatDateNoYear,
   formatTime,
   formatDate,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
@@ -54,7 +54,7 @@ const Shift = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry(
+        removeTimecardEntry(
           timeEntries,
           setTimeEntries,
           timeEntriesIndex

@@ -51,7 +51,7 @@ const StartFinishTimeInput = ({
     <div
       className={`govuk-form-group ${
         errors.length > 0 &&
-        Object.values(errors).some(
+        errors.some(
           (error) =>
             error.inputName === 'shift-start-time' ||
             error.inputName === 'shift-end-time'

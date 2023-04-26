@@ -2,7 +2,7 @@ import { ContextTimeEntry } from './ContextTimeEntry';
 import {
   isFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from './timeEntryUtils';
 
 describe('timeEntryUtils', () => {
@@ -42,7 +42,7 @@ describe('timeEntryUtils', () => {
     const existingTimeEntries = [timeEntry1, timeEntry2];
     const timeEntryIndex = 1;
     const mockSetTimeEntries = jest.fn();
-    removeTimecardContextEntry(
+    removeTimecardEntry(
       existingTimeEntries,
       mockSetTimeEntries,
       timeEntryIndex

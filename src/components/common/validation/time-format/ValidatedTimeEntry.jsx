@@ -16,8 +16,7 @@ const ValidatedTimeEntry = ({
       id={name}
       name={name}
       className={`govuk-input ${
-        Object.keys(errors).length !== 0 &&
-        Object.values(errors).some((error) => error.inputName === name)
+        errors.length !== 0 && errors.some((error) => error.inputName === name)
           ? 'govuk-input--error'
           : ''
       } govuk-input--width-5`}

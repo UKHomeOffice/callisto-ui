@@ -19,6 +19,9 @@ const MessageItem = ({ message, setSummaryMessages }) => {
 
 export default MessageItem;
 MessageItem.propTypes = {
-  message: PropTypes.object,
+  message: PropTypes.shape({
+    variables: PropTypes.array,
+    template: PropTypes.string,
+  }),
   setSummaryMessages: PropTypes.func,
 };
