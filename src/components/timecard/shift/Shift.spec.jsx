@@ -36,7 +36,7 @@ describe('Shift', () => {
     });
   });
 
-  it('should show EditShiftHours component when first directed to page', async () => {
+  it('should show EditShift component when first directed to page', async () => {
     renderWithApplicationContext(
       <Shift summaryErrors={[]} timeEntry={newTimeEntry} timeEntriesIndex={0} />
     );
@@ -67,7 +67,7 @@ describe('Shift', () => {
     });
   });
 
-  it('should show EditShiftHours component when clicking "Change" button', async () => {
+  it('should show EditShift component when clicking "Change" button', async () => {
     renderWithApplicationContext(
       <Shift
         summaryErrors={[]}

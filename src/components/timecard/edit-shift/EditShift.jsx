@@ -16,6 +16,8 @@ import {
   formatTime,
   removeTimecardEntry,
   isFinishTimeOnNextDay,
+  checkDateFormat,
+  validateFormDates,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
@@ -31,7 +33,7 @@ const EditShift = ({
   summaryErrors,
   setSummaryErrors,
   timecardDate,
-  setShowEditShiftHours,
+  setShowEditShift,
   timeEntry,
   timeEntriesIndex,
   timeEntries,
@@ -205,7 +207,7 @@ const EditShift = ({
                 ...timeEntries.slice(timeEntriesIndex + 1),
               ]);
             }
-            setShowEditShiftHours(false);
+            setShowEditShift(false);
           }
         },
         true,
@@ -213,89 +215,6 @@ const EditShift = ({
       );
     } else {
       handleError(validatedData.errors);
-    }
-  };
-  const validateFormDates = (fieldType, formData, validatedData, newErrors) => {
-    const day = `${fieldType}Date-day`;
-    const month = `${fieldType}Date-month`;
-    const year = `${fieldType}Date-year`;
-    const priority = fieldType === 'start' ? 3 : 4;
-    let datesValid = true;
-
-    if (!formData[day]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Day`,
-        inputName: day,
-        message: `Enter a ${fieldType} day`,
-        errorPriority: priority,
-      });
-    }
-
-    if (!formData[month]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Month`,
-        inputName: month,
-        message: `Enter a ${fieldType} month`,
-        errorPriority: priority,
-      });
-    }
-    if (!formData[year]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Year`,
-        inputName: year,
-        message: `Enter a ${fieldType} year`,
-        errorPriority: priority,
-      });
-    }
-    return datesValid;
-  };
-
-  const checkDateFormat = (fieldType, formData, validatedData, newErrors) => {
-    const day = `${fieldType}Date-day`;
-    const month = `${fieldType}Date-month`;
-    const year = `${fieldType}Date-year`;
-    const priority = fieldType === 'start' ? 3 : 4;
-
-    if (!formData[day].match(/^([1-9]|0[1-9]|[12]\d|3[01])$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Day`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Day`,
-          inputName: day,
-          message: `Enter a valid ${fieldType} day`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
-    }
-
-    if (!formData[month].match(/^([1-9]|0[1-9]|1[012])$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Month`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Month`,
-          inputName: month,
-          message: `Enter a valid ${fieldType} month`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
-    }
-
-    if (!formData[year].match(/^\d{4}$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Year`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Year`,
-          inputName: year,
-          message: `Enter a valid ${fieldType} year`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
     }
   };
 
@@ -500,7 +419,7 @@ EditShift.propTypes = {
   timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
-  setShowEditShiftHours: PropTypes.func,
+  setShowEditShift: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
   setSummaryMessages: PropTypes.func,

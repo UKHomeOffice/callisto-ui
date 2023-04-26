@@ -139,7 +139,6 @@ describe('Shift spanning mutiple days', () => {
     renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
     await waitFor(() => {
-      screen.debug();
       expect(screen.getByText('09:00 to -')).toBeTruthy();
     });
   });
@@ -368,7 +367,6 @@ describe('Timecard', () => {
       });
 
       await waitFor(() => {
-        screen.debug();
         const summaryHeader = screen.getByText('Hours changed');
         expect(summaryHeader).toBeTruthy();
         const summaryText = screen.getByText('The time period starts on');
