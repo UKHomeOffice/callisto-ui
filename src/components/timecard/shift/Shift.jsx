@@ -29,9 +29,7 @@ const Shift = ({
   const { setServiceError } = useApplicationContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
-  const [showEditShift, setShowEditShift] = useState(
-    !timeEntryExists
-  );
+  const [showEditShift, setShowEditShift] = useState(!timeEntryExists);
 
   const toggleEditShift = (event) => {
     event.preventDefault();
@@ -54,11 +52,7 @@ const Shift = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );

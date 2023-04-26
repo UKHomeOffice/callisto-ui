@@ -38,11 +38,7 @@ const SimpleTimePeriod = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );
