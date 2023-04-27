@@ -1,39 +1,29 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import { useTimecardContext } from '../../../context/TimecardContext';
-
 import Radios from '../../common/form/radios/Radios';
-import { useApplicationContext } from '../../../context/ApplicationContext';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { addTimePeriodHeading } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
 
-const SelectTimecardPeriodType = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+const SelectTimecardPeriodType = ({
+  summaryErrors,
+  setSummaryErrors,
+  timePeriodTypes,
+  timeEntries,
+  setTimeEntries,
+  setAddNewTimeEntry,
+}) => {
+  const { register, handleSubmit } = useForm({
     reValidateMode: 'onSubmit',
     shouldFocusError: false,
   });
-
-  const { timePeriodTypes } = useApplicationContext();
 
   const timePeriodTypeNames = timePeriodTypes.map((timePeriodType) => {
     return timePeriodType.name;
   });
 
   const radioName = 'timePeriod';
-
-  const {
-    timeEntries,
-    setTimeEntries,
-    summaryErrors,
-    setSummaryErrors,
-    setNewTimeEntry,
-  } = useTimecardContext();
 
   const handleError = (errorFields) => {
     setSummaryErrors(errorFields);
@@ -43,34 +33,59 @@ const SelectTimecardPeriodType = () => {
     focusErrors(document.getElementById('summary-error-0-message'));
   }, [summaryErrors]);
 
+  const onSubmit = (data) => {
+    const validatedData = validateSubmittedData(data);
+    if (validatedData.isValid) {
+      const timePeriodTypeId = timePeriodTypes.find(
+        (timePeriodType) => timePeriodType.name === data[radioName]
+      ).id;
+
+      setTimeEntries([
+        ...timeEntries,
+        ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
+      ]);
+      setAddNewTimeEntry(false);
+      setSummaryErrors([]);
+    } else {
+      handleError(validatedData.errors);
+    }
+  };
+
+  const validateSubmittedData = (formData) => {
+    let isValid = true;
+    let newErrors = [];
+
+    if (!formData.timePeriod) {
+      isValid = false;
+      newErrors.push({
+        key: 'radioName',
+        inputName: 'timePeriod',
+        message: 'You must select a time period',
+        errorPriority: 1,
+      });
+    }
+
+    const validatedData = {
+      isValid: isValid,
+      errors: newErrors,
+    };
+
+    return validatedData;
+  };
+
   return (
     <>
       <form
         className="grey-border"
-        onSubmit={handleSubmit((data) => {
-          const timePeriodTypeId = timePeriodTypes.find(
-            (timePeriodType) => timePeriodType.name === data[radioName]
-          ).id;
-          setTimeEntries([
-            ...timeEntries,
-            ContextTimeEntry.create().setTimePeriodTypeId(timePeriodTypeId),
-          ]);
-          setNewTimeEntry(false);
-          setSummaryErrors({});
-        }, handleError)}
+        onSubmit={handleSubmit(onSubmit, handleError)}
       >
         <Radios
           name={radioName}
           heading={addTimePeriodHeading}
           headingSize="s"
           options={timePeriodTypeNames}
-          errors={errors}
-          {...register(radioName, {
-            required: {
-              value: true,
-              message: 'You must select a time period',
-            },
-          })}
+          errors={summaryErrors}
+          {...register(radioName, {})}
         />
 
         <button
@@ -88,5 +103,10 @@ const SelectTimecardPeriodType = () => {
 export default SelectTimecardPeriodType;
 
 SelectTimecardPeriodType.propTypes = {
-  setTimecardEntryExists: PropTypes.func,
+  summaryErrors: PropTypes.array,
+  setSummaryErrors: PropTypes.func,
+  timePeriodTypes: PropTypes.array,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
+  setAddNewTimeEntry: PropTypes.func,
 };

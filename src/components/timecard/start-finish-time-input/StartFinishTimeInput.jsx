@@ -1,65 +1,78 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidatedTimeEntry from '../../common/validation/time-format/ValidatedTimeEntry';
-import { sortErrorKeys } from '../../../utils/sort-errors/sortErrors';
-import { inputNames } from '../../../utils/constants';
+import { sortErrors } from '../../../utils/sort-errors/sortErrors';
 
 const StartFinishTimeInput = ({
   name,
   errors,
   startTimeValue,
   finishTimeValue,
-  getFormValues,
-  timeEntry,
-  timeEntriesIndex,
   register,
-  formState,
+  updateFinishTimeText,
+  finishTimeText,
 }) => {
-  const [errorMessages, setErrorMessages] = useState([]);
-
-  const desiredErrorOrder = [
-    inputNames.shiftStartTime,
-    inputNames.shiftFinishTime,
-  ];
-
   useEffect(() => {
-    updateErrorMessages();
-  }, [formState]);
+    updateFinishTimeText();
+  }, []);
 
-  const updateErrorMessages = () => {
-    const findErrors =
-      errors &&
-      Object.keys(errors).filter((inputName) => inputName.includes(name));
-    let relevantErrorMessages = [];
-    if (findErrors) {
-      relevantErrorMessages = findErrors.map((inputName) => {
-        return errors[inputName].message;
-      });
+  const formatErrorDisplay = (error) => {
+    if (
+      error.key === 'overlappingStart' ||
+      error.key === 'overlappingFinish' ||
+      error.key === 'bothDatesOverlapping'
+    ) {
+      return (
+        <>
+          <p>{error.message.summaryMessage}</p>
+          <div>
+            <p>{error.message.clashMessages.fieldErrorSummary}</p>
+            <ul>
+              {error.message.clashMessages.clashMessages.map((message) => (
+                <li key={error.key}>{message}</li>
+              ))}
+            </ul>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <span className="govuk-visually-hidden">Error:</span>
+          {error.message}
+        </>
+      );
     }
-    setErrorMessages(relevantErrorMessages);
   };
 
   return (
     <div
       className={`govuk-form-group ${
-        errorMessages.length > 0 && 'govuk-form-group--error'
+        errors.length > 0 &&
+        errors.some(
+          (error) =>
+            error.inputName === 'shift-start-time' ||
+            error.inputName === 'shift-end-time'
+        )
+          ? 'govuk-form-group--error'
+          : ''
       }`}
     >
-      <div className="govuk-grid-row" data-testid="error-box">
-        {sortErrorKeys(errors, desiredErrorOrder).map((error, i) => (
-          <div
-            id={`${name}-${i}-error`}
-            key={i}
-            className="govuk-error-message govuk-!-margin-left-3"
-          >
-            {errors[error]?.message && (
-              <div>
-                <span className="govuk-visually-hidden">Error:</span>
-                {errors[error]?.message}
+      <div className="govuk-error-summary__body" data-testid="error-box">
+        {sortErrors(errors).map((error) => {
+          return (
+            <>
+              <div
+                id={`${name}-${error.key}-error`}
+                key={error.key}
+                className="govuk-error-message govuk-!-margin-bottom-0"
+              >
+                {error.message && <>{formatErrorDisplay(error)}</>}
               </div>
-            )}
-          </div>
-        ))}
+              <br />
+            </>
+          );
+        })}
       </div>
 
       <div className="govuk-grid-row">
@@ -75,19 +88,15 @@ const StartFinishTimeInput = ({
           </div>
           <ValidatedTimeEntry
             name={`${name}-start-time`}
-            timeType="start time"
             errors={errors}
             defaultValue={startTimeValue}
             register={register}
-            isRequired={true}
-            getFormValues={getFormValues}
-            timeEntry={timeEntry}
-            timeEntriesIndex={timeEntriesIndex}
+            updateFinishTimeText={updateFinishTimeText}
           />
         </div>
 
         <div className="govuk-grid-column-one-third">
-          <div className="govuk-form-group">
+          <div className="govuk-form-group ">
             <label
               className="govuk-label govuk-label--s"
               htmlFor={`${name}-finish-time`}
@@ -99,13 +108,10 @@ const StartFinishTimeInput = ({
             </div>
             <ValidatedTimeEntry
               name={`${name}-finish-time`}
-              timeType="finish time"
               errors={errors}
               defaultValue={finishTimeValue}
               register={register}
-              getFormValues={getFormValues}
-              timeEntry={timeEntry}
-              timeEntriesIndex={timeEntriesIndex}
+              updateFinishTimeText={updateFinishTimeText}
             />
           </div>
         </div>
@@ -113,7 +119,7 @@ const StartFinishTimeInput = ({
           id="end-next-day"
           className="govuk-hint govuk-grid-column-one-third govuk-!-padding-top-8 govuk-!-padding-right-0 govuk-!-padding-left-0"
         >
-          {timeEntry.finishNextDay ? 'Finishes next day' : ''}
+          {finishTimeText}
         </p>
       </div>
     </div>
@@ -124,12 +130,10 @@ export default StartFinishTimeInput;
 
 StartFinishTimeInput.propTypes = {
   name: PropTypes.string,
-  errors: PropTypes.any.isRequired,
+  errors: PropTypes.array.isRequired,
   startTimeValue: PropTypes.string,
   finishTimeValue: PropTypes.string,
-  getFormValues: PropTypes.func.isRequired,
-  timeEntry: PropTypes.object.isRequired,
-  timeEntriesIndex: PropTypes.number.isRequired,
   register: PropTypes.any.isRequired,
-  formState: PropTypes.any,
+  updateFinishTimeText: PropTypes.func,
+  finishTimeText: PropTypes.string,
 };

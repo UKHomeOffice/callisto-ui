@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './index.scss';
 import App from './App';
 import { initAll } from 'govuk-frontend';
@@ -9,32 +9,24 @@ import keycloak from './keycloak';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
-import { TimecardProvider } from './context/TimecardContext';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      initOptions={{
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/silent-check-sso.html',
+  <ReactKeycloakProvider
+    authClient={keycloak}
+    initOptions={{
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri:
+        window.location.origin + '/silent-check-sso.html',
 
-        responseMode: 'query',
-      }}
-    >
-      <HashRouter>
+      responseMode: 'query',
+    }}
+  >
+    <React.StrictMode>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
-            <Route
-              path="/timecard/:date"
-              element={
-                <TimecardProvider>
-                  <Timecard />
-                </TimecardProvider>
-              }
-            />
+            <Route path="/timecard/:date" element={<Timecard />} />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"
@@ -46,9 +38,9 @@ ReactDOM.render(
             />
           </Route>
         </Routes>
-      </HashRouter>
-    </ReactKeycloakProvider>
-  </React.StrictMode>,
+      </BrowserRouter>
+    </React.StrictMode>
+  </ReactKeycloakProvider>,
   document.getElementById('root')
 );
 initAll();

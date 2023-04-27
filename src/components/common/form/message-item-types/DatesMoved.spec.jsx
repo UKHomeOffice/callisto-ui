@@ -1,14 +1,15 @@
+/* eslint-disable prettier/prettier */
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import {
-  renderWithTimecardContext,
-  createDefaultTimecardContext,
-} from '../../../../test/helpers/TimecardContext';
 import DatesMoved from './DatesMoved';
+import { renderWithApplicationContext } from '../../../../test/helpers/TestApplicationContext';
 
 describe('DatesMoved', () => {
   it('should render a summary message with one date links', async () => {
-    renderWithTimecardContext(
-      <DatesMoved variables={{ startDate: '2022-09-21' }} />
+    renderWithApplicationContext(
+      <DatesMoved
+        variables={{ startDate: '2022-09-21' }}
+        setSummaryMessages={jest.fn()}
+      />
     );
 
     await waitFor(() => {
@@ -21,9 +22,10 @@ describe('DatesMoved', () => {
   });
 
   it('should render a summary message with two date links', async () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <DatesMoved
         variables={{ startDate: '2022-09-21', endDate: '2022-09-22' }}
+        setSummaryMessages={jest.fn()}
       />
     );
 
@@ -42,12 +44,12 @@ describe('DatesMoved', () => {
   });
 
   it('should clear message summary when date link clicked', async () => {
-    const defaultTimecardContext = createDefaultTimecardContext();
-    defaultTimecardContext.setSummaryMessages = jest.fn();
-
-    renderWithTimecardContext(
-      <DatesMoved variables={{ startDate: '2022-09-21' }} />,
-      defaultTimecardContext
+    const setSummaryMessages = jest.fn();
+    renderWithApplicationContext(
+      <DatesMoved
+        variables={{ startDate: '2022-09-21' }}
+        setSummaryMessages={setSummaryMessages}
+      />
     );
 
     await waitFor(() => {
@@ -55,9 +57,7 @@ describe('DatesMoved', () => {
       expect(startDateLink.pathname).toBe('/timecard/2022-09-21');
       fireEvent.click(startDateLink);
 
-      expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith(
-        {}
-      );
+      expect(setSummaryMessages).toHaveBeenCalledWith([]);
     });
   });
 });

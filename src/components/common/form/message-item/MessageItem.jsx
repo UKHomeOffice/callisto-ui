@@ -1,22 +1,28 @@
 import DatesMoved from '../message-item-types/DatesMoved';
 import { messageKeys } from '../../../../utils/constants';
-import { useTimecardContext } from '../../../../context/TimecardContext';
+import PropTypes from 'prop-types';
 
-const components = {
-  datesMoved: DatesMoved,
-};
+const MessageItem = ({ message, setSummaryMessages }) => {
+  if (messageKeys.datesMoved === message.template) {
+    const variables = message.variables;
 
-const MessageItem = () => {
-  const { summaryMessages } = useTimecardContext();
-  if (messageKeys.update in summaryMessages) {
-    const template = summaryMessages[messageKeys.update].template;
-    const variables = summaryMessages[messageKeys.update].variables;
-
-    const Component = components[template];
-    return <Component variables={variables} />;
+    return (
+      <DatesMoved
+        variables={variables}
+        setSummaryMessages={setSummaryMessages}
+      />
+    );
   } else {
     return null;
   }
 };
 
 export default MessageItem;
+MessageItem.propTypes = {
+  message: PropTypes.shape({
+    variables: PropTypes.object,
+    template: PropTypes.string,
+    key: PropTypes.string,
+  }),
+  setSummaryMessages: PropTypes.func,
+};

@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatDateNoYear } from '../../../../utils/time-entry-utils/timeEntryUtils';
-import { useTimecardContext } from '../../../../context/TimecardContext';
 
-const DatesMoved = ({ variables }) => {
+const DatesMoved = ({ variables, setSummaryMessages }) => {
   const clearSummary = () => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
+    setSummaryMessages([]);
   };
 
-  const { setSummaryMessages, setIsAlertVisible } = useTimecardContext();
   const startDate = variables.startDate;
   const endDate = variables.endDate;
   const formattedStart = formatDateNoYear(startDate);
@@ -51,4 +48,5 @@ DatesMoved.propTypes = {
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string,
   }),
+  setSummaryMessages: PropTypes.func,
 };

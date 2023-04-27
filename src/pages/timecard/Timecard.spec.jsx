@@ -1,21 +1,26 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
-  defaultApplicationContext,
-  renderWithTimecardContext,
-  defaultTimecardContext,
-  createDefaultTimecardContext,
-} from '../../test/helpers/TimecardContext';
-import {
   shiftTimeEntry,
-  timeCardPeriodTypes,
   shiftTimeEntryMultipleDays,
   shiftTimeEntryPreviousDayNoEndTime,
   shiftTimeEntryTodayNoEndTime,
+  timecardPeriodTypes,
 } from '../../../mocks/mockData';
 import Timecard from './Timecard';
-import { getTimeEntries } from '../../api/services/timecardService';
+import {
+  getTimeEntries,
+  updateTimeEntry,
+} from '../../api/services/timecardService';
 import { addTimePeriodHeading } from '../../utils/time-entry-utils/timeEntryUtils';
 import { getApiResponseWithItems } from '../../../mocks/mock-utils';
+import {
+  renderWithApplicationContext,
+  defaultApplicationContext,
+} from '../../test/helpers/TestApplicationContext';
+import { getTimePeriodTypes } from '../../api/services/timecardService';
+import { act } from 'react-test-renderer';
+import { inputNames } from '../../utils/constants';
+import { expectNeverToHappen } from '../../test/helpers/Helpers';
 
 let mockDate;
 const mockNavigate = jest.fn();
@@ -38,6 +43,23 @@ const twoShiftsNoEndDate = getApiResponseWithItems(
 
 const shiftTimeEntryApiResponse = getApiResponseWithItems(shiftTimeEntry);
 
+const invalidTimes = [
+  '-00:01',
+  '24:00',
+  'abcd',
+  '!',
+  '25',
+  '13am',
+  '24pm',
+  '3p',
+  '6m',
+  '7a',
+  '4am',
+  '5pm',
+];
+
+const validTimes = ['00:00', '08:00', '23:59', '04:26', '0000', '0', '8', '23'];
+
 jest.mock('../../api/services/timecardService');
 beforeEach(() => {
   mockDate = '2022-07-01';
@@ -47,10 +69,18 @@ beforeEach(() => {
       data: shiftTimeEntryApiResponse,
     };
   });
+  getTimePeriodTypes.mockImplementation(() => {
+    return {
+      data: timecardPeriodTypes,
+    };
+  });
 });
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+const setTimeEntrySpy = jest.fn();
+
 describe('Shift spanning mutiple days', () => {
-  it('should call setTimeEntries when time entry begins at midnight', async () => {
+  it('should display start and finish time, and start and finish date when shift spans multiple days', async () => {
     mockDate = '2022-01-30';
     getTimeEntries.mockImplementation(() => {
       return {
@@ -58,91 +88,14 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    const mockTimecardContext = createDefaultTimecardContext();
-    mockTimecardContext.timecardDate = mockDate;
-
-    renderWithTimecardContext(
-      <Timecard />,
-      mockTimecardContext,
-      defaultApplicationContext
-    );
-
-    await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
-        {
-          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
-          startTime: '2022-01-30T00:00:00+00:00',
-          finishTime: '2022-02-02T00:00:00+00:00',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          finishNextDay: true,
-        },
-      ]);
-    });
-  });
-
-  it('should display start and finish time, and start and finish date when shift spans multiple days', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-09-01T11:59:00+00:00',
-          finishTime: '2022-09-02 0:00:00+00:00',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
+    await renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
     expect(
-      screen.getByText((content) =>
-        content.includes('11:59 on 1 September to 00:00 on 2 September')
-      )
+      screen.getByText('00:00 on 30 January to 00:00 on 2 February')
     ).toBeTruthy();
   });
 
   it('should display Shift(continued) if timecard spans more than one date and we are not on start date', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-09-01 01:00:00+00:00',
-          finishTime: '2022-09-03 05:00:00+00:00',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '2022-09-02',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.getByText('Shift (continued)')).toBeTruthy();
-  });
-
-  it('should not display Shift(continued) if timecard spans more than one date and we are on start date', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-09-01 01:00:00+00:00',
-          finishTime: '2022-09-03 05:00:00+00:00',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '2022-09-01',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.getByText('Shift')).toBeTruthy();
-    expect(screen.queryByText('Shift (continued)')).toBeFalsy();
-  });
-
-  it('should call setTimeEntries when time entry spans over timecard date', async () => {
     mockDate = '2022-01-31';
     getTimeEntries.mockImplementation(() => {
       return {
@@ -150,26 +103,12 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    const mockTimecardContext = createDefaultTimecardContext();
-    mockTimecardContext.timecardDate = mockDate;
+    await renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
-    renderWithTimecardContext(
-      <Timecard />,
-      mockTimecardContext,
-      defaultApplicationContext
-    );
-
-    await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
-        {
-          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
-          startTime: '2022-01-30T00:00:00+00:00',
-          finishTime: '2022-02-02T00:00:00+00:00',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          finishNextDay: true,
-        },
-      ]);
-    });
+    expect(screen.getByText('Shift (continued)')).toBeTruthy();
+    expect(
+      screen.getByText('00:00 on 30 January to 00:00 on 2 February')
+    ).toBeTruthy();
   });
 
   it('should call setTimeEntries when time entry ends at midnight that night', async () => {
@@ -180,29 +119,16 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    const mockTimecardContext = createDefaultTimecardContext();
-    mockTimecardContext.timecardDate = mockDate;
-
-    renderWithTimecardContext(
-      <Timecard />,
-      mockTimecardContext,
-      defaultApplicationContext
-    );
+    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
     await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
-        {
-          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
-          startTime: '2022-01-30T00:00:00+00:00',
-          finishTime: '2022-02-02T00:00:00+00:00',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          finishNextDay: true,
-        },
-      ]);
+      expect(
+        screen.getByText('00:00 on 30 January to 00:00 on 2 February')
+      ).toBeTruthy();
     });
   });
 
-  it('should call setTimeEntries with the correct timeEntries when two shifts end with no end date and one is on the day before', async () => {
+  it('should only display one time entry when two shifts end with no end date and one is on the day before', async () => {
     mockDate = '2022-02-01';
     getTimeEntries.mockImplementation(() => {
       return {
@@ -210,25 +136,10 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    const mockTimecardContext = createDefaultTimecardContext();
-    mockTimecardContext.timecardDate = mockDate;
-
-    renderWithTimecardContext(
-      <Timecard />,
-      mockTimecardContext,
-      defaultApplicationContext
-    );
+    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
     await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).toHaveBeenCalledWith([
-        {
-          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
-          startTime: '2022-02-01T09:00:00+00:00',
-          finishTime: '',
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          finishNextDay: false,
-        },
-      ]);
+      expect(screen.getByText('09:00 to -')).toBeTruthy();
     });
   });
 
@@ -240,17 +151,12 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    const mockTimecardContext = createDefaultTimecardContext();
-    mockTimecardContext.timecardDate = mockDate;
-
-    renderWithTimecardContext(
-      <Timecard />,
-      mockTimecardContext,
-      defaultApplicationContext
+    renderWithApplicationContext(
+      <Timecard setTimeEntries={setTimeEntrySpy} timecardDate={mockDate} />
     );
 
     await waitFor(() => {
-      expect(mockTimecardContext.setTimeEntries).not.toHaveBeenCalledWith([
+      expect(setTimeEntrySpy).not.toHaveBeenCalledWith([
         {
           timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50005',
           startTime: '2022-01-30T00:00:00+00:00',
@@ -264,152 +170,93 @@ describe('Shift spanning mutiple days', () => {
 });
 
 describe('Timecard', () => {
-  it('should render a timecard component with the correct date', () => {
-    renderWithTimecardContext(<Timecard />);
+  it('should render a timecard component with the correct date', async () => {
+    renderWithApplicationContext(<Timecard />);
 
-    const screenDate = screen.getByText('1 July 2022');
-    expect(screenDate).toBeTruthy();
+    await waitFor(() => {
+      const screenDate = screen.getByText('1 July 2022');
+      expect(screenDate).toBeTruthy();
+    });
   });
 
-  it('should render the SelectTimecardPeriodType component when no time entries have been added', () => {
-    renderWithTimecardContext(<Timecard />);
+  it('should render the SelectTimecardPeriodType component when no time entries have been added', async () => {
+    await renderWithApplicationContext(<Timecard />);
 
-    const heading = screen.getByText('Add time period');
-    expect(heading).toBeTruthy();
+    await waitFor(() => {
+      const heading = screen.getByText('Add time period');
+      expect(heading).toBeTruthy();
+    });
   });
 
   it('should render the SelectTimecardPeriodType component when the last time period is removed', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-09-01 01:00:00+00:00',
-          finishTime: '2022-09-01 05:00:00+00:00',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
+    renderWithApplicationContext(<Timecard />);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(screen.getByText('Shift')).toBeTruthy();
+
+      fireEvent.click(screen.getByText('Remove'));
+
+      expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
     });
-
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Time period')).toBeTruthy();
-
-    fireEvent.click(screen.getByText('Remove'));
-
-    expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
   });
 
   it('should render the EditShiftTimecard component when time period type is Shift', async () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: [],
+      };
     });
 
-    expect(screen.queryByText('Add a new time period')).toBeFalsy();
-    expect(screen.getByText('Start time')).toBeTruthy();
-    expect(screen.getByText('Finish time')).toBeTruthy();
-    expect(screen.getByText('Time period')).toBeTruthy();
+    await renderWithApplicationContext(<Timecard />);
+
+    act(() => {
+      fireEvent.click(screen.getByText('Shift'));
+      fireEvent.click(screen.getByText('Continue'));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(screen.getByText('Start time')).toBeTruthy();
+      expect(screen.getByText('Finish time')).toBeTruthy();
+      expect(screen.getByText('Time period')).toBeTruthy();
+    });
   });
 
-  test.each([
-    '00000000-0000-0000-0000-000000000002',
-    '00000000-0000-0000-0000-000000000003',
-  ])(
+  test.each(['Scheduled rest day', 'Non-working day'])(
     'should render the SimpleTimePeriod component when time period type is correct',
     async (testValue) => {
-      renderWithTimecardContext(<Timecard />, {
-        summaryErrors: {},
-        setSummaryErrors: jest.fn(),
-        timeEntries: [
-          {
-            timePeriodTypeId: testValue,
-            startTime: '',
-            finishTime: '',
-          },
-        ],
-        setTimeEntries: jest.fn(),
-        timecardDate: '',
-        setTimecardDate: jest.fn(),
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: [],
+        };
+      });
+
+      await renderWithApplicationContext(<Timecard />);
+
+      act(() => {
+        fireEvent.click(screen.getByText(testValue));
+        fireEvent.click(screen.getByText('Continue'));
       });
 
       await waitFor(() => {
         expect(screen.queryByText('Add a new time period')).toBeFalsy();
-        timeCardPeriodTypes.forEach((type) => {
-          if (type.id != testValue)
-            expect(screen.queryByText(type.name)).toBeFalsy();
-          else if (type.id === testValue)
-            expect(screen.queryByText(type.name)).toBeTruthy();
-        });
+        expect(screen.getByText('Time period')).toBeTruthy();
+        expect(screen.getByText(testValue)).toBeTruthy();
       });
     }
   );
 
   it('should set the time entries in the context if time entries exist for that date', async () => {
-    renderWithTimecardContext(
-      <Timecard />,
-      defaultTimecardContext,
-      defaultApplicationContext
-    );
+    renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
-      expect(defaultTimecardContext.setTimeEntries).toHaveBeenCalledWith([
-        {
-          timeEntryId: 'c0a80040-82cf-1986-8182-cfedbbd50003',
-          startTime: shiftTimeEntryApiResponse.items[0].actualStartTime,
-          finishTime: shiftTimeEntryApiResponse.items[0].actualEndTime,
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          finishNextDay: false,
-        },
-      ]);
-      expect(defaultTimecardContext.setTimecardDate).toHaveBeenCalledWith(
-        mockDate
-      );
-      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
-        hasError: false,
-      });
-    });
-  });
+      expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      expect(screen.getByText('Shift')).toBeTruthy();
 
-  it('should set the date and an empty time entries array in the context if time entries do not exist for that date', async () => {
-    getTimeEntries.mockImplementation(() => {
-      return {
-        data: {
-          meta: {},
-          items: [],
-        },
-      };
-    });
+      fireEvent.click(screen.getByText('Remove'));
 
-    const timeCardContextValues = defaultTimecardContext;
-    timeCardContextValues['timeEntries'] = [{}, {}];
-
-    renderWithTimecardContext(
-      <Timecard />,
-      timeCardContextValues,
-      defaultApplicationContext
-    );
-
-    await waitFor(() => {
-      expect(timeCardContextValues.setTimeEntries).toHaveBeenCalledWith([]);
-      expect(timeCardContextValues.setTimecardDate).toHaveBeenCalledWith(
-        mockDate
-      );
-      expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
-        hasError: false,
-      });
+      expect(screen.queryAllByTestId('radio-buttons')).toBeTruthy();
     });
   });
 
@@ -418,11 +265,7 @@ describe('Timecard', () => {
       throw Error();
     });
 
-    renderWithTimecardContext(
-      <Timecard />,
-      defaultTimecardContext,
-      defaultApplicationContext
-    );
+    renderWithApplicationContext(<Timecard />);
 
     await waitFor(() => {
       expect(defaultApplicationContext.setServiceError).toHaveBeenCalledWith({
@@ -432,123 +275,43 @@ describe('Timecard', () => {
     });
   });
 
-  it('should display error summary messages when summary errors exist', async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {
-        timePeriod: {
-          message: 'You must select a time period',
-        },
-      },
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
+  it('should render the SelectTimecardPeriodType component if there are no time entries', async () => {
+    getTimeEntries.mockImplementation(() => {
+      return {
+        data: [],
+      };
     });
 
-    expect(screen.getByText('There is a problem')).toBeTruthy();
-    expect(screen.getByText('You must select a time period')).toBeTruthy();
+    renderWithApplicationContext(<Timecard />);
+
+    await waitFor(() => {
+      expect(screen.queryByText('12:00 to 22:00')).not.toBeInTheDocument();
+      const heading = screen.getByText(addTimePeriodHeading);
+      expect(heading).toBeTruthy();
+    });
   });
 
-  it('should render the SelectTimecardPeriodType component if newTimeEntry is true have been added', () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-      newTimeEntry: true,
+  it('should render the "Shift" component for existing time entry', async () => {
+    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Shift')).toBeInTheDocument();
+      expect(screen.getByText('12:00 to 22:00')).toBeInTheDocument();
+      expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
     });
-
-    const heading = screen.getByText(addTimePeriodHeading);
-    expect(heading).toBeTruthy();
-  });
-
-  it('should render the "Edit Shift" component for existing time entry', () => {
-    renderWithTimecardContext(<Timecard />, {
-      summaryErrors: {},
-      setSummaryErrors: jest.fn(),
-      timeEntries: [
-        {
-          timePeriodTypeId: '00000000-0000-0000-0000-000000000001',
-          startTime: '2022-02-02T08:00:00Z',
-          finishTime: '2022-02-02T16:00:00Z',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-      newTimeEntry: false,
-    });
-
-    expect(screen.getByText('08:00 to 16:00')).toBeInTheDocument();
-    expect(screen.getByText(addTimePeriodHeading)).toBeInTheDocument();
   });
 
   it('should not display notification messages when they havent been raised', async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-    renderWithTimecardContext(<Timecard />, {
-      summaryMessages: {},
-
-      setSummaryMessages: jest.fn(),
-      isAlertVisible: false,
-      setIsAlertVisible: jest.fn(),
-
-      timeEntries: [
-        {
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
+    renderWithApplicationContext(<Timecard />);
 
     expect(screen.queryByText('Row Deleted')).toBeFalsy();
   });
 
-  it('should display notification messages when they exist', async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-    renderWithTimecardContext(<Timecard />, {
-      summaryMessages: {
-        update: {
-          template: `datesMoved`,
-          variables: { startDate: '2022-09-21' },
-        },
-      },
-
-      setSummaryMessages: jest.fn(),
-      isAlertVisible: true,
-      setIsAlertVisible: jest.fn(),
-
-      timeEntries: [
-        {
-          startTime: '',
-          finishTime: '',
-        },
-      ],
-      setTimeEntries: jest.fn(),
-      timecardDate: '',
-      setTimecardDate: jest.fn(),
-    });
-
-    expect(screen.getByText('The time period starts on')).toBeTruthy();
-  });
-
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
-      renderWithTimecardContext(<Timecard />);
+      renderWithApplicationContext(<Timecard />);
 
       const previousDayLink = screen.getByRole('link', {
         name: 'Previous day',
@@ -558,7 +321,7 @@ describe('Timecard', () => {
     });
 
     it('should contain a link to next day', () => {
-      renderWithTimecardContext(<Timecard />);
+      renderWithApplicationContext(<Timecard />);
 
       const nextDayLink = screen.getByRole('link', { name: 'Next day' });
       expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
@@ -566,7 +329,7 @@ describe('Timecard', () => {
     });
 
     it('should contain a link to the calendar', () => {
-      renderWithTimecardContext(<Timecard />);
+      renderWithApplicationContext(<Timecard />);
 
       const calendarLink = screen.getByRole('link', {
         name: 'Select another date',
@@ -574,16 +337,302 @@ describe('Timecard', () => {
       expect(calendarLink.pathname).toBe('/calendar');
     });
 
-    it('should clear message summary when navigating from page', () => {
-      renderWithTimecardContext(<Timecard />);
+    it('should show then clear message summary when navigating from page', async () => {
+      mockDate = '2022-02-01';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: getApiResponseWithItems(shiftTimeEntryTodayNoEndTime),
+        };
+      });
+      updateTimeEntry.mockResolvedValue({
+        status: 200,
+        data: getApiResponseWithItems(shiftTimeEntryTodayNoEndTime),
+      });
+
+      await waitFor(() => {
+        renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+      });
+
+      act(() => {
+        expect(screen.getByText('09:00 to -')).toBeTruthy();
+        fireEvent.click(screen.getByTestId('hours-change-button'));
+        fireEvent.click(screen.getByText('View or edit dates'));
+
+        const dayInput = screen.getByTestId('startDate-day-input');
+        fireEvent.change(dayInput, { target: { value: '03' } });
+
+        fireEvent.click(screen.getByText('View or edit dates'));
+
+        fireEvent.click(screen.getByText('Save'));
+      });
+
+      await waitFor(() => {
+        const summaryHeader = screen.getByText('Hours changed');
+        expect(summaryHeader).toBeTruthy();
+        const summaryText = screen.getByText('The time period starts on');
+        expect(summaryText).toBeTruthy();
+      });
 
       const nextDayLink = screen.getByRole('link', { name: 'Next day' });
-      expect(nextDayLink.pathname).toBe('/timecard/2022-07-02');
-      fireEvent.click(nextDayLink);
 
-      expect(defaultTimecardContext.setSummaryMessages).toHaveBeenCalledWith(
-        {}
-      );
+      act(() => {
+        fireEvent.click(nextDayLink);
+      });
+
+      await waitFor(() => {
+        const summaryText = screen.queryByText('Hours changed');
+        expect(summaryText).toBeFalsy();
+      });
+    });
+  });
+
+  describe('Errors', () => {
+    it('should display error summary messages when summary errors exist', async () => {
+      await waitFor(() => {
+        renderWithApplicationContext(<Timecard />);
+      });
+
+      act(() => {
+        const addTimecardPeriodButton = screen.getByText('Add');
+        fireEvent.click(addTimecardPeriodButton);
+
+        const continueButton = screen.getByText('Continue');
+        fireEvent.click(continueButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText('There is a problem')).toBeTruthy();
+        expect(
+          screen.getAllByText('You must select a time period')
+        ).toHaveLength(2);
+      });
+    });
+
+    it('should display an error when pressing save with no start time added', async () => {
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: [],
+        };
+      });
+
+      await renderWithApplicationContext(<Timecard />);
+
+      act(() => {
+        fireEvent.click(screen.getByText('Shift'));
+        fireEvent.click(screen.getByText('Continue'));
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('Add a new time period')).toBeFalsy();
+      });
+
+      act(() => {
+        fireEvent.click(screen.getByText('Save'));
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText('There is a problem')).toBeTruthy();
+        const errorMessage = screen.getAllByText(
+          'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+        );
+        expect(errorMessage).toHaveLength(2);
+      });
+    });
+
+    test.each(invalidTimes)(
+      'should display an error when pressing save with an invalid start time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+          fireEvent.change(startTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          const errorMessage = screen.getAllByText(
+            'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+          );
+          expect(errorMessage).toHaveLength(2);
+        });
+      }
+    );
+
+    test.each(validTimes)(
+      'should not display an error when pressing save with a valid start time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const startTimeInput = screen.getByTestId(inputNames.shiftStartTime);
+          fireEvent.change(startTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await expectNeverToHappen(() => {
+          expect(
+            screen.getByText(
+              'Enter a start time in the 24 hour clock format, for example, 08:00 or 0800'
+            )
+          ).toBeInTheDocument();
+        });
+      }
+    );
+
+    test.each(invalidTimes)(
+      'should display an error when pressing save with an invalid finish time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const finishTimeInput = screen.getByTestId(
+            inputNames.shiftFinishTime
+          );
+          fireEvent.change(finishTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+          const errorMessage = screen.getAllByText(
+            'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
+          );
+          expect(errorMessage).toHaveLength(2);
+        });
+      }
+    );
+
+    test.each(validTimes)(
+      'should not display an error when pressing save with a valid finish time',
+      async (testValue) => {
+        getTimeEntries.mockImplementation(() => {
+          return {
+            data: [],
+          };
+        });
+
+        await renderWithApplicationContext(<Timecard />);
+
+        act(() => {
+          fireEvent.click(screen.getByText('Shift'));
+          fireEvent.click(screen.getByText('Continue'));
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText('Add a new time period')).toBeFalsy();
+        });
+
+        act(() => {
+          const finishTimeInput = screen.getByTestId(
+            inputNames.shiftFinishTime
+          );
+          fireEvent.change(finishTimeInput, { target: { value: testValue } });
+
+          const saveButton = screen.getByText('Save');
+          fireEvent.click(saveButton);
+        });
+
+        await expectNeverToHappen(() => {
+          expect(
+            screen.getByText(
+              'Enter a finish time in the 24 hour clock format, for example, 08:00 or 0800'
+            )
+          ).toBeInTheDocument();
+        });
+      }
+    );
+  });
+
+  describe('Remove shift', () => {
+    it('should delete time entry when clicking the "Remove" button with multiple time entries', async () => {
+      mockDate = '2022-01-30';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
+
+      renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+
+      await waitFor(() => {
+        const removeShiftButton = screen.getByText('Remove');
+        fireEvent.click(removeShiftButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('00:00 to 00:00 on 02 February')).toBeFalsy();
+      });
+    });
+
+    it('should not display any service errors when deleting a time entry is successful', async () => {
+      mockDate = '2022-01-30';
+      getTimeEntries.mockImplementation(() => {
+        return {
+          data: multipleDayShiftTimeEntryApiResponse,
+        };
+      });
+
+      renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+
+      await waitFor(() => {
+        const removeShiftButton = screen.getByText('Remove');
+        fireEvent.click(removeShiftButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('There is a problem')).toBeFalsy();
+      });
     });
   });
 });

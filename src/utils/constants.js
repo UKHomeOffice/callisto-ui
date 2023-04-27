@@ -10,7 +10,5 @@ export const inputNames = Object.freeze({
 });
 
 export const messageKeys = Object.freeze({
-  update: 'update',
-  delete: 'delete',
-  insert: 'insert',
+  datesMoved: 'DatesMoved',
 });

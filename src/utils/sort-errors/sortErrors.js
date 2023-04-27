@@ -1,10 +1,16 @@
-export const sortErrorKeys = (errors, desiredOrder) => {
-  const orderedKeys = [];
-  const errorKeys = new Set(Object.keys(errors));
-  desiredOrder.forEach((key) => {
-    if (errorKeys.has(key)) {
-      orderedKeys.push(key);
+export const sortErrors = (errors) => {
+  let sortedErrors = [];
+  errors.forEach((error) => {
+    if (error.errorPriority === 1) {
+      sortedErrors = [error, ...sortedErrors];
+    } else {
+      sortedErrors = [
+        ...sortedErrors.slice(0, error.errorPriority - 1),
+        error,
+        ...sortedErrors.slice(error.errorPriority),
+      ];
     }
   });
-  return orderedKeys;
+
+  return sortedErrors;
 };

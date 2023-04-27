@@ -2,7 +2,7 @@ import { ContextTimeEntry } from './ContextTimeEntry';
 import {
   isFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from './timeEntryUtils';
 
 describe('timeEntryUtils', () => {
@@ -40,9 +40,28 @@ describe('timeEntryUtils', () => {
     const timeEntry1 = new ContextTimeEntry();
     const timeEntry2 = new ContextTimeEntry();
     const existingTimeEntries = [timeEntry1, timeEntry2];
+    const timeEntryIndex = 1;
     const mockSetTimeEntries = jest.fn();
-    removeTimecardContextEntry(existingTimeEntries, mockSetTimeEntries, 1);
+    removeTimecardEntry(
+      existingTimeEntries,
+      mockSetTimeEntries,
+      timeEntryIndex
+    );
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry1]);
+  });
+
+  it('should delete the time entry from the time entries context at the zero index', async () => {
+    const timeEntry1 = new ContextTimeEntry();
+    const timeEntry2 = new ContextTimeEntry();
+    const existingTimeEntries = [timeEntry1, timeEntry2];
+    const timeEntryIndex = 0;
+    const mockSetTimeEntries = jest.fn();
+    removeTimecardEntry(
+      existingTimeEntries,
+      mockSetTimeEntries,
+      timeEntryIndex
+    );
+    expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry2]);
   });
 
   describe('isFinishTimeOnNextDay', () => {

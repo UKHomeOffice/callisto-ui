@@ -1,47 +1,89 @@
-import TimeInputErrors from '../../components/timecard/time-input-errors/TimeInputErrors';
+import { createClashErrorsObject } from '../../components/timecard/time-input-errors/TimeInputErrors';
 import { clashingProperties, inputNames } from '../constants';
 
 export function combineExistingAndTimeClashErrors(
-  errors,
   summaryErrors,
   clashingProperty,
-  clashingTimes
+  clashingTimes,
+  timePeriodTypesMap
 ) {
-  const existingErrors =
-    Object.keys(errors).length > 0 ? errors : summaryErrors;
-
-  const combinedErrors = { ...existingErrors };
+  let combinedErrors = [...summaryErrors];
 
   if (clashingProperty === clashingProperties.startAndEndTime) {
-    combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
-      clashingProperty,
-      clashingTimes
+    let index = summaryErrors.findIndex(
+      (error) => error.key === 'bothDatesOverlapping'
     );
-    combinedErrors[inputNames.shiftFinishTime] = {
-      message: '',
+    const error = {
+      key: 'bothDatesOverlapping',
+      inputName: 'shift-start-time',
+      message: clashErrorMessage(
+        clashingProperty,
+        clashingTimes,
+        timePeriodTypesMap
+      ),
+      errorPriority: 1,
     };
+
+    combinedErrors = combineErrors(combinedErrors, error, index);
+
+    combinedErrors.push({
+      key: 'finishDateClash',
+      inputName: inputNames.shiftFinishTime,
+      message: '',
+      errorPriority: 2,
+    });
   } else if (clashingProperty === clashingProperties.startTime) {
-    combinedErrors[inputNames.shiftStartTime] = clashErrorMessage(
-      clashingProperty,
-      clashingTimes
+    let index = summaryErrors.findIndex(
+      (error) => error.key === 'overlappingStart'
     );
+    const error = {
+      key: 'overlappingStart',
+      inputName: 'shift-start-time',
+      message: clashErrorMessage(
+        clashingProperty,
+        clashingTimes,
+        timePeriodTypesMap
+      ),
+      errorPriority: 1,
+    };
+
+    combinedErrors = combineErrors(combinedErrors, error, index);
   } else if (clashingProperty === clashingProperties.endTime) {
-    combinedErrors[inputNames.shiftFinishTime] = clashErrorMessage(
-      clashingProperty,
-      clashingTimes
+    let index = summaryErrors.findIndex(
+      (error) => error.key === 'overlappingFinish'
     );
+    const error = {
+      key: 'overlappingFinish',
+      inputName: 'shift-finish-time',
+      message: clashErrorMessage(
+        clashingProperty,
+        clashingTimes,
+        timePeriodTypesMap
+      ),
+      errorPriority: 1,
+    };
+
+    combinedErrors = combineErrors(combinedErrors, error, index);
   }
 
   return combinedErrors;
 }
+const combineErrors = (combinedErrors, error, index) => {
+  return [
+    ...combinedErrors.slice(0, index),
+    error,
+    ...combinedErrors.slice(index + 1),
+  ];
+};
 
-function clashErrorMessage(clashingProperty, clashingTimes) {
-  return {
-    message: (
-      <TimeInputErrors
-        clashingProperty={clashingProperty}
-        clashes={clashingTimes}
-      />
-    ),
-  };
+function clashErrorMessage(
+  clashingProperty,
+  clashingTimes,
+  timePeriodTypesMap
+) {
+  return createClashErrorsObject(
+    clashingProperty,
+    clashingTimes,
+    timePeriodTypesMap
+  );
 }

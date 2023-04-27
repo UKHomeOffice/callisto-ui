@@ -175,7 +175,7 @@ steps:
     image: amazon/aws-cli
     commands:
       - >
-        aws s3 cp 
+        aws s3 cp
         --recursive ./dist/ s3://ho-callisto-dev/dev/$${DRONE_SOURCE_BRANCH%%/*}/
     environment:
       AWS_DEFAULT_REGION: eu-west-2

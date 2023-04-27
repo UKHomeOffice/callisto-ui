@@ -1,41 +1,43 @@
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import EditShiftHours from '../edit-shift-hours/EditShiftHours';
+import EditShift from '../edit-shift/EditShift';
 import { deleteTimeEntry } from '../../../api/services/timecardService';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import {
   formatDateNoYear,
   formatTime,
   formatDate,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
 import dayjs from 'dayjs';
 
-const EditShiftTimecard = ({
+const Shift = ({
+  summaryErrors,
+  setSummaryErrors,
+  timecardDate,
   timeEntry,
   timeEntriesIndex,
-  hasShiftMovedCallback,
+  timeEntries,
+  setTimeEntries,
+  summaryMessages,
+  setSummaryMessages,
+  timePeriodTypesMap,
 }) => {
   const { setServiceError } = useApplicationContext();
-  const { timeEntries, setTimeEntries, setSummaryErrors, timecardDate } =
-    useTimecardContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
-  const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timeEntryExists
-  );
+  const [showEditShift, setShowEditShift] = useState(!timeEntryExists);
 
-  const toggleEditShiftHours = (event) => {
+  const toggleEditShift = (event) => {
     event.preventDefault();
-    setShowEditShiftHours(!showEditShiftHours);
+    setShowEditShift(!showEditShift);
   };
   useEffect(() => {
     if (timeEntryExists === false) {
-      setShowEditShiftHours(true);
+      setShowEditShift(true);
     }
   });
 
@@ -45,16 +47,12 @@ const EditShiftTimecard = ({
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    setSummaryErrors({});
+    setSummaryErrors([]);
     validateServiceErrors(
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );
@@ -90,6 +88,12 @@ const EditShiftTimecard = ({
       </>
     );
   }
+  let timePeriodText = null;
+  if (timeEntryExists && timecardDate === formatDate(timeEntry.startTime)) {
+    timePeriodText = 'Shift';
+  } else if (timeEntryExists) {
+    timePeriodText = 'Shift (continued)';
+  }
 
   return (
     <div className="grey-border">
@@ -98,13 +102,7 @@ const EditShiftTimecard = ({
           <dt className="govuk-summary-list__key govuk-!-width-two-thirds">
             Time period
           </dt>
-          <dd className="govuk-summary-list__value">
-            {timeEntryExists
-              ? timecardDate === formatDate(timeEntry.startTime)
-                ? 'Shift'
-                : 'Shift (continued)'
-              : null}
-          </dd>
+          <dd className="govuk-summary-list__value">{timePeriodText}</dd>
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
               <Link
@@ -120,7 +118,7 @@ const EditShiftTimecard = ({
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Hours</dt>
           <dd className="govuk-summary-list__value govuk-!-width-full">
-            {!showEditShiftHours &&
+            {!showEditShift &&
               timeEntryExists &&
               renderShiftHoursText({
                 timeEntryExists,
@@ -132,7 +130,7 @@ const EditShiftTimecard = ({
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
               <Link
-                onClick={toggleEditShiftHours}
+                onClick={toggleEditShift}
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
                 data-testid="hours-change-button"
@@ -142,14 +140,21 @@ const EditShiftTimecard = ({
             )}
           </dd>
         </div>
-        {showEditShiftHours && (
+        {showEditShift && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__row">
-              <EditShiftHours
-                setShowEditShiftHours={setShowEditShiftHours}
+              <EditShift
+                summaryErrors={summaryErrors}
+                setSummaryErrors={setSummaryErrors}
+                timecardDate={timecardDate}
+                setShowEditShift={setShowEditShift}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
-                hasShiftMovedCallback={hasShiftMovedCallback}
+                timeEntries={timeEntries}
+                setTimeEntries={setTimeEntries}
+                summaryMessages={summaryMessages}
+                setSummaryMessages={setSummaryMessages}
+                timePeriodTypesMap={timePeriodTypesMap}
               />
             </dt>
           </div>
@@ -174,11 +179,17 @@ const EditShiftTimecard = ({
   );
 };
 
-export default EditShiftTimecard;
+export default Shift;
 
-EditShiftTimecard.propTypes = {
+Shift.propTypes = {
+  summaryErrors: PropTypes.array,
+  setSummaryErrors: PropTypes.func,
+  timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
-  hasShiftMovedCallback: PropTypes.func,
-  timePeriodTypes: PropTypes.array,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
+  summaryMessages: PropTypes.array,
+  setSummaryMessages: PropTypes.func,
+  timePeriodTypesMap: PropTypes.any,
 };

@@ -301,7 +301,7 @@ const timeCardPeriodTypes = [
   },
 ];
 
-const shiftTimeCardPeriodType = {
+const timecardPeriodTypes = {
   meta: {
     next: null,
   },
@@ -311,7 +311,27 @@ const shiftTimeCardPeriodType = {
       tenantId: '00000000-0000-0000-0000-000000000000',
       name: 'Shift',
     },
+    {
+      id: '00000000-0000-0000-0000-000000000002',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Scheduled rest day',
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000003',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      name: 'Non-working day',
+    },
   ],
+};
+
+const timePeriodTypesMap = {
+  '00000000-0000-0000-0000-000000000001': 'Shift',
+  '00000000-0000-0000-0000-000000000002': 'Scheduled rest day',
+  '00000000-0000-0000-0000-000000000003': 'Non-working day',
+  '00000000-0000-0000-0000-000000000004': 'On call',
+  '00000000-0000-0000-0000-000000000005': 'Absence',
+  '00000000-0000-0000-0000-000000000006': 'Training',
+  '00000000-0000-0000-0000-000000000007': 'Overtime',
 };
 
 const timeEntryFilter =
@@ -329,8 +349,9 @@ module.exports = {
   timePeriodIdForTimeEntry,
   timeCardPeriodTypes,
   timeEntryFilter,
-  shiftTimeCardPeriodType,
+  timecardPeriodTypes,
   accruals,
   people,
   artists,
+  timePeriodTypesMap,
 };

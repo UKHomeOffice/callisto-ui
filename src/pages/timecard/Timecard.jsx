@@ -1,13 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { Link, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
 import BackLink from '../../components/common/form/navigation/backlink/BackLink';
 import SelectTimecardPeriodType from '../../components/timecard/select-timecard-period-type/SelectTimecardPeriodType';
 import ErrorSummary from '../../components/common/form/error-summary/ErrorSummary';
 import generateDocumentTitle from '../../utils/generate-document-title/generateDocumentTitle';
-import { getTimeEntries } from '../../api/services/timecardService';
+import { getTimeEntries, getTimePeriodTypes } from '../../api/services/timecardService';
 import {
   formatDate,
   formatTime,
@@ -15,86 +14,76 @@ import {
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
-import { useTimecardContext } from '../../context/TimecardContext';
 import { useApplicationContext } from '../../context/ApplicationContext';
-
-import { sortErrorKeys } from '../../utils/sort-errors/sortErrors';
 import { buildTimeEntriesFilter } from '../../utils/filters/time-entry-filter/timeEntryFilterBuilder';
 import { ContextTimeEntry } from '../../utils/time-entry-utils/ContextTimeEntry';
-import { inputNames, messageKeys } from '../../utils/constants';
 import MessageSummary from '../../components/common/form/message-summary/MessageSummary';
 import TimecardEntriesList from '../../components/timecard/timecard-entries-list/TimecardEntriesList';
+import AddTimeCardPeriod from '../../components/timecard/add-timecard-period/AddTimeCardPeriod';
 
 const Timecard = () => {
-  const {
-    summaryErrors,
-    timeEntries,
-    setTimeEntries,
-    setTimecardDate,
-    newTimeEntry,
-    setNewTimeEntry,
-    summaryMessages,
-    isAlertVisible,
-    setSummaryMessages,
-    setIsAlertVisible,
-    isErrorVisible,
-  } = useTimecardContext();
-  const { timePeriodTypes, setServiceError, userId } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
+  const [summaryMessages, setSummaryMessages] = useState([]);
+  const [addNewTimeEntry, setAddNewTimeEntry] = useState();
 
-  const { date } = useParams();
-  const previousDay = formatDate(dayjs(date).subtract(1, 'day'));
-  const nextDay = formatDate(dayjs(date).add(1, 'day'));
+  const params = new UrlSearchParamBuilder()
+    .setTenantId('00000000-0000-0000-0000-000000000000')
+    .getUrlSearchParams();
 
-  const desiredErrorOrder = [
-    inputNames.shiftStartTime,
-    inputNames.shiftFinishTime,
-    'timePeriod',
-  ];
+  const [summaryErrors, setSummaryErrors] = useState([]);
+  const [timeEntries, setTimeEntries] = useState([]);
+  const [timePeriodTypes, setTimePeriodTypes] = useState([]);
 
-  const desiredMessageOrder = [
-    messageKeys.delete,
-    messageKeys.update,
-    messageKeys.insert,
-  ];
-
-  const hasShiftMovedFromTimecardCallback = () => {
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  };
+  const { date: timecardDate } = useParams();
+  const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
+  const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
   useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    setTimecardDate(date);
-    updateTimeEntryContextData(date, setTimeEntries, setServiceError, userId);
-  }, [date, timePeriodTypes, isErrorVisible]);
+    updateTimeEntryContextData(
+      timecardDate,
+      setTimeEntries,
+      setServiceError,
+      userId
+    );
+
+    const fetchTimePeriodTypeData = async () => {
+      const periodTypes = await getTimePeriodTypes(params);
+      const periodItems = periodTypes.data?.items;
+      setTimePeriodTypes(periodItems);
+    };
+    fetchTimePeriodTypeData();
+  }, [timecardDate]);
 
   const clearMessageSummary = () => {
-    setSummaryMessages({});
-    setIsAlertVisible(false);
+    setSummaryMessages([]);
+  };
+
+  const clearErrorSummary = () => {
+    setSummaryErrors([]);
   };
 
   return (
     <>
       <BackLink text="Back to calendar" link="/calendar" />
-      {isAlertVisible && Object.keys(summaryMessages).length !== 0 && (
+      {summaryMessages && summaryMessages.length !== 0 && (
         <MessageSummary
-          keys={sortErrorKeys(summaryMessages, desiredMessageOrder)}
+          summaryMessages={summaryMessages}
+          setSummaryMessages={setSummaryMessages}
         />
       )}
-      {summaryErrors && Object.keys(summaryErrors).length !== 0 && (
-        <ErrorSummary
-          errors={summaryErrors}
-          keys={sortErrorKeys(summaryErrors, desiredErrorOrder)}
-        />
+      {summaryErrors && summaryErrors.length !== 0 && (
+        <ErrorSummary errors={summaryErrors} />
       )}
       <h1 className="govuk-caption-m">My Timecard</h1>
       <h2 className="govuk-heading-m">
-        {dayjs(date).format('D MMMM YYYY')}
+        {dayjs(timecardDate).format('D MMMM YYYY')}
       </h2>
       <div className="govuk-button-group button-group-row">
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${previousDay}`}
@@ -103,8 +92,8 @@ const Timecard = () => {
         </Link>
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to={`/timecard/${nextDay}`}
@@ -113,8 +102,8 @@ const Timecard = () => {
         </Link>
         <Link
           onClick={() => {
-            setNewTimeEntry(false);
             clearMessageSummary();
+            clearErrorSummary();
           }}
           className="govuk-link govuk-link--no-visited-state"
           to="/calendar"
@@ -123,15 +112,49 @@ const Timecard = () => {
         </Link>
       </div>
 
-      {(newTimeEntry || timeEntries.length === 0) && (
-        <SelectTimecardPeriodType />
+      {timePeriodTypes.length === 0 && (
+        <div className="loaderWrapper">
+          <div className="loader">
+            <img
+              src="/emblem.jpg"
+              alt="Home Office emblem"
+              className="rounded"
+            />
+            <img src="/spinner.gif" alt="Loading spinner" />
+          </div>
+        </div>
       )}
-      {!newTimeEntry && timeEntries.length !== 0 && (
-        <TimecardEntriesList
-          timeEntries={timeEntries}
-          timePeriodTypes={timePeriodTypes}
-          hasShiftMovedCallback={hasShiftMovedFromTimecardCallback}
-        />
+      {timePeriodTypes.length > 0 && (
+        <>
+          {(timeEntries.length === 0 || addNewTimeEntry) && (
+            <SelectTimecardPeriodType
+              summaryErrors={summaryErrors}
+              setSummaryErrors={setSummaryErrors}
+              timePeriodTypes={timePeriodTypes}
+              timeEntries={timeEntries}
+              setTimeEntries={setTimeEntries}
+              setAddNewTimeEntry={setAddNewTimeEntry}
+            />
+          )}
+          {timeEntries.length !== 0 && !addNewTimeEntry && (
+            <>
+              <TimecardEntriesList
+                summaryErrors={summaryErrors}
+                setSummaryErrors={setSummaryErrors}
+                timecardDate={timecardDate}
+                timeEntries={timeEntries}
+                setTimeEntries={setTimeEntries}
+                timePeriodTypes={timePeriodTypes}
+                summaryMessages={summaryMessages}
+                setSummaryMessages={setSummaryMessages}
+              />
+              <AddTimeCardPeriod
+                setSummaryErrors={setSummaryErrors}
+                setAddNewTimeEntry={setAddNewTimeEntry}
+              />
+            </>
+          )}
+        </>
       )}
     </>
   );

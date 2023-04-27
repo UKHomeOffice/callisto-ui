@@ -1,11 +1,12 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-test-renderer';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
 import SelectTimecardPeriodType from './SelectTimecardPeriodType';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
+import { timeCardPeriodTypes } from '../../../../mocks/mockData';
 
 const mockRegister = jest.fn();
 const handleSubmit = jest.fn();
-const errors = {};
+const errors = [];
 const expectedTimePeriodTypes = [
   'Shift',
   'Scheduled rest day',
@@ -18,11 +19,16 @@ const expectedTimePeriodTypes = [
 
 describe('SelectTimecardPeriodType', () => {
   it('should render a radios component with the correct time periods', async () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <SelectTimecardPeriodType
         register={mockRegister}
         handleSubmit={handleSubmit}
-        errors={errors}
+        summaryErrors={errors}
+        setSummaryErrors={jest.fn()}
+        timePeriodTypes={timeCardPeriodTypes}
+        timeEntries={[]}
+        setTimeEntries={jest.fn()}
+        setAddNewTimeEntry={jest.fn()}
       />
     );
 
@@ -34,15 +40,17 @@ describe('SelectTimecardPeriodType', () => {
   });
 
   it('should display an error message when pressing submit with nothing selected', async () => {
-    await waitFor(() => {
-      renderWithTimecardContext(
-        <SelectTimecardPeriodType
-          register={mockRegister}
-          handleSubmit={handleSubmit}
-          errors={errors}
-        />
-      );
-    });
+    const mockSetSummaryErrors = jest.fn();
+
+    await renderWithApplicationContext(
+      <SelectTimecardPeriodType
+        register={mockRegister}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        timePeriodTypes={timeCardPeriodTypes}
+        setSummaryErrors={mockSetSummaryErrors}
+      />
+    );
 
     act(() => {
       const continueButton = screen.getByText('Continue');
@@ -50,18 +58,31 @@ describe('SelectTimecardPeriodType', () => {
     });
 
     await waitFor(() => {
-      const errorMessage = screen.getByText('You must select a time period');
-      expect(errorMessage).toBeTruthy();
+      expect(mockSetSummaryErrors).toHaveBeenCalledWith([
+        {
+          errorPriority: 1,
+          inputName: 'timePeriod',
+          key: 'radioName',
+          message: 'You must select a time period',
+        },
+      ]);
     });
   });
 
   it('should not display an error message when pressing submit with something selected', async () => {
+    const mockSetSummaryErrors = jest.fn();
+
     await waitFor(() => {
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <SelectTimecardPeriodType
           register={mockRegister}
           handleSubmit={handleSubmit}
           errors={errors}
+          setSummaryErrors={mockSetSummaryErrors}
+          timePeriodTypes={timeCardPeriodTypes}
+          setTimeEntries={jest.fn()}
+          timeEntries={[]}
+          setAddNewTimeEntry={jest.fn()}
         />
       );
     });
@@ -74,8 +95,7 @@ describe('SelectTimecardPeriodType', () => {
     });
 
     await waitFor(() => {
-      const errorMessage = screen.queryByText('You must select a time period');
-      expect(errorMessage).toBeFalsy();
+      expect(mockSetSummaryErrors).not.toHaveBeenCalled();
     });
   });
 });

@@ -15,6 +15,7 @@ const DateInput = ({
   getFormValues,
   setStartDate,
   setEndDate,
+  updateFinishTimeText,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -24,12 +25,11 @@ const DateInput = ({
 
   const updateErrorMessages = () => {
     const findErrors =
-      errors &&
-      Object.keys(errors).filter((inputName) => inputName.includes(name));
+      errors && errors.filter((error) => error.inputName.includes(name));
     let relevantErrorMessages = [];
     if (findErrors) {
-      relevantErrorMessages = findErrors.map((inputName) => {
-        return errors[inputName].message;
+      relevantErrorMessages = findErrors.map((error) => {
+        return error.message;
       });
     }
     setErrorMessages(relevantErrorMessages);
@@ -68,12 +68,12 @@ const DateInput = ({
               dateType="day"
               errors={errors}
               defaultValue={dayValue}
-              pattern={/^([1-9]|0[1-9]|[12]\d|3[01])$/}
               register={register}
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
+              updateFinishTimeText={updateFinishTimeText}
             />
 
             <DateInputItem
@@ -81,12 +81,12 @@ const DateInput = ({
               dateType="month"
               errors={errors}
               defaultValue={monthValue}
-              pattern={/^([1-9]|0[1-9]|1[012])$/}
               register={register}
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={2}
+              updateFinishTimeText={updateFinishTimeText}
             />
 
             <DateInputItem
@@ -94,12 +94,12 @@ const DateInput = ({
               dateType="year"
               errors={errors}
               defaultValue={yearValue}
-              pattern={/^\d{4}$/}
               register={register}
               getFormValues={getFormValues}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               width={3}
+              updateFinishTimeText={updateFinishTimeText}
             />
           </div>
         </fieldset>
@@ -113,31 +113,35 @@ const DateInputItem = ({
   dateType,
   errors,
   defaultValue,
-  pattern,
   register,
   getFormValues,
   setStartDate,
   setEndDate,
   width,
+  updateFinishTimeText,
 }) => {
-  const capitilisedName = dateType[0].toUpperCase() + dateType.substring(1);
+  const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
   const setDates = () => {
-    setStartDate(
+    const startDate =
       getFormValues(`startDate-year`) +
-        '-' +
-        getFormValues(`startDate-month`) +
-        '-' +
-        getFormValues(`startDate-day`)
-    );
+      '-' +
+      getFormValues(`startDate-month`) +
+      '-' +
+      getFormValues(`startDate-day`);
 
-    setEndDate(
+    setStartDate(startDate);
+
+    const endDate =
       getFormValues(`finishDate-year`) +
-        '-' +
-        getFormValues(`finishDate-month`) +
-        '-' +
-        getFormValues(`finishDate-day`)
-    );
+      '-' +
+      getFormValues(`finishDate-month`) +
+      '-' +
+      getFormValues(`finishDate-day`);
+
+    setEndDate(endDate);
+
+    updateFinishTimeText(startDate, endDate);
   };
 
   return (
@@ -147,13 +151,13 @@ const DateInputItem = ({
           className="govuk-label govuk-date-input__label"
           htmlFor={`${name}-${dateType}`}
         >
-          {capitilisedName}
+          {capitalisedName}
         </label>
         <input
           className={`govuk-input govuk-date-input__input govuk-input--width-${width} ${
             errors &&
-            Object.keys(errors).find((error) => {
-              return error === name + '-' + dateType;
+            errors.find((error) => {
+              return error.inputName === name + '-' + dateType;
             }) &&
             'govuk-input--error'
           }`}
@@ -165,14 +169,6 @@ const DateInputItem = ({
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
             onChange: () => setDates(),
-            required: {
-              value: true,
-              message: 'Enter a ' + dateType,
-            },
-            pattern: {
-              value: pattern,
-              message: 'Enter a valid ' + dateType,
-            },
           })}
         />
       </div>
@@ -187,7 +183,7 @@ DateInput.propTypes = {
   heading: PropTypes.string.isRequired,
   headingSize: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.any,
+  errors: PropTypes.array,
   dayValue: PropTypes.string,
   monthValue: PropTypes.string,
   yearValue: PropTypes.string,
@@ -196,12 +192,13 @@ DateInput.propTypes = {
   getFormValues: PropTypes.func.isRequired,
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
+  updateFinishTimeText: PropTypes.func,
 };
 
 DateInputItem.propTypes = {
   name: PropTypes.string.isRequired,
   dateType: PropTypes.string,
-  errors: PropTypes.any,
+  errors: PropTypes.array,
   defaultValue: PropTypes.string,
   pattern: PropTypes.any,
   register: PropTypes.any.isRequired,
@@ -209,4 +206,5 @@ DateInputItem.propTypes = {
   setStartDate: PropTypes.func.isRequired,
   setEndDate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
+  updateFinishTimeText: PropTypes.func,
 };

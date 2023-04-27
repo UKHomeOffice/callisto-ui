@@ -5,11 +5,10 @@ import dayjs from 'dayjs';
 import {
   formatDateTimeISO,
   formatTime,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useApplicationContext } from '../../../context/ApplicationContext';
-import { useTimecardContext } from '../../../context/TimecardContext';
 import { deepCloneJson } from '../../../utils/common-utils/common-utils';
 import {
   createTimeEntry,
@@ -18,9 +17,15 @@ import {
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 
-const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
+const SimpleTimePeriod = ({
+  timecardDate,
+  timeEntry,
+  timeEntriesIndex,
+  timePeriodTitle,
+  timeEntries,
+  setTimeEntries,
+}) => {
   const { setServiceError, userId } = useApplicationContext();
-  const { timeEntries, setTimeEntries, timecardDate } = useTimecardContext();
   const timeEntryExists = !!timeEntry.timeEntryId;
 
   const handleClickRemoveButton = async (event) => {
@@ -33,11 +38,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );
@@ -94,7 +95,7 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
 
   const onCancel = (event) => {
     event.preventDefault();
-    removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
+    removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
   };
 
   return (
@@ -151,7 +152,10 @@ const SimpleTimePeriod = ({ timeEntry, timeEntriesIndex, timePeriodTitle }) => {
 export default SimpleTimePeriod;
 
 SimpleTimePeriod.propTypes = {
+  timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
   timePeriodTitle: PropTypes.string,
+  timeEntries: PropTypes.array,
+  setTimeEntries: PropTypes.func,
 };

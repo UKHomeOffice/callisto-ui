@@ -59,7 +59,7 @@ Input.propTypes = {
   headingSize: PropTypes.string.isRequired,
   inputWidth: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   value: PropTypes.string,
   onChange: PropTypes.func,
 };

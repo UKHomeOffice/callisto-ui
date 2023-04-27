@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { renderWithTimecardContext } from '../../../test/helpers/TimecardContext';
+import { renderWithApplicationContext } from '../../../test/helpers/TestApplicationContext';
 import { inputNames } from '../../../utils/constants';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import StartFinishTimeInput from './StartFinishTimeInput';
@@ -12,14 +12,14 @@ timeEntryWithFinishNextDay.setFinishNextDay(true);
 
 describe('StartFinishTimeInput', () => {
   it('should display titles for each input box', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -31,14 +31,14 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should display hints for each input box', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -50,14 +50,14 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should update the input value on change', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -72,16 +72,16 @@ describe('StartFinishTimeInput', () => {
   });
 
   it('should pre-fill the inputs if values are passed in', () => {
-    renderWithTimecardContext(
+    renderWithApplicationContext(
       <StartFinishTimeInput
         name={'shift'}
         startTimeValue="07:00"
         finishTimeValue="17:00"
-        errors={{}}
+        errors={[]}
         register={mockRegister}
         timeEntry={timeEntry}
         timeEntriesIndex={0}
-        getValues={jest.fn()}
+        updateFinishTimeText={jest.fn()}
       />
     );
 
@@ -93,17 +93,18 @@ describe('StartFinishTimeInput', () => {
   });
 
   describe('Finishes next day', () => {
-    it('should display "Finishes next day" text if finishNextDay is true', () => {
-      renderWithTimecardContext(
+    it('should display "Finishes next day" text if its passed into the componenet', () => {
+      renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="01:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntryWithFinishNextDay}
           timeEntriesIndex={0}
-          getValues={jest.fn()}
+          updateFinishTimeText={jest.fn()}
+          finishTimeText={'Finishes next day'}
         />
       );
 
@@ -112,17 +113,18 @@ describe('StartFinishTimeInput', () => {
       expect(finishesNextDayText).toBeTruthy();
     });
 
-    it('should not display "Finishes next day" text if finishNextDay is false', () => {
-      renderWithTimecardContext(
+    it('should not display "Finishes next day" text if shift finishes same day', () => {
+      renderWithApplicationContext(
         <StartFinishTimeInput
           name={'shift'}
           startTimeValue="07:00"
           finishTimeValue="17:00"
-          errors={{}}
+          errors={[]}
           register={mockRegister}
           timeEntry={timeEntry}
           timeEntriesIndex={0}
-          getValues={jest.fn()}
+          updateFinishTimeText={jest.fn()}
+          finishTimeText={''}
         />
       );
 
@@ -133,30 +135,6 @@ describe('StartFinishTimeInput', () => {
   });
 
   describe('error messages', () => {
-    it('should only display error messages for errors which contain matching input name', () => {
-      const startTimeErrorMessage =
-        'You must enter a start time in the HH:MM 24 hour clock format';
-
-      renderWithTimecardContext(
-        <StartFinishTimeInput
-          name={'shift'}
-          errors={{
-            'radio-error': { message: 'Select a radio button' }, // error message for another component
-            [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
-          }}
-          register={mockRegister}
-          timeEntry={timeEntry}
-          timeEntriesIndex={0}
-          getValues={jest.fn()}
-        />
-      );
-
-      const radioError = screen.queryByText('Select a radio button');
-      const startTimeError = screen.getByText(startTimeErrorMessage);
-
-      expect(radioError).toBeFalsy();
-      expect(startTimeError).toBeTruthy();
-    });
     it('should display error messages in the correct order', () => {
       const startTimeErrorMessage =
         'You must enter a start time in the HH:MM 24 hour clock format';
@@ -165,19 +143,28 @@ describe('StartFinishTimeInput', () => {
       const expectedErrorMessage =
         'Error:You must enter a start time in the HH:MM 24 hour clock format';
 
-      renderWithTimecardContext(
+      renderWithApplicationContext(
         <div>
           <StartFinishTimeInput
             name={'shift'}
-            errors={{
-              'radio-error': { message: 'Select a radio button' }, // error message for another component
-              [inputNames.shiftFinishTime]: { message: finishTimeErrorMessage },
-              [inputNames.shiftStartTime]: { message: startTimeErrorMessage },
-            }}
+            errors={[
+              {
+                key: inputNames.shiftFinishTime,
+                inputName: inputNames.shiftFinishTime,
+                message: finishTimeErrorMessage,
+                errorPriority: 2,
+              },
+              {
+                key: inputNames.shiftStartTime,
+                inputName: inputNames.shiftStartTime,
+                message: startTimeErrorMessage,
+                errorPriority: 1,
+              },
+            ]}
             register={mockRegister}
             timeEntry={timeEntry}
             timeEntriesIndex={0}
-            getValues={jest.fn()}
+            updateFinishTimeText={jest.fn()}
           />
         </div>
       );
