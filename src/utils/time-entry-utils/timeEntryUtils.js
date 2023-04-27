@@ -90,7 +90,7 @@ export const checkDateFormat = (
   if (!formData[day].match(/^([1-9]|0[1-9]|[12]\d|3[01])$/)) {
     if (!newErrors.some((error) => error.key === `empty${fieldType}Day`)) {
       newErrors.push({
-        key: `invalid${fieldType}Day`,
+        key: `${fieldType}DayInvalid`,
         inputName: day,
         message: `Enter a valid ${fieldType} day`,
         errorPriority: priority,
@@ -102,7 +102,7 @@ export const checkDateFormat = (
   if (!formData[month].match(/^([1-9]|0[1-9]|1[012])$/)) {
     if (!newErrors.some((error) => error.key === `empty${fieldType}Month`)) {
       newErrors.push({
-        key: `invalid${fieldType}Month`,
+        key: `${fieldType}MonthInvalid`,
         inputName: month,
         message: `Enter a valid ${fieldType} month`,
         errorPriority: priority,
@@ -114,7 +114,7 @@ export const checkDateFormat = (
   if (!formData[year].match(/^\d{4}$/)) {
     if (!newErrors.some((error) => error.key === `empty${fieldType}Year`)) {
       newErrors.push({
-        key: `invalid${fieldType}Year`,
+        key: `${fieldType}YearInvalid`,
         inputName: year,
         message: `Enter a valid ${fieldType} year`,
         errorPriority: priority,
@@ -140,7 +140,7 @@ export const validateFormDates = (
     validatedData.isValid = false;
     datesValid = false;
     newErrors.push({
-      key: `empty${fieldType}Day`,
+      key: `${fieldType}DayEmpty`,
       inputName: day,
       message: `Enter a ${fieldType} day`,
       errorPriority: priority,
@@ -151,7 +151,7 @@ export const validateFormDates = (
     validatedData.isValid = false;
     datesValid = false;
     newErrors.push({
-      key: `empty${fieldType}Month`,
+      key: `${fieldType}MonthEmpty`,
       inputName: month,
       message: `Enter a ${fieldType} month`,
       errorPriority: priority,
@@ -161,7 +161,7 @@ export const validateFormDates = (
     validatedData.isValid = false;
     datesValid = false;
     newErrors.push({
-      key: `empty${fieldType}Year`,
+      key: `${fieldType}YearEmpty`,
       inputName: year,
       message: `Enter a ${fieldType} year`,
       errorPriority: priority,
