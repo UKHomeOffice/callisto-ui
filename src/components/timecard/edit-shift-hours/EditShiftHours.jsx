@@ -220,7 +220,6 @@ const EditShiftHours = ({
             .setFinishNextDay(timeEntry.finishNextDay);
 
           setTimeEntries(newTimeEntries);
-          setSummaryErrors({});
           setShowEditShiftHours(false);
           setIsErrorVisible(false);
         }
