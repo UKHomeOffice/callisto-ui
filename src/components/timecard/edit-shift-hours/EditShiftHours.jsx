@@ -141,6 +141,7 @@ const EditShiftHours = ({
     dayjs.extend(utc);
 
     setSummaryMessages([]);
+    setSummaryErrors({});
     const actualStartDate = formatDate(localStartDate);
     const actualStartTime = formData[`${inputName}-start-time`];
     const actualStartDateTime = formatDateTimeISO(
@@ -196,7 +197,13 @@ const EditShiftHours = ({
               params
             );
 
-        if (response?.data?.items?.length > 0) {
+        if (hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)) {
+          setMessages(actualStartDateTime, actualEndDateTime);
+        }
+        if (
+          response?.data?.items?.length > 0 &&
+          !hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
+        ) {
           const responseItem = response.data.items[0];
           const formattedStartTime = responseItem.actualStartTime;
           const formattedEndTime = responseItem.actualEndTime
