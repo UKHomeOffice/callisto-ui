@@ -8,7 +8,6 @@ import { useApplicationContext } from '../../../context/ApplicationContext';
 
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
   formatDate,
@@ -18,6 +17,7 @@ import {
   isFinishTimeOnNextDay,
   checkDateFormat,
   validateFormDates,
+  isTimeValid,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
@@ -226,8 +226,6 @@ const EditShift = ({
     const validatedData = {
       isValid: true,
     };
-    //move to utils
-    dayjs.extend(utc);
     let newErrors = [];
 
     const startTime = formData[`${inputName}-start-time`];
@@ -297,21 +295,6 @@ const EditShift = ({
     validatedData.errors = sortedErrors;
 
     return validatedData;
-  };
-
-  const isTimeValid = (time, timeType) => {
-    // Move to utils
-    if (time.length < 3 && time.length > 0) {
-      const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
-      return hhTimeRegEx.test(time);
-    } else if (time.length > 3 && time.length < 6) {
-      const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-      return hhmmTimeRegEx.test(time);
-    } else if (time.length == 0 && timeType === 'finish time') {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   const hasShiftMovedFromTimecard = (startDate, endDate) => {

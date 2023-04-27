@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(utc);
 dayjs.extend(isSameOrBefore);
 
 export const addTimePeriodHeading = 'Add time period';
@@ -168,4 +170,18 @@ export const validateFormDates = (
     });
   }
   return datesValid;
+};
+
+export const isTimeValid = (time, timeType) => {
+  if (time.length < 3 && time.length > 0) {
+    const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
+    return hhTimeRegEx.test(time);
+  } else if (time.length > 3 && time.length < 6) {
+    const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+    return hhmmTimeRegEx.test(time);
+  } else if (time.length == 0 && timeType === 'finish time') {
+    return true;
+  } else {
+    return false;
+  }
 };
