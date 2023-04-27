@@ -219,12 +219,6 @@ const EditShiftHours = ({
             .setTimeEntryId(responseItem.id)
             .setFinishNextDay(timeEntry.finishNextDay);
 
-          if (
-            startEntryExists &&
-            hasShiftMovedFromTimecard(actualStartDateTime, actualEndDateTime)
-          ) {
-            setMessages(actualStartDateTime, actualEndDateTime);
-          }
           setTimeEntries(newTimeEntries);
           setSummaryErrors({});
           setShowEditShiftHours(false);
