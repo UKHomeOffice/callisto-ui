@@ -66,6 +66,11 @@ const EditShift = ({
   const [dynamicShiftText, setDynamicShiftText] = useState('');
   const DAY_IN_MINUTES = 1440;
 
+  const startTime = timeEntry.startTime ? formatTime(timeEntry.startTime) : '';
+  const finishTime = timeEntry.finishTime
+    ? formatTime(timeEntry.finishTime)
+    : '';
+
   useEffect(() => {
     focusErrors(document.querySelector('[id^="summary-error"] a'));
   }, [summaryErrors]);
@@ -78,12 +83,29 @@ const EditShift = ({
     setSummaryErrors(errorFields);
   };
 
-  const updateShiftLengthAndEndDate = (startDate, endDate) => {
+  const updateShiftLengthAndEndDate = (
+    startDate,
+    endDate,
+    startTime,
+    finishTime
+  ) => {
+    console.log('editShift ', startTime);
+    // let startTime = getValues(inputNames.shiftStartTime);
+    // let finishTime = getValues(inputNames.shiftFinishTime);
     const actualStartDate = startDate ? startDate : localStartDate;
     const actualEndDate = endDate ? endDate : localEndDate;
+    if (!isChecked) {
+      updateLocalEndDate(startTime, finishTime, actualStartDate);
+    }
+    updateFinishTimeText(startTime, finishTime, actualStartDate, actualEndDate);
+  };
 
-    let startTime = getValues(inputNames.shiftStartTime);
-    let finishTime = getValues(inputNames.shiftFinishTime);
+  const updateFinishTimeText = (
+    startTime,
+    finishTime,
+    actualStartDate,
+    actualEndDate
+  ) => {
     if (!startTime) {
       startTime = formatTime(timeEntry.startTime);
     }
@@ -103,17 +125,21 @@ const EditShift = ({
       shiftString = `${shiftHours} hours ${shiftMins} minutes`;
     }
 
-    if (!isChecked && shiftLength < DAY_IN_MINUTES) {
-      const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
-      if (nextDay) {
-        timeEntry.finishNextDay = true;
-        setLocalEndDate(dayjs(actualStartDate).add(1, 'day').toString());
-      } else {
-        timeEntry.finishNextDay = false;
-        setLocalEndDate(actualStartDate);
-      }
+    if (!isChecked) {
+      updateLocalEndDate(startTime, finishTime, actualStartDate);
     }
     setDynamicShiftText(shiftString);
+  };
+
+  const updateLocalEndDate = (startTime, finishTime, actualStartDate) => {
+    const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
+    if (nextDay) {
+      timeEntry.finishNextDay = true;
+      setLocalEndDate(dayjs(actualStartDate).add(1, 'day').toString());
+    } else {
+      timeEntry.finishNextDay = false;
+      setLocalEndDate(actualStartDate);
+    }
   };
 
   const handleServerValidationErrors = (errors) => {
@@ -459,12 +485,8 @@ const EditShift = ({
             clashingTimes,
             timePeriodTypesMap
           )}
-          startTimeValue={
-            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
-          }
-          finishTimeValue={
-            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
-          }
+          startTimeValue={startTime}
+          finishTimeValue={finishTime}
           register={register}
           updateDynamicText={updateShiftLengthAndEndDate}
           finishTimeText={dynamicShiftText}
