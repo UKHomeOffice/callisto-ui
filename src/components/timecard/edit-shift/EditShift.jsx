@@ -156,6 +156,7 @@ const EditShift = ({
 
   const onSubmit = async (formData) => {
     setSummaryErrors([]);
+    setSummaryMessages([]);
     const validatedData = validateSubmittedData(formData);
 
     if (validatedData.isValid) {

@@ -58,6 +58,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -105,6 +106,7 @@ describe('EditShift', () => {
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -158,6 +160,7 @@ describe('EditShift', () => {
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryErrors={jest.fn()}
+            setSummaryMessages={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -198,6 +201,7 @@ describe('EditShift', () => {
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryErrors={jest.fn()}
+            setSummaryMessages={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -241,6 +245,7 @@ describe('EditShift', () => {
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
         setSummaryErrors={jest.fn()}
+        setSummaryMessages={jest.fn()}
       />
     );
 
@@ -289,6 +294,7 @@ describe('EditShift', () => {
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
         setSummaryErrors={jest.fn()}
+        setSummaryMessages={jest.fn()}
       />
     );
 
@@ -373,6 +379,7 @@ describe('EditShift', () => {
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -431,6 +438,7 @@ describe('EditShift', () => {
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -822,6 +830,7 @@ describe('EditShift', () => {
     };
 
     const setSummaryErrors = jest.fn();
+    const setSummaryMessages = jest.fn();
 
     renderWithApplicationContext(
       <EditShift
@@ -835,6 +844,7 @@ describe('EditShift', () => {
         localEndDate={'2022-09-02 16:00:00+00:00'}
         startEntryExists={true}
         setSummaryErrors={setSummaryErrors}
+        setSummaryMessages={setSummaryMessages}
       />
     );
 
@@ -890,6 +900,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
@@ -899,6 +910,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -949,6 +961,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
@@ -959,6 +972,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1008,6 +1022,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
@@ -1018,6 +1033,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1061,6 +1077,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
@@ -1071,6 +1088,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
         />
       );
 
@@ -1115,6 +1133,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
@@ -1125,6 +1144,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1157,6 +1177,7 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
@@ -1167,6 +1188,7 @@ describe('EditShift', () => {
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
         />
       );
 
@@ -1208,6 +1230,7 @@ describe('EditShift', () => {
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
