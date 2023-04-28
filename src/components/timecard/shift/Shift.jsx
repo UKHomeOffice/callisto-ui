@@ -8,7 +8,7 @@ import {
   formatDateNoYear,
   formatTime,
   formatDate,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { validateServiceErrors } from '../../../utils/api-utils/ApiUtils';
 import { useApplicationContext } from '../../../context/ApplicationContext';
@@ -29,17 +29,15 @@ const Shift = ({
   const { setServiceError } = useApplicationContext();
 
   const timeEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
-  const [showEditShiftHours, setShowEditShiftHours] = useState(
-    !timeEntryExists
-  );
+  const [showEditShift, setShowEditShift] = useState(!timeEntryExists);
 
-  const toggleEditShiftHours = (event) => {
+  const toggleEditShift = (event) => {
     event.preventDefault();
-    setShowEditShiftHours(!showEditShiftHours);
+    setShowEditShift(!showEditShift);
   };
   useEffect(() => {
     if (timeEntryExists === false) {
-      setShowEditShiftHours(true);
+      setShowEditShift(true);
     }
   });
 
@@ -54,11 +52,7 @@ const Shift = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );
@@ -124,7 +118,7 @@ const Shift = ({
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Hours</dt>
           <dd className="govuk-summary-list__value govuk-!-width-full">
-            {!showEditShiftHours &&
+            {!showEditShift &&
               timeEntryExists &&
               renderShiftHoursText({
                 timeEntryExists,
@@ -136,7 +130,7 @@ const Shift = ({
           <dd className="govuk-summary-list__actions">
             {timeEntryExists && (
               <Link
-                onClick={toggleEditShiftHours}
+                onClick={toggleEditShift}
                 className="govuk-link govuk-link--no-visited-state"
                 to={'/'}
                 data-testid="hours-change-button"
@@ -146,14 +140,14 @@ const Shift = ({
             )}
           </dd>
         </div>
-        {showEditShiftHours && (
+        {showEditShift && (
           <div className="govuk-summary-list__row govuk-summary-list__row--no-border">
             <dt className="govuk-summary-list__row">
               <EditShift
                 summaryErrors={summaryErrors}
                 setSummaryErrors={setSummaryErrors}
                 timecardDate={timecardDate}
-                setShowEditShiftHours={setShowEditShiftHours}
+                setShowEditShift={setShowEditShift}
                 timeEntry={timeEntry}
                 timeEntriesIndex={timeEntriesIndex}
                 timeEntries={timeEntries}

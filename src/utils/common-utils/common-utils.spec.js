@@ -25,19 +25,20 @@ describe('common-utils', () => {
   describe('focusErrors', () => {
     it('should set the summary error to have focus and scroll into view', () => {
       const scroll = (window.HTMLElement.prototype.scrollIntoView = jest.fn());
-      const testErrors = [];
-      testErrors.push({
-        key: 'invalidEnd',
-        inputName: 'shift-finish-time',
-        message: 'Test message for end time',
-        errorPriority: 2,
-      });
-      testErrors.push({
-        key: 'invalidStart',
-        inputName: 'shift-start-time',
-        message: 'Test message for start time',
-        errorPriority: 1,
-      });
+      const testErrors = [
+        {
+          key: 'invalidEnd',
+          inputName: 'shift-finish-time',
+          message: 'Test message for end time',
+          errorPriority: 2,
+        },
+        {
+          key: 'invalidStart',
+          inputName: 'shift-start-time',
+          message: 'Test message for start time',
+          errorPriority: 1,
+        },
+      ];
       renderWithApplicationContext(<ErrorSummary errors={testErrors} />);
       const errorSummary = screen.getByText('Test message for start time');
       focusErrors(errorSummary);

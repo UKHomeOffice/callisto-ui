@@ -25,8 +25,7 @@ const DateInput = ({
 
   const updateErrorMessages = () => {
     const findErrors =
-      errors &&
-      Object.values(errors).filter((error) => error.inputName.includes(name));
+      errors && errors.filter((error) => error.inputName.includes(name));
     let relevantErrorMessages = [];
     if (findErrors) {
       relevantErrorMessages = findErrors.map((error) => {

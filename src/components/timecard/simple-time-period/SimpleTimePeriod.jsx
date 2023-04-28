@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import {
   formatDateTimeISO,
   formatTime,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import { useApplicationContext } from '../../../context/ApplicationContext';
@@ -38,11 +38,7 @@ const SimpleTimePeriod = ({
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
-        removeTimecardContextEntry(
-          timeEntries,
-          setTimeEntries,
-          timeEntriesIndex
-        );
+        removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
       },
       true
     );
@@ -99,7 +95,7 @@ const SimpleTimePeriod = ({
 
   const onCancel = (event) => {
     event.preventDefault();
-    removeTimecardContextEntry(timeEntries, setTimeEntries, timeEntriesIndex);
+    removeTimecardEntry(timeEntries, setTimeEntries, timeEntriesIndex);
   };
 
   return (

@@ -24,11 +24,7 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 1,
     };
 
-    combinedErrors = [
-      ...combinedErrors.slice(0, index),
-      error,
-      ...combinedErrors.slice(index + 1),
-    ];
+    combinedErrors = combineErrors(combinedErrors, error, index);
 
     combinedErrors.push({
       key: 'finishDateClash',
@@ -51,11 +47,7 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 1,
     };
 
-    combinedErrors = [
-      ...combinedErrors.slice(0, index),
-      error,
-      ...combinedErrors.slice(index + 1),
-    ];
+    combinedErrors = combineErrors(combinedErrors, error, index);
   } else if (clashingProperty === clashingProperties.endTime) {
     let index = summaryErrors.findIndex(
       (error) => error.key === 'overlappingFinish'
@@ -71,15 +63,18 @@ export function combineExistingAndTimeClashErrors(
       errorPriority: 1,
     };
 
-    combinedErrors = [
-      ...combinedErrors.slice(0, index),
-      error,
-      ...combinedErrors.slice(index + 1),
-    ];
+    combinedErrors = combineErrors(combinedErrors, error, index);
   }
 
   return combinedErrors;
 }
+const combineErrors = (combinedErrors, error, index) => {
+  return [
+    ...combinedErrors.slice(0, index),
+    error,
+    ...combinedErrors.slice(index + 1),
+  ];
+};
 
 function clashErrorMessage(
   clashingProperty,

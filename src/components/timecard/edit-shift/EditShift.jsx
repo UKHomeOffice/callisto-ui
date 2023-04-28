@@ -8,14 +8,16 @@ import { useApplicationContext } from '../../../context/ApplicationContext';
 
 import StartFinishTimeInput from '../start-finish-time-input/StartFinishTimeInput';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import { UrlSearchParamBuilder } from '../../../utils/api-utils/UrlSearchParamBuilder';
 import {
   formatDate,
   formatDateTimeISO,
   formatTime,
-  removeTimecardContextEntry,
+  removeTimecardEntry,
   isFinishTimeOnNextDay,
+  checkDateFormat,
+  validateFormDates,
+  isTimeValid,
 } from '../../../utils/time-entry-utils/timeEntryUtils';
 import { ContextTimeEntry } from '../../../utils/time-entry-utils/ContextTimeEntry';
 import { focusErrors } from '../../../utils/common-utils/common-utils';
@@ -26,15 +28,12 @@ import { combineExistingAndTimeClashErrors } from '../../../utils/time-entry-uti
 import StartFinishDateInput from '../start-finish-date-input/StartFinishDateInput';
 import Checkbox from '../../common/form/checkbox/Checkbox';
 import { sortErrors } from '../../../utils/sort-errors/sortErrors';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-dayjs.extend(relativeTime);
 
 const EditShift = ({
   summaryErrors,
   setSummaryErrors,
   timecardDate,
-  setShowEditShiftHours,
+  setShowEditShift,
   timeEntry,
   timeEntriesIndex,
   timeEntries,
@@ -193,6 +192,7 @@ const EditShift = ({
 
   const onSubmit = async (formData) => {
     setSummaryErrors([]);
+    setSummaryMessages([]);
     const validatedData = validateSubmittedData(formData);
 
     if (validatedData.isValid) {
@@ -218,7 +218,6 @@ const EditShift = ({
                 params
               );
           if (response.status === 200) {
-            //to be made better ^^
             if (
               startEntryExists &&
               hasShiftMovedFromTimecard(
@@ -230,7 +229,7 @@ const EditShift = ({
                 validatedData.startDateTime,
                 validatedData.finishDateTime
               );
-              removeTimecardContextEntry(
+              removeTimecardEntry(
                 timeEntries,
                 setTimeEntries,
                 timeEntriesIndex
@@ -245,7 +244,7 @@ const EditShift = ({
                 ...timeEntries.slice(timeEntriesIndex + 1),
               ]);
             }
-            setShowEditShiftHours(false);
+            setShowEditShift(false);
           }
         },
         true,
@@ -253,89 +252,6 @@ const EditShift = ({
       );
     } else {
       handleError(validatedData.errors);
-    }
-  };
-  const validateFormDates = (fieldType, formData, validatedData, newErrors) => {
-    const day = `${fieldType}Date-day`;
-    const month = `${fieldType}Date-month`;
-    const year = `${fieldType}Date-year`;
-    const priority = fieldType === 'start' ? 3 : 4;
-    let datesValid = true;
-
-    if (!formData[day]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Day`,
-        inputName: day,
-        message: `Enter a ${fieldType} day`,
-        errorPriority: priority,
-      });
-    }
-
-    if (!formData[month]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Month`,
-        inputName: month,
-        message: `Enter a ${fieldType} month`,
-        errorPriority: priority,
-      });
-    }
-    if (!formData[year]) {
-      validatedData.isValid = false;
-      datesValid = false;
-      newErrors.push({
-        key: `empty${fieldType}Year`,
-        inputName: year,
-        message: `Enter a ${fieldType} year`,
-        errorPriority: priority,
-      });
-    }
-    return datesValid;
-  };
-
-  const checkDateFormat = (fieldType, formData, validatedData, newErrors) => {
-    const day = `${fieldType}Date-day`;
-    const month = `${fieldType}Date-month`;
-    const year = `${fieldType}Date-year`;
-    const priority = fieldType === 'start' ? 3 : 4;
-
-    if (!formData[day].match(/^([1-9]|0[1-9]|[12]\d|3[01])$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Day`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Day`,
-          inputName: day,
-          message: `Enter a valid ${fieldType} day`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
-    }
-
-    if (!formData[month].match(/^([1-9]|0[1-9]|1[012])$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Month`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Month`,
-          inputName: month,
-          message: `Enter a valid ${fieldType} month`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
-    }
-
-    if (!formData[year].match(/^\d{4}$/)) {
-      if (!newErrors.some((error) => error.key === `empty${fieldType}Year`)) {
-        newErrors.push({
-          key: `invalid${fieldType}Year`,
-          inputName: year,
-          message: `Enter a valid ${fieldType} year`,
-          errorPriority: priority,
-        });
-      }
-      validatedData.isValid = false;
     }
   };
 
@@ -347,8 +263,6 @@ const EditShift = ({
     const validatedData = {
       isValid: true,
     };
-    //move to utils
-    dayjs.extend(utc);
     let newErrors = [];
 
     const startTime = formData[`${inputName}-start-time`];
@@ -420,21 +334,6 @@ const EditShift = ({
     return validatedData;
   };
 
-  const isTimeValid = (time, timeType) => {
-    // Move to utils
-    if (time.length < 3 && time.length > 0) {
-      const hhTimeRegEx = /^(\d|[01]\d|2[0-3])$/;
-      return hhTimeRegEx.test(time);
-    } else if (time.length > 3 && time.length < 6) {
-      const hhmmTimeRegEx = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-      return hhmmTimeRegEx.test(time);
-    } else if (time.length == 0 && timeType === 'finish time') {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const hasShiftMovedFromTimecard = (startDate, endDate) => {
     const startTimecard = dayjs(timecardDate).startOf('day');
     const endTimecard = dayjs(timecardDate).endOf('day');
@@ -485,8 +384,12 @@ const EditShift = ({
             clashingTimes,
             timePeriodTypesMap
           )}
-          startTimeValue={startTime}
-          finishTimeValue={finishTime}
+          startTimeValue={
+            timeEntry.startTime ? formatTime(timeEntry.startTime) : ''
+          }
+          finishTimeValue={
+            timeEntry.finishTime ? formatTime(timeEntry.finishTime) : ''
+          }
           register={register}
           updateDynamicText={updateShiftLengthAndEndDate}
           finishTimeText={dynamicShiftText}
@@ -536,7 +439,7 @@ EditShift.propTypes = {
   timecardDate: PropTypes.string,
   timeEntry: PropTypes.object,
   timeEntriesIndex: PropTypes.number,
-  setShowEditShiftHours: PropTypes.func,
+  setShowEditShift: PropTypes.func,
   timeEntries: PropTypes.array,
   setTimeEntries: PropTypes.func,
   setSummaryMessages: PropTypes.func,

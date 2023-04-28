@@ -54,10 +54,11 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -101,10 +102,11 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -154,10 +156,11 @@ describe('EditShift', () => {
             timeEntries={[]}
             timecardDate={timecardDate}
             summaryErrors={[]}
-            setShowEditShiftHours={jest.fn()}
+            setShowEditShift={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryErrors={jest.fn()}
+            setSummaryMessages={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -194,10 +197,11 @@ describe('EditShift', () => {
             timeEntries={[]}
             timecardDate={timecardDate}
             summaryErrors={[]}
-            setShowEditShiftHours={jest.fn()}
+            setShowEditShift={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryErrors={jest.fn()}
+            setSummaryMessages={jest.fn()}
           />,
           defaultApplicationContext
         );
@@ -235,12 +239,13 @@ describe('EditShift', () => {
       <EditShift
         timecardDate={timecardDate}
         summaryErrors={[]}
-        setShowEditShiftHours={jest.fn()}
+        setShowEditShift={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntries={[]}
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
         setSummaryErrors={jest.fn()}
+        setSummaryMessages={jest.fn()}
       />
     );
 
@@ -284,11 +289,12 @@ describe('EditShift', () => {
         timeEntries={[]}
         timecardDate={timecardDate}
         summaryErrors={[]}
-        setShowEditShiftHours={jest.fn()}
+        setShowEditShift={jest.fn()}
         timeEntry={newTimeEntry}
         timeEntriesIndex={0}
         setTimeEntries={mockSetTimeEntries}
         setSummaryErrors={jest.fn()}
+        setSummaryMessages={jest.fn()}
       />
     );
 
@@ -320,7 +326,7 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
         />
@@ -369,10 +375,11 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -427,10 +434,11 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
@@ -484,7 +492,7 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           localStartDate={'2022-09-02'}
@@ -540,7 +548,7 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           startEntryExists={true}
@@ -605,7 +613,7 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           localStartDate={'2022-09-01'}
@@ -678,7 +686,7 @@ describe('EditShift', () => {
             timeEntries={[]}
             timecardDate={timecardDate}
             summaryErrors={[]}
-            setShowEditShiftHours={jest.fn()}
+            setShowEditShift={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
@@ -739,7 +747,7 @@ describe('EditShift', () => {
             timeEntries={[]}
             timecardDate={timecardDate}
             summaryErrors={[]}
-            setShowEditShiftHours={jest.fn()}
+            setShowEditShift={jest.fn()}
             timeEntry={existingTimeEntry}
             timeEntriesIndex={0}
             hasShiftMovedCallback={jest.fn()}
@@ -786,7 +794,7 @@ describe('EditShift', () => {
             timeEntries={[]}
             timecardDate={timecardDate}
             summaryErrors={[]}
-            setShowEditShiftHours={jest.fn()}
+            setShowEditShift={jest.fn()}
             timeEntry={newTimeEntry}
             timeEntriesIndex={0}
             setSummaryMessages={setSummaryMessages}
@@ -822,19 +830,21 @@ describe('EditShift', () => {
     };
 
     const setSummaryErrors = jest.fn();
+    const setSummaryMessages = jest.fn();
 
     renderWithApplicationContext(
       <EditShift
         timeEntries={[]}
         timecardDate={timecardDate}
         summaryErrors={[]}
-        setShowEditShiftHours={jest.fn()}
+        setShowEditShift={jest.fn()}
         timeEntry={existingTimeEntry}
         timeEntriesIndex={0}
         localStartDate={'2022-09-02 08:00:00+00:00'}
         localEndDate={'2022-09-02 16:00:00+00:00'}
         startEntryExists={true}
         setSummaryErrors={setSummaryErrors}
+        setSummaryMessages={setSummaryMessages}
       />
     );
 
@@ -891,15 +901,17 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -951,16 +963,18 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1011,16 +1025,18 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1064,16 +1080,18 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
         />
       );
 
@@ -1118,16 +1136,18 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
           timePeriodTypesMap={timePeriodTypesMap}
         />
       );
@@ -1160,16 +1180,18 @@ describe('EditShift', () => {
       });
 
       const setSummaryErrors = jest.fn();
+      const setSummaryMessages = jest.fn();
 
       renderWithApplicationContext(
         <EditShift
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={newTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={setSummaryErrors}
+          setSummaryMessages={setSummaryMessages}
         />
       );
 
@@ -1208,10 +1230,11 @@ describe('EditShift', () => {
           timeEntries={[]}
           timecardDate={timecardDate}
           summaryErrors={[]}
-          setShowEditShiftHours={jest.fn()}
+          setShowEditShift={jest.fn()}
           timeEntry={existingTimeEntry}
           timeEntriesIndex={0}
           setSummaryErrors={jest.fn()}
+          setSummaryMessages={jest.fn()}
         />
       );
 
