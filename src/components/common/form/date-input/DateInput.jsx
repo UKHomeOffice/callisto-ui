@@ -12,12 +12,27 @@ const DateInput = ({
   yearValue,
   register,
   formState,
-  getFormValues,
-  setStartDate,
-  setEndDate,
-  updateDynamicText,
+  updateDateType,
 }) => {
   const [errorMessages, setErrorMessages] = useState([]);
+
+  let day = dayValue;
+  let month = monthValue;
+  let year = yearValue;
+
+  let date = day + '-' + month + '-' + year;
+
+  const updateDate = (newDateValue, dateType) => {
+    if (dateType === 'day') {
+      day = newDateValue;
+    } else if (dateType === 'month') {
+      month = newDateValue;
+    } else if (dateType === 'year') {
+      year = newDateValue;
+    }
+    date = year + '-' + month + '-' + day;
+    updateDateType(date, heading);
+  };
 
   useEffect(() => {
     updateErrorMessages();
@@ -67,39 +82,30 @@ const DateInput = ({
               name={name}
               dateType="day"
               errors={errors}
-              defaultValue={dayValue}
+              defaultValue={day}
               register={register}
-              getFormValues={getFormValues}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
               width={2}
-              updateDynamicText={updateDynamicText}
+              updateDate={updateDate}
             />
 
             <DateInputItem
               name={name}
               dateType="month"
               errors={errors}
-              defaultValue={monthValue}
+              defaultValue={month}
               register={register}
-              getFormValues={getFormValues}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
               width={2}
-              updateDynamicText={updateDynamicText}
+              updateDate={updateDate}
             />
 
             <DateInputItem
               name={name}
               dateType="year"
               errors={errors}
-              defaultValue={yearValue}
+              defaultValue={year}
               register={register}
-              getFormValues={getFormValues}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
               width={3}
-              updateDynamicText={updateDynamicText}
+              updateDate={updateDate}
             />
           </div>
         </fieldset>
@@ -114,38 +120,13 @@ const DateInputItem = ({
   errors,
   defaultValue,
   register,
-  getFormValues,
-  setStartDate,
-  setEndDate,
   width,
-  updateDynamicText,
+  updateDate,
 }) => {
   const capitalisedName = dateType[0].toUpperCase() + dateType.substring(1);
 
-  const triggerOnChangeUpdated = () => {
-    setDates();
-  };
-
-  const setDates = () => {
-    const startDate =
-      getFormValues(`startDate-year`) +
-      '-' +
-      getFormValues(`startDate-month`) +
-      '-' +
-      getFormValues(`startDate-day`);
-
-    setStartDate(startDate);
-
-    const endDate =
-      getFormValues(`finishDate-year`) +
-      '-' +
-      getFormValues(`finishDate-month`) +
-      '-' +
-      getFormValues(`finishDate-day`);
-
-    setEndDate(endDate);
-
-    updateDynamicText(startDate, endDate);
+  const triggerOnChangeUpdated = (e) => {
+    updateDate(e.target.value, dateType);
   };
 
   return (
@@ -172,7 +153,7 @@ const DateInputItem = ({
           data-testid={`${name}-${dateType}-input`}
           defaultValue={defaultValue}
           {...register(name + '-' + dateType, {
-            onChange: () => triggerOnChangeUpdated(),
+            onBlur: (e) => triggerOnChangeUpdated(e),
           })}
         />
       </div>

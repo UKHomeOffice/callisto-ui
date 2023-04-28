@@ -55,13 +55,8 @@ const EditShift = ({
   const startEntryExists = !!timeEntry?.startTime && timeEntry.startTime !== '';
   const finishEntryExists =
     !!timeEntry?.finishTime && timeEntry.finishTime !== '';
-  const [localStartDate, setLocalStartDate] = useState(
-    startEntryExists ? timeEntry.startTime : timecardDate
-  );
-  const [localEndDate, setLocalEndDate] = useState(
-    finishEntryExists ? timeEntry.finishTime : timecardDate
-  );
-
+  let localStartDate = startEntryExists ? timeEntry.startTime : timecardDate;
+  let localEndDate = finishEntryExists ? timeEntry.finishTime : timecardDate;
   const [dynamicShiftText, setDynamicShiftText] = useState('');
   const DAY_IN_MINUTES = 1440;
 
@@ -82,15 +77,24 @@ const EditShift = ({
     setSummaryErrors(errorFields);
   };
 
+  const updateDateType = (date, dateType) => {
+    if (dateType === 'Start date') {
+      localStartDate = date;
+    } else if (dateType === 'Finish date') {
+      localEndDate = date;
+    }
+  };
+
   const updateShiftLengthAndEndDate = (
     startDate,
     endDate,
     startTime,
     finishTime
   ) => {
-    console.log('editShift ', startTime);
-    // let startTime = getValues(inputNames.shiftStartTime);
-    // let finishTime = getValues(inputNames.shiftFinishTime);
+    startTime = startTime ? startTime : getValues(inputNames.shiftStartTime);
+    finishTime = finishTime
+      ? finishTime
+      : getValues(inputNames.shiftFinishTime);
     const actualStartDate = startDate ? startDate : localStartDate;
     const actualEndDate = endDate ? endDate : localEndDate;
     if (!isChecked) {
@@ -123,10 +127,6 @@ const EditShift = ({
       shiftMins = shiftLength % 60;
       shiftString = `${shiftHours} hours ${shiftMins} minutes`;
     }
-
-    if (!isChecked) {
-      updateLocalEndDate(startTime, finishTime, actualStartDate);
-    }
     setDynamicShiftText(shiftString);
   };
 
@@ -134,10 +134,10 @@ const EditShift = ({
     const nextDay = isFinishTimeOnNextDay(startTime, finishTime);
     if (nextDay) {
       timeEntry.finishNextDay = true;
-      setLocalEndDate(dayjs(actualStartDate).add(1, 'day').toString());
+      localEndDate = dayjs(actualStartDate).add(1, 'day').toString();
     } else {
       timeEntry.finishNextDay = false;
-      setLocalEndDate(actualStartDate);
+      localEndDate = actualStartDate;
     }
   };
 
@@ -257,7 +257,7 @@ const EditShift = ({
 
   const validateSubmittedData = (formData) => {
     if (!isChecked && isFinishTimeOnNextDay(localStartDate, localEndDate)) {
-      setLocalEndDate(dayjs(localStartDate).add(1, 'day').toString());
+      localEndDate = dayjs(localStartDate).add(1, 'day').toString();
     }
 
     const validatedData = {
@@ -416,10 +416,7 @@ const EditShift = ({
             register={register}
             formState={formState}
             finishNextDay={timeEntry.finishNextDay}
-            getFormValues={getValues}
-            setStartDate={setLocalStartDate}
-            setEndDate={setLocalEndDate}
-            updateDynamicText={updateShiftLengthAndEndDate}
+            updateDateType={updateDateType}
           />
         )}
         <div className="govuk-button-group">

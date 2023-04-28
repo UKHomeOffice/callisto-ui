@@ -18,10 +18,7 @@ const StartFinishDateInput = ({
   register,
   formState,
   finishNextDay,
-  getFormValues,
-  setStartDate,
-  setEndDate,
-  updateDynamicText,
+  updateDateType,
 }) => {
   const calculateEndDate = () => {
     return startEntryExists
@@ -47,13 +44,10 @@ const StartFinishDateInput = ({
         errors={errors}
         register={register}
         formState={formState}
-        getFormValues={getFormValues}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
         dayValue={formatJustDay(startTimeValue)}
         monthValue={formatJustMonth(startTimeValue)}
         yearValue={formatJustYear(startTimeValue)}
-        updateDynamicText={updateDynamicText}
+        updateDateType={updateDateType}
       />
       <DateInput
         name={`finish${name}`}
@@ -63,9 +57,6 @@ const StartFinishDateInput = ({
         errors={errors}
         register={register}
         formState={formState}
-        getFormValues={getFormValues}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
         dayValue={
           finishNextDay
             ? formatJustDay(calculateEndDate())
@@ -81,7 +72,7 @@ const StartFinishDateInput = ({
             ? formatJustYear(calculateEndDate())
             : formatJustYear(finishTimeValue)
         }
-        updateDynamicText={updateDynamicText}
+        updateDateType={updateDateType}
       />
     </div>
   );
