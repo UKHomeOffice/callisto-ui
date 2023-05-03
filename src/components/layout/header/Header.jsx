@@ -90,6 +90,15 @@ const Header = () => {
                   Record my time
                 </Link>
               </li>
+              <li className="govuk-header__navigation-item govuk-header__navigation-item">
+                <Link
+                  className="govuk-header__link"
+                  to={`/accruals/${formatDate(dayjs())}`}
+                  style={{ color: '#000' }}
+                >
+                  Track my time
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

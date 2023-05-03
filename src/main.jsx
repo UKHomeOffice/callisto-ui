@@ -9,6 +9,7 @@ import keycloak from './keycloak';
 import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
+import Accruals from './pages/accruals/Accruals';
 
 ReactDOM.render(
   <ReactKeycloakProvider
@@ -27,6 +28,19 @@ ReactDOM.render(
           <Route path="/" element={<App />}>
             <Route index="true" element={<Home />} />
             <Route path="/timecard/:date" element={<Timecard />} />
+            <Route path="/forms" element={<FormsExample />} />
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: '1rem' }}>
+                  <h3>There&apos;s nothing here!</h3>
+                </main>
+              }
+            />
+          </Route>
+          <Route path="/" element={<App />}>
+            <Route index="true" element={<Home />} />
+            <Route path="/accruals/:date" element={<Accruals />} />
             <Route path="/forms" element={<FormsExample />} />
             <Route
               path="*"
