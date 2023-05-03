@@ -60,10 +60,8 @@ const EditShift = ({
   const [dynamicShiftText, setDynamicShiftText] = useState('');
   const DAY_IN_MINUTES = 1440;
 
-  const startTime = timeEntry.startTime ? formatTime(timeEntry.startTime) : '';
-  const finishTime = timeEntry.finishTime
-    ? formatTime(timeEntry.finishTime)
-    : '';
+  let startTime = timeEntry.startTime ? formatTime(timeEntry.startTime) : '';
+  let finishTime = timeEntry.finishTime ? formatTime(timeEntry.finishTime) : '';
 
   useEffect(() => {
     focusErrors(document.querySelector('[id^="summary-error"] a'));
@@ -85,18 +83,13 @@ const EditShift = ({
     }
   };
 
-  const updateShiftLengthAndEndDate = (
-    startDate,
-    endDate,
-    startTime,
-    finishTime
-  ) => {
+  const updateShiftLengthAndEndDate = () => {
     startTime = startTime ? startTime : getValues(inputNames.shiftStartTime);
     finishTime = finishTime
       ? finishTime
       : getValues(inputNames.shiftFinishTime);
-    const actualStartDate = startDate ? startDate : localStartDate;
-    const actualEndDate = endDate ? endDate : localEndDate;
+    const actualStartDate = localStartDate;
+    const actualEndDate = localEndDate;
     if (!isChecked) {
       updateLocalEndDate(startTime, finishTime, actualStartDate);
     }
@@ -128,6 +121,15 @@ const EditShift = ({
       shiftString = `${shiftHours} hours ${shiftMins} minutes`;
     }
     setDynamicShiftText(shiftString);
+  };
+
+  const updateTime = (time, timeType) => {
+    if (timeType === 'start') {
+      startTime = time;
+    } else if (timeType === 'finish') {
+      finishTime = time;
+    }
+    updateShiftLengthAndEndDate(null, null, startTime, finishTime);
   };
 
   const updateLocalEndDate = (startTime, finishTime, actualStartDate) => {
@@ -393,6 +395,7 @@ const EditShift = ({
           register={register}
           updateDynamicText={updateShiftLengthAndEndDate}
           finishTimeText={dynamicShiftText}
+          updateTime={updateTime}
         />
         <Checkbox
           text="View or edit dates"

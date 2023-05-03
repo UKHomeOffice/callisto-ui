@@ -174,10 +174,7 @@ DateInput.propTypes = {
   yearValue: PropTypes.string,
   register: PropTypes.any.isRequired,
   formState: PropTypes.any,
-  getFormValues: PropTypes.func.isRequired,
-  setStartDate: PropTypes.func.isRequired,
-  setEndDate: PropTypes.func.isRequired,
-  updateDynamicText: PropTypes.func,
+  updateDateType: PropTypes.func,
 };
 
 DateInputItem.propTypes = {
@@ -185,11 +182,7 @@ DateInputItem.propTypes = {
   dateType: PropTypes.string,
   errors: PropTypes.array,
   defaultValue: PropTypes.string,
-  pattern: PropTypes.any,
   register: PropTypes.any.isRequired,
-  getFormValues: PropTypes.func.isRequired,
-  setStartDate: PropTypes.func.isRequired,
-  setEndDate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
-  updateDynamicText: PropTypes.func,
+  updateDate: PropTypes.func,
 };

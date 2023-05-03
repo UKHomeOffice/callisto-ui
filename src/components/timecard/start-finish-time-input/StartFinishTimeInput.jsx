@@ -11,6 +11,7 @@ const StartFinishTimeInput = ({
   register,
   updateDynamicText,
   finishTimeText,
+  updateTime,
 }) => {
   let startTime = startTimeValue;
   let finishTime = finishTimeValue;
@@ -18,15 +19,6 @@ const StartFinishTimeInput = ({
   useEffect(() => {
     updateDynamicText(null, null, startTime, finishTime);
   }, []);
-
-  const updateTime = (time, timeType) => {
-    if (timeType === 'start') {
-      startTime = time;
-    } else if (timeType === 'finish') {
-      finishTime = time;
-    }
-    updateDynamicText(null, null, startTime, finishTime);
-  };
 
   const formatErrorDisplay = (error) => {
     if (
@@ -150,4 +142,5 @@ StartFinishTimeInput.propTypes = {
   register: PropTypes.any.isRequired,
   updateDynamicText: PropTypes.func,
   finishTimeText: PropTypes.string,
+  updateTime: PropTypes.func,
 };

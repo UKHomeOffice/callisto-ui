@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 
 const ValidatedTimeEntry = ({
   name,
@@ -46,4 +45,5 @@ ValidatedTimeEntry.propTypes = {
   register: PropTypes.any.isRequired,
   updateDynamicText: PropTypes.func,
   timeType: PropTypes.string,
+  updateTime: PropTypes.func,
 };
