@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
+import './i18n';
 import { initAll } from 'govuk-frontend';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak from './keycloak';

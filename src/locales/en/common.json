@@ -1,0 +1,11 @@
+{
+    "header": {
+        "beta": {
+            "name": "beta",
+            "feedback": "This is a new service - your <feedback_anchor>feedback</feedback_anchor> will help us to improve it."
+        }
+    },
+    "navigation": {
+        "home": "Home"
+    }
+}
