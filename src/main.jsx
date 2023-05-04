@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './index.scss';
 import App from './App';
+import './i18n';
 import { initAll } from 'govuk-frontend';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak from './keycloak';
