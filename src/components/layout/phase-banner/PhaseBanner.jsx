@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 
 const PhaseBanner = () => {
+  const { t } = useTranslation('common');
+
   return (
     <>
       <div
@@ -9,14 +12,16 @@ const PhaseBanner = () => {
       >
         <p className="govuk-phase-banner__content">
           <strong className="govuk-tag govuk-phase-banner__content__tag">
-            beta
+            {t('header.beta.name')}
           </strong>
           <span className="govuk-phase-banner__text">
-            This is a new service – your{' '}
-            <Link className="govuk-link" to="/">
-              feedback
-            </Link>{' '}
-            will help us to improve it.
+            <Trans
+              i18nKey="header.beta.feedback"
+              t={t}
+              components={{
+                feedback_anchor: <Link className="govuk-link" to="/" />,
+              }}
+            />
           </span>
         </p>
       </div>
