@@ -26,3 +26,11 @@ export const getAgreements = async (params) => {
     throw new Error(serviceName + ' getAgreements function threw ' + error);
   }
 };
+
+export const getAgreementTargets = async (params) => {
+  try {
+    return await api.get(baseUrl + 'resources/agreement-targets', params);
+  } catch (error) {
+    throw new Error(serviceName + ' getAgreements function threw ' + error);
+  }
+};

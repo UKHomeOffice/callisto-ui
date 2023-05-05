@@ -7,9 +7,9 @@ import {
 import dayjs from 'dayjs';
 import { UrlSearchParamBuilder } from '../../utils/api-utils/UrlSearchParamBuilder';
 import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
-import { buildAccrualsFilter, buildAgreementFilter } from '../../utils/filters/accruals-filter/accrualsFilterBuilder';
+import { buildAccrualsFilter, buildAgreementFilter, buildAgreementTargetFilter } from '../../utils/filters/accruals-filter/accrualsFilterBuilder';
 import { useEffect } from 'react';
-import { getAccruals, getAgreements } from '../../api/services/accrualsService';
+import { getAccruals, getAgreements, getAgreementTargets } from '../../api/services/accrualsService';
 
 const Accruals = () => {
   const { setServiceError } = useApplicationContext();
@@ -19,6 +19,7 @@ const Accruals = () => {
 
   useEffect(() => {
     getAgreementData(accrualsDate, setServiceError);
+    //getAgreementTargetData(accrualsDate, setServiceError);
     // getAccrualsData(
     //   accrualsDate,
     //   setServiceError
@@ -51,24 +52,6 @@ const Accruals = () => {
   );
 };
 
-const getAgreementData = async (
-  date,
-  setServiceError
-) => {
-const accrualsParams = new UrlSearchParamBuilder()
-  .setTenantId('00000000-0000-0000-0000-000000000000')
-  .setFilter(buildAgreementFilter(date))
-  .getUrlSearchParams();
-
-  validateServiceErrors(setServiceError, async () => {
-    const accrualsResponse = await getAgreements(accrualsParams);
-
-    if (accrualsResponse.status == 200) {
-      console.log('Data retrieved: ', accrualsResponse.data.items);
-    }
-  });
-};
-
 const getAccrualsData = async (
   date,
   setServiceError
@@ -82,7 +65,43 @@ const accrualsParams = new UrlSearchParamBuilder()
     const accrualsResponse = await getAccruals(accrualsParams);
 
     if (accrualsResponse.status == 200) {
-      console.log('Data retrieved: ', accrualsResponse.data.items);
+      console.log('Accruals data retrieved: ', accrualsResponse.data.items);
+    }
+  });
+};
+
+const getAgreementData = async (
+  date,
+  setServiceError
+) => {
+const accrualsParams = new UrlSearchParamBuilder()
+  .setTenantId('00000000-0000-0000-0000-000000000000')
+  .setFilter(buildAgreementFilter(date))
+  .getUrlSearchParams();
+
+  validateServiceErrors(setServiceError, async () => {
+    const accrualsResponse = await getAgreements(accrualsParams);
+
+    if (accrualsResponse.status == 200) {
+      console.log('Agreement data retrieved: ', accrualsResponse.data.items);
+    }
+  });
+};
+
+const getAgreementTargetData = async (
+  date,
+  setServiceError
+) => {
+const accrualsParams = new UrlSearchParamBuilder()
+  .setTenantId('00000000-0000-0000-0000-000000000000')
+  .setFilter(buildAgreementTargetFilter('ac140007-87ea-1cbd-8187-ead0003a0000'))
+  .getUrlSearchParams();
+
+  validateServiceErrors(setServiceError, async () => {
+    const accrualsResponse = await getAgreementTargets(accrualsParams);
+
+    if (accrualsResponse.status == 200) {
+      console.log('Agreement target data retrieved: ', accrualsResponse.data.items);
     }
   });
 };
