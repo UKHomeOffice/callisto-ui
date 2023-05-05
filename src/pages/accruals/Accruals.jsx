@@ -19,12 +19,12 @@ const Accruals = () => {
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
   useEffect(() => {
-    //getAgreementData(accrualsDate, setServiceError);
+    getAgreementData(accrualsDate, setServiceError);
     //getAgreementTargetData(accrualsDate, setServiceError);
-    getAccrualsData(
-      accrualsDate,
-      setServiceError
-    );
+    // getAccrualsData(
+    //   accrualsDate,
+    //   setServiceError
+    // );
   }, [accrualsDate]);
  
   return (
@@ -49,7 +49,7 @@ const Accruals = () => {
           Next day
         </Link>
       </div>
-      <AnnualTargetHours />
+      {/* <AnnualTargetHours /> */}
     </>
   );
 };
