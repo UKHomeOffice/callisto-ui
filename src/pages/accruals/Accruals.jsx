@@ -10,6 +10,7 @@ import { validateServiceErrors } from '../../utils/api-utils/ApiUtils';
 import { buildAccrualsFilter, buildAgreementFilter, buildAgreementTargetFilter } from '../../utils/filters/accruals-filter/accrualsFilterBuilder';
 import { useEffect } from 'react';
 import { getAccruals, getAgreements, getAgreementTargets } from '../../api/services/accrualsService';
+import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
 
 const Accruals = () => {
   const { setServiceError } = useApplicationContext();
@@ -18,12 +19,12 @@ const Accruals = () => {
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
   useEffect(() => {
-    getAgreementData(accrualsDate, setServiceError);
+    //getAgreementData(accrualsDate, setServiceError);
     //getAgreementTargetData(accrualsDate, setServiceError);
-    // getAccrualsData(
-    //   accrualsDate,
-    //   setServiceError
-    // );
+    getAccrualsData(
+      accrualsDate,
+      setServiceError
+    );
   }, [accrualsDate]);
  
   return (
@@ -48,6 +49,7 @@ const Accruals = () => {
           Next day
         </Link>
       </div>
+      <AnnualTargetHours />
     </>
   );
 };
