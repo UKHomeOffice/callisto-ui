@@ -18,13 +18,16 @@ const Accruals = () => {
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
+  const agreementStartDate = accrualsDate;
+  const agreementEndDate = accrualsDate;
+
   useEffect(() => {
     getAgreementData(accrualsDate, setServiceError);
-    //getAgreementTargetData(accrualsDate, setServiceError);
-    // getAccrualsData(
-    //   accrualsDate,
-    //   setServiceError
-    // );
+    getAgreementTargetData(accrualsDate, setServiceError);
+    getAccrualsData(
+      accrualsDate,
+      setServiceError
+    );
   }, [accrualsDate]);
  
   return (
