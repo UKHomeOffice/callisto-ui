@@ -5,6 +5,7 @@ import {
   formatDate,
 } from '../../utils/time-entry-utils/timeEntryUtils';
 import dayjs from 'dayjs';
+import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
 
 const Accruals = () => {
   const { setServiceError, userId } = useApplicationContext();
@@ -34,6 +35,7 @@ const Accruals = () => {
           Next day
         </Link>
       </div>
+      <AnnualTargetHours />
     </>
   );
 };
