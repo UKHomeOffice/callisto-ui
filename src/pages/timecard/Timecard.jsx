@@ -116,11 +116,11 @@ const Timecard = () => {
         <div className="loaderWrapper">
           <div className="loader">
             <img
-              src="/emblem.jpg"
+              src="/static/emblem.jpg"
               alt="Home Office emblem"
               className="rounded"
             />
-            <img src="/spinner.gif" alt="Loading spinner" />
+            <img src="/static/spinner.gif" alt="Loading spinner" />
           </div>
         </div>
       )}
