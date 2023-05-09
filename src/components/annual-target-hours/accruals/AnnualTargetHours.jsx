@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types';
+import { useTranslation, Trans } from 'react-i18next';
 
 const AnnualTargetHours = ({ agreementTarget, accruals }) => {
-  const total = agreementTarget.items[0].targetTotal;
-  const worked = accruals.items[0].cumulativeTotal;
+  const { t } = useTranslation('common');
+  const total = agreementTarget?.targetTotal || 0;
+  const worked = accruals?.cumulativeTotal || 0;
   const remaining = total - worked;
-  const target = total - worked;
+  const target = total - (accruals?.cumulativeTarget || 0);
 
   return (
     <div className="accruals-container">
       <form className="grey-border">
-        <h1 className="govuk-heading-m">Annual target hours</h1>
-        <h1 className="govuk-heading-m">
-          <span className="bold">{remaining}</span> remaining
+        <h1 className="govuk-heading-m newline">
+          {t('annualTargetHours.titleRemaining', { count: remaining })}
         </h1>
+
         <table className="govuk-table">
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
               <th scope="row" className="govuk-table__header">
-                Total
+                {t('annualTargetHours.total')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
                 {total}
@@ -25,7 +27,7 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
             </tr>
             <tr className="govuk-table__row">
               <th scope="row" className="govuk-table__header">
-                Worked
+                {t('annualTargetHours.worked')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
                 {worked}
@@ -33,7 +35,7 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
             </tr>
             <tr className="govuk-table__row">
               <th scope="row" className="govuk-table__header">
-                Remaining
+                {t('annualTargetHours.remaining')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
                 {remaining}
@@ -41,7 +43,7 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
             </tr>
             <tr className="govuk-table__row">
               <th scope="row" className="govuk-table__header">
-                Target
+                {t('annualTargetHours.target')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
                 {target}
@@ -55,40 +57,27 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
 };
 
 export default AnnualTargetHours;
+
 AnnualTargetHours.propTypes = {
   agreementTarget: PropTypes.shape({
-    meta: PropTypes.shape({
-      next: PropTypes.any,
-    }),
-    items: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        tenantId: PropTypes.string,
-        agreementId: PropTypes.string,
-        accrualTypeId: PropTypes.string,
-        targetTotal: PropTypes.number,
-      })
-    ).isRequired,
-  }).isRequired,
+    id: PropTypes.string,
+    tenantId: PropTypes.string,
+    agreementId: PropTypes.string,
+    accrualTypeId: PropTypes.string,
+    targetTotal: PropTypes.number,
+  }),
   accruals: PropTypes.shape({
-    meta: PropTypes.shape({
-      next: PropTypes.any,
+    id: PropTypes.string,
+    tenantId: PropTypes.string,
+    personId: PropTypes.string,
+    agreementId: PropTypes.string,
+    accrualDate: PropTypes.string,
+    accrualTypeId: PropTypes.string,
+    cumulativeTotal: PropTypes.number,
+    cumulativeTarget: PropTypes.number,
+    contributions: PropTypes.shape({
+      timeEntries: PropTypes.object,
+      total: PropTypes.number,
     }),
-    items: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        tenantId: PropTypes.string,
-        personId: PropTypes.string,
-        agreementId: PropTypes.string,
-        accrualDate: PropTypes.string,
-        accrualTypeId: PropTypes.string,
-        cumulativeTotal: PropTypes.number,
-        cumulativeTarget: PropTypes.number,
-        contributions: PropTypes.shape({
-          timeEntries: PropTypes.object,
-          total: PropTypes.number,
-        }),
-      })
-    ),
   }),
 };
