@@ -23,9 +23,9 @@ const Accruals = () => {
   const [agreementData, setAgreementData] = useState([]);
   const [targetData, setTargetData] = useState([]);
   const [accrualsData, setAccrualsData] = useState([]);
-
-  let agreementStartDate = null;
-  let agreementEndDate = null;
+  const [agreementStartDate, setAgreementStartDate] = useState(null);
+  const [agreementEndDate, setAgreementEndDate] = useState(null);
+  
   let agreementId = '';
 
   useEffect(async () => {
@@ -68,8 +68,8 @@ const Accruals = () => {
   
       if (agreementResponse.status == 200 && agreementResponse.data.items?.length > 0) {
         console.log('Agreement data retrieved: ', agreementResponse.data.items);
-        agreementStartDate = agreementResponse.data.items[0].startDate;
-        agreementEndDate = agreementResponse.data.items[0].endDate;
+        setAgreementStartDate(agreementResponse.data.items[0].startDate);
+        setAgreementEndDate(agreementResponse.data.items[0].endDate);
         agreementId = agreementResponse.data.items[0].id;
         setAgreementData(agreementResponse.data.items);
       }
@@ -145,7 +145,7 @@ const Accruals = () => {
           {t('accruals.nextDay')}
         </Link>
       </div>
-      <AnnualTargetHours />
+      <AnnualTargetHours agreementTarget={targetData} accruals={accrualsData} />
     </>
   );
 };
