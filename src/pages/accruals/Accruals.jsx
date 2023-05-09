@@ -11,8 +11,10 @@ import { buildAccrualsFilter, buildAgreementFilter, buildAgreementTargetFilter }
 import { useEffect, useState } from 'react';
 import { getAccruals, getAgreements, getAgreementTargets } from '../../api/services/accrualsService';
 import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
+import { useTranslation, Trans } from 'react-i18next';
 
 const Accruals = () => {
+  const { t } = useTranslation('common');
   const { setServiceError } = useApplicationContext();
   const { date: accrualsDate } = useParams();
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
@@ -123,9 +125,9 @@ const Accruals = () => {
  
   return (
     <>
-      <h1 className="govuk-caption-m">My accruals balance as of</h1>
+      <h1 className="govuk-caption-m">{t('accruals.balance')}</h1>
       <h2 className="govuk-heading-m">
-        {dayjs(accrualsDate).format('D MMMM YYYY')}
+      {dayjs(accrualsDate).format(t('accruals.dateFormat'))}
       </h2>
       <div className="govuk-button-group button-group-row">
         <Link
@@ -133,17 +135,17 @@ const Accruals = () => {
           className="govuk-link govuk-link--no-visited-state"
           to={`/accruals/${previousDay}`}
         >
-          Previous day
+          {t('accruals.previousDay')}
         </Link>
         <Link
           onClick={() => {}}
           className="govuk-link govuk-link--no-visited-state"
           to={`/accruals/${nextDay}`}
         >
-          Next day
+          {t('accruals.nextDay')}
         </Link>
       </div>
-      {/* <AnnualTargetHours /> */}
+      <AnnualTargetHours />
     </>
   );
 };
