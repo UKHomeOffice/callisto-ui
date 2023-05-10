@@ -1,4 +1,4 @@
-import { Outlet, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Footer from './components/layout/footer/Footer';
 import Header from './components/layout/header/Header';
 import { useKeycloak } from '@react-keycloak/web';
