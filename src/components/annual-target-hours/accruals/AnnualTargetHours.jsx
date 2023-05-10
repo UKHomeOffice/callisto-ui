@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const AnnualTargetHours = ({ agreementTarget, accruals }) => {
   const { t } = useTranslation('common');
@@ -58,26 +58,26 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
 
 export default AnnualTargetHours;
 
-// AnnualTargetHours.propTypes = {
-//   agreementTarget: PropTypes.shape({
-//     id: PropTypes.string,
-//     tenantId: PropTypes.string,
-//     agreementId: PropTypes.string,
-//     accrualTypeId: PropTypes.string,
-//     targetTotal: PropTypes.number,
-//   }),
-//   accruals: PropTypes.shape({
-//     id: PropTypes.string,
-//     tenantId: PropTypes.string,
-//     personId: PropTypes.string,
-//     agreementId: PropTypes.string,
-//     accrualDate: PropTypes.string,
-//     accrualTypeId: PropTypes.string,
-//     cumulativeTotal: PropTypes.number,
-//     cumulativeTarget: PropTypes.number,
-//     contributions: PropTypes.shape({
-//       timeEntries: PropTypes.object,
-//       total: PropTypes.number,
-//     }),
-//   }),
-// };
+AnnualTargetHours.propTypes = {
+  agreementTarget: PropTypes.shape({
+    id: PropTypes.string,
+    tenantId: PropTypes.string,
+    agreementId: PropTypes.string,
+    accrualTypeId: PropTypes.string,
+    targetTotal: PropTypes.number,
+  }),
+  accruals: PropTypes.shape({
+    id: PropTypes.string,
+    tenantId: PropTypes.string,
+    personId: PropTypes.string,
+    agreementId: PropTypes.string,
+    accrualDate: PropTypes.string,
+    accrualTypeId: PropTypes.string,
+    cumulativeTotal: PropTypes.number,
+    cumulativeTarget: PropTypes.number,
+    contributions: PropTypes.shape({
+      timeEntries: PropTypes.object,
+      total: PropTypes.number,
+    }),
+  }),
+};

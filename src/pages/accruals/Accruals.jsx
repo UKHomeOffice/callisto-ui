@@ -11,7 +11,7 @@ import { buildAccrualsFilter, buildAgreementFilter, buildAgreementTargetFilter }
 import { useEffect, useState } from 'react';
 import { getAccruals, getAgreements, getAgreementTargets } from '../../api/services/accrualsService';
 import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const Accruals = () => {
   const { t } = useTranslation('common');
@@ -20,8 +20,8 @@ const Accruals = () => {
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
-  const [agreementData, setAgreementData] = useState([]);
-  const [targetData, setTargetData] = useState([]);
+  const [agreementData, setAgreementData] = useState(null);
+  const [targetData, setTargetData] = useState(null);
   const [accrualsData, setAccrualsData] = useState([]);
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
@@ -97,11 +97,11 @@ const Accruals = () => {
         setAgreementStartDate(agreementResponse.data.items[0].startDate);
         setAgreementEndDate(agreementResponse.data.items[0].endDate);
         agreementId = agreementResponse.data.items[0].id;
-        setAgreementData(agreementResponse.data.items);
+        setAgreementData(agreementResponse.data.items[0]);
       }
       else {
-        setAgreementData([]);
-        setTargetData([]);
+        setAgreementData(null);
+        setTargetData(null);
         setAccrualsData([]);
         setAgreementStartDate(null);
         setAgreementEndDate(null);
@@ -126,7 +126,7 @@ const Accruals = () => {
         setTargetData(targetResponse.data.items[0]);
       }
       else {
-        setTargetData([]);
+        setTargetData(null);
       }
     });
   };
