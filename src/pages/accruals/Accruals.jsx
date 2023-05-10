@@ -20,9 +20,7 @@ const Accruals = () => {
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
-  const [agreementData, setAgreementData] = useState(null);
   const [targetData, setTargetData] = useState(null);
-  const [accrualsData, setAccrualsData] = useState([]);
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
   const ANNUAL_TARGET_HOURS_ID = 'e502eebb-4663-4e5b-9445-9a20441c18d9';
@@ -36,10 +34,10 @@ const Accruals = () => {
       getAllData(accrualsDate, setServiceError);
     }
     else {
-      setAccrualsData(getAccrualsData(
+      getAccrualsData(
         accrualsDate,
         setServiceError
-      ));
+      )
     }
   }, [accrualsDate]);
 
@@ -97,12 +95,9 @@ const Accruals = () => {
         setAgreementStartDate(agreementResponse.data.items[0].startDate);
         setAgreementEndDate(agreementResponse.data.items[0].endDate);
         agreementId = agreementResponse.data.items[0].id;
-        setAgreementData(agreementResponse.data.items[0]);
       }
       else {
-        setAgreementData(null);
         setTargetData(null);
-        setAccrualsData([]);
         setAgreementStartDate(null);
         setAgreementEndDate(null);
       }
@@ -145,11 +140,7 @@ const Accruals = () => {
   
       if (accrualsResponse.status == 200) {
         console.log('Accruals data retrieved: ', accrualsResponse.data.items);
-        setAccrualsData(accrualsResponse.data.items);
         filterAccrualsData(accrualsResponse.data.items);
-      }
-      else {
-        setAccrualsData([]);
       }
     });
   };
