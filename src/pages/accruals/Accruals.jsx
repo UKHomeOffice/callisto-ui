@@ -25,11 +25,14 @@ const Accruals = () => {
   const [accrualsData, setAccrualsData] = useState([]);
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
+  const ANNUAL_TARGET_HOURS_ID = 'e502eebb-4663-4e5b-9445-9a20441c18d9';
+  const [annualTargetHoursData, setAnnualTargetHoursData] = useState(null);
   
   let agreementId = '';
 
   useEffect(async () => {
-    if (agreementStartDate === null || agreementEndDate === null) {
+    clearAccrualsData();
+    if (isOutsideAgreementDates()) {
       getAllData(accrualsDate, setServiceError);
     }
     else {
@@ -39,6 +42,29 @@ const Accruals = () => {
       ));
     }
   }, [accrualsDate]);
+
+  const isOutsideAgreementDates = () => {
+
+    if (agreementStartDate === null || agreementEndDate === null) {
+      return true;
+    } else if (accrualsDate < agreementStartDate || accrualsDate > agreementEndDate) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const filterAccrualsData = (fetchedAccruals) => {
+    fetchedAccruals.forEach(accrual => {
+
+      if (accrual.accrualTypeId === ANNUAL_TARGET_HOURS_ID)
+      setAnnualTargetHoursData(accrual);
+    })
+  };
+
+  const clearAccrualsData = () => {
+    setAnnualTargetHoursData(null);
+  };
 
   const getAllData = async (
     accrualsDate,
@@ -75,6 +101,10 @@ const Accruals = () => {
       }
       else {
         setAgreementData([]);
+        setTargetData([]);
+        setAccrualsData([]);
+        setAgreementStartDate(null);
+        setAgreementEndDate(null);
       }
     });
   };
@@ -113,9 +143,10 @@ const Accruals = () => {
     await validateServiceErrors(setServiceError, async () => {
       const accrualsResponse = await getAccruals(accrualsParams);
   
-      if (accrualsResponse.status == 200 && accrualsResponse.data.items?.length > 0) {
+      if (accrualsResponse.status == 200) {
         console.log('Accruals data retrieved: ', accrualsResponse.data.items);
         setAccrualsData(accrualsResponse.data.items);
+        filterAccrualsData(accrualsResponse.data.items);
       }
       else {
         setAccrualsData([]);
@@ -145,7 +176,7 @@ const Accruals = () => {
           {t('accruals.nextDay')}
         </Link>
       </div>
-      <AnnualTargetHours agreementTarget={targetData} accruals={accrualsData} />
+      <AnnualTargetHours agreementTarget={targetData} accruals={annualTargetHoursData} />
     </>
   );
 };
