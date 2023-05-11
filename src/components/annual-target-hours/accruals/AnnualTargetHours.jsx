@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-const AnnualTargetHours = ({ agreementTarget, accruals }) => {
+const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
-  let total = agreementTarget?.targetTotal || 0;
-  let worked = accruals?.cumulativeTotal || 0;
-  let remaining = Math.floor(total - worked);
-  let target = total - (accruals?.cumulativeTarget || 0);
+  const total = targetData?.targetTotal || 0;
+  const worked = accrualsData?.cumulativeTotal || 0;
+  const remaining = total - worked;
+  const target = total - (accrualsData?.cumulativeTarget || 0);
 
-  if (!agreementTarget) {
+  if (!targetData) {
     total = '-';
     worked = '-';
     remaining = '-';
@@ -66,14 +66,14 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
 export default AnnualTargetHours;
 
 AnnualTargetHours.propTypes = {
-  agreementTarget: PropTypes.shape({
+  targetData: PropTypes.shape({
     id: PropTypes.string,
     tenantId: PropTypes.string,
     agreementId: PropTypes.string,
     accrualTypeId: PropTypes.string,
     targetTotal: PropTypes.number,
   }),
-  accruals: PropTypes.shape({
+  accrualsData: PropTypes.shape({
     id: PropTypes.string,
     tenantId: PropTypes.string,
     personId: PropTypes.string,
