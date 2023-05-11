@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-const AnnualTargetHours = ({ agreementTarget, accruals }) => {
+const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
-  const total = agreementTarget?.targetTotal || 0;
-  const worked = accruals?.cumulativeTotal || 0;
+  const total = targetData?.targetTotal || 0;
+  const worked = accrualsData?.cumulativeTotal || 0;
   const remaining = total - worked;
-  const target = total - (accruals?.cumulativeTarget || 0);
+  const target = total - (accrualsData?.cumulativeTarget || 0);
 
   return (
     <div className="accruals-container">
@@ -58,26 +58,26 @@ const AnnualTargetHours = ({ agreementTarget, accruals }) => {
 
 export default AnnualTargetHours;
 
-AnnualTargetHours.propTypes = {
-  agreementTarget: PropTypes.shape({
-    id: PropTypes.string,
-    tenantId: PropTypes.string,
-    agreementId: PropTypes.string,
-    accrualTypeId: PropTypes.string,
-    targetTotal: PropTypes.number,
-  }),
-  accruals: PropTypes.shape({
-    id: PropTypes.string,
-    tenantId: PropTypes.string,
-    personId: PropTypes.string,
-    agreementId: PropTypes.string,
-    accrualDate: PropTypes.string,
-    accrualTypeId: PropTypes.string,
-    cumulativeTotal: PropTypes.number,
-    cumulativeTarget: PropTypes.number,
-    contributions: PropTypes.shape({
-      timeEntries: PropTypes.object,
-      total: PropTypes.number,
-    }),
-  }),
-};
+// AnnualTargetHours.propTypes = {
+//   targetData: PropTypes.shape({
+//     id: PropTypes.string,
+//     tenantId: PropTypes.string,
+//     agreementId: PropTypes.string,
+//     accrualTypeId: PropTypes.string,
+//     targetTotal: PropTypes.number,
+//   }),
+//   accrualsData: PropTypes.shape({
+//     id: PropTypes.string,
+//     tenantId: PropTypes.string,
+//     personId: PropTypes.string,
+//     agreementId: PropTypes.string,
+//     accrualDate: PropTypes.string,
+//     accrualTypeId: PropTypes.string,
+//     cumulativeTotal: PropTypes.number,
+//     cumulativeTarget: PropTypes.number,
+//     contributions: PropTypes.shape({
+//       timeEntries: PropTypes.object,
+//       total: PropTypes.number,
+//     }),
+//   }),
+// };
