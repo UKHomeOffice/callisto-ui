@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
-  const total = targetData?.targetTotal || 0;
-  const worked = accrualsData?.cumulativeTotal || 0;
-  const remaining = total - worked;
-  const target = total - (accrualsData?.cumulativeTarget || 0);
+  let total = targetData?.targetTotal || 0;
+  let worked = accrualsData?.cumulativeTotal || 0;
+  let remaining = total - worked;
+  let target = total - (accrualsData?.cumulativeTarget || 0);
 
   if (!targetData) {
     total = '-';
@@ -19,7 +19,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {agreementTarget ? t('annualTargetHours.titleRemaining', { count: remaining }) : 'No agreement has been found'}
+          {targetData ? t('annualTargetHours.titleRemaining', { count: remaining }) : 'No agreement has been found'}
         </h1>
 
         <table className="govuk-table">

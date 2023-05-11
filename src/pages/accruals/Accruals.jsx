@@ -167,7 +167,7 @@ const Accruals = () => {
           {t('accruals.nextDay')}
         </Link>
       </div>
-      <AnnualTargetHours agreementTarget={targetData} accruals={annualTargetHoursData} />
+      <AnnualTargetHours targetData={targetData} accrualsData={annualTargetHoursData} />
     </>
   );
 };
