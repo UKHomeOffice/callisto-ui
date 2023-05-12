@@ -91,7 +91,6 @@ const Accruals = () => {
       const agreementResponse = await getAgreements(agreementParams);
   
       if (agreementResponse.status == 200 && agreementResponse.data.items?.length > 0) {
-        console.log('Agreement data retrieved: ', agreementResponse.data.items);
         setAgreementStartDate(agreementResponse.data.items[0].startDate);
         setAgreementEndDate(agreementResponse.data.items[0].endDate);
         agreementId = agreementResponse.data.items[0].id;
@@ -117,7 +116,6 @@ const Accruals = () => {
       const targetResponse = await getAgreementTargets(targetParams);
   
       if (targetResponse.status == 200 && targetResponse.data.items?.length > 0) {
-        console.log('Agreement target data retrieved: ', targetResponse.data.items);
         setTargetData(targetResponse.data.items[0]);
       }
       else {
@@ -139,7 +137,6 @@ const Accruals = () => {
       const accrualsResponse = await getAccruals(accrualsParams);
   
       if (accrualsResponse.status == 200) {
-        console.log('Accruals data retrieved: ', accrualsResponse.data.items);
         filterAccrualsData(accrualsResponse.data.items);
       }
     });

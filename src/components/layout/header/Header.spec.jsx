@@ -21,6 +21,12 @@ describe('Header component', () => {
     expect(timecardButton.pathname).toBe('/timecard/2022-09-01');
   });
 
+  it('should link to /accruals when pressing the Accruals button', () => {
+    renderWithProviders(<Header />, authClientStub);
+    const timecardButton = screen.getByText('Track my time');
+    expect(timecardButton.pathname).toBe('/accruals/2022-09-01');
+  });
+
   function createAuthClientStub() {
     return {
       init: jest.fn().mockResolvedValue(true),

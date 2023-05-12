@@ -11,34 +11,25 @@ const t = i18n.getFixedT('en', 'common');
 describe('AnnualTargetHours', () => {
   it('should render a table with correct headers', () => {
     const { getByRole, baseElement } = render(
-      <AnnualTargetHours targetData={[]} accrualsData={[]} />
+      <AnnualTargetHours targetData={null} accrualsData={null} />
     );
 
     const table = getByRole('table');
     expect(table).toBeTruthy();
 
-    const headers = [
-      t('annualTargetHours.total'),
-      t('annualTargetHours.worked'),
-      t('annualTargetHours.remaining'),
-      t('annualTargetHours.target'),
-    ];
-    //expect(baseElement.innerHTML).toMatchSnapshot();
-    headers.map((header) => {
-      expect(screen.getByText(header)).toBeTruthy();
-    });
+    expect(baseElement.innerHTML).toMatchSnapshot();
   });
 });
 
 it('should render a table with en-gb headers', () => {
   const { getByRole } = render(
-    <AnnualTargetHours targetData={[]} accrualsData={[]} />
+    <AnnualTargetHours targetData={null} accrualsData={null} />
   );
 
   const table = getByRole('table');
   expect(table).toBeTruthy();
 
-  const headers = ['Total8', 'Worked', 'Remaining', 'Target'];
+  const headers = ['Total', 'Worked', 'Remaining', 'Target'];
 
   headers.map((header) => {
     expect(screen.getByText(header)).toBeTruthy();

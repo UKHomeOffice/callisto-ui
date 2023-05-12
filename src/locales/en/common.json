@@ -8,19 +8,19 @@
     "navigation": {
         "home": "Home"
     },
-        "accruals": {
-          "balance": "My accruals balance as of",
-          "dateFormat": "D MMMM YYYY",
-          "previousDay": "Previous day",
-          "nextDay": "Next day"
-        },
-        "annualTargetHours": {
-            "title": "Annual target hours",
-            "titleRemaining": "Annual target hours\n{{count}} remaining",
-            "total": "Total",
-            "worked": "Worked",
-            "remaining": "Remaining",
-            "target": "Target"
-          }
-      
+    "accruals": {
+        "balance": "My accruals balance as of",
+        "dateFormat": "D MMMM YYYY",
+        "previousDay": "Previous day",
+        "nextDay": "Next day"
+    },
+    "annualTargetHours": {
+        "title": "Annual target hours",
+        "titleRemaining": "Annual target hours\n{{count}} remaining",
+        "total": "Total",
+        "worked": "Worked",
+        "remaining": "Remaining",
+        "target": "Target",
+        "noAgreement": "No agreement has been found"
+    }
 }

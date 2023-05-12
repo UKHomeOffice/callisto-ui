@@ -5,21 +5,27 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
   let total = targetData?.targetTotal || 0;
   let worked = accrualsData?.cumulativeTotal || 0;
-  let remaining = total - worked;
+  let remainingMins = Math.floor(total - worked);
+  let remainingWhole = (remainingMins) / 60;
   let target = total - (accrualsData?.cumulativeTarget || 0);
 
   if (!targetData) {
     total = '-';
     worked = '-';
-    remaining = '-';
+    remainingMins = '-';
     target = '-';
+  } else {
+    total = formatToStringTime(total);
+    worked = formatToStringTime(worked);
+    remainingMins = formatToStringTime(remainingMins);
+    target = formatToStringTime(target);
   }
 
   return (
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {targetData ? t('annualTargetHours.titleRemaining', { count: remaining }) : 'No agreement has been found'}
+          {targetData ? t('annualTargetHours.titleRemaining', { count: remainingWhole }) : t('annualTargetHours.noAgreement')}
         </h1>
 
         <table className="govuk-table">
@@ -45,7 +51,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.remaining')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {remaining}
+                {remainingMins}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -61,6 +67,16 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
       </form>
     </div>
   );
+};
+
+const formatToStringTime = (decimalHours) => {
+  if (decimalHours > 0) {
+    const hours = Math.trunc(decimalHours / 60);
+    let minutes = (decimalHours % 60);
+    minutes = minutes.toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  return '';
 };
 
 export default AnnualTargetHours;
