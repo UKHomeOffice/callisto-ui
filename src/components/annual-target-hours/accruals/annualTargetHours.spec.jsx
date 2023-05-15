@@ -35,3 +35,30 @@ it('should render a table with en-gb headers', () => {
     expect(screen.getByText(header)).toBeTruthy();
   });
 });
+
+it('should display correct text for remaining hours with targetData', () => {
+  const targetData = { targetTotal: 200 };
+  const accrualsData = { cumulativeTotal: 100 };
+
+  render(
+    <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+  );
+
+  const remaining = targetData.targetTotal - accrualsData.cumulativeTotal;
+  const expectedText = `Annual target hours ${remaining} remaining`;
+
+  expect(screen.getByText(expectedText)).toBeTruthy();
+});
+
+it('should display correct text for remaining hours without targetData', () => {
+  const targetData = null;
+  const accrualsData = { cumulativeTotal: 100 };
+
+  render(
+    <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+  );
+
+  const expectedText = 'No agreement has been found';
+
+  expect(screen.getByText(expectedText)).toBeTruthy();
+});
