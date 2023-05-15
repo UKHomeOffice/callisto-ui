@@ -30,6 +30,37 @@ exports[`AnnualTargetHours should display "-" for headers without targetData 1`]
 </div>"
 `;
 
+exports[`AnnualTargetHours should display correct text for remaining hours with targetData 1`] = `
+"<div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\"><span>Annual target hours
+ <strong>2182</strong> remaining</span></h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
+`;
+
 exports[`AnnualTargetHours should display correct text for remaining hours without targetData 1`] = `
 "<div>
   <div class=\\"accruals-container\\">

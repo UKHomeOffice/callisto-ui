@@ -27,9 +27,8 @@ describe('AnnualTargetHours', () => {
       <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
     );
 
-    expect(screen.getByText('Annual target hours')).toBeTruthy();
+    expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
     expect(screen.getByText('2182')).toBeTruthy();
-    expect(screen.getByText('remaining')).toBeTruthy();
     expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
   });
 

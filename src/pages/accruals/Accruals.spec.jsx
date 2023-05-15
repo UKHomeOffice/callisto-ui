@@ -84,9 +84,8 @@ describe('Accruals', () => {
       );
 
       await waitFor(async () => {
-        expect(
-          screen.getByText('Annual target hours 2182 remaining')
-        ).toBeTruthy();
+        expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
+        expect(screen.getByText('2182')).toBeTruthy();
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
@@ -146,9 +145,8 @@ describe('Accruals', () => {
       );
 
       await waitFor(async () => {
-        expect(
-          screen.getByText('Annual target hours 2192 remaining')
-        ).toBeTruthy();
+        expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
+        expect(screen.getByText('2192')).toBeTruthy();
         expect(screen.getByText('00:00')).toBeTruthy();
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });

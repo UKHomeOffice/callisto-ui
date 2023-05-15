@@ -7,8 +7,8 @@ exports[`Accruals getAcrrualsData should find an agreement and target but no acc
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\">Annual target hours
-        2192 remaining</h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span>Annual target hours
+ <strong>2192</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
@@ -74,8 +74,8 @@ exports[`Accruals getAcrrualsData should retrieve all data when viewing a date i
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\">Annual target hours
-        2182 remaining</h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span>Annual target hours
+ <strong>2182</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
