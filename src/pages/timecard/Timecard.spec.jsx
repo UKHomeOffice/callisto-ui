@@ -88,11 +88,13 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    await renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
-    expect(
-      screen.getByText('00:00 on 30 January to 00:00 on 2 February')
-    ).toBeTruthy();
+    await waitFor(() => {
+      expect(
+        screen.getByText('00:00 on 30 January to 00:00 on 2 February')
+      ).toBeTruthy();
+    });
   });
 
   it('should display Shift(continued) if timecard spans more than one date and we are not on start date', async () => {
@@ -103,12 +105,14 @@ describe('Shift spanning mutiple days', () => {
       };
     });
 
-    await renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
+    renderWithApplicationContext(<Timecard timecardDate={mockDate} />);
 
-    expect(screen.getByText('Shift (continued)')).toBeTruthy();
-    expect(
-      screen.getByText('00:00 on 30 January to 00:00 on 2 February')
-    ).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getByText('Shift (continued)')).toBeTruthy();
+      expect(
+        screen.getByText('00:00 on 30 January to 00:00 on 2 February')
+      ).toBeTruthy();
+    });
   });
 
   it('should call setTimeEntries when time entry ends at midnight that night', async () => {
