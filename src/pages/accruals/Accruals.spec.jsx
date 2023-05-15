@@ -76,7 +76,7 @@ describe('Accruals', () => {
 
   describe('getAcrrualsData', () => {
     it('should retrieve all data when viewing a date in the agreement range', async () => {
-      const { getByRole, baseElement } = renderWithApplicationContext(
+      const { baseElement } = renderWithApplicationContext(
         <Accruals />,
         defaultApplicationContext,
         '/2023-04-01',
@@ -98,7 +98,7 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(
+      const { baseElement } = renderWithApplicationContext(
         <Accruals />,
         defaultApplicationContext,
         '/2023-04-08',
@@ -118,7 +118,7 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(
+      const { baseElement } = renderWithApplicationContext(
         <Accruals />,
         defaultApplicationContext,
         '/2023-04-07',
@@ -138,7 +138,7 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(
+      const { baseElement } = renderWithApplicationContext(
         <Accruals />,
         defaultApplicationContext,
         '/2023-04-07',
