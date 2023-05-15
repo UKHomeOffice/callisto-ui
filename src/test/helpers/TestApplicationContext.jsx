@@ -5,17 +5,17 @@ import { ApplicationContext } from '../../context/ApplicationContext';
 export const renderWithApplicationContext = (
   Component,
   applicationContextValues = defaultApplicationContext,
-  url='/',
-  path='/',
+  url = '/',
+  path = '/'
 ) => {
   return {
     ...render(
       <ApplicationContext.Provider value={applicationContextValues}>
         <MemoryRouter initialEntries={[url]}>
-        <Routes>
-          <Route path={path} element={Component} />
-        </Routes>
-      </MemoryRouter>
+          <Routes>
+            <Route path={path} element={Component} />
+          </Routes>
+        </MemoryRouter>
       </ApplicationContext.Provider>
     ),
   };

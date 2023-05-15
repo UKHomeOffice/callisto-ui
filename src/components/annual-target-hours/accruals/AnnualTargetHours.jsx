@@ -25,7 +25,9 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {targetData ? t('annualTargetHours.titleRemaining', { count: remainingWhole }) : t('annualTargetHours.noAgreement')}
+          {targetData
+            ? t('annualTargetHours.titleRemaining', { count: remainingWhole })
+            : t('annualTargetHours.noAgreement')}
         </h1>
 
         <table className="govuk-table">
@@ -76,7 +78,7 @@ const formatToStringTime = (decimalHours) => {
     minutes = minutes.toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
-  return '';
+  return '00:00';
 };
 
 export default AnnualTargetHours;
