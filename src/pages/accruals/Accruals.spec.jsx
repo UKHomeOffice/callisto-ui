@@ -5,7 +5,6 @@ import {
 } from '../../test/helpers/TestApplicationContext';
 import Accruals from './Accruals';
 import i18n from 'i18next';
-import '../../i18n';
 import {
   getAgreements,
   getAgreementTargets,

@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import '../../../i18n';
 
 const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
   let total = targetData?.targetTotal || 0;
   let worked = accrualsData?.cumulativeTotal || 0;
   let remainingMins = Math.floor(total - worked);
-  let remainingWhole = Math.floor((remainingMins) / 60);
+  let remainingWhole = Math.floor(remainingMins / 60);
   let target = total - (accrualsData?.cumulativeTarget || 0);
 
   if (!targetData) {

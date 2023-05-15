@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { getAccruals, getAgreements, getAgreementTargets } from '../../api/services/accrualsService';
 import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
 import { useTranslation } from 'react-i18next';
+import '../../i18n';
 
 const Accruals = () => {
   const { t } = useTranslation('common');

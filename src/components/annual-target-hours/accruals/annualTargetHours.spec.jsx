@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import AnnualTargetHours from './AnnualTargetHours';
-import '../../../i18n';
 import pretty from 'pretty';
 
 describe('AnnualTargetHours', () => {
