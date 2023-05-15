@@ -77,23 +77,6 @@ describe('Accruals', () => {
       });
     });
 
-    it('should retrieve no data when selecting next day outside the agreement range', async () => {
-      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2023-04-07',
-      '/:date');
-
-      // const nextDayLink = getByRole('link', { name: t('accruals.nextDay') });
-      // fireEvent.click(nextDayLink);
-      
-      await waitFor(async () => {
-        expect(
-          screen.getByText('No agreement has been found2')
-        ).toBeTruthy();
-        //expect(baseElement.innerHTML).toMatchSnapshot();
-      });
-    });
-
     it('should retrieve no data when viewing a date outside the agreement range', async () => {
       getAgreements.mockImplementation(() => {
         return {
@@ -109,6 +92,49 @@ describe('Accruals', () => {
       await waitFor(async () => {
         expect(
           screen.getByText('No agreement has been found')
+        ).toBeTruthy();
+        expect(baseElement.innerHTML).toMatchSnapshot();
+      });
+    });
+
+    it('should find an agreement but no target and shows no data dound', async () => {
+      getAgreementTargets.mockImplementation(() => {
+        return {
+          status: 200,
+          data: [],
+        };
+      });
+      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
+      defaultApplicationContext,
+      '/2023-04-07',
+      '/:date');
+      
+      await waitFor(async () => {
+        expect(
+          screen.getByText('No agreement has been found')
+        ).toBeTruthy();
+        expect(baseElement.innerHTML).toMatchSnapshot();
+      });
+    });
+
+    it('should find an agreement and target but no accrual but still renders the found data and zero worked', async () => {
+      getAccruals.mockImplementation(() => {
+        return {
+          status: 200,
+          data: [],
+        };
+      });
+      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
+      defaultApplicationContext,
+      '/2023-04-07',
+      '/:date');
+      
+      await waitFor(async () => {
+        expect(
+          screen.getByText('Annual target hours 2192 remaining')
+        ).toBeTruthy();
+        expect(
+          screen.getByText('00:00')
         ).toBeTruthy();
         expect(baseElement.innerHTML).toMatchSnapshot();
       });

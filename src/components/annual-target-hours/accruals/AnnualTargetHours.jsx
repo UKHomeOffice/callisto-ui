@@ -76,7 +76,7 @@ const formatToStringTime = (decimalHours) => {
     minutes = minutes.toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
-  return '';
+  return '00:00';
 };
 
 export default AnnualTargetHours;
