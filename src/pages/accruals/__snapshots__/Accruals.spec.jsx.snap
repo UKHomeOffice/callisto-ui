@@ -1,15 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Accruals getAcrrualsData should find an agreement and target but no accrual but still renders the found data and zero worked 1`] = `
-"<div><h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1><h2 class=\\"govuk-heading-m\\">7 April 2023</h2><div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div><div class=\\"accruals-container\\"><form class=\\"grey-border\\"><h1 class=\\"govuk-heading-m newline\\">Annual target hours
-2192 remaining</h1><table class=\\"govuk-table\\"><tbody class=\\"govuk-table__body\\"><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">00:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td></tr></tbody></table></form></div></div>"
+"<div>
+  <h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 class=\\"govuk-heading-m\\">7 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\">Annual target hours
+        2192 remaining</h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">00:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
 `;
 
-exports[`Accruals getAcrrualsData should find an agreement but no target and shows no data dound 1`] = `"<div><h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1><h2 class=\\"govuk-heading-m\\">7 April 2023</h2><div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div><div class=\\"accruals-container\\"><form class=\\"grey-border\\"><h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1><table class=\\"govuk-table\\"><tbody class=\\"govuk-table__body\\"><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr></tbody></table></form></div></div>"`;
+exports[`Accruals getAcrrualsData should find an agreement but no target and shows no data dound 1`] = `
+"<div>
+  <h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 class=\\"govuk-heading-m\\">7 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
+`;
 
 exports[`Accruals getAcrrualsData should retrieve all data when viewing a date in the agreement range 1`] = `
-"<div><h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1><h2 class=\\"govuk-heading-m\\">1 April 2023</h2><div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-02\\">Next day</a></div><div class=\\"accruals-container\\"><form class=\\"grey-border\\"><h1 class=\\"govuk-heading-m newline\\">Annual target hours
-2182 remaining</h1><table class=\\"govuk-table\\"><tbody class=\\"govuk-table__body\\"><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td></tr></tbody></table></form></div></div>"
+"<div>
+  <h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 class=\\"govuk-heading-m\\">1 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\">Annual target hours
+        2182 remaining</h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
 `;
 
-exports[`Accruals getAcrrualsData should retrieve no data when viewing a date outside the agreement range 1`] = `"<div><h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1><h2 class=\\"govuk-heading-m\\">8 April 2023</h2><div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-07\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-09\\">Next day</a></div><div class=\\"accruals-container\\"><form class=\\"grey-border\\"><h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1><table class=\\"govuk-table\\"><tbody class=\\"govuk-table__body\\"><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr><tr class=\\"govuk-table__row\\"><th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th><td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td></tr></tbody></table></form></div></div>"`;
+exports[`Accruals getAcrrualsData should retrieve no data when viewing a date outside the agreement range 1`] = `
+"<div>
+  <h1 class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 class=\\"govuk-heading-m\\">8 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-07\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-09\\">Next day</a></div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
+`;

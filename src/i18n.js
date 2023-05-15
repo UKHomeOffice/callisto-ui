@@ -9,7 +9,7 @@ const resources = {
   },
 };
 
-{
+(async () => {
   i18n
     // detect user language
     // learn more: https://github.com/i18next/i18next-browser-languageDetector
@@ -28,6 +28,6 @@ const resources = {
       },
       supportedLngs: ['en'],
     });
-}
+})();
 
 export default i18n;

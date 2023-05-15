@@ -15,6 +15,7 @@ import {
   agreementTarget,
   annualTargetHoursAccrual,
 } from '../../../mocks/mockData';
+import pretty from 'pretty';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -86,7 +87,7 @@ describe('Accruals', () => {
         expect(
           screen.getByText('Annual target hours 2182 remaining')
         ).toBeTruthy();
-        expect(baseElement.innerHTML).toMatchSnapshot();
+        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
 
@@ -106,7 +107,7 @@ describe('Accruals', () => {
 
       await waitFor(async () => {
         expect(screen.getByText('No agreement has been found')).toBeTruthy();
-        expect(baseElement.innerHTML).toMatchSnapshot();
+        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
 
@@ -126,7 +127,7 @@ describe('Accruals', () => {
 
       await waitFor(async () => {
         expect(screen.getByText('No agreement has been found')).toBeTruthy();
-        expect(baseElement.innerHTML).toMatchSnapshot();
+        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
 
@@ -149,7 +150,7 @@ describe('Accruals', () => {
           screen.getByText('Annual target hours 2192 remaining')
         ).toBeTruthy();
         expect(screen.getByText('00:00')).toBeTruthy();
-        expect(baseElement.innerHTML).toMatchSnapshot();
+        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
   });
