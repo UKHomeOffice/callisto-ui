@@ -13,9 +13,9 @@ import Accruals from './pages/accruals/Accruals';
 const App = () => {
   const { initialized, keycloak } = useKeycloak();
 
-  useEffect(() => {
+  useEffect(async () => {
     if (initialized && !keycloak.authenticated) {
-      keycloak.login();
+      await keycloak.login();
     }
   });
 

@@ -32,10 +32,10 @@ const Accruals = () => {
   useEffect(async () => {
     clearAccrualsData();
     if (isOutsideAgreementDates()) {
-      getAllData(accrualsDate, setServiceError);
+      await getAllData(accrualsDate, setServiceError);
     }
     else {
-      getAccrualsData(
+      await getAccrualsData(
         accrualsDate,
         setServiceError
       )
@@ -44,12 +44,10 @@ const Accruals = () => {
 
   const isOutsideAgreementDates = () => {
 
-    if (agreementStartDate === null || agreementEndDate === null) {
-      return true;
-    } else if (accrualsDate < agreementStartDate || accrualsDate > agreementEndDate) {
+    if ((agreementStartDate === null || agreementEndDate === null) ||
+    (accrualsDate < agreementStartDate || accrualsDate > agreementEndDate)) {
       return true;
     }
-
     return false;
   };
 
