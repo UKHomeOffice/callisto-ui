@@ -6,8 +6,16 @@ import {
 import Accruals from './Accruals';
 import i18n from 'i18next';
 import '../../i18n';
-import { getAgreements, getAgreementTargets, getAccruals } from '../../api/services/accrualsService';
-import { agreement, agreementTarget, annualTargetHoursAccrual } from '../../../mocks/mockData';
+import {
+  getAgreements,
+  getAgreementTargets,
+  getAccruals,
+} from '../../api/services/accrualsService';
+import {
+  agreement,
+  agreementTarget,
+  annualTargetHoursAccrual,
+} from '../../../mocks/mockData';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -15,7 +23,6 @@ const t = i18n.getFixedT('en', 'common');
 
 jest.mock('../../api/services/accrualsService');
 beforeEach(() => {
-
   getAgreements.mockImplementation(() => {
     return {
       status: 200,
@@ -37,24 +44,29 @@ beforeEach(() => {
 });
 
 describe('Accruals', () => {
-
   describe('navigation', () => {
     it('should contain a link to previous day', () => {
-      const { getByRole } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2022-07-01',
-      '/:date');
-      
-      const previousDayLink = getByRole('link', { name: t('accruals.previousDay')});
+      const { getByRole } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2022-07-01',
+        '/:date'
+      );
+
+      const previousDayLink = getByRole('link', {
+        name: t('accruals.previousDay'),
+      });
       expect(previousDayLink.pathname).toBe('/accruals/2022-06-30');
       fireEvent.click(previousDayLink);
     });
 
     it('should contain a link to next day', () => {
-      const { getByRole } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2022-07-01',
-      '/:date');
+      const { getByRole } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2022-07-01',
+        '/:date'
+      );
 
       const nextDayLink = getByRole('link', { name: t('accruals.nextDay') });
       expect(nextDayLink.pathname).toBe('/accruals/2022-07-02');
@@ -64,11 +76,13 @@ describe('Accruals', () => {
 
   describe('getAcrrualsData', () => {
     it('should retrieve all data when viewing a date in the agreement range', async () => {
-      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2023-04-01',
-      '/:date');
-      
+      const { getByRole, baseElement } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2023-04-01',
+        '/:date'
+      );
+
       await waitFor(async () => {
         expect(
           screen.getByText('Annual target hours 2182 remaining')
@@ -84,15 +98,15 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2023-04-08',
-      '/:date');
-      
+      const { getByRole, baseElement } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2023-04-08',
+        '/:date'
+      );
+
       await waitFor(async () => {
-        expect(
-          screen.getByText('No agreement has been found')
-        ).toBeTruthy();
+        expect(screen.getByText('No agreement has been found')).toBeTruthy();
         expect(baseElement.innerHTML).toMatchSnapshot();
       });
     });
@@ -104,15 +118,15 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2023-04-07',
-      '/:date');
-      
+      const { getByRole, baseElement } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2023-04-07',
+        '/:date'
+      );
+
       await waitFor(async () => {
-        expect(
-          screen.getByText('No agreement has been found')
-        ).toBeTruthy();
+        expect(screen.getByText('No agreement has been found')).toBeTruthy();
         expect(baseElement.innerHTML).toMatchSnapshot();
       });
     });
@@ -124,18 +138,18 @@ describe('Accruals', () => {
           data: [],
         };
       });
-      const { getByRole, baseElement } = renderWithApplicationContext(<Accruals />,
-      defaultApplicationContext,
-      '/2023-04-07',
-      '/:date');
-      
+      const { getByRole, baseElement } = renderWithApplicationContext(
+        <Accruals />,
+        defaultApplicationContext,
+        '/2023-04-07',
+        '/:date'
+      );
+
       await waitFor(async () => {
         expect(
           screen.getByText('Annual target hours 2192 remaining')
         ).toBeTruthy();
-        expect(
-          screen.getByText('00:00')
-        ).toBeTruthy();
+        expect(screen.getByText('00:00')).toBeTruthy();
         expect(baseElement.innerHTML).toMatchSnapshot();
       });
     });

@@ -6,7 +6,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
   let total = targetData?.targetTotal || 0;
   let worked = accrualsData?.cumulativeTotal || 0;
   let remainingMins = Math.floor(total - worked);
-  let remainingWhole = (remainingMins) / 60;
+  let remainingWhole = remainingMins / 60;
   let target = total - (accrualsData?.cumulativeTarget || 0);
 
   if (!targetData) {
@@ -25,7 +25,9 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {targetData ? t('annualTargetHours.titleRemaining', { count: remainingWhole }) : t('annualTargetHours.noAgreement')}
+          {targetData
+            ? t('annualTargetHours.titleRemaining', { count: remainingWhole })
+            : t('annualTargetHours.noAgreement')}
         </h1>
 
         <table className="govuk-table">
@@ -72,7 +74,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
 const formatToStringTime = (decimalHours) => {
   if (decimalHours > 0) {
     const hours = Math.trunc(decimalHours / 60);
-    let minutes = (decimalHours % 60);
+    let minutes = decimalHours % 60;
     minutes = minutes.toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
