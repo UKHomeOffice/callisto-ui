@@ -9,7 +9,7 @@ const resources = {
   },
 };
 
-await i18n
+i18n
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
   .use(LanguageDetector)

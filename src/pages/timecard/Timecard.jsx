@@ -38,9 +38,9 @@ const Timecard = () => {
   const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
-  useEffect(async () => {
+  useEffect(() => {
     document.title = generateDocumentTitle('Timecard ');
-    await updateTimeEntryContextData(
+    updateTimeEntryContextData(
       timecardDate,
       setTimeEntries,
       setServiceError,
@@ -52,7 +52,7 @@ const Timecard = () => {
       const periodItems = periodTypes.data?.items;
       setTimePeriodTypes(periodItems);
     };
-    await fetchTimePeriodTypeData();
+    fetchTimePeriodTypeData();
   }, [timecardDate]);
 
   const clearMessageSummary = () => {
@@ -174,7 +174,7 @@ const updateTimeEntryContextData = async (
   const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
   const timeCardEnd = dayjs(date).endOf('day');
 
-  await validateServiceErrors(setServiceError, async () => {
+  validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     if (timeEntriesResponse.data.items?.length > 0) {
