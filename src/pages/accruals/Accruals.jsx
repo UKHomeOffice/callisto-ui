@@ -44,11 +44,8 @@ const Accruals = () => {
 
   const isOutsideAgreementDates = () => {
 
-    if ((agreementStartDate === null || agreementEndDate === null) ||
-    (accrualsDate < agreementStartDate || accrualsDate > agreementEndDate)) {
-      return true;
-    }
-    return false;
+    return ((agreementStartDate === null || agreementEndDate === null) ||
+    (accrualsDate < agreementStartDate || accrualsDate > agreementEndDate));
   };
 
   const filterAccrualsData = (fetchedAccruals) => {
