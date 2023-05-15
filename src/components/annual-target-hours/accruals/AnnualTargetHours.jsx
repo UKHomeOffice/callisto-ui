@@ -4,20 +4,11 @@ import '../../../i18n';
 
 const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
-
-  let total = '-';
-  let worked = '-';
-  let remainingMins = '-';
-  let target = '-';
-  let remainingWhole;
-  if (targetData) {
-    total = formatToStringTime(targetData.targetTotal);
-    worked = formatToStringTime(accrualsData?.cumulativeTotal || 0);
-    remainingMins = formatToStringTime(Math.floor(total - worked));
-    remainingWhole = Math.floor(remainingMins / 60) || 0;
-    target = formatToStringTime(total - (accrualsData?.cumulativeTarget || 0));
-    remainingWhole = Math.floor(remainingMins / 60);
-  }
+  const total = targetData?.targetTotal || 0;
+  const worked = accrualsData?.cumulativeTotal || 0;
+  const remainingMins = Math.floor(total - worked);
+  const remainingWhole = Math.floor(remainingMins / 60);
+  const target = total - (accrualsData?.cumulativeTarget || 0);
 
   return (
     <div className="accruals-container">
@@ -42,7 +33,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.total')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {total}
+                {targetData ? formatToStringTime(total) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -50,7 +41,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.worked')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {worked}
+                {targetData ? formatToStringTime(worked) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -58,7 +49,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.remaining')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {remainingMins}
+                {targetData ? formatToStringTime(remainingMins) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -66,7 +57,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.target')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {target}
+                {targetData ? formatToStringTime(target) : '-'}
               </td>
             </tr>
           </tbody>

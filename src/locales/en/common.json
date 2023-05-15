@@ -16,7 +16,7 @@
     },
     "annualTargetHours": {
         "title": "Annual target hours",
-        "titleRemaining": "Annual target hours\n{{count}} remaining",
+        "titleRemaining": "Annual target hours\n <strong>{{count}}</strong> remaining",
         "total": "Total",
         "worked": "Worked",
         "remaining": "Remaining",
