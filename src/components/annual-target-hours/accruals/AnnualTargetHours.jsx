@@ -4,33 +4,37 @@ import '../../../i18n';
 
 const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
-  let total = targetData?.targetTotal || 0;
-  let worked = accrualsData?.cumulativeTotal || 0;
-  let remainingMins = Math.floor(total - worked);
-  let remainingWhole = Math.floor(remainingMins / 60);
-  let target = total - (accrualsData?.cumulativeTarget || 0);
 
-  if (!targetData) {
-    total = '-';
-    worked = '-';
-    remainingMins = '-';
-    target = '-';
-  } else {
-    total = formatToStringTime(total);
-    worked = formatToStringTime(worked);
-    remainingMins = formatToStringTime(remainingMins);
-    target = formatToStringTime(target);
+  let total = '-';
+  let worked = '-';
+  let remainingMins = '-';
+  let target = '-';
+  let remainingWhole;
+  if (targetData) {
+    total = formatToStringTime(targetData.targetTotal);
+    worked = formatToStringTime(accrualsData?.cumulativeTotal || 0);
+    remainingMins = formatToStringTime(Math.floor(total - worked));
+    remainingWhole = Math.floor(remainingMins / 60) || 0;
+    target = formatToStringTime(total - (accrualsData?.cumulativeTarget || 0));
+    remainingWhole = Math.floor(remainingMins / 60);
   }
 
   return (
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {targetData
-            ? t('annualTargetHours.titleRemaining', { count: remainingWhole })
-            : t('annualTargetHours.noAgreement')}
+          {targetData ? (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: t('annualTargetHours.titleRemaining', {
+                  count: remainingWhole,
+                }),
+              }}
+            />
+          ) : (
+            t('annualTargetHours.noAgreement')
+          )}
         </h1>
-
         <table className="govuk-table">
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
