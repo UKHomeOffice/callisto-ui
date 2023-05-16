@@ -3,6 +3,7 @@ import {
   isFinishTimeOnNextDay,
   getSingleTimeEntryResponseItem,
   removeTimecardEntry,
+  formatToHoursAndMinutes,
 } from './timeEntryUtils';
 
 describe('timeEntryUtils', () => {
@@ -62,6 +63,20 @@ describe('timeEntryUtils', () => {
       timeEntryIndex
     );
     expect(mockSetTimeEntries).toHaveBeenCalledWith([timeEntry2]);
+  });
+
+  it('Should format minutes into hours and minutes', async () => {
+    const minutes = 60;
+    const result = formatToHoursAndMinutes(minutes);
+
+    expect(result).toContain('1:00');
+  });
+
+  it('Should format no time into 00:00', async () => {
+    const minutes = 0;
+    const result = formatToHoursAndMinutes(minutes);
+
+    expect(result).toContain('00:00');
   });
 
   describe('isFinishTimeOnNextDay', () => {
