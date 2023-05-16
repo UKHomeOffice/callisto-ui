@@ -6,17 +6,17 @@
         }
     },
     "navigation": {
-        "home": "Home"
-    },
-    "accruals": {
-        "balance": "My accruals balance as of",
-        "dateFormat": "D MMMM YYYY",
+        "home": "Home",
         "previousDay": "Previous day",
         "nextDay": "Next day"
     },
+    "accruals": {
+        "balance": "My accruals balance as of",
+        "dateFormat": "D MMMM YYYY"
+    },
     "annualTargetHours": {
         "title": "Annual target hours",
-        "titleRemaining": "Annual target hours\n <strong>{{count}}</strong> remaining",
+        "remainingHoursTitle": "Annual target hours\n <strong>{{count}}</strong> remaining",
         "total": "Total",
         "worked": "Worked",
         "remaining": "Remaining",

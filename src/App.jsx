@@ -5,7 +5,6 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useEffect } from 'react';
 import { ApplicationProvider } from './context/ApplicationContext';
 import ErrorBoundary from './components/error/error-boundary/ErrorBoundary';
-import FormsExample from './pages/FormsExample';
 import Home from './pages/Home';
 import Timecard from './pages/timecard/Timecard';
 import Accruals from './pages/accruals/Accruals';
@@ -31,7 +30,6 @@ const App = () => {
                   <Route index="true" element={<Home />} />
                   <Route path="/timecard/:date" element={<Timecard />} />
                   <Route path="/accruals/:date" element={<Accruals />} />
-                  <Route path="/forms" element={<FormsExample />} />
                   <Route
                     path="*"
                     element={

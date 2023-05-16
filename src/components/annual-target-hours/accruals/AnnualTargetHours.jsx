@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import '../../../i18n';
+import { formatToHoursAndMinutes } from '../../../utils/time-entry-utils/timeEntryUtils';
 
 const AnnualTargetHours = ({ targetData, accrualsData }) => {
   const { t } = useTranslation('common');
   const total = targetData?.targetTotal || 0;
   const worked = accrualsData?.cumulativeTotal || 0;
   const remainingMins = Math.floor(total - worked);
-  const remainingWhole = Math.floor(remainingMins / 60);
+  const remainingHours = Math.floor(remainingMins / 60);
   const target = total - (accrualsData?.cumulativeTarget || 0);
 
   return (
@@ -17,8 +18,8 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
           {targetData ? (
             <span
               dangerouslySetInnerHTML={{
-                __html: t('annualTargetHours.titleRemaining', {
-                  count: remainingWhole,
+                __html: t('annualTargetHours.remainingHoursTitle', {
+                  count: remainingHours,
                 }),
               }}
             />
@@ -33,7 +34,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.total')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {targetData ? formatToStringTime(total) : '-'}
+                {targetData ? formatToHoursAndMinutes(total) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -41,7 +42,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.worked')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {targetData ? formatToStringTime(worked) : '-'}
+                {targetData ? formatToHoursAndMinutes(worked) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -49,7 +50,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.remaining')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {targetData ? formatToStringTime(remainingMins) : '-'}
+                {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -57,7 +58,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
                 {t('annualTargetHours.target')}
               </th>
               <td className="govuk-table__cell govuk-table__cell--numeric">
-                {targetData ? formatToStringTime(target) : '-'}
+                {targetData ? formatToHoursAndMinutes(target) : '-'}
               </td>
             </tr>
           </tbody>
@@ -65,16 +66,6 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
       </form>
     </div>
   );
-};
-
-const formatToStringTime = (decimalHours) => {
-  if (decimalHours > 0) {
-    const hours = Math.trunc(decimalHours / 60);
-    let minutes = decimalHours % 60;
-    minutes = minutes.toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  }
-  return '00:00';
 };
 
 export default AnnualTargetHours;

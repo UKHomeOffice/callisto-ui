@@ -44,37 +44,7 @@ beforeEach(() => {
 });
 
 describe('Accruals', () => {
-  describe('navigation', () => {
-    it('should contain a link to previous day', () => {
-      const { getByRole } = renderWithApplicationContext(
-        <Accruals />,
-        defaultApplicationContext,
-        '/2022-07-01',
-        '/:date'
-      );
-
-      const previousDayLink = getByRole('link', {
-        name: t('accruals.previousDay'),
-      });
-      expect(previousDayLink.pathname).toBe('/accruals/2022-06-30');
-      fireEvent.click(previousDayLink);
-    });
-
-    it('should contain a link to next day', () => {
-      const { getByRole } = renderWithApplicationContext(
-        <Accruals />,
-        defaultApplicationContext,
-        '/2022-07-01',
-        '/:date'
-      );
-
-      const nextDayLink = getByRole('link', { name: t('accruals.nextDay') });
-      expect(nextDayLink.pathname).toBe('/accruals/2022-07-02');
-      fireEvent.click(nextDayLink);
-    });
-  });
-
-  describe('getAcrrualsData', () => {
+  describe('getAccrualsData', () => {
     it('should retrieve all data when viewing a date in the agreement range', async () => {
       const { baseElement } = renderWithApplicationContext(
         <Accruals />,
