@@ -167,7 +167,7 @@ const EditShift = ({
         actualEndTime: validatedData.finishDateTime,
       };
 
-      validateServiceErrors(
+      await validateServiceErrors(
         setServiceError,
         async () => {
           const params = new UrlSearchParamBuilder()
