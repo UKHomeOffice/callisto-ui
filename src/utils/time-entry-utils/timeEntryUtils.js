@@ -47,6 +47,16 @@ export const formatJustYear = (dateTime) => {
   return dayjs(dateTime).format('YYYY');
 };
 
+export const formatToHoursAndMinutes = (minutesInput) => {
+  if (minutesInput > 0) {
+    const hours = Math.trunc(minutesInput / 60);
+    let minutes = minutesInput % 60;
+    minutes = minutes.toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  return '00:00';
+};
+
 export const removeTimecardEntry = (
   timeEntries,
   setTimeEntries,

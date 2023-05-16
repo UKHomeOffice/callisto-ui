@@ -337,6 +337,67 @@ const timePeriodTypesMap = {
 const timeEntryFilter =
   "ownerId=='00000000-0000-0000-0000-000000000000'&&actualStartTime>='2022-10-28T00:00:00+00:00'&&actualStartTime<='2022-10-29T23:59:00+00:00'||ownerId=='00000000-0000-0000-0000-000000000000'&&actualEndTime>='2022-10-29T00:00:00+00:00'&&actualEndTime<='2022-10-30T23:59:00+00:00'";
 
+const agreement = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      personId: 'a18b6f95-0940-4ec3-bc38-abeb29e039c5',
+      contractualTerms: {
+        agreementType: 'AHA',
+        fteValue: 1.0,
+        termsAndConditions: 'MODERNISED',
+        salaryBasis: 'NATIONAL',
+      },
+      startDate: '2023-04-01',
+      endDate: '2023-04-07',
+    },
+  ],
+};
+
+const agreementTarget = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d4ea30001',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualTypeId: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
+      targetTotal: 131520,
+    },
+  ],
+};
+
+const annualTargetHoursAccrual = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d60ec0002',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      personId: 'a18b6f95-0940-4ec3-bc38-abeb29e039c5',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualDate: '2023-04-01',
+      accrualTypeId: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
+      cumulativeTotal: 600,
+      cumulativeTarget: 360,
+      contributions: {
+        timeEntries: {
+          '85cd140e-9eeb-4771-ab6c-6dea17fcfcba': 2.0,
+          'e7d85e42-f0fb-4e2a-8211-874e27d1e888': 6.0,
+        },
+        total: 8,
+      },
+    },
+  ],
+};
+
 module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
@@ -354,4 +415,7 @@ module.exports = {
   people,
   artists,
   timePeriodTypesMap,
+  agreement,
+  agreementTarget,
+  annualTargetHoursAccrual,
 };

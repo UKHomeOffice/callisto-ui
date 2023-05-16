@@ -1,0 +1,26 @@
+{
+    "header": {
+        "beta": {
+            "name": "beta",
+            "feedback": "This is a new service - your <feedback_anchor>feedback</feedback_anchor> will help us to improve it."
+        }
+    },
+    "navigation": {
+        "home": "Home",
+        "previousDay": "Previous day",
+        "nextDay": "Next day"
+    },
+    "accruals": {
+        "balance": "My accruals balance as of",
+        "dateFormat": "D MMMM YYYY"
+    },
+    "annualTargetHours": {
+        "title": "Annual target hours",
+        "remainingHoursTitle": "Annual target hours\n <strong>{{count}}</strong> remaining",
+        "total": "Total",
+        "worked": "Worked",
+        "remaining": "Remaining",
+        "target": "Target",
+        "noAgreement": "No agreement has been found"
+    }
+}

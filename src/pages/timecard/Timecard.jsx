@@ -38,21 +38,21 @@ const Timecard = () => {
   const previousDay = formatDate(dayjs(timecardDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(timecardDate).add(1, 'day'));
 
-  useEffect(() => {
+  useEffect(async () => {
     document.title = generateDocumentTitle('Timecard ');
-    updateTimeEntryContextData(
-      timecardDate,
-      setTimeEntries,
-      setServiceError,
-      userId
-    );
-
     const fetchTimePeriodTypeData = async () => {
       const periodTypes = await getTimePeriodTypes(params);
       const periodItems = periodTypes.data?.items;
       setTimePeriodTypes(periodItems);
     };
-    fetchTimePeriodTypeData();
+    await fetchTimePeriodTypeData();
+
+    await updateTimeEntryContextData(
+      timecardDate,
+      setTimeEntries,
+      setServiceError,
+      userId
+    );
   }, [timecardDate]);
 
   const clearMessageSummary = () => {
@@ -113,14 +113,14 @@ const Timecard = () => {
       </div>
 
       {timePeriodTypes.length === 0 && (
-        <div className="loaderWrapper">
+        <div className="loader-wrapper">
           <div className="loader">
             <img
-              src="/emblem.jpg"
+              src="/static/emblem.jpg"
               alt="Home Office emblem"
               className="rounded"
             />
-            <img src="/spinner.gif" alt="Loading spinner" />
+            <img src="/static/spinner.gif" alt="Loading spinner" />
           </div>
         </div>
       )}
@@ -174,7 +174,7 @@ const updateTimeEntryContextData = async (
   const timeCardStart = dayjs(date).startOf('day').add(1, 'minute');
   const timeCardEnd = dayjs(date).endOf('day');
 
-  validateServiceErrors(setServiceError, async () => {
+  await validateServiceErrors(setServiceError, async () => {
     const timeEntriesResponse = await getTimeEntries(timeEntriesParams);
 
     if (timeEntriesResponse.data.items?.length > 0) {

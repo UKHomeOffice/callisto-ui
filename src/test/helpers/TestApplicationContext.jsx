@@ -1,15 +1,21 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { ApplicationContext } from '../../context/ApplicationContext';
 
 export const renderWithApplicationContext = (
   Component,
-  applicationContextValues = defaultApplicationContext
+  applicationContextValues = defaultApplicationContext,
+  url = '/',
+  path = '/'
 ) => {
   return {
     ...render(
       <ApplicationContext.Provider value={applicationContextValues}>
-        <MemoryRouter>{Component}</MemoryRouter>
+        <MemoryRouter initialEntries={[url]}>
+          <Routes>
+            <Route path={path} element={Component} />
+          </Routes>
+        </MemoryRouter>
       </ApplicationContext.Provider>
     ),
   };
