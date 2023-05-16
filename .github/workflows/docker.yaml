@@ -13,8 +13,8 @@ jobs:
       VITE_KC_URL: "https://keycloak.callisto.localhost/auth" 
       VITE_KC_REALM: "callisto" 
       VITE_KC_CLIENTID: "callistoreactclient" 
-      VITE_TIMECARD_API_URL: "https://timecard-restapi.callisto.localhost/" 
-      VITE_ACCRUALS_API_URL: "https://accruals-restapi.callisto.localhost/"
+      VITE_TIMECARD_API_URL: "https://callisto-timecard-restapi.callisto.localhost/"
+      VITE_ACCRUALS_API_URL: "https://callisto-accruals-restapi.callisto.localhost/"
       QUAY_REGISTRY: quay.io/ukhomeofficedigital
       QUAY_REPO_NAME: callisto-ui
     steps:
