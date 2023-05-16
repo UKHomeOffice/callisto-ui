@@ -1,10 +1,9 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import {
   renderWithApplicationContext,
   defaultApplicationContext,
 } from '../../test/helpers/TestApplicationContext';
 import Accruals from './Accruals';
-import i18n from 'i18next';
 import {
   getAgreements,
   getAgreementTargets,
@@ -18,8 +17,6 @@ import {
 import pretty from 'pretty';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-const t = i18n.getFixedT('en', 'common');
 
 jest.mock('../../api/services/accrualsService');
 beforeEach(() => {
