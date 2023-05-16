@@ -113,7 +113,7 @@ const Timecard = () => {
       </div>
 
       {timePeriodTypes.length === 0 && (
-        <div className="loaderWrapper">
+        <div className="loader-wrapper">
           <div className="loader">
             <img
               src="/static/emblem.jpg"
