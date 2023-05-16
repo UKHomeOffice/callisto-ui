@@ -48,7 +48,7 @@ const Shift = ({
       .getUrlSearchParams();
 
     setSummaryErrors([]);
-    validateServiceErrors(
+    await validateServiceErrors(
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);

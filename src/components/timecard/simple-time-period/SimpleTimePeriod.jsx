@@ -34,7 +34,7 @@ const SimpleTimePeriod = ({
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    validateServiceErrors(
+    await validateServiceErrors(
       setServiceError,
       async () => {
         await deleteTimeEntry(timeEntry.timeEntryId, params);
@@ -65,7 +65,7 @@ const SimpleTimePeriod = ({
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .getUrlSearchParams();
 
-    validateServiceErrors(
+    await validateServiceErrors(
       setServiceError,
       async () => {
         const response = await createTimeEntry(timecardPayload, params);
