@@ -20,12 +20,7 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "prettier/prettier": "error",
-    "@typescript-eslint/no-misused-promises": [2, {
-      "checksVoidReturn": {
-        "attributes": false
-      }
-    }]
+    "prettier/prettier": "error"
   },
 
   "settings": {

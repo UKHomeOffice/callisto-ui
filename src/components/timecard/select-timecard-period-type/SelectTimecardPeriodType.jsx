@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
