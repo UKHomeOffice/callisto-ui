@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
 import {
@@ -339,7 +338,9 @@ const EditShift = ({
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-comment-textnodes
     <div>
+      /* eslint-disable-next-line */
       <form onSubmit={handleSubmit(onSubmit)}>
         <StartFinishTimeInput
           name={inputName}

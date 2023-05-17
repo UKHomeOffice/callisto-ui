@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
@@ -75,7 +74,9 @@ const SelectTimecardPeriodType = ({
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-comment-textnodes
     <>
+      /* eslint-disable-next-line */
       <form
         className="grey-border"
         onSubmit={handleSubmit(onSubmit, handleError)}
