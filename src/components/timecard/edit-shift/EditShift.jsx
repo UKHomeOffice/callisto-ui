@@ -338,9 +338,8 @@ const EditShift = ({
   };
 
   return (
-    // eslint-disable-next-line react/jsx-no-comment-textnodes
     <div>
-      /* eslint-disable-next-line */
+      {/* eslint-disable-next-line */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <StartFinishTimeInput
           name={inputName}
