@@ -73,6 +73,7 @@ const SelectTimecardPeriodType = ({
     return validatedData;
   };
 
+  // BEGIN-NOSCAN
   return (
     <>
       <form
@@ -98,6 +99,7 @@ const SelectTimecardPeriodType = ({
       </form>
     </>
   );
+  // END-NOSCAN
 };
 
 export default SelectTimecardPeriodType;

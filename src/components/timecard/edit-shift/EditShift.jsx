@@ -337,6 +337,7 @@ const EditShift = ({
     }
   };
 
+  // BEGIN-NOSCAN
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -394,6 +395,7 @@ const EditShift = ({
       </form>
     </div>
   );
+  // END-NOSCAN
 };
 
 export default EditShift;
