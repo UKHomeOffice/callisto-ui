@@ -339,7 +339,7 @@ const EditShift = ({
 
   return (
     <div>
-      {/* eslint-disable-next-line */}
+      {/* NOSONAR */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <StartFinishTimeInput
           name={inputName}
