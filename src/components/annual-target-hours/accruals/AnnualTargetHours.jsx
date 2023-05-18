@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n';
 import { formatToHoursAndMinutes } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AnnualTargetHours = ({ targetData, accrualsData }) => {
+const AnnualTargetHours = ({ targetData, accrualsData, translationKey }) => {
   const { t } = useTranslation('common');
   const total = targetData?.targetTotal || 0;
   const worked = accrualsData?.cumulativeTotal || 0;
@@ -18,7 +18,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
           {targetData ? (
             <span
               dangerouslySetInnerHTML={{
-                __html: t('annualTargetHours.remainingHoursTitle', {
+                __html: t(translationKey, {
                   count: remainingHours,
                 }),
               }}
@@ -92,4 +92,6 @@ AnnualTargetHours.propTypes = {
       total: PropTypes.number,
     }),
   }),
+  translationKey: PropTypes.string,
+  remainingHours: PropTypes.number,
 };

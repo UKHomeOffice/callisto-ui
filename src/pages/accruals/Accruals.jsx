@@ -32,6 +32,7 @@ const Accruals = () => {
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
   const [annualTargetHoursData, setAnnualTargetHoursData] = useState(null);
+  const [translationKey, setTranslationKey] = useState('');
 
   let agreementId = '';
 
@@ -57,6 +58,10 @@ const Accruals = () => {
     fetchedAccruals.forEach((accrual) => {
       if (accrual.accrualTypeId === accrualsTypeIds.annualTargetHours) {
         setAnnualTargetHoursData(accrual);
+        setTranslationKey('annualTargetHours.remainingHoursTitle');
+      } else if (accrual.accrualTypeId === accrualsTypeIds.nightHours) {
+        setAnnualTargetHoursData(accrual);
+        setTranslationKey('nightHours.remainingHoursTitle');
       }
     });
   };
@@ -146,6 +151,7 @@ const Accruals = () => {
       <AnnualTargetHours
         targetData={targetData}
         accrualsData={annualTargetHoursData}
+        translationKey={translationKey}
       />
     </>
   );
