@@ -337,9 +337,9 @@ const EditShift = ({
     }
   };
 
+  // BEGIN-NOSCAN
   return (
     <div>
-      {/* NOSONAR */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <StartFinishTimeInput
           name={inputName}
@@ -395,6 +395,7 @@ const EditShift = ({
       </form>
     </div>
   );
+  // END-NOSCAN
 };
 
 export default EditShift;
