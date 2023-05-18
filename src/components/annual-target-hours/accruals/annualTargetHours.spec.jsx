@@ -22,9 +22,15 @@ describe('AnnualTargetHours', () => {
   it('should display correct text for remaining hours with targetData', () => {
     const targetData = { targetTotal: 131520 };
     const accrualsData = { cumulativeTotal: 600 };
+    const translationKey =
+      'Annual target hours\n <strong>{{count}}</strong> remaining';
 
     const { baseElement } = render(
-      <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+      <AnnualTargetHours
+        targetData={targetData}
+        accrualsData={accrualsData}
+        translationKey={translationKey}
+      />
     );
 
     expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
