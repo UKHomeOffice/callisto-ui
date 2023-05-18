@@ -75,6 +75,7 @@ const SelectTimecardPeriodType = ({
 
   return (
     <>
+      {/* eslint-disable-next-line */}
       <form
         className="grey-border"
         onSubmit={handleSubmit(onSubmit, handleError)}
