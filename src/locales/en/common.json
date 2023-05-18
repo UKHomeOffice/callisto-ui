@@ -22,5 +22,8 @@
         "remaining": "Remaining",
         "target": "Target",
         "noAgreement": "No agreement has been found"
+    },
+    "nightHours": {
+        "remainingHoursTitle": "Night hours\n <strong>{{count}}</strong> remaining"
     }
 }
