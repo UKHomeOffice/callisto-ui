@@ -74,9 +74,8 @@ const SelectTimecardPeriodType = ({
   };
 
   return (
-    // eslint-disable-next-line react/jsx-no-comment-textnodes
     <>
-      // NOSONAR
+      {/* NOSONAR */}
       <form
         className="grey-border"
         onSubmit={handleSubmit(onSubmit, handleError)}
