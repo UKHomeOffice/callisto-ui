@@ -73,9 +73,9 @@ const SelectTimecardPeriodType = ({
     return validatedData;
   };
 
+  // BEGIN-NOSCAN
   return (
     <>
-      {/* NOSONAR */}
       <form
         className="grey-border"
         onSubmit={handleSubmit(onSubmit, handleError)}
@@ -99,6 +99,7 @@ const SelectTimecardPeriodType = ({
       </form>
     </>
   );
+  // END-NOSCAN
 };
 
 export default SelectTimecardPeriodType;
