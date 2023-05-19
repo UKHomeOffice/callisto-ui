@@ -72,38 +72,32 @@ const Header = () => {
                 toggleMenu && 'govuk-header__navigation-list--open'
               }`}
             >
-              <li
-                data-testid="header-home-link"
-                className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5"
-              >
+              <li className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5">
                 <Link
                   className="govuk-header__link"
                   to="/"
                   style={{ color: 'black' }}
+                  data-testid="header-home-link"
                 >
                   Home
                 </Link>
               </li>
-              <li
-                data-testid="header-record-time-link"
-                className="govuk-header__navigation-item govuk-header__navigation-item"
-              >
+              <li className="govuk-header__navigation-item govuk-header__navigation-item">
                 <Link
                   className="govuk-header__link"
                   to={`/timecard/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
+                  data-testid="header-record-time-link"
                 >
                   Record my time
                 </Link>
               </li>
-              <li
-                data-testid="header-track-time-link"
-                className="govuk-header__navigation-item govuk-header__navigation-item"
-              >
+              <li className="govuk-header__navigation-item govuk-header__navigation-item">
                 <Link
                   className="govuk-header__link"
                   to={`/accruals/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
+                  data-testid="header-track-time-link"
                 >
                   Track my time
                 </Link>
