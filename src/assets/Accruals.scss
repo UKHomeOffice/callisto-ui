@@ -50,3 +50,13 @@
 .bold {
   font-weight: bold;
 }
+
+.accruals-data {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.accruals-data > * {
+  margin-right: 15px;
+}

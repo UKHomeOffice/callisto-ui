@@ -15,7 +15,7 @@ import {
   getAgreements,
   getAgreementTargets,
 } from '../../api/services/accrualsService';
-import AnnualTargetHours from '../../components/annual-target-hours/accruals/AnnualTargetHours';
+import AccrualData from '../../components/annual-target-hours/accruals/AccrualData';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { accrualsTypeIds } from '../../utils/constants';
@@ -31,8 +31,7 @@ const Accruals = () => {
   const [targetData, setTargetData] = useState(null);
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
-  const [annualTargetHoursData, setAnnualTargetHoursData] = useState(null);
-  const [translationKey, setTranslationKey] = useState('');
+  const [accrualsDataList, setAccrualsDataList] = useState([]);
 
   let agreementId = '';
 
@@ -55,19 +54,27 @@ const Accruals = () => {
   };
 
   const setAccrualsData = (fetchedAccruals) => {
+    let accrualsList = [];
     fetchedAccruals.forEach((accrual) => {
       if (accrual.accrualTypeId === accrualsTypeIds.annualTargetHours) {
-        setAnnualTargetHoursData(accrual);
-        setTranslationKey('annualTargetHours.remainingHoursTitle');
+        let entry = {
+          title: 'annualTargetHours.remainingHoursTitle',
+          data: accrual,
+        };
+        accrualsList.push(entry);
       } else if (accrual.accrualTypeId === accrualsTypeIds.nightHours) {
-        setAnnualTargetHoursData(accrual);
-        setTranslationKey('nightHours.remainingHoursTitle');
+        let entry = {
+          title: 'nightHours.remainingHoursTitle',
+          data: accrual,
+        };
+        accrualsList.push(entry);
       }
     });
+    setAccrualsDataList(accrualsList);
   };
 
   const clearAccrualsData = () => {
-    setAnnualTargetHoursData(null);
+    setAccrualsDataList(null);
   };
 
   const getAllData = async (accrualsDate, setServiceError) => {
@@ -148,11 +155,27 @@ const Accruals = () => {
         previousDay={previousDay}
         nextDay={nextDay}
       />
-      <AnnualTargetHours
-        targetData={targetData}
-        accrualsData={annualTargetHoursData}
-        translationKey={translationKey}
-      />
+      <div className="accruals-data">
+        {targetData && agreementStartDate ? (
+          accrualsDataList &&
+          accrualsDataList.map((accrualData) => {
+            return (
+              <AccrualData
+                key={accrualData.data.id}
+                targetData={targetData}
+                accrualsData={accrualData.data}
+                titleTranslationKey={accrualData.title}
+              />
+            );
+          })
+        ) : (
+          <AccrualData
+            targetData={targetData}
+            accrualsData={null}
+            titleTranslationKey={null}
+          />
+        )}
+      </div>
     </>
   );
 };

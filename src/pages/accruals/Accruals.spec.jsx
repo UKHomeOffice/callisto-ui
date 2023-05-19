@@ -77,7 +77,7 @@ describe('Accruals', () => {
       });
     });
 
-    it('should find an agreement but no target and shows no data dound', async () => {
+    it('should show no data found when there is no agreement data', async () => {
       getAgreementTargets.mockImplementation(() => {
         return {
           status: 200,

@@ -3,7 +3,11 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n';
 import { formatToHoursAndMinutes } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AnnualTargetHours = ({ targetData, accrualsData, translationKey }) => {
+const AnnualTargetHours = ({
+  targetData,
+  accrualsData,
+  titleTranslationKey,
+}) => {
   const { t } = useTranslation('common');
   const total = targetData?.targetTotal || 0;
   const worked = accrualsData?.cumulativeTotal || 0;
@@ -18,7 +22,7 @@ const AnnualTargetHours = ({ targetData, accrualsData, translationKey }) => {
           {targetData ? (
             <span
               dangerouslySetInnerHTML={{
-                __html: t(translationKey, {
+                __html: t(titleTranslationKey, {
                   count: remainingHours,
                 }),
               }}
@@ -78,20 +82,25 @@ AnnualTargetHours.propTypes = {
     accrualTypeId: PropTypes.string,
     targetTotal: PropTypes.number,
   }),
-  accrualsData: PropTypes.shape({
-    id: PropTypes.string,
-    tenantId: PropTypes.string,
-    personId: PropTypes.string,
-    agreementId: PropTypes.string,
-    accrualDate: PropTypes.string,
-    accrualTypeId: PropTypes.string,
-    cumulativeTotal: PropTypes.number,
-    cumulativeTarget: PropTypes.number,
-    contributions: PropTypes.shape({
-      timeEntries: PropTypes.object,
-      total: PropTypes.number,
-    }),
-  }),
-  translationKey: PropTypes.string,
+  accrualsData: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        tenantId: PropTypes.string,
+        personId: PropTypes.string,
+        agreementId: PropTypes.string,
+        accrualDate: PropTypes.string,
+        accrualTypeId: PropTypes.string,
+        cumulativeTotal: PropTypes.number,
+        cumulativeTarget: PropTypes.number,
+        contributions: PropTypes.shape({
+          timeEntries: PropTypes.object,
+          total: PropTypes.number,
+        }),
+      })
+    ),
+  ]),
+  titleTranslationKey: PropTypes.string,
   remainingHours: PropTypes.number,
 };
