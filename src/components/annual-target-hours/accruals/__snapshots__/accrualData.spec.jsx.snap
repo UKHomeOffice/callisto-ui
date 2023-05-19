@@ -8,20 +8,20 @@ exports[`AccrualData should display "-" for headers without targetData 1`] = `
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td data-testid=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td data-testid=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td data-testid=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td data-testid=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
@@ -38,20 +38,20 @@ exports[`AccrualData should display correct text for remaining hours without tar
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td data-testid=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td data-testid=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td data-testid=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td data-testid=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
@@ -64,25 +64,25 @@ exports[`AccrualData should display correct title for annual Target Hours 1`] = 
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span>Annual target hours
+      <h1 class=\\"govuk-heading-m newline\\"><span data-testid=\\"annualTargetHours-title-span\\">Annual target hours
  <strong>2182</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <th data-testid=\\"annualTargetHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td data-testid=\\"annualTargetHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+            <th data-testid=\\"annualTargetHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td data-testid=\\"annualTargetHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            <th data-testid=\\"annualTargetHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td data-testid=\\"annualTargetHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <th data-testid=\\"annualTargetHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td data-testid=\\"annualTargetHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
           </tr>
         </tbody>
       </table>
@@ -95,25 +95,25 @@ exports[`AccrualData should display correct title for night Hours 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span>Night hours
+      <h1 class=\\"govuk-heading-m newline\\"><span data-testid=\\"nightHours-title-span\\">Night hours
  <strong>2182</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <th data-testid=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td data-testid=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+            <th data-testid=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td data-testid=\\"nightHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            <th data-testid=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td data-testid=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <th data-testid=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td data-testid=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
           </tr>
         </tbody>
       </table>
@@ -130,20 +130,20 @@ exports[`AccrualData should render a table with correct headers 1`] = `
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td data-testid=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td data-testid=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td data-testid=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th data-testid=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td data-testid=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
