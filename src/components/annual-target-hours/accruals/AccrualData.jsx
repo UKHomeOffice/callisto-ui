@@ -25,7 +25,7 @@ const AnnualTargetHours = ({
         <h1 className="govuk-heading-m newline">
           {targetData ? (
             <span
-              data-testid={`${IdSubstr}-title-span`}
+              id={`${IdSubstr}-title-span`}
               dangerouslySetInnerHTML={{
                 __html: t(titleTranslationKey, {
                   count: remainingHours,
@@ -40,14 +40,14 @@ const AnnualTargetHours = ({
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
               <th
-                data-testid={`${IdSubstr}-total-lbl`}
+                id={`${IdSubstr}-total-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.total')}
               </th>
               <td
-                data-testid={`${IdSubstr}-total-value`}
+                id={`${IdSubstr}-total-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(total) : '-'}
@@ -55,14 +55,14 @@ const AnnualTargetHours = ({
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid={`${IdSubstr}-worked-lbl`}
+                id={`${IdSubstr}-worked-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.worked')}
               </th>
               <td
-                data-testid={`${IdSubstr}-worked-value`}
+                id={`${IdSubstr}-worked-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(worked) : '-'}
@@ -70,14 +70,14 @@ const AnnualTargetHours = ({
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid={`${IdSubstr}-remaining-lbl`}
+                id={`${IdSubstr}-remaining-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.remaining')}
               </th>
               <td
-                data-testid={`${IdSubstr}-remaining-value`}
+                id={`${IdSubstr}-remaining-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
@@ -85,14 +85,14 @@ const AnnualTargetHours = ({
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid={`${IdSubstr}-target-lbl`}
+                id={`${IdSubstr}-target-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.target')}
               </th>
               <td
-                data-testid={`${IdSubstr}-target-value`}
+                id={`${IdSubstr}-target-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(target) : '-'}
