@@ -50,3 +50,7 @@
 .bold {
   font-weight: bold;
 }
+
+a[data-testid="header-track-time-link"] {
+  border: 5px solid red;
+}

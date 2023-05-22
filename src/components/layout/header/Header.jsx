@@ -98,6 +98,7 @@ const Header = () => {
                   to={`/accruals/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
                   data-testid="header-track-time-link"
+                  testid="header-track-time-link"
                 >
                   Track my time
                 </Link>
