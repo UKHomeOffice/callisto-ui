@@ -21,7 +21,8 @@
         "worked": "Worked",
         "remaining": "Remaining",
         "target": "Target",
-        "noAgreement": "No agreement has been found"
+        "noAgreement": "No agreement has been found",
+        "noAccruals": "No accruals found for this day"
     },
     "nightHours": {
         "remainingHoursTitle": "Night hours\n <strong>{{count}}</strong> remaining"

@@ -159,17 +159,22 @@ const Accruals = () => {
       />
       <div className="accruals-data">
         {targetData && agreementStartDate ? (
-          accrualsDataList &&
-          accrualsDataList.map((accrualData) => {
-            return (
+          accrualsDataList && accrualsDataList.length > 0 ? (
+            accrualsDataList.map((accrualData) => (
               <AccrualData
                 key={accrualData.data.id}
                 targetData={targetData}
                 accrualsData={accrualData.data}
                 titleTranslationKey={accrualData.title}
               />
-            );
-          })
+            ))
+          ) : (
+            <AccrualData
+              targetData={targetData}
+              accrualsData={null}
+              titleTranslationKey={'annualTargetHours.noAccruals'}
+            />
+          )
         ) : (
           <AccrualData
             targetData={targetData}
