@@ -1,5 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Accruals getAccrualsData should find an agreement and target but no accrual but still renders the found data and zero worked 1`] = `
+"<div>
+  <h1 data-testid=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 data-testid=\\"accruals-date\\" class=\\"govuk-heading-m\\">7 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
+  <div class=\\"accruals-data\\">
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"annualTargetHours-title-span\\">No accruals found for this day</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"annualTargetHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"annualTargetHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">00:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"annualTargetHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"annualTargetHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>"
+`;
+
 exports[`Accruals getAccrualsData should retrieve all data when viewing a date in the agreement range 1`] = `
 "<div>
   <h1 data-testid=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
@@ -8,25 +43,25 @@ exports[`Accruals getAccrualsData should retrieve all data when viewing a date i
   <div class=\\"accruals-data\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
-        <h1 class=\\"govuk-heading-m newline\\"><span data-testid=\\"annualTargetHours-title-span\\">Annual target hours
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"annualTargetHours-title-span\\">Annual target hours
  <strong>2182</strong> remaining</span></h1>
         <table class=\\"govuk-table\\">
           <tbody class=\\"govuk-table__body\\">
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"annualTargetHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td data-testid=\\"annualTargetHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+              <th id=\\"annualTargetHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"annualTargetHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"annualTargetHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td data-testid=\\"annualTargetHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+              <th id=\\"annualTargetHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"annualTargetHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"annualTargetHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td data-testid=\\"annualTargetHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+              <th id=\\"annualTargetHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"annualTargetHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"annualTargetHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td data-testid=\\"annualTargetHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+              <th id=\\"annualTargetHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"annualTargetHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
             </tr>
           </tbody>
         </table>
@@ -48,20 +83,20 @@ exports[`Accruals getAccrualsData should retrieve no data when viewing a date ou
         <table class=\\"govuk-table\\">
           <tbody class=\\"govuk-table__body\\">
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td data-testid=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td data-testid=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td data-testid=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td data-testid=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
           </tbody>
         </table>
@@ -83,20 +118,20 @@ exports[`Accruals getAccrualsData should show no data found when there is no agr
         <table class=\\"govuk-table\\">
           <tbody class=\\"govuk-table__body\\">
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td data-testid=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td data-testid=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td data-testid=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th data-testid=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td data-testid=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+              <th id=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
             </tr>
           </tbody>
         </table>
