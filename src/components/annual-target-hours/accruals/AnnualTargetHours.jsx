@@ -32,14 +32,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
               <th
-                data-testid="annualTargetHours-total-lbl"
+                id="annualTargetHours-total-lbl"
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.total')}
               </th>
               <td
-                data-testid="annualTargetHours-total-value"
+                id="annualTargetHours-total-value"
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(total) : '-'}
@@ -47,14 +47,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid="annualTargetHours-worked-lbl"
+                id="annualTargetHours-worked-lbl"
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.worked')}
               </th>
               <td
-                data-testid="annualTargetHours-worked-value"
+                id="annualTargetHours-worked-value"
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(worked) : '-'}
@@ -62,14 +62,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid="annualTargetHours-remaining-lbl"
+                id="annualTargetHours-remaining-lbl"
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.remaining')}
               </th>
               <td
-                data-testid="annualTargetHours-remaining-value"
+                id="annualTargetHours-remaining-value"
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
@@ -77,14 +77,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                data-testid="annualTargetHours-target-lbl"
+                id="annualTargetHours-target-lbl"
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('annualTargetHours.target')}
               </th>
               <td
-                data-testid="annualTargetHours-target-value"
+                id="annualTargetHours-target-value"
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(target) : '-'}

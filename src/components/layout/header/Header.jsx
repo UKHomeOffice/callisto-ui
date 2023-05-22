@@ -77,7 +77,7 @@ const Header = () => {
                   className="govuk-header__link"
                   to="/"
                   style={{ color: 'black' }}
-                  data-testid="header-home-link"
+                  id="header-home-link"
                 >
                   Home
                 </Link>
@@ -87,7 +87,7 @@ const Header = () => {
                   className="govuk-header__link"
                   to={`/timecard/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
-                  data-testid="header-record-time-link"
+                  id="header-record-time-link"
                 >
                   Record my time
                 </Link>
@@ -97,8 +97,7 @@ const Header = () => {
                   className="govuk-header__link"
                   to={`/accruals/${formatDate(dayjs())}`}
                   style={{ color: '#000' }}
-                  data-testid="header-track-time-link"
-                  testid="header-track-time-link"
+                  id="header-track-time-link"
                 >
                   Track my time
                 </Link>

@@ -10,14 +10,14 @@ const NavigationLinks = ({ url, previousDay, nextDay }) => {
       <Link
         className="govuk-link govuk-link--no-visited-state"
         to={`/${url}/${previousDay}`}
-        data-testid="navigation-previous-link"
+        id="navigation-previous-link"
       >
         {t('navigation.previousDay')}
       </Link>
       <Link
         className="govuk-link govuk-link--no-visited-state"
         to={`/${url}/${nextDay}`}
-        data-testid="navigation-next-link"
+        id="navigation-next-link"
       >
         {t('navigation.nextDay')}
       </Link>
