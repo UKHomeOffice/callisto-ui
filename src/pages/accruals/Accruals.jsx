@@ -134,8 +134,10 @@ const Accruals = () => {
 
   return (
     <>
-      <h1 className="govuk-caption-m">{t('accruals.balance')}</h1>
-      <h2 className="govuk-heading-m">
+      <h1 id="accruals-balance-title" className="govuk-caption-m">
+        {t('accruals.balance')}
+      </h1>
+      <h2 id="accruals-date" className="govuk-heading-m">
         {dayjs(accrualsDate).format(t('accruals.dateFormat'))}
       </h2>
       <NavigationLinks
