@@ -17,7 +17,7 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
         <h1 className="govuk-heading-m newline">
           {targetData ? (
             <span
-              data-testid="annualTargetHours-title-span"
+              id="annualTargetHours-title-span"
               dangerouslySetInnerHTML={{
                 __html: t('annualTargetHours.remainingHoursTitle', {
                   count: remainingHours,

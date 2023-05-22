@@ -34,7 +34,7 @@ exports[`AnnualTargetHours should display correct text for remaining hours with 
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span data-testid=\\"annualTargetHours-title-span\\">Annual target hours
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"annualTargetHours-title-span\\">Annual target hours
  <strong>2182</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
