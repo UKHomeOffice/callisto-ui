@@ -4,7 +4,7 @@ exports[`AccrualData should display "-" for headers without targetData 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
@@ -34,7 +34,7 @@ exports[`AccrualData should display correct text for remaining hours without tar
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\">No agreement has been found</h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
@@ -126,7 +126,7 @@ exports[`AccrualData should render a table with correct headers 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\">No accruals found for this day</h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
