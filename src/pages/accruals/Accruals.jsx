@@ -23,7 +23,7 @@ import NavigationLinks from '../../components/layout/navigation/NavigationLinks'
 
 const Accruals = () => {
   const { t } = useTranslation('common');
-  const { setServiceError } = useApplicationContext();
+  const { setServiceError, userId } = useApplicationContext();
   const { date: accrualsDate } = useParams();
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
@@ -76,7 +76,7 @@ const Accruals = () => {
   const getAgreementData = async (date, setServiceError) => {
     const agreementParams = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
-      .setFilter(buildAgreementFilter(date))
+      .setFilter(buildAgreementFilter(date, userId))
       .getUrlSearchParams();
 
     await validateServiceErrors(setServiceError, async () => {
@@ -120,7 +120,7 @@ const Accruals = () => {
   const getAccrualsData = async (date, setServiceError) => {
     const accrualsParams = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
-      .setFilter(buildAccrualsFilter(date))
+      .setFilter(buildAccrualsFilter(date, userId))
       .getUrlSearchParams();
 
     await validateServiceErrors(setServiceError, async () => {

@@ -1,9 +1,9 @@
-export const buildAccrualsFilter = (date) => {
-  return `accrualDate=='${date}'`;
+export const buildAccrualsFilter = (date, userId) => {
+  return `personId=='${userId}'&&accrualDate=='${date}'`;
 };
 
-export const buildAgreementFilter = (date) => {
-  return `startDate<='${date}'&&endDate>='${date}'`;
+export const buildAgreementFilter = (date, userId) => {
+  return `personId=='${userId}'&&startDate<='${date}'&&endDate>='${date}'`;
 };
 
 export const buildAgreementTargetFilter = (agreementId) => {
