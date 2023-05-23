@@ -10,7 +10,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
   const remainingMins = Math.floor(total - worked);
   const remainingHours = Math.floor(remainingMins / 60);
   const target = total - (accrualsData?.cumulativeTarget || 0);
-  let IdSubstr = titleTranslationKey.split('.')[0];
+  let idSubstr = titleTranslationKey.split('.')[0];
   let title;
 
   if (!targetData) {
@@ -26,7 +26,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
           <span
-            id={`${IdSubstr}-title-span`}
+            id={`${idSubstr}-title-span`}
             dangerouslySetInnerHTML={{
               __html: title,
             }}
@@ -36,14 +36,14 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
               <th
-                id={`${IdSubstr}-total-lbl`}
+                id={`${idSubstr}-total-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('accrualsData.total')}
               </th>
               <td
-                id={`${IdSubstr}-total-value`}
+                id={`${idSubstr}-total-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(total) : '-'}
@@ -51,14 +51,14 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id={`${IdSubstr}-worked-lbl`}
+                id={`${idSubstr}-worked-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('accrualsData.worked')}
               </th>
               <td
-                id={`${IdSubstr}-worked-value`}
+                id={`${idSubstr}-worked-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(worked) : '-'}
@@ -66,14 +66,14 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id={`${IdSubstr}-remaining-lbl`}
+                id={`${idSubstr}-remaining-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('accrualsData.remaining')}
               </th>
               <td
-                id={`${IdSubstr}-remaining-value`}
+                id={`${idSubstr}-remaining-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
@@ -81,14 +81,14 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id={`${IdSubstr}-target-lbl`}
+                id={`${idSubstr}-target-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
                 {t('accrualsData.target')}
               </th>
               <td
-                id={`${IdSubstr}-target-value`}
+                id={`${idSubstr}-target-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(target) : '-'}
@@ -131,5 +131,4 @@ AccrualData.propTypes = {
     ),
   ]),
   titleTranslationKey: PropTypes.string,
-  remainingHours: PropTypes.number,
 };
