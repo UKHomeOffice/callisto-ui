@@ -14,13 +14,18 @@
         "balance": "My accruals balance as of",
         "dateFormat": "D MMMM YYYY"
     },
-    "annualTargetHours": {
-        "title": "Annual target hours",
-        "remainingHoursTitle": "Annual target hours\n <strong>{{count}}</strong> remaining",
+    "accrualsData": {
         "total": "Total",
         "worked": "Worked",
         "remaining": "Remaining",
         "target": "Target",
-        "noAgreement": "No agreement has been found"
+        "noAgreement": "No agreement has been found",
+        "noAccruals": "No accruals have been found"
+    },
+    "annualTargetHours": {
+        "remainingHoursTitle": "Annual target hours\n <strong>{{count}}</strong> remaining"
+    },
+    "nightHours": {
+        "remainingHoursTitle": "Night hours\n <strong>{{count}}</strong> remaining"
     }
 }

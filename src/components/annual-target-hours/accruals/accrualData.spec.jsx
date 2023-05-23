@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import AnnualTargetHours from './AnnualTargetHours';
+import AccrualData from './AccrualData';
 import pretty from 'pretty';
 
-describe('AnnualTargetHours', () => {
+describe('AccrualData', () => {
   it('should render a table with correct headers', () => {
     const { getByRole, baseElement } = render(
-      <AnnualTargetHours targetData={null} accrualsData={null} />
+      <AccrualData targetData={null} accrualsData={null} />
     );
 
     const table = getByRole('table');
@@ -19,12 +19,17 @@ describe('AnnualTargetHours', () => {
     expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
   });
 
-  it('should display correct text for remaining hours with targetData', () => {
+  it('should display correct title for annual Target Hours', () => {
     const targetData = { targetTotal: 131520 };
     const accrualsData = { cumulativeTotal: 600 };
+    const titleTranslationKey = 'annualTargetHours.remainingHoursTitle';
 
     const { baseElement } = render(
-      <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+      <AccrualData
+        targetData={targetData}
+        accrualsData={accrualsData}
+        titleTranslationKey={titleTranslationKey}
+      />
     );
 
     expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
@@ -32,12 +37,29 @@ describe('AnnualTargetHours', () => {
     expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
   });
 
+  it('should display correct title for night Hours', () => {
+    const targetData = { targetTotal: 131520 };
+    const accrualsData = { cumulativeTotal: 600 };
+    const titleTranslationKey = 'nightHours.remainingHoursTitle';
+
+    const { baseElement } = render(
+      <AccrualData
+        targetData={targetData}
+        accrualsData={accrualsData}
+        titleTranslationKey={titleTranslationKey}
+      />
+    );
+
+    expect(screen.getByText('Night hours remaining')).toBeTruthy();
+    expect(screen.getByText('2182')).toBeTruthy();
+    expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
+  });
   it('should display correct text for remaining hours without targetData', () => {
     const targetData = null;
     const accrualsData = { cumulativeTotal: 500 };
 
     const { baseElement } = render(
-      <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+      <AccrualData targetData={targetData} accrualsData={accrualsData} />
     );
 
     const expectedText = 'No agreement has been found';
@@ -51,7 +73,7 @@ describe('AnnualTargetHours', () => {
     const accrualsData = { cumulativeTotal: 100 };
 
     const { baseElement } = render(
-      <AnnualTargetHours targetData={targetData} accrualsData={accrualsData} />
+      <AccrualData targetData={targetData} accrualsData={accrualsData} />
     );
 
     const expectedText = screen.getAllByText('-');

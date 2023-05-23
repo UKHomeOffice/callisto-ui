@@ -3,43 +3,47 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n';
 import { formatToHoursAndMinutes } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AnnualTargetHours = ({ targetData, accrualsData }) => {
+const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
   const { t } = useTranslation('common');
   const total = targetData?.targetTotal || 0;
   const worked = accrualsData?.cumulativeTotal || 0;
   const remainingMins = Math.floor(total - worked);
   const remainingHours = Math.floor(remainingMins / 60);
   const target = total - (accrualsData?.cumulativeTarget || 0);
+  const idSubstr = titleTranslationKey?.split('.')[0];
+  let title;
+
+  if (!targetData) {
+    title = t('accrualsData.noAgreement');
+  } else {
+    title = t(titleTranslationKey, {
+      count: remainingHours,
+    });
+  }
 
   return (
     <div className="accruals-container">
       <form className="grey-border">
         <h1 className="govuk-heading-m newline">
-          {targetData ? (
-            <span
-              id="annualTargetHours-title-span"
-              dangerouslySetInnerHTML={{
-                __html: t('annualTargetHours.remainingHoursTitle', {
-                  count: remainingHours,
-                }),
-              }}
-            />
-          ) : (
-            t('annualTargetHours.noAgreement')
-          )}
+          <span
+            id={`${idSubstr}-title-span`}
+            dangerouslySetInnerHTML={{
+              __html: title,
+            }}
+          />
         </h1>
         <table className="govuk-table">
           <tbody className="govuk-table__body">
             <tr className="govuk-table__row">
               <th
-                id="annualTargetHours-total-lbl"
+                id={`${idSubstr}-total-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
-                {t('annualTargetHours.total')}
+                {t('accrualsData.total')}
               </th>
               <td
-                id="annualTargetHours-total-value"
+                id={`${idSubstr}-total-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(total) : '-'}
@@ -47,14 +51,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id="annualTargetHours-worked-lbl"
+                id={`${idSubstr}-worked-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
-                {t('annualTargetHours.worked')}
+                {t('accrualsData.worked')}
               </th>
               <td
-                id="annualTargetHours-worked-value"
+                id={`${idSubstr}-worked-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(worked) : '-'}
@@ -62,14 +66,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id="annualTargetHours-remaining-lbl"
+                id={`${idSubstr}-remaining-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
-                {t('annualTargetHours.remaining')}
+                {t('accrualsData.remaining')}
               </th>
               <td
-                id="annualTargetHours-remaining-value"
+                id={`${idSubstr}-remaining-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
@@ -77,14 +81,14 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
             </tr>
             <tr className="govuk-table__row">
               <th
-                id="annualTargetHours-target-lbl"
+                id={`${idSubstr}-target-lbl`}
                 scope="row"
                 className="govuk-table__header"
               >
-                {t('annualTargetHours.target')}
+                {t('accrualsData.target')}
               </th>
               <td
-                id="annualTargetHours-target-value"
+                id={`${idSubstr}-target-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
                 {targetData ? formatToHoursAndMinutes(target) : '-'}
@@ -97,9 +101,9 @@ const AnnualTargetHours = ({ targetData, accrualsData }) => {
   );
 };
 
-export default AnnualTargetHours;
+export default AccrualData;
 
-AnnualTargetHours.propTypes = {
+AccrualData.propTypes = {
   targetData: PropTypes.shape({
     id: PropTypes.string,
     tenantId: PropTypes.string,
@@ -107,18 +111,24 @@ AnnualTargetHours.propTypes = {
     accrualTypeId: PropTypes.string,
     targetTotal: PropTypes.number,
   }),
-  accrualsData: PropTypes.shape({
-    id: PropTypes.string,
-    tenantId: PropTypes.string,
-    personId: PropTypes.string,
-    agreementId: PropTypes.string,
-    accrualDate: PropTypes.string,
-    accrualTypeId: PropTypes.string,
-    cumulativeTotal: PropTypes.number,
-    cumulativeTarget: PropTypes.number,
-    contributions: PropTypes.shape({
-      timeEntries: PropTypes.object,
-      total: PropTypes.number,
-    }),
-  }),
+  accrualsData: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        tenantId: PropTypes.string,
+        personId: PropTypes.string,
+        agreementId: PropTypes.string,
+        accrualDate: PropTypes.string,
+        accrualTypeId: PropTypes.string,
+        cumulativeTotal: PropTypes.number,
+        cumulativeTarget: PropTypes.number,
+        contributions: PropTypes.shape({
+          timeEntries: PropTypes.object,
+          total: PropTypes.number,
+        }),
+      })
+    ),
+  ]),
+  titleTranslationKey: PropTypes.string,
 };

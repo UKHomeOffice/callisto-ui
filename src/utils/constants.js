@@ -15,4 +15,5 @@ export const messageKeys = Object.freeze({
 
 export const accrualsTypeIds = Object.freeze({
   annualTargetHours: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
+  nightHours: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
 });

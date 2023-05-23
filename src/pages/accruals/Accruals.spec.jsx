@@ -77,7 +77,7 @@ describe('Accruals', () => {
       });
     });
 
-    it('should find an agreement but no target and shows no data dound', async () => {
+    it('should show no data found when there is no agreement data', async () => {
       getAgreementTargets.mockImplementation(() => {
         return {
           status: 200,
@@ -112,8 +112,8 @@ describe('Accruals', () => {
       );
 
       await waitFor(async () => {
-        expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
-        expect(screen.getByText('2192')).toBeTruthy();
+        expect(screen.getByText('No accruals have been found')).toBeTruthy();
+        expect(screen.getAllByText('2192:00')).toBeTruthy();
         expect(screen.getByText('00:00')).toBeTruthy();
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
