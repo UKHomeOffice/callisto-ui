@@ -74,7 +74,7 @@ const Accruals = () => {
   };
 
   const clearAccrualsData = () => {
-    setAccrualsDataList(null);
+    setAccrualsDataList([]);
   };
 
   const getAllData = async (accrualsDate, setServiceError) => {
