@@ -4,24 +4,24 @@ exports[`AccrualData should display "-" for headers without targetData 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td id=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"undefined-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td id=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"undefined-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td id=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"undefined-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td id=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"undefined-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
@@ -34,24 +34,24 @@ exports[`AccrualData should display correct text for remaining hours without tar
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td id=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"undefined-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td id=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"undefined-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td id=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"undefined-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td id=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"undefined-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
@@ -126,24 +126,24 @@ exports[`AccrualData should render a table with correct headers 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"null-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td id=\\"null-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"undefined-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td id=\\"null-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"undefined-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td id=\\"null-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"undefined-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"null-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td id=\\"null-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"undefined-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"undefined-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>

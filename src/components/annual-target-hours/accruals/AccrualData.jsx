@@ -10,7 +10,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
   const remainingMins = Math.floor(total - worked);
   const remainingHours = Math.floor(remainingMins / 60);
   const target = total - (accrualsData?.cumulativeTarget || 0);
-  let idSubstr = titleTranslationKey.split('.')[0];
+  const idSubstr = titleTranslationKey?.split('.')[0];
   let title;
 
   if (!targetData) {
