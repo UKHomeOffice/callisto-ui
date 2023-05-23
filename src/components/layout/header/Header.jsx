@@ -73,7 +73,7 @@ const Header = () => {
               }`}
             >
               <li
-                data-testid="header-home-link"
+                id="header-home-link"
                 className="govuk-header__navigation-item govuk-header__navigation-item govuk-!-margin-right-5"
               >
                 <Link
@@ -86,7 +86,7 @@ const Header = () => {
                 </Link>
               </li>
               <li
-                data-testid="header-record-time-link"
+                id="header-record-time-link"
                 className="govuk-header__navigation-item govuk-header__navigation-item"
               >
                 <Link
@@ -99,7 +99,7 @@ const Header = () => {
                 </Link>
               </li>
               <li
-                data-testid="header-track-time-link"
+                id="header-track-time-link"
                 className="govuk-header__navigation-item govuk-header__navigation-item"
               >
                 <Link
