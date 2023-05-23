@@ -13,7 +13,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
   let title;
 
   if (!targetData) {
-    title = 'accrualsData.noAgreement';
+    title = t('accrualsData.noAgreement');
   } else {
     title = t(titleTranslationKey, {
       count: remainingHours,
@@ -31,7 +31,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
           <span
             id={`${IdSubstr}-title-span`}
             dangerouslySetInnerHTML={{
-              __html: t(title),
+              __html: title,
             }}
           />
         </h1>

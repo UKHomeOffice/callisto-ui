@@ -112,7 +112,7 @@ describe('Accruals', () => {
       );
 
       await waitFor(async () => {
-        expect(screen.getByText('No accruals found for this day')).toBeTruthy();
+        expect(screen.getByText('No accruals have been found')).toBeTruthy();
         expect(screen.getAllByText('2192:00')).toBeTruthy();
         expect(screen.getByText('00:00')).toBeTruthy();
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
