@@ -6,7 +6,7 @@ import {
 import api from '../core';
 import {
   agreement,
-  agreementTarget,
+  targetHoursAgreementTarget,
   annualTargetHoursAccrual,
 } from '../../../mocks/mockData';
 
@@ -60,7 +60,7 @@ describe('Accruals Service', () => {
   describe('getAgreementTargets', () => {
     it('should return data correctly on success', async () => {
       api.get.mockImplementation(() =>
-        Promise.resolve({ data: agreementTarget })
+        Promise.resolve({ data: targetHoursAgreementTarget })
       );
 
       const response = await getAgreementTargets();
@@ -72,12 +72,12 @@ describe('Accruals Service', () => {
       expect(response.data.meta).toBeDefined();
       expect(response.data.items).toBeDefined();
       expect(response.data.items.length).toBeGreaterThan(0);
-      expect(response.data).toStrictEqual(agreementTarget);
+      expect(response.data).toStrictEqual(targetHoursAgreementTarget);
     });
 
     it('should use correct endpoint /agreement-targets', async () => {
       api.get.mockImplementation(() =>
-        Promise.resolve({ data: agreementTarget })
+        Promise.resolve({ data: targetHoursAgreementTarget })
       );
 
       await getAgreementTargets();

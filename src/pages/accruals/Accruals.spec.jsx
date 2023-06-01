@@ -11,8 +11,10 @@ import {
 } from '../../api/services/accrualsService';
 import {
   agreement,
-  agreementTarget,
+  targetHoursAgreementTarget,
   annualTargetHoursAccrual,
+  nightHoursAccrual,
+  nightHoursAgreementTarget,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
 
@@ -29,7 +31,7 @@ beforeEach(() => {
   getAgreementTargets.mockImplementation(() => {
     return {
       status: 200,
-      data: agreementTarget,
+      data: targetHoursAgreementTarget,
     };
   });
   getAccruals.mockImplementation(() => {
@@ -95,6 +97,33 @@ describe('Accruals', () => {
         expect(screen.getByText('No agreement has been found')).toBeTruthy();
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
+    });
+  });
+
+  it('should retrieve all night hours data when viewing one in the agreement range', async () => {
+    getAccruals.mockImplementation(() => {
+      return {
+        status: 200,
+        data: nightHoursAccrual,
+      };
+    });
+    getAgreementTargets.mockImplementation(() => {
+      return {
+        status: 200,
+        data: nightHoursAgreementTarget,
+      };
+    });
+    const { baseElement } = renderWithApplicationContext(
+      <Accruals />,
+      defaultApplicationContext,
+      '/2023-04-01',
+      '/:date'
+    );
+
+    await waitFor(async () => {
+      expect(screen.getByText('Night hours remaining')).toBeTruthy();
+      expect(screen.getByText('21')).toBeTruthy();
+      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
     });
   });
 });

@@ -105,3 +105,39 @@ exports[`Accruals getAccrualsData should show no data found when there is no agr
   </div>
 </div>"
 `;
+
+exports[`Accruals should retrieve all night hours data when viewing one in the agreement range 1`] = `
+"<div>
+  <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
+  <div class=\\"accruals-data\\">
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
+ <strong>21</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">25:20</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"nightHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">4:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">21:20</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">23:20</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>"
+`;
