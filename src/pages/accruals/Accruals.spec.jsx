@@ -96,27 +96,5 @@ describe('Accruals', () => {
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
-
-    it('should find an agreement and target but no accrual but still renders the found data and zero worked', async () => {
-      getAccruals.mockImplementation(() => {
-        return {
-          status: 200,
-          data: [],
-        };
-      });
-      const { baseElement } = renderWithApplicationContext(
-        <Accruals />,
-        defaultApplicationContext,
-        '/2023-04-07',
-        '/:date'
-      );
-
-      await waitFor(async () => {
-        expect(screen.getByText('No accruals have been found')).toBeTruthy();
-        expect(screen.getAllByText('2192:00')).toBeTruthy();
-        expect(screen.getByText('00:00')).toBeTruthy();
-        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
-      });
-    });
   });
 });

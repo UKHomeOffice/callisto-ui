@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import '../../../i18n';
 import { formatToHoursAndMinutes } from '../../../utils/time-entry-utils/timeEntryUtils';
 
-const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
+const AccrualData = ({ targetTotal, accrualsData, titleTranslationKey }) => {
   const { t } = useTranslation('common');
-  const total = targetData?.targetTotal || 0;
+  const total = targetTotal || 0;
   const worked = accrualsData?.cumulativeTotal || 0;
   const remainingMins = Math.floor(total - worked);
   const remainingHours = Math.floor(remainingMins / 60);
@@ -13,8 +13,8 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
   const idSubstr = titleTranslationKey?.split('.')[0];
   let title;
 
-  if (!targetData) {
-    title = t('accrualsData.noAgreement');
+  if (!targetTotal) {
+    title = t(titleTranslationKey);
   } else {
     title = t(titleTranslationKey, {
       count: remainingHours,
@@ -46,7 +46,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
                 id={`${idSubstr}-total-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
-                {targetData ? formatToHoursAndMinutes(total) : '-'}
+                {targetTotal ? formatToHoursAndMinutes(total) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -61,7 +61,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
                 id={`${idSubstr}-worked-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
-                {targetData ? formatToHoursAndMinutes(worked) : '-'}
+                {targetTotal ? formatToHoursAndMinutes(worked) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -76,7 +76,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
                 id={`${idSubstr}-remaining-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
-                {targetData ? formatToHoursAndMinutes(remainingMins) : '-'}
+                {targetTotal ? formatToHoursAndMinutes(remainingMins) : '-'}
               </td>
             </tr>
             <tr className="govuk-table__row">
@@ -91,7 +91,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
                 id={`${idSubstr}-target-value`}
                 className="govuk-table__cell govuk-table__cell--numeric"
               >
-                {targetData ? formatToHoursAndMinutes(target) : '-'}
+                {targetTotal ? formatToHoursAndMinutes(target) : '-'}
               </td>
             </tr>
           </tbody>
@@ -104,13 +104,7 @@ const AccrualData = ({ targetData, accrualsData, titleTranslationKey }) => {
 export default AccrualData;
 
 AccrualData.propTypes = {
-  targetData: PropTypes.shape({
-    id: PropTypes.string,
-    tenantId: PropTypes.string,
-    agreementId: PropTypes.string,
-    accrualTypeId: PropTypes.string,
-    targetTotal: PropTypes.number,
-  }),
+  targetTotal: PropTypes.number,
   accrualsData: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.arrayOf(

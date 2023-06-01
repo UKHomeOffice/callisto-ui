@@ -28,15 +28,16 @@ const Accruals = () => {
   const previousDay = formatDate(dayjs(accrualsDate).subtract(1, 'day'));
   const nextDay = formatDate(dayjs(accrualsDate).add(1, 'day'));
 
-  const [targetData, setTargetData] = useState(null);
   const [agreementStartDate, setAgreementStartDate] = useState(null);
   const [agreementEndDate, setAgreementEndDate] = useState(null);
   const [accrualsDataList, setAccrualsDataList] = useState([]);
+  const [targetData, setTargetData] = useState([]);
 
   let agreementId = '';
+  let localTargetData = [];
 
   useEffect(async () => {
-    clearAccrualsData();
+    setAccrualsDataList([]);
     if (isOutsideAgreementDates()) {
       await getAllData(accrualsDate, setServiceError);
     } else {
@@ -57,24 +58,32 @@ const Accruals = () => {
     let accrualsList = [];
     fetchedAccruals.forEach((accrual) => {
       if (accrual.accrualTypeId === accrualsTypeIds.annualTargetHours) {
-        let entry = {
-          title: 'annualTargetHours.remainingHoursTitle',
-          data: accrual,
-        };
-        accrualsList.push(entry);
+        const targetHours = createAccrualObject(
+          accrual,
+          'annualTargetHours.remainingHoursTitle'
+        );
+        accrualsList.push(targetHours);
       } else if (accrual.accrualTypeId === accrualsTypeIds.nightHours) {
-        let entry = {
-          title: 'nightHours.remainingHoursTitle',
-          data: accrual,
-        };
-        accrualsList.push(entry);
+        const nightHours = createAccrualObject(
+          accrual,
+          'nightHours.remainingHoursTitle'
+        );
+        accrualsList.push(nightHours);
       }
     });
     setAccrualsDataList(accrualsList);
   };
 
-  const clearAccrualsData = () => {
-    setAccrualsDataList([]);
+  const createAccrualObject = (accrual, accrualType) => {
+    const targetList = targetData.length > 0 ? targetData : localTargetData;
+    const target = targetList.filter((agreementTarget) => {
+      return agreementTarget.accrualTypeId === accrual.accrualTypeId;
+    });
+    return {
+      title: accrualType,
+      data: accrual,
+      targetTotal: target[0]?.targetTotal,
+    };
   };
 
   const getAllData = async (accrualsDate, setServiceError) => {
@@ -102,7 +111,7 @@ const Accruals = () => {
         setAgreementEndDate(agreementResponse.data.items[0].endDate);
         agreementId = agreementResponse.data.items[0].id;
       } else {
-        setTargetData(null);
+        setTargetData([]);
         setAgreementStartDate(null);
         setAgreementEndDate(null);
       }
@@ -117,14 +126,21 @@ const Accruals = () => {
 
     await validateServiceErrors(setServiceError, async () => {
       const targetResponse = await getAgreementTargets(targetParams);
-
       if (
         targetResponse.status == 200 &&
         targetResponse.data.items?.length > 0
       ) {
-        setTargetData(targetResponse.data.items[0]);
+        let targetList = [];
+        targetResponse.data.items.forEach((target) => {
+          targetList.push({
+            accrualTypeId: target.accrualTypeId,
+            targetTotal: target.targetTotal,
+          });
+        });
+        setTargetData(targetList);
+        localTargetData = targetList;
       } else {
-        setTargetData(null);
+        setTargetData([]);
       }
     });
   };
@@ -137,7 +153,6 @@ const Accruals = () => {
 
     await validateServiceErrors(setServiceError, async () => {
       const accrualsResponse = await getAccruals(accrualsParams);
-
       if (accrualsResponse.status == 200) {
         setAccrualsData(accrualsResponse.data.items);
       }
@@ -162,16 +177,20 @@ const Accruals = () => {
           accrualsDataList.map((accrualData) => (
             <AccrualData
               key={accrualData.data.id}
-              targetData={targetData}
+              targetTotal={accrualData.targetTotal}
               accrualsData={accrualData.data}
               titleTranslationKey={accrualData.title}
             />
           ))
         ) : (
           <AccrualData
-            targetData={targetData}
-            accrualsData={accrualsDataList}
-            titleTranslationKey={'accrualsData.noAccruals'}
+            targetTotal={null}
+            accrualsData={null}
+            titleTranslationKey={
+              targetData.length > 0
+                ? 'accrualsData.noAccruals'
+                : 'accrualsData.noAgreement'
+            }
           />
         )}
       </div>

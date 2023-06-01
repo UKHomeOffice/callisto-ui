@@ -4,7 +4,7 @@ exports[`AccrualData should display "-" for headers without targetData 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\"></span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
@@ -30,28 +30,58 @@ exports[`AccrualData should display "-" for headers without targetData 1`] = `
 </div>"
 `;
 
+exports[`AccrualData should display correct text for finding no accrual data 1`] = `
+"<div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"accrualsData-title-span\\">No accruals have been found</span></h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"accrualsData-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"accrualsData-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"accrualsData-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"accrualsData-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"accrualsData-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"accrualsData-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"accrualsData-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"accrualsData-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
+`;
+
 exports[`AccrualData should display correct text for remaining hours without targetData 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"accrualsData-title-span\\">No agreement has been found</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"undefined-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td id=\\"undefined-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"accrualsData-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"accrualsData-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"undefined-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-            <td id=\\"undefined-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"accrualsData-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"accrualsData-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"undefined-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td id=\\"undefined-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"accrualsData-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"accrualsData-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
-            <th id=\\"undefined-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td id=\\"undefined-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
+            <th id=\\"accrualsData-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"accrualsData-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">-</td>
           </tr>
         </tbody>
       </table>
@@ -96,12 +126,12 @@ exports[`AccrualData should display correct title for night Hours 1`] = `
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
       <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
- <strong>2182</strong> remaining</span></h1>
+ <strong>515</strong> remaining</span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
             <th id=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-            <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">525:20</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
             <th id=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
@@ -109,11 +139,11 @@ exports[`AccrualData should display correct title for night Hours 1`] = `
           </tr>
           <tr class=\\"govuk-table__row\\">
             <th id=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-            <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">515:20</td>
           </tr>
           <tr class=\\"govuk-table__row\\">
             <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-            <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">525:20</td>
           </tr>
         </tbody>
       </table>
@@ -126,7 +156,7 @@ exports[`AccrualData should render a table with correct headers 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
     <form class=\\"grey-border\\">
-      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\">No agreement has been found</span></h1>
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"undefined-title-span\\"></span></h1>
       <table class=\\"govuk-table\\">
         <tbody class=\\"govuk-table__body\\">
           <tr class=\\"govuk-table__row\\">
