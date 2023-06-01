@@ -11,8 +11,10 @@ import {
 } from '../../api/services/accrualsService';
 import {
   agreement,
-  agreementTarget,
+  targetHoursAgreementTarget,
   annualTargetHoursAccrual,
+  nightHoursAccrual,
+  nightHoursAgreementTarget,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
 
@@ -29,7 +31,7 @@ beforeEach(() => {
   getAgreementTargets.mockImplementation(() => {
     return {
       status: 200,
-      data: agreementTarget,
+      data: targetHoursAgreementTarget,
     };
   });
   getAccruals.mockImplementation(() => {
@@ -96,27 +98,32 @@ describe('Accruals', () => {
         expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
       });
     });
+  });
 
-    it('should find an agreement and target but no accrual but still renders the found data and zero worked', async () => {
-      getAccruals.mockImplementation(() => {
-        return {
-          status: 200,
-          data: [],
-        };
-      });
-      const { baseElement } = renderWithApplicationContext(
-        <Accruals />,
-        defaultApplicationContext,
-        '/2023-04-07',
-        '/:date'
-      );
+  it('should retrieve all night hours data when viewing one in the agreement range', async () => {
+    getAccruals.mockImplementation(() => {
+      return {
+        status: 200,
+        data: nightHoursAccrual,
+      };
+    });
+    getAgreementTargets.mockImplementation(() => {
+      return {
+        status: 200,
+        data: nightHoursAgreementTarget,
+      };
+    });
+    const { baseElement } = renderWithApplicationContext(
+      <Accruals />,
+      defaultApplicationContext,
+      '/2023-04-01',
+      '/:date'
+    );
 
-      await waitFor(async () => {
-        expect(screen.getByText('No accruals have been found')).toBeTruthy();
-        expect(screen.getAllByText('2192:00')).toBeTruthy();
-        expect(screen.getByText('00:00')).toBeTruthy();
-        expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
-      });
+    await waitFor(async () => {
+      expect(screen.getByText('Night hours remaining')).toBeTruthy();
+      expect(screen.getByText('21')).toBeTruthy();
+      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
     });
   });
 });
