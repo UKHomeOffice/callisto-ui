@@ -19,7 +19,6 @@ import {
   weekendHoursAgreementTarget,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
-import { accrualsTypes } from '../../utils/constants';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
