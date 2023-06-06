@@ -22,8 +22,14 @@
 /* stylelint-enable selector-class-pattern */
 
 .accruals-container {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: auto;
+ 
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .accruals-container .govuk-heading-m {
@@ -57,6 +63,10 @@
   justify-content: flex-start;
 }
 
-.accruals-data > * {
-  margin-right: 15px;
+.accruals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px;
+  justify-content: flex-start;
+  align-items: baseline; 
 }

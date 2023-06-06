@@ -69,6 +69,12 @@ const Accruals = () => {
           'nightHours.remainingHoursTitle'
         );
         accrualsList.push(nightHours);
+      } else if (accrual.accrualTypeId === accrualsTypeIds.weekendHours) {
+        const weekendHours = createAccrualObject(
+          accrual,
+          'weekendHours.remainingHoursTitle'
+        );
+        accrualsList.push(weekendHours);
       }
     });
     setAccrualsDataList(accrualsList);
@@ -172,7 +178,7 @@ const Accruals = () => {
         previousDay={previousDay}
         nextDay={nextDay}
       />
-      <div className="accruals-data">
+      <div className="accruals-data accruals-grid">
         {accrualsDataList && accrualsDataList.length > 0 ? (
           accrualsDataList.map((accrualData) => (
             <AccrualData
