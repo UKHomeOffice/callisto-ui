@@ -18,7 +18,7 @@ import {
 import AccrualData from '../../components/annual-target-hours/accruals/AccrualData';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
-import { accrualsTypeIds } from '../../utils/constants';
+import { accrualsTypes } from '../../utils/constants';
 import NavigationLinks from '../../components/layout/navigation/NavigationLinks';
 
 const Accruals = () => {
@@ -57,24 +57,39 @@ const Accruals = () => {
   const setAccrualsData = (fetchedAccruals) => {
     let accrualsList = [];
     fetchedAccruals.forEach((accrual) => {
-      if (accrual.accrualTypeId === accrualsTypeIds.annualTargetHours) {
-        const targetHours = createAccrualObject(
-          accrual,
-          'annualTargetHours.remainingHoursTitle'
-        );
-        accrualsList.push(targetHours);
-      } else if (accrual.accrualTypeId === accrualsTypeIds.nightHours) {
-        const nightHours = createAccrualObject(
-          accrual,
-          'nightHours.remainingHoursTitle'
-        );
-        accrualsList.push(nightHours);
+      let accrualTitle = '';
+      let accrualOrder = 0;
+
+      switch (accrual.accrualTypeId) {
+        case accrualsTypes.annualTargetHours.id:
+          accrualTitle = 'annualTargetHours.remainingHoursTitle';
+          accrualOrder = accrualsTypes.annualTargetHours.displayOrder;
+          break;
+        case accrualsTypes.nightHours.id:
+          accrualTitle = 'nightHours.remainingHoursTitle';
+          accrualOrder = accrualsTypes.nightHours.displayOrder;
+          break;
+        case accrualsTypes.weekendHours.id:
+          accrualTitle = 'weekendHours.remainingHoursTitle';
+          accrualOrder = accrualsTypes.weekendHours.displayOrder;
+          break;
+        default:
+          accrualTitle = 'accrualsData.unknownAccrual';
+          accrualOrder = 11;
+          break;
       }
+      const targetHours = createAccrualObject(
+        accrual,
+        accrualTitle,
+        accrualOrder
+      );
+      accrualsList.push(targetHours);
     });
+    accrualsList.sort((a, b) => (a.displayOrder > b.displayOrder ? 1 : -1));
     setAccrualsDataList(accrualsList);
   };
 
-  const createAccrualObject = (accrual, accrualType) => {
+  const createAccrualObject = (accrual, accrualType, displayOrder) => {
     const targetList = targetData.length > 0 ? targetData : localTargetData;
     const target = targetList.filter((agreementTarget) => {
       return agreementTarget.accrualTypeId === accrual.accrualTypeId;
@@ -83,6 +98,7 @@ const Accruals = () => {
       title: accrualType,
       data: accrual,
       targetTotal: target[0]?.targetTotal,
+      displayOrder: displayOrder,
     };
   };
 

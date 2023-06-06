@@ -20,12 +20,37 @@
         "remaining": "Remaining",
         "target": "Target",
         "noAgreement": "No agreement has been found",
-        "noAccruals": "No accruals have been found"
+        "noAccruals": "No accruals have been found",
+        "unknownAccrual": "Unknown accrual found"
     },
     "annualTargetHours": {
         "remainingHoursTitle": "Annual target hours\n <strong>{{count}}</strong> remaining"
     },
+    "publicHolidayHours": {
+        "remainingHoursTitle": "Public holiday hours\n <strong>{{count}}</strong> remaining"
+    },
+    "onCallWeekday": {
+        "remainingHoursTitle": "On call weekday periods\n <strong>{{count}}</strong> remaining"
+    },
+    "publicHolidayCredit": {
+        "remainingHoursTitle": "Public holiday hours credit\n <strong>{{count}}</strong> remaining"
+    },
     "nightHours": {
         "remainingHoursTitle": "Night hours\n <strong>{{count}}</strong> remaining"
+    },
+    "onCallWeekend": {
+        "remainingHoursTitle": "On call weekend periods\n <strong>{{count}}</strong> remaining"
+    },
+    "flexibleCredits": {
+        "remainingHoursTitle": "Flexible changes\n <strong>{{count}}</strong> remaining"
+    },
+    "rosteredShiftAllowance": {
+        "remainingHoursTitle": "Rostered Shift Allowance\n <strong>{{count}}</strong>"
+    },
+    "onCallPublicHoliday": {
+        "remainingHoursTitle": "On call public holiday periodfs\n <strong>{{count}}</strong> remaining"
+    },
+    "weekendHours": {
+        "remainingHoursTitle": "Weekend hours\n <strong>{{count}}</strong> remaining"
     }
 }
