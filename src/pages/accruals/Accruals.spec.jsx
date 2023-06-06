@@ -213,7 +213,7 @@ describe('Accruals', () => {
       title: 'Unknown accrual found',
     },
   ])(
-    'should render the SimpleTimePeriod component when time period type is correct',
+    'should render the correct accruals title based open each type ID',
     async (accrualsType) => {
       getAccruals.mockImplementation(() => {
         return {
