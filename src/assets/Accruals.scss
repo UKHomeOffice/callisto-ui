@@ -24,7 +24,7 @@
 .accruals-container {
   width: 100%;
   height: auto;
- 
+
 
   @media screen and (max-width: 800px) {
     width: 100%;
@@ -65,8 +65,8 @@
 
 .accruals-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   justify-content: flex-start;
-  align-items: baseline; 
+  align-items: baseline;
 }
