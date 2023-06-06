@@ -5,7 +5,7 @@ exports[`Accruals getAccrualsData should retrieve all data when viewing a date i
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
-  <div class=\\"accruals-data\\">
+  <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
         <h1 class=\\"govuk-heading-m newline\\"><span id=\\"annualTargetHours-title-span\\">Annual target hours
@@ -41,7 +41,7 @@ exports[`Accruals getAccrualsData should retrieve no data when viewing a date ou
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">8 April 2023</h2>
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-04-07\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-09\\">Next day</a></div>
-  <div class=\\"accruals-data\\">
+  <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
         <h1 class=\\"govuk-heading-m newline\\"><span id=\\"accrualsData-title-span\\">No agreement has been found</span></h1>
@@ -76,7 +76,7 @@ exports[`Accruals getAccrualsData should show no data found when there is no agr
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">7 April 2023</h2>
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
-  <div class=\\"accruals-data\\">
+  <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
         <h1 class=\\"govuk-heading-m newline\\"><span id=\\"accrualsData-title-span\\">No agreement has been found</span></h1>
@@ -111,7 +111,7 @@ exports[`Accruals should retrieve all night hours data when viewing one in the a
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
   <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
-  <div class=\\"accruals-data\\">
+  <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
         <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
@@ -133,6 +133,42 @@ exports[`Accruals should retrieve all night hours data when viewing one in the a
             <tr class=\\"govuk-table__row\\">
               <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
               <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">23:20</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>"
+`;
+
+exports[`Accruals should retrieve all weekend hours data when viewing one in the agreement range 1`] = `
+"<div>
+  <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
+  <div class=\\"accruals-data accruals-grid\\">
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"weekendHours-title-span\\">Weekend hours
+ <strong>2182</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"weekendHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"weekendHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"weekendHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"weekendHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
             </tr>
           </tbody>
         </table>

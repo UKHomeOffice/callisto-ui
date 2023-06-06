@@ -14,7 +14,9 @@ import {
   targetHoursAgreementTarget,
   annualTargetHoursAccrual,
   nightHoursAccrual,
+  weekendHoursAccrual,
   nightHoursAgreementTarget,
+  weekendHoursAgreementTarget,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
 
@@ -123,6 +125,32 @@ describe('Accruals', () => {
     await waitFor(async () => {
       expect(screen.getByText('Night hours remaining')).toBeTruthy();
       expect(screen.getByText('21')).toBeTruthy();
+      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
+    });
+  });
+  it('should retrieve all weekend hours data when viewing one in the agreement range', async () => {
+    getAccruals.mockImplementation(() => {
+      return {
+        status: 200,
+        data: weekendHoursAccrual,
+      };
+    });
+    getAgreementTargets.mockImplementation(() => {
+      return {
+        status: 200,
+        data: weekendHoursAgreementTarget,
+      };
+    });
+    const { baseElement } = renderWithApplicationContext(
+      <Accruals />,
+      defaultApplicationContext,
+      '/2023-04-01',
+      '/:date'
+    );
+
+    await waitFor(async () => {
+      expect(screen.getByText('Weekend hours remaining')).toBeTruthy();
+      expect(screen.getByText('2182')).toBeTruthy();
       expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
     });
   });

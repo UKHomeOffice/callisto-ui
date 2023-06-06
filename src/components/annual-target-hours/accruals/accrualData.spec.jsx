@@ -54,6 +54,24 @@ describe('AccrualData', () => {
     expect(screen.getByText('515')).toBeTruthy();
     expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
   });
+
+  it('should display correct title for weekend Hours', () => {
+    const targetData = 31520;
+    const accrualsData = { cumulativeTotal: 600 };
+    const titleTranslationKey = 'weekendHours.remainingHoursTitle';
+
+    const { baseElement } = render(
+      <AccrualData
+        targetTotal={targetData}
+        accrualsData={accrualsData}
+        titleTranslationKey={titleTranslationKey}
+      />
+    );
+
+    expect(screen.getByText('Weekend hours remaining')).toBeTruthy();
+    expect(screen.getByText('515')).toBeTruthy();
+    expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
+  });
   it('should display correct text for remaining hours without targetData', () => {
     const targetData = null;
     const accrualsData = null;

@@ -152,6 +152,37 @@ exports[`AccrualData should display correct title for night Hours 1`] = `
 </div>"
 `;
 
+exports[`AccrualData should display correct title for weekend Hours 1`] = `
+"<div>
+  <div class=\\"accruals-container\\">
+    <form class=\\"grey-border\\">
+      <h1 class=\\"govuk-heading-m newline\\"><span id=\\"weekendHours-title-span\\">Weekend hours
+ <strong>515</strong> remaining</span></h1>
+      <table class=\\"govuk-table\\">
+        <tbody class=\\"govuk-table__body\\">
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"weekendHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+            <td id=\\"weekendHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">525:20</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"weekendHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+            <td id=\\"weekendHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"weekendHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+            <td id=\\"weekendHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">515:20</td>
+          </tr>
+          <tr class=\\"govuk-table__row\\">
+            <th id=\\"weekendHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+            <td id=\\"weekendHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">525:20</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>"
+`;
+
 exports[`AccrualData should render a table with correct headers 1`] = `
 "<div>
   <div class=\\"accruals-container\\">
