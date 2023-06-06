@@ -48,7 +48,7 @@
         "remainingHoursTitle": "Rostered Shift Allowance\n <strong>{{count}}</strong>"
     },
     "onCallPublicHoliday": {
-        "remainingHoursTitle": "On call public holiday periodfs\n <strong>{{count}}</strong> remaining"
+        "remainingHoursTitle": "On call public holiday period\n <strong>{{count}}</strong> remaining"
     },
     "weekendHours": {
         "remainingHoursTitle": "Weekend hours\n <strong>{{count}}</strong> remaining"

@@ -73,6 +73,34 @@ const Accruals = () => {
           accrualTitle = 'weekendHours.remainingHoursTitle';
           accrualOrder = accrualsTypes.weekendHours.displayOrder;
           break;
+        case accrualsTypes.publicHolidayHours.id:
+          accrualTitle = 'publicHolidayHours.remainingHoursTitle';
+          accrualOrder = accrualsTypes.publicHolidayHours.displayOrder;
+          break;
+        case accrualsTypes.onCallWeekday.id:
+          accrualTitle = 'onCallWeekday.remainingHoursTitle';
+          accrualOrder = accrualsTypes.onCallWeekday.displayOrder;
+          break;
+        case accrualsTypes.publicHolidayCredit.id:
+          accrualTitle = 'publicHolidayCredit.remainingHoursTitle';
+          accrualOrder = accrualsTypes.publicHolidayCredit.displayOrder;
+          break;
+        case accrualsTypes.onCallWeekend.id:
+          accrualTitle = 'onCallWeekend.remainingHoursTitle';
+          accrualOrder = accrualsTypes.onCallWeekend.displayOrder;
+          break;
+        case accrualsTypes.flexibleCredits.id:
+          accrualTitle = 'flexibleCredits.remainingHoursTitle';
+          accrualOrder = accrualsTypes.flexibleCredits.displayOrder;
+          break;
+        case accrualsTypes.rosteredShiftAllowance.id:
+          accrualTitle = 'rosteredShiftAllowance.remainingHoursTitle';
+          accrualOrder = accrualsTypes.rosteredShiftAllowance.displayOrder;
+          break;
+        case accrualsTypes.onCallPublicHoliday.id:
+          accrualTitle = 'onCallPublicHoliday.remainingHoursTitle';
+          accrualOrder = accrualsTypes.onCallPublicHoliday.displayOrder;
+          break;
         default:
           accrualTitle = 'accrualsData.unknownAccrual';
           accrualOrder = 11;
