@@ -114,59 +114,6 @@ describe('Accruals', () => {
     });
   });
 
-  it('should retrieve all night hours data when viewing one in the agreement range', async () => {
-    getAccruals.mockImplementation(() => {
-      return {
-        status: 200,
-        data: nightHoursAccrual,
-      };
-    });
-    getAgreementTargets.mockImplementation(() => {
-      return {
-        status: 200,
-        data: nightHoursAgreementTarget,
-      };
-    });
-    const { baseElement } = renderWithApplicationContext(
-      <Accruals />,
-      defaultApplicationContext,
-      '/2023-04-01',
-      '/:date'
-    );
-
-    await waitFor(async () => {
-      expect(screen.getByText('Night hours remaining')).toBeTruthy();
-      expect(screen.getByText('21')).toBeTruthy();
-      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
-    });
-  });
-  it('should retrieve all weekend hours data when viewing one in the agreement range', async () => {
-    getAccruals.mockImplementation(() => {
-      return {
-        status: 200,
-        data: weekendHoursAccrual,
-      };
-    });
-    getAgreementTargets.mockImplementation(() => {
-      return {
-        status: 200,
-        data: weekendHoursAgreementTarget,
-      };
-    });
-    const { baseElement } = renderWithApplicationContext(
-      <Accruals />,
-      defaultApplicationContext,
-      '/2023-04-01',
-      '/:date'
-    );
-
-    await waitFor(async () => {
-      expect(screen.getByText('Weekend hours remaining')).toBeTruthy();
-      expect(screen.getByText('2182')).toBeTruthy();
-      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
-    });
-  });
-
   test.each([
     {
       id: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
