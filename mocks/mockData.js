@@ -388,6 +388,21 @@ const nightHoursAgreementTarget = {
   ],
 };
 
+const weekendHoursAgreementTarget = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'ac180009-888a-14c4-8188-8b7c74d1001b',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      agreementId: 'ac180009-888a-14c4-8188-8ac33be30013',
+      accrualTypeId: '05bbd915-e907-4259-a2e2-080d7956afec',
+      targetTotal: 131520,
+    },
+  ],
+};
+
 const annualTargetHoursAccrual = {
   meta: {
     next: null,
@@ -438,6 +453,31 @@ const nightHoursAccrual = {
   ],
 };
 
+const weekendHoursAccrual = {
+  meta: {
+    next: null,
+  },
+  items: [
+    {
+      id: 'ac180009-888a-14c4-8188-8b6e4ba60019',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      personId: '3343a960-de03-42ba-8769-767404fb2fcf',
+      agreementId: 'ac180009-888a-14c4-8188-8ac33be30013',
+      accrualDate: '2023-04-01',
+      accrualTypeId: '05bbd915-e907-4259-a2e2-080d7956afec',
+      cumulativeTotal: 600,
+      cumulativeTarget: 360,
+      contributions: {
+        timeEntries: {
+          '85cd140e-9eeb-4771-ab6c-6dea17fcfcba': 2.0,
+          'e7d85e42-f0fb-4e2a-8211-874e27d1e888': 6.0,
+        },
+        total: 8,
+      },
+    },
+  ],
+};
+
 module.exports = {
   shiftTimeEntry,
   shiftTimeEntryWithoutFinishTime,
@@ -460,4 +500,6 @@ module.exports = {
   annualTargetHoursAccrual,
   nightHoursAccrual,
   nightHoursAgreementTarget,
+  weekendHoursAccrual,
+  weekendHoursAgreementTarget,
 };
