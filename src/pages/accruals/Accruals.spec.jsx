@@ -13,10 +13,6 @@ import {
   agreement,
   targetHoursAgreementTarget,
   annualTargetHoursAccrual,
-  nightHoursAccrual,
-  weekendHoursAccrual,
-  nightHoursAgreementTarget,
-  weekendHoursAgreementTarget,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
 
