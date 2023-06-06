@@ -27,5 +27,8 @@
     },
     "nightHours": {
         "remainingHoursTitle": "Night hours\n <strong>{{count}}</strong> remaining"
+    },
+    "weekendHours": {
+        "remainingHoursTitle": "Weekend hours\n <strong>{{count}}</strong> remaining"
     }
 }
