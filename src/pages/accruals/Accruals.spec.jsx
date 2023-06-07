@@ -116,8 +116,12 @@ describe('Accruals', () => {
       title: 'Annual target hours remaining',
     },
     {
-      id: 'b94bb25a-7fe2-4599-91ab-f0d58e013aed',
-      title: 'Public holiday hours remaining',
+      id: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
+      title: 'Night hours remaining',
+    },
+    {
+      id: '05bbd915-e907-4259-a2e2-080d7956afec',
+      title: 'Weekend hours remaining',
     },
     {
       id: '2a5ea69d-1a2c-409d-b430-43a5dbc403b3',
@@ -128,8 +132,8 @@ describe('Accruals', () => {
       title: 'Public holiday hours credit remaining',
     },
     {
-      id: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
-      title: 'Night hours remaining',
+      id: 'b94bb25a-7fe2-4599-91ab-f0d58e013aed',
+      title: 'Public holiday hours remaining',
     },
     {
       id: 'df4c4b08-ac4a-45e0-83bb-856d3219a8b3',
@@ -146,10 +150,6 @@ describe('Accruals', () => {
     {
       id: 'a628bf34-d834-437d-a57a-ed549bd9a330',
       title: 'On call public holiday period remaining',
-    },
-    {
-      id: '05bbd915-e907-4259-a2e2-080d7956afec',
-      title: 'Weekend hours remaining',
     },
     {
       id: 'totallyWrongAccrualsId',
