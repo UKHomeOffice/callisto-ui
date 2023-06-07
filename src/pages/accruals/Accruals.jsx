@@ -60,52 +60,12 @@ const Accruals = () => {
       let accrualTitle = '';
       let accrualOrder = 0;
 
-      switch (accrual.accrualTypeId) {
-        case accrualsTypes.annualTargetHours.id:
-          accrualTitle = 'annualTargetHours.remainingHoursTitle';
-          accrualOrder = accrualsTypes.annualTargetHours.displayOrder;
-          break;
-        case accrualsTypes.nightHours.id:
-          accrualTitle = 'nightHours.remainingHoursTitle';
-          accrualOrder = accrualsTypes.nightHours.displayOrder;
-          break;
-        case accrualsTypes.weekendHours.id:
-          accrualTitle = 'weekendHours.remainingHoursTitle';
-          accrualOrder = accrualsTypes.weekendHours.displayOrder;
-          break;
-        case accrualsTypes.publicHolidayHours.id:
-          accrualTitle = 'publicHolidayHours.remainingHoursTitle';
-          accrualOrder = accrualsTypes.publicHolidayHours.displayOrder;
-          break;
-        case accrualsTypes.onCallWeekday.id:
-          accrualTitle = 'onCallWeekday.remainingHoursTitle';
-          accrualOrder = accrualsTypes.onCallWeekday.displayOrder;
-          break;
-        case accrualsTypes.publicHolidayCredit.id:
-          accrualTitle = 'publicHolidayCredit.remainingHoursTitle';
-          accrualOrder = accrualsTypes.publicHolidayCredit.displayOrder;
-          break;
-        case accrualsTypes.onCallWeekend.id:
-          accrualTitle = 'onCallWeekend.remainingHoursTitle';
-          accrualOrder = accrualsTypes.onCallWeekend.displayOrder;
-          break;
-        case accrualsTypes.flexibleCredits.id:
-          accrualTitle = 'flexibleCredits.remainingHoursTitle';
-          accrualOrder = accrualsTypes.flexibleCredits.displayOrder;
-          break;
-        case accrualsTypes.rosteredShiftAllowance.id:
-          accrualTitle = 'rosteredShiftAllowance.remainingHoursTitle';
-          accrualOrder = accrualsTypes.rosteredShiftAllowance.displayOrder;
-          break;
-        case accrualsTypes.onCallPublicHoliday.id:
-          accrualTitle = 'onCallPublicHoliday.remainingHoursTitle';
-          accrualOrder = accrualsTypes.onCallPublicHoliday.displayOrder;
-          break;
-        default:
-          accrualTitle = 'accrualsData.unknownAccrual';
-          accrualOrder = 11;
-          break;
-      }
+      const accrualType = Object.values(accrualsTypes).find(
+        (element) => element.id === accrual.accrualTypeId
+      );
+      accrualTitle = accrualType?.title ?? 'accrualsData.unknownAccrual';
+      accrualOrder = accrualType?.displayOrder ?? 11;
+
       const targetHours = createAccrualObject(
         accrual,
         accrualTitle,
