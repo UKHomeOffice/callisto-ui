@@ -13,6 +13,8 @@ import {
   agreement,
   targetHoursAgreementTarget,
   annualTargetHoursAccrual,
+  multiAgreementTargets,
+  multiAccruals,
 } from '../../../mocks/mockData';
 import pretty from 'pretty';
 
@@ -116,12 +118,8 @@ describe('Accruals', () => {
       title: 'Annual target hours remaining',
     },
     {
-      id: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
-      title: 'Night hours remaining',
-    },
-    {
-      id: '05bbd915-e907-4259-a2e2-080d7956afec',
-      title: 'Weekend hours remaining',
+      id: 'b94bb25a-7fe2-4599-91ab-f0d58e013aed',
+      title: 'Public holiday hours remaining',
     },
     {
       id: '2a5ea69d-1a2c-409d-b430-43a5dbc403b3',
@@ -132,8 +130,8 @@ describe('Accruals', () => {
       title: 'Public holiday hours credit remaining',
     },
     {
-      id: 'b94bb25a-7fe2-4599-91ab-f0d58e013aed',
-      title: 'Public holiday hours remaining',
+      id: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
+      title: 'Night hours remaining',
     },
     {
       id: 'df4c4b08-ac4a-45e0-83bb-856d3219a8b3',
@@ -150,6 +148,10 @@ describe('Accruals', () => {
     {
       id: 'a628bf34-d834-437d-a57a-ed549bd9a330',
       title: 'On call public holiday period remaining',
+    },
+    {
+      id: '05bbd915-e907-4259-a2e2-080d7956afec',
+      title: 'Weekend hours remaining',
     },
     {
       id: 'totallyWrongAccrualsId',
@@ -183,4 +185,33 @@ describe('Accruals', () => {
       });
     }
   );
+
+  it('should sort the accruals into the correct order', async () => {
+    getAccruals.mockImplementation(() => {
+      return {
+        status: 200,
+        data: multiAccruals,
+      };
+    });
+    getAgreementTargets.mockImplementation(() => {
+      return {
+        status: 200,
+        data: multiAgreementTargets,
+      };
+    });
+    const { baseElement } = renderWithApplicationContext(
+      <Accruals />,
+      defaultApplicationContext,
+      '/2023-04-07',
+      '/:date'
+    );
+
+    await waitFor(async () => {
+      expect(screen.getByText('Annual target hours remaining')).toBeTruthy();
+      expect(screen.getByText('Night hours remaining')).toBeTruthy();
+      expect(screen.getByText('Weekend hours remaining')).toBeTruthy();
+
+      expect(pretty(baseElement.innerHTML)).toMatchSnapshot();
+    });
+  });
 });

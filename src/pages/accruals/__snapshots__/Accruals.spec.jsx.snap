@@ -150,25 +150,25 @@ exports[`Accruals should render the correct accruals title based open each type 
   <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
-        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"publicHolidayHours-title-span\\">Public holiday hours
  <strong>2182</strong> remaining</span></h1>
         <table class=\\"govuk-table\\">
           <tbody class=\\"govuk-table__body\\">
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+              <th id=\\"publicHolidayHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"publicHolidayHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td id=\\"nightHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+              <th id=\\"publicHolidayHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"publicHolidayHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+              <th id=\\"publicHolidayHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"publicHolidayHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+              <th id=\\"publicHolidayHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"publicHolidayHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
             </tr>
           </tbody>
         </table>
@@ -179,42 +179,6 @@ exports[`Accruals should render the correct accruals title based open each type 
 `;
 
 exports[`Accruals should render the correct accruals title based open each type ID 3`] = `
-"<div>
-  <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
-  <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
-  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
-  <div class=\\"accruals-data accruals-grid\\">
-    <div class=\\"accruals-container\\">
-      <form class=\\"grey-border\\">
-        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"weekendHours-title-span\\">Weekend hours
- <strong>2182</strong> remaining</span></h1>
-        <table class=\\"govuk-table\\">
-          <tbody class=\\"govuk-table__body\\">
-            <tr class=\\"govuk-table__row\\">
-              <th id=\\"weekendHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td id=\\"weekendHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
-            </tr>
-            <tr class=\\"govuk-table__row\\">
-              <th id=\\"weekendHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td id=\\"weekendHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
-            </tr>
-            <tr class=\\"govuk-table__row\\">
-              <th id=\\"weekendHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td id=\\"weekendHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
-            </tr>
-            <tr class=\\"govuk-table__row\\">
-              <th id=\\"weekendHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td id=\\"weekendHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
-  </div>
-</div>"
-`;
-
-exports[`Accruals should render the correct accruals title based open each type ID 4`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -250,7 +214,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 5`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 4`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -286,7 +250,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 6`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 5`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -294,25 +258,25 @@ exports[`Accruals should render the correct accruals title based open each type 
   <div class=\\"accruals-data accruals-grid\\">
     <div class=\\"accruals-container\\">
       <form class=\\"grey-border\\">
-        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"publicHolidayHours-title-span\\">Public holiday hours
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
  <strong>2182</strong> remaining</span></h1>
         <table class=\\"govuk-table\\">
           <tbody class=\\"govuk-table__body\\">
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"publicHolidayHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
-              <td id=\\"publicHolidayHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+              <th id=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"publicHolidayHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
-              <td id=\\"publicHolidayHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+              <th id=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"nightHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"publicHolidayHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
-              <td id=\\"publicHolidayHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+              <th id=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
             </tr>
             <tr class=\\"govuk-table__row\\">
-              <th id=\\"publicHolidayHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
-              <td id=\\"publicHolidayHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+              <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
             </tr>
           </tbody>
         </table>
@@ -322,7 +286,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 7`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 6`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -358,7 +322,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 8`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 7`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -394,7 +358,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 9`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 8`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -430,7 +394,7 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
-exports[`Accruals should render the correct accruals title based open each type ID 10`] = `
+exports[`Accruals should render the correct accruals title based open each type ID 9`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
   <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
@@ -466,6 +430,42 @@ exports[`Accruals should render the correct accruals title based open each type 
 </div>"
 `;
 
+exports[`Accruals should render the correct accruals title based open each type ID 10`] = `
+"<div>
+  <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">1 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-03-31\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-02\\">Next day</a></div>
+  <div class=\\"accruals-data accruals-grid\\">
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"weekendHours-title-span\\">Weekend hours
+ <strong>2182</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"weekendHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"weekendHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"weekendHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"weekendHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>"
+`;
+
 exports[`Accruals should render the correct accruals title based open each type ID 11`] = `
 "<div>
   <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
@@ -492,6 +492,94 @@ exports[`Accruals should render the correct accruals title based open each type 
             <tr class=\\"govuk-table__row\\">
               <th id=\\"accrualsData-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
               <td id=\\"accrualsData-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>"
+`;
+
+exports[`Accruals should sort the accruals into the correct order 1`] = `
+"<div>
+  <h1 id=\\"accruals-balance-title\\" class=\\"govuk-caption-m\\">My accruals balance as of</h1>
+  <h2 id=\\"accruals-date\\" class=\\"govuk-heading-m\\">7 April 2023</h2>
+  <div class=\\"govuk-button-group button-group-row\\"><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-previous-link\\" href=\\"/accruals/2023-04-06\\">Previous day</a><a class=\\"govuk-link govuk-link--no-visited-state\\" id=\\"navigation-next-link\\" href=\\"/accruals/2023-04-08\\">Next day</a></div>
+  <div class=\\"accruals-data accruals-grid\\">
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"annualTargetHours-title-span\\">Annual target hours
+ <strong>2182</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"annualTargetHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2192:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"annualTargetHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">10:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"annualTargetHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2182:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"annualTargetHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"annualTargetHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2186:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"nightHours-title-span\\">Night hours
+ <strong>71</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"nightHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">72:40</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"nightHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">1:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"nightHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">71:40</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"nightHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"nightHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">70:40</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div class=\\"accruals-container\\">
+      <form class=\\"grey-border\\">
+        <h1 class=\\"govuk-heading-m newline\\"><span id=\\"weekendHours-title-span\\">Weekend hours
+ <strong>14</strong> remaining</span></h1>
+        <table class=\\"govuk-table\\">
+          <tbody class=\\"govuk-table__body\\">
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-total-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Total</th>
+              <td id=\\"weekendHours-total-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">16:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-worked-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Worked</th>
+              <td id=\\"weekendHours-worked-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">2:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-remaining-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Remaining</th>
+              <td id=\\"weekendHours-remaining-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">14:00</td>
+            </tr>
+            <tr class=\\"govuk-table__row\\">
+              <th id=\\"weekendHours-target-lbl\\" scope=\\"row\\" class=\\"govuk-table__header\\">Target</th>
+              <td id=\\"weekendHours-target-value\\" class=\\"govuk-table__cell govuk-table__cell--numeric\\">12:00</td>
             </tr>
           </tbody>
         </table>
