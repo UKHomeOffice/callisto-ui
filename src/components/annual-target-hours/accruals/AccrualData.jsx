@@ -13,7 +13,7 @@ const AccrualData = ({ targetTotal, accrualsData, titleTranslationKey }) => {
   const idSubstr = titleTranslationKey?.split('.')[0];
   let title;
 
-  if (!targetTotal) {
+  if (targetTotal === null) {
     title = t(titleTranslationKey);
   } else {
     title = t(titleTranslationKey, {

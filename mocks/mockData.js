@@ -373,7 +373,7 @@ const targetHoursAgreementTarget = {
   ],
 };
 
-const nightHoursAgreementTarget = {
+const multiAgreementTargets = {
   meta: {
     next: null,
   },
@@ -383,7 +383,21 @@ const nightHoursAgreementTarget = {
       tenantId: '00000000-0000-0000-0000-000000000000',
       agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
       accrualTypeId: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
-      targetTotal: 1520,
+      targetTotal: 4360,
+    },
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d4ea30001',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualTypeId: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
+      targetTotal: 131520,
+    },
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d4ea30001',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualTypeId: '05bbd915-e907-4259-a2e2-080d7956afec',
+      targetTotal: 960,
     },
   ],
 };
@@ -413,7 +427,7 @@ const annualTargetHoursAccrual = {
   ],
 };
 
-const nightHoursAccrual = {
+const multiAccruals = {
   meta: {
     next: null,
   },
@@ -425,8 +439,42 @@ const nightHoursAccrual = {
       agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
       accrualDate: '2023-04-01',
       accrualTypeId: '5f06e6ce-1422-4a0c-89dd-f4952e735202',
-      cumulativeTotal: 240,
+      cumulativeTotal: 60,
       cumulativeTarget: 120,
+      contributions: {
+        timeEntries: {
+          '85cd140e-9eeb-4771-ab6c-6dea17fcfcba': 0.0,
+          'e7d85e42-f0fb-4e2a-8211-874e27d1e888': 0.0,
+        },
+        total: 0,
+      },
+    },
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d60ec0002',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      personId: 'a18b6f95-0940-4ec3-bc38-abeb29e039c5',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualDate: '2023-04-01',
+      accrualTypeId: '05bbd915-e907-4259-a2e2-080d7956afec',
+      cumulativeTotal: 120,
+      cumulativeTarget: 240,
+      contributions: {
+        timeEntries: {
+          '85cd140e-9eeb-4771-ab6c-6dea17fcfcba': 2.0,
+          'e7d85e42-f0fb-4e2a-8211-874e27d1e888': 6.0,
+        },
+        total: 8,
+      },
+    },
+    {
+      id: 'ac140008-880f-1a9b-8188-0f0d60ec0002',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      personId: 'a18b6f95-0940-4ec3-bc38-abeb29e039c5',
+      agreementId: 'ac140008-880f-1a9b-8188-0f0d3dc40000',
+      accrualDate: '2023-04-01',
+      accrualTypeId: 'e502eebb-4663-4e5b-9445-9a20441c18d9',
+      cumulativeTotal: 600,
+      cumulativeTarget: 360,
       contributions: {
         timeEntries: {
           '85cd140e-9eeb-4771-ab6c-6dea17fcfcba': 2.0,
@@ -458,6 +506,6 @@ module.exports = {
   agreement,
   targetHoursAgreementTarget,
   annualTargetHoursAccrual,
-  nightHoursAccrual,
-  nightHoursAgreementTarget,
+  multiAgreementTargets,
+  multiAccruals,
 };
