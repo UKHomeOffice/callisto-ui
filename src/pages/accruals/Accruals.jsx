@@ -57,14 +57,11 @@ const Accruals = () => {
   const setAccrualsData = (fetchedAccruals) => {
     let accrualsList = [];
     fetchedAccruals.forEach((accrual) => {
-      let accrualTitle = '';
-      let accrualOrder = 0;
-
       const accrualType = Object.values(accrualsTypes).find(
         (element) => element.id === accrual.accrualTypeId
       );
-      accrualTitle = accrualType?.title ?? 'accrualsData.unknownAccrual';
-      accrualOrder = accrualType?.displayOrder ?? 11;
+      const accrualTitle = accrualType?.title ?? 'accrualsData.unknownAccrual';
+      const accrualOrder = accrualType?.displayOrder ?? 11;
 
       const targetHours = createAccrualObject(
         accrual,
