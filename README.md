@@ -181,6 +181,7 @@ Re-run container to use updated env variables by using commands `docker compose 
 
 ## Functional Overviews
 - [Accruals](src/documents/accruals.md)
+- [Timecard](src/documents/timecard.md)
 
 # Component Flow
 
