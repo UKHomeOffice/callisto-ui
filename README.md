@@ -179,6 +179,9 @@ Override .env VITE_TIMECARD_API_URL variable to point Timecard-restapi mock:
 Re-run container to use updated env variables by using commands `docker compose restart web` and
 
 
+## Functional Overviews
+- [Accruals](src/documents/accruals.md)
+
 # Component Flow
 
 ![](src/diagrams/componentFlow.drawio.svg)
