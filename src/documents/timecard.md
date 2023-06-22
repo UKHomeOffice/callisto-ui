@@ -10,7 +10,7 @@ After clicking save, the screen displays the recorded shift with the option to r
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2008.46.42.png)
 
-When editing the saved time, the function 'isFinishTimeOnNextDay' calculates whether the time is on the next day and the UI notifies the user with dynamic text:
+The user is notified if the finish time is on the next day using dynamic next:
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2009.26.14.png)
 
@@ -18,7 +18,7 @@ The date input is conditionally rendered by clicking the checkbox. The dates are
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2010.14.50.png)
 
-The user is returned to the the Timecard of the start date:
+The user remains on the start date of the Timecard:
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2010.20.38.png)
 
@@ -37,7 +37,7 @@ A banner notifying the user that their hours have been changed is displayed only
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2011.51.30.png)
 
-Finish time can be left blank without error, the system will asume the finish date is the same day:
+Finish time can be left blank without error, the date field pre-populates to finish on the same day but will not actually be set without a time:
 
 ![Alt text](images/Screenshot%202023-06-22%20at%2011.20.58.png)
 
@@ -45,11 +45,14 @@ Finish time can be left blank without error, the system will asume the finish da
 
 ## Outstanding tasks which impact Timecard:
 
-The dynamic text 'Finishes next day' would be changed to display the shift length as the user types - https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2605
+The dynamic text 'Finishes next day' would be changed to display the shift length as the user types - [EAHW-2605](https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2605)
 
-The user would be able to cancel a shift creation - https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2132
+The user would be able to cancel a shift creation - [eahw-2132](https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2132)
 
-Remove react hook forms from the ui for better data control and simplicity - https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2748
+Remove react hook forms from the ui for better data control and simplicity - [EAHW-2748](https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2748)
+
+Date/Time field validation to be moved from Shift component to lowest level of date/time component - [EAHW-2750](https://collaboration.homeoffice.gov.uk/jira/browse/EAHW-2750)
+
 
 
 
