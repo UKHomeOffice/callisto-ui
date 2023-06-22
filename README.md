@@ -181,3 +181,7 @@ Re-run container to use updated env variables by using commands `docker compose 
 
 ## Functional Overviews
 - [Accruals](src/documents/accruals.md)
+
+# Component Flow
+
+![](src/diagrams/componentFlow.drawio.svg)
