@@ -177,3 +177,7 @@ Override .env VITE_TIMECARD_API_URL variable to point Timecard-restapi mock:
 `VITE_TIMECARD_API_URL = "http://localhost:50001/"`
 
 Re-run container to use updated env variables by using commands `docker compose restart web` and
+
+
+## Functional Overviews
+- [Accruals](src/documents/accruals.md)
