@@ -283,9 +283,8 @@ trigger:
   event:
     - promote
   target:
-    include:
-      - production
     exclude:
+      - production
       - test
 
 steps:
