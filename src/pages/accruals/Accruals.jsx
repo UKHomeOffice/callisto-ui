@@ -90,7 +90,7 @@ const Accruals = () => {
   const getAllData = async (accrualsDate, setServiceError) => {
     await getAgreementData(accrualsDate, setServiceError);
     if (agreementId) {
-      await getAgreementTargetData(accrualsDate, setServiceError);
+      await getAgreementTargetData(setServiceError);
       await getAccrualsData(accrualsDate, setServiceError);
     }
   };
@@ -119,7 +119,7 @@ const Accruals = () => {
     });
   };
 
-  const getAgreementTargetData = async (date, setServiceError) => {
+  const getAgreementTargetData = async (setServiceError) => {
     const targetParams = new UrlSearchParamBuilder()
       .setTenantId('00000000-0000-0000-0000-000000000000')
       .setFilter(buildAgreementTargetFilter(agreementId))

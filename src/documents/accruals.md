@@ -24,6 +24,6 @@ All data is supplied by the API in minutes and the UI component will convert it 
 
 ![Acrrual Screenshot](images/AccrualData.png)
 
-### Furure Work
+### Future Work
 
 When the accruals solution is fully implemented the importing of the agreement will automatically generate targets and accruals for every day it covers. That means that with the dynamic UI, every day would have 10 accruals displayed. It's highly unlikely that anyone will actually accrue all 10 types so matbe we sgould only display accruals that have accrued towards the target.
