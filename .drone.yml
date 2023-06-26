@@ -286,7 +286,13 @@ trigger:
     exclude:
       - production
       - test
-
+#To reinstate prod deployment change to trigger to:
+#trigger:
+#  event:
+#    - promote
+#  target:
+#      - production
+#      - test
 steps:
   - name: environment check
     pull: if-not-exists
