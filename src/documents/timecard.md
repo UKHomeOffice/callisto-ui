@@ -18,7 +18,7 @@ The date input is conditionally rendered by clicking the checkbox. The dates are
 
 ![Timecard Dates](images/Screenshot%202023-06-22%20at%2010.14.50.png)
 
-The user remains on the start date of the Timecard:
+The Timecard remains on the start date of the shift:
 
 ![Shift Over One Day](images/Screenshot%202023-06-22%20at%2010.20.38.png)
 
