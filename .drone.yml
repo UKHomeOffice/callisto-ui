@@ -152,7 +152,16 @@ depends_on:
 
 trigger:
   event:
+    exclude:
+    - push
     - pull_request
+    - tag
+    - promote
+    - rollback
+#to reinstate branch deploys on pull requests change trigger to
+#trigger:
+# event:
+#   - pull_request
 
 steps:
   - name: build project
@@ -220,7 +229,14 @@ trigger:
   event:
     - promote
   target:
-    - test
+    exclude:
+      - test
+#To reinstate prod deployment change to trigger to:
+#trigger:
+#  event:
+#    - promote
+#  target:
+#      - test
 
 steps:
   - name: promote to test check
