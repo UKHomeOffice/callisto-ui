@@ -117,13 +117,13 @@ steps:
         from_secret: s3_aws_secret_access_key
     when:
       event:
-          event:
-            exclude:
-              - push
-              - pull_request
-              - tag
-              - promote
-              - rollback
+        exclude:
+          - push
+          - pull_request
+          - tag
+          - promote
+          - rollback
+
 # to reinstate uncomment the following
 # event:
     # - push
